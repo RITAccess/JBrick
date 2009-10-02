@@ -8,5 +8,7 @@
 			<attribute name="javadoc_location" value="http://help.eclipse.org/stable/nftopic/org.eclipse.platform.doc.isv/reference/api/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/swt-debug.jar"/>
+	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
