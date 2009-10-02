@@ -1,7 +1,22 @@
 package editor;
 
-public class Editor_Edit {
+import guiPackage.BorderLayout;
+import guiPackage.Display;
+import guiPackage.Shell;
 
+public class Editor_Edit {
+	
+	public void displayEditor() {
+		// create the window
+		final Display display = new Display();
+		final Shell shell = new Shell(display);
+
+		shell.setLayout(new BorderLayout());
+		// set the application title
+		// TODO: Get OpenFile Name
+		shell.setText("FileName");
+	}
+	
 	public void undo() {
 	
 	}
