@@ -1,6 +1,6 @@
 package communcation;
 
-public class roboCommunication {
+public class Communication {
 
 	public void download() {
 	
