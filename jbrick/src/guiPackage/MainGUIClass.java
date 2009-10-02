@@ -69,6 +69,8 @@ public class MainGUIClass {
 		newItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				// TODO: Add implementation here
+				System.out.println("This is the new menu");
+				
 			}
 		});
 
