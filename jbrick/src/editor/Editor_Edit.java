@@ -13,7 +13,7 @@ public class Editor_Edit {
 
 		shell.setLayout(new BorderLayout());
 		// set the application title
-		// TODO: Get OpenFile Name
+		// TODO: Get OpenFile Name 
 		shell.setText("FileName");
 	}
 	
