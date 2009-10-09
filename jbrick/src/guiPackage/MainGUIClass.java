@@ -30,7 +30,6 @@ public class MainGUIClass {
 	public static void main(String[] args) {
 		MainGUIClass mainClass = new MainGUIClass();
 		mainClass.displayMainMenu();
-
 	}
 
 	/**
