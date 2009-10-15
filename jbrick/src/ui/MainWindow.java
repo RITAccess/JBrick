@@ -25,6 +25,7 @@ import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
 import source.JBrickEditorSourceViewerConfiguration;
 import actions.AboutAction;
+import actions.CompileAction;
 import actions.CopyAction;
 import actions.CutAction;
 import actions.ExitAction;
@@ -62,6 +63,8 @@ public class MainWindow extends ApplicationWindow implements
   private SaveAction saveAction = new SaveAction();
   private SaveAsAction saveAsAction = new SaveAsAction();
   private UndoAction undoAction = new UndoAction();
+  
+  private CompileAction compileAction = new CompileAction(); 
 
   // The font
   private Font font;
@@ -157,10 +160,12 @@ public class MainWindow extends ApplicationWindow implements
     MenuManager mm = new MenuManager();
     MenuManager fileMenu = new MenuManager("&File");
     MenuManager editMenu = new MenuManager("&Edit");
+    MenuManager compileMenu = new MenuManager("&Compile");
     MenuManager helpMenu = new MenuManager("&Help");
 
     mm.add(fileMenu);
     mm.add(editMenu);
+    mm.add(compileMenu);
     mm.add(helpMenu);
 
     fileMenu.add(newAction);
@@ -183,6 +188,8 @@ public class MainWindow extends ApplicationWindow implements
     editMenu.add(new Separator());
     editMenu.add(prefsAction);
 
+    compileMenu.add(compileAction);
+    
     helpMenu.add(aboutAction);
 
     return mm;
@@ -215,6 +222,8 @@ public class MainWindow extends ApplicationWindow implements
     tm.add(findAction);
     tm.add(new Separator());
     tm.add(prefsAction);
+    tm.add(new Separator());
+    tm.add(compileAction);
     tm.add(new Separator());
     tm.add(aboutAction);
 
