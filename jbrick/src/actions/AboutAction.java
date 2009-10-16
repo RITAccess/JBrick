@@ -16,7 +16,7 @@ public class AboutAction extends Action {
    */
   public AboutAction() {
     super("&About@Ctrl+A", ImageDescriptor.createFromFile(AboutAction.class,
-        "/images/about.jpg"));
+        "/images/help-browser.png"));
     setToolTipText("About");
   }
 

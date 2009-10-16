@@ -18,7 +18,7 @@ public class OpenAction extends Action {
    */
   public OpenAction() {
     super("&Open...@Ctrl+O", ImageDescriptor.createFromFile(OpenAction.class,
-        "/images/open.gif"));
+        "/images/document-open.png"));
     setToolTipText("Open");
   }
 

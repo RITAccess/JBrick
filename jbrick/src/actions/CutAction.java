@@ -16,7 +16,7 @@ public class CutAction extends Action {
    */
   public CutAction() {
     super("Cu&t@Ctrl+X", ImageDescriptor.createFromFile(CutAction.class,
-        "/images/cut.gif"));
+        "/images/edit-cut.png"));
     setToolTipText("Cut");
   }
 

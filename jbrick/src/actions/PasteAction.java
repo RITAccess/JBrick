@@ -16,7 +16,7 @@ public class PasteAction extends Action {
    */
   public PasteAction() {
     super("&Paste@Ctrl+V", ImageDescriptor.createFromFile(PasteAction.class,
-        "/images/paste.gif"));
+        "/images/edit-paste.png"));
     setToolTipText("Paste");
   }
 

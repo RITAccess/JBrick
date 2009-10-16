@@ -18,7 +18,9 @@ public class PreferencesAction extends Action {
    * PreferencesAction constructor
    */
   public PreferencesAction() {
-    super("P&references...@Ctrl+R");
+//    super("P&references...@Ctrl+R");
+    super("P&references...@Ctrl+R", ImageDescriptor.createFromFile(PasteAction.class,
+    "/images/preferences-desktop.png"));
     setToolTipText("Preferences");
   }
 

@@ -16,7 +16,7 @@ public class NewAction extends Action {
    */
   public NewAction() {
     super("&New@Ctrl+N", ImageDescriptor.createFromFile(NewAction.class,
-        "/images/new.jpg"));
+        "/images/document-new.png"));
     setToolTipText("New");
   }
 

@@ -16,7 +16,7 @@ public class CopyAction extends Action {
    */
   public CopyAction() {
     super("&Copy@Ctrl+C", ImageDescriptor.createFromFile(CopyAction.class,
-        "/images/copy.gif"));
+        "/images/edit-copy.png"));
     setToolTipText("Copy");
   }
 

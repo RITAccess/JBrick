@@ -16,7 +16,7 @@ public class FindAction extends Action {
    */
   public FindAction() {
     super("&Find@Ctrl+F", ImageDescriptor.createFromFile(FindAction.class,
-        "/images/find.jpg"));
+        "/images/edit-find.png"));
     setToolTipText("Find");
   }
 

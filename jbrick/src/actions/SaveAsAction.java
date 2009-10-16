@@ -17,7 +17,7 @@ public class SaveAsAction extends Action {
    */
   public SaveAsAction() {
     super("Save As...", ImageDescriptor.createFromFile(SaveAsAction.class,
-        "/images/save.jpg"));
+        "/images/document-save-as.png"));
     setToolTipText("Save As");
   }
 

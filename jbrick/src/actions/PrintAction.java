@@ -16,7 +16,7 @@ public class PrintAction extends Action {
    */
   public PrintAction() {
     super("&Print...@Ctrl+P", ImageDescriptor.createFromFile(PrintAction.class,
-        "/images/print.jpg"));
+        "/images/document-print.png"));
     setToolTipText("Print");
   }
 

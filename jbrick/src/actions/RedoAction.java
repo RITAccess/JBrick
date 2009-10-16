@@ -16,7 +16,7 @@ public class RedoAction extends Action {
    */
   public RedoAction() {
     super("&Redo@Ctrl+Y", ImageDescriptor.createFromFile(RedoAction.class,
-        "/images/redo.jpg"));
+        "/images/edit-redo.png"));
     setToolTipText("Redo");
   }
 

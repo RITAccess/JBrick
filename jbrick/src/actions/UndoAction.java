@@ -16,7 +16,7 @@ public class UndoAction extends Action {
    */
   public UndoAction() {
     super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class,
-        "/images/undo.gif"));
+        "/images/edit-undo.png"));
     setToolTipText("Undo");
   }
 
