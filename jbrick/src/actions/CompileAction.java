@@ -17,7 +17,8 @@ public class CompileAction extends Action {
    * AboutAction constructor
    */
   public CompileAction() {
-    super("&About@Ctrl+Shift-b", ImageDescriptor.createFromFile(CompileAction.class, "/images/compile.png"));
+    super("&Compile@Ctrl+Shift-b", ImageDescriptor.createFromFile(CompileAction.class, 
+    		"/images/compile.png"));
     setToolTipText("Compile");
   }
 
