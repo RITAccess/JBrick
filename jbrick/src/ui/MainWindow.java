@@ -15,6 +15,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +23,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolderEvent;
+import org.eclipse.swt.custom.CTabItem;
 
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
@@ -119,19 +126,46 @@ public class MainWindow extends ApplicationWindow implements
 		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
         ruler.addDecorator(0,lnrc);
         
-		viewer = new SourceViewer(parent, ruler , SWT.V_SCROLL
+    	CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER | SWT.CLOSE);
+//    	tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+    	tabFolder.setMinimizeVisible(true);
+    	tabFolder.setMaximizeVisible(true);
+    	tabFolder.setSimple(false);
+    	tabFolder.setUnselectedImageVisible(false);
+    	tabFolder.setUnselectedCloseVisible(false);
+    	Color titleForeColor = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
+    	Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+    	Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+    	tabFolder.setSelectionForeground(titleForeColor);
+    	tabFolder.setSelectionBackground(
+	    	new Color[] {titleBackColor1, titleBackColor2},
+	    	new int[] {100},
+	    	true
+    	);
+
+    	//TODO: change tabs names and content
+    	//tab1
+    	CTabItem tabItem = new CTabItem(tabFolder, SWT.NULL);
+    	tabItem.setText("New File");	 
+    	
+        viewer = new SourceViewer(tabFolder, ruler , SWT.V_SCROLL
 				| SWT.H_SCROLL);
+
+		tabItem.setControl(viewer.getControl());
 
 		// Configure it and set the document
 		viewer.configure(new JBrickEditorSourceViewerConfiguration());
 		viewer.setDocument(JBrickEditor.getApp().getDocument());
 
+		// viewer.GAP_SIZE = 1 ;		
+		
 		// Menu manager initialize
 		menuManager = new MenuManager();
+		menuManager.add(undoAction);
+		menuManager.add(redoAction);
 		menuManager.add(cutAction);
-		menuManager.add(cutAction);
-		menuManager.add(cutAction);
-		menuManager.add(cutAction);
+		menuManager.add(copyAction);
+		menuManager.add(pasteAction);
 		Menu menu = menuManager.createContextMenu(this.viewer.getTextWidget());
 		// Right Click Attach
 		this.viewer.getTextWidget().setMenu(menu);
