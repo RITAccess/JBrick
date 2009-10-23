@@ -20,6 +20,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.swt.widgets.Menu;
 
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
@@ -72,6 +75,9 @@ public class MainWindow extends ApplicationWindow implements
   // The undo manager
   private IUndoManager undoManager;
 
+  // Right Click Menu
+  private MenuManager menuManager;
+
   /**
    * MainWindow constructor
    */
@@ -114,6 +120,17 @@ public class MainWindow extends ApplicationWindow implements
     // Configure it and set the document
     viewer.configure(new JBrickEditorSourceViewerConfiguration());
     viewer.setDocument(JBrickEditor.getApp().getDocument());
+    
+
+    // Menu manager initialize
+    menuManager = new MenuManager();
+    menuManager.add(cutAction);
+    menuManager.add(cutAction);
+    menuManager.add(cutAction);
+    menuManager.add(cutAction);
+    Menu menu = menuManager.createContextMenu(this.viewer.getTextWidget());
+    // Right Click Attach
+    this.viewer.getTextWidget().setMenu(menu);
 
     // Set any preferences
     loadPreferences();
