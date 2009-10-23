@@ -10,25 +10,21 @@ import org.eclipse.jface.text.IUndoManager;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolderEvent;
-import org.eclipse.swt.custom.CTabItem;
 
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
@@ -122,10 +118,12 @@ public class MainWindow extends ApplicationWindow implements
 	 */
 	protected Control createContents(Composite parent) {
 		// Create the viewer
-		CompositeRuler ruler = new CompositeRuler();
+		CompositeRuler ruler = new CompositeRuler(10);
+		
 		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
+		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
         ruler.addDecorator(0,lnrc);
-        
+                
     	CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER | SWT.CLOSE);
 //    	tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
     	tabFolder.setMinimizeVisible(true);
@@ -150,13 +148,16 @@ public class MainWindow extends ApplicationWindow implements
     	
         viewer = new SourceViewer(tabFolder, ruler , SWT.V_SCROLL
 				| SWT.H_SCROLL);
+		
+		
 
 		tabItem.setControl(viewer.getControl());
 
 		// Configure it and set the document
 		viewer.configure(new JBrickEditorSourceViewerConfiguration());
 		viewer.setDocument(JBrickEditor.getApp().getDocument());
-
+		
+		
 		// viewer.GAP_SIZE = 1 ;		
 		
 		// Menu manager initialize
