@@ -1,5 +1,7 @@
 package ui;
 
+import java.io.File;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -12,16 +14,20 @@ import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
@@ -29,6 +35,8 @@ import org.eclipse.swt.widgets.Shell;
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
 import source.JBrickEditorSourceViewerConfiguration;
+import treeProviders.FileTreeContentProvider;
+import treeProviders.FileTreeLabelProvider;
 import actions.AboutAction;
 import actions.CompileAction;
 import actions.CopyAction;
@@ -80,6 +88,8 @@ public class MainWindow extends ApplicationWindow implements
 	// Right Click Menu
 	private MenuManager menuManager;
 
+	File treeRootFile;
+
 	/**
 	 * MainWindow constructor
 	 */
@@ -87,12 +97,15 @@ public class MainWindow extends ApplicationWindow implements
 		super(null);
 		addMenuBar();
 		addToolBar(SWT.FLAT);
+		addStatusLine();
+
 	}
 
 	/**
 	 * Runs the application
 	 */
 	public void run() {
+
 		setBlockOnOpen(true);
 		open();
 		Display.getCurrent().dispose();
@@ -117,49 +130,59 @@ public class MainWindow extends ApplicationWindow implements
 	 * @return Control
 	 */
 	protected Control createContents(Composite parent) {
+		String workspacePath = getWorkspacePath(parent);
+		this.treeRootFile = new File(workspacePath);
+		setStatus("cool status line");
+		// create file tree viewer
+		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
+
+		// Create the tree viewer to display the file tree
+		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
+		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
+		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
+		tv.setLabelProvider(new FileTreeLabelProvider());
+		tv.setInput("root"); // pass a non-null that will be ignored
+
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
-		
-		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
-		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
-        ruler.addDecorator(0,lnrc);
-                
-    	CTabFolder tabFolder = new CTabFolder(parent, SWT.BORDER | SWT.CLOSE);
-//    	tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    	tabFolder.setMinimizeVisible(true);
-    	tabFolder.setMaximizeVisible(true);
-    	tabFolder.setSimple(false);
-    	tabFolder.setUnselectedImageVisible(false);
-    	tabFolder.setUnselectedCloseVisible(false);
-    	Color titleForeColor = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
-    	Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
-    	Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
-    	tabFolder.setSelectionForeground(titleForeColor);
-    	tabFolder.setSelectionBackground(
-	    	new Color[] {titleBackColor1, titleBackColor2},
-	    	new int[] {100},
-	    	true
-    	);
 
-    	//TODO: change tabs names and content
-    	//tab1
-    	CTabItem tabItem = new CTabItem(tabFolder, SWT.NULL);
-    	tabItem.setText("New File");	 
-    	
-        viewer = new SourceViewer(tabFolder, ruler , SWT.V_SCROLL
-				| SWT.H_SCROLL);
-		
-		
+		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
+		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
+				255, 0, 0)));
+		ruler.addDecorator(0, lnrc);
+
+		CTabFolder tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		tabFolder.setMinimizeVisible(true);
+		tabFolder.setMaximizeVisible(true);
+		tabFolder.setSimple(false);
+		tabFolder.setUnselectedImageVisible(false);
+		tabFolder.setUnselectedCloseVisible(false);
+		Color titleForeColor = parent.getShell().getDisplay().getSystemColor(
+				SWT.COLOR_TITLE_FOREGROUND);
+		Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
+				SWT.COLOR_TITLE_BACKGROUND);
+		Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(
+				SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+		tabFolder.setSelectionForeground(titleForeColor);
+		tabFolder.setSelectionBackground(new Color[] { titleBackColor1,
+				titleBackColor2 }, new int[] { 100 }, true);
+
+		// TODO: change tabs names and content
+		// tab1
+		CTabItem tabItem = new CTabItem(tabFolder, SWT.NULL);
+		tabItem.setText("New File");
+
+		viewer = new SourceViewer(tabFolder, ruler, SWT.V_SCROLL | SWT.H_SCROLL);
 
 		tabItem.setControl(viewer.getControl());
 
 		// Configure it and set the document
 		viewer.configure(new JBrickEditorSourceViewerConfiguration());
 		viewer.setDocument(JBrickEditor.getApp().getDocument());
-		
-		
-		// viewer.GAP_SIZE = 1 ;		
-		
+
+		// viewer.GAP_SIZE = 1 ;
+
 		// Menu manager initialize
 		menuManager = new MenuManager();
 		menuManager.add(undoAction);
@@ -346,5 +369,23 @@ public class MainWindow extends ApplicationWindow implements
 			}
 		}
 		return close;
+	}
+
+	public File getTreeRootFile() {
+		return treeRootFile;
+	}
+
+	public void setTreeRootFile(File treeRootFile) {
+		this.treeRootFile = treeRootFile;
+	}
+
+	public String getWorkspacePath(Composite parent){
+		String path;
+		do{
+		DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
+		dialog.setText("Workspace Selection");
+		path = dialog.open();
+		}while (path == null);
+		return path;
 	}
 }
