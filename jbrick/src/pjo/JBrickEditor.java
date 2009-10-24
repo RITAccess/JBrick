@@ -1,5 +1,6 @@
 package pjo;
 
+import java.io.File;
 import java.io.IOException;
 
 import model.PersistentDocument;
@@ -19,248 +20,269 @@ import ui.SafeSaveDialog;
  * This class demonstrates TextViewer and Document.
  */
 public class JBrickEditor {
-  // Set up the name of the partitioner
-  public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
+	// Set up the name of the partitioner
+	public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
 
-  // A reference to the current app
-  private static JBrickEditor APP;
+	// A reference to the current app
+	private static JBrickEditor APP;
 
-  // The current document
-  private PersistentDocument document;
+	// The current document
+	private PersistentDocument document;
 
-  // The main window
-  private MainWindow mainWindow;
+	// The main window
+	private MainWindow mainWindow;
 
-  // The stored preferences
-  private PreferenceStore prefs;
+	// The stored preferences
+	private PreferenceStore prefs;
 
-  // The partition scanner
-  private JBrickPartitionScanner scanner;
+	// The partition scanner
+	private JBrickPartitionScanner scanner;
 
-  // The code scanner
-  private JBrickCodeScanner codeScanner;
+	// The code scanner
+	private JBrickCodeScanner codeScanner;
 
-  // The color manager
-  private ColorManager colorManager;
+	// The color manager
+	private ColorManager colorManager;
 
-  /**
-   * Returns the application instance
-   * @return JBrickEditor
-   */
-  public static JBrickEditor getApp() {
-    return APP;
-  }
+	
 
-  /**
-   * JBrickEditor constructor
-   */
-  public JBrickEditor() {
-    APP = this;
+	/**
+	 * Returns the application instance
+	 * 
+	 * @return JBrickEditor
+	 */
+	public static JBrickEditor getApp() {
+		return APP;
+	}
 
-    colorManager = new ColorManager();
-    codeScanner = new JBrickCodeScanner();
+	/**
+	 * JBrickEditor constructor
+	 */
+	public JBrickEditor() {
+		APP = this;
 
-    // Set up the document
-    setUpDocument();
+		colorManager = new ColorManager();
+		codeScanner = new JBrickCodeScanner();
 
-    mainWindow = new MainWindow();
-    prefs = new PreferenceStore("JBrickEditor.properties");
-    prefs.addPropertyChangeListener(mainWindow);
-    try {
-      prefs.load();
-    } catch (IOException e) {
-      // Ignore
-    }
-  }
+		// Set up the document
+		setUpDocument();
 
-  /**
-   * Sets up the document
-   */
-  protected void setUpDocument() {
-    // Create the document
-    document = new PersistentDocument();
-    
-    // Create the partition scanner
-    scanner = new JBrickPartitionScanner();
-    
-    // Create the partitioner
-    IDocumentPartitioner partitioner = new DefaultPartitioner(scanner,
-      JBrickPartitionScanner.TYPES);
-    
-    // Connect the partitioner and document
-    document.setDocumentPartitioner(JBRICK_PARTITIONING, partitioner);
-    partitioner.connect(document);
-  }
+		mainWindow = new MainWindow();
+		prefs = new PreferenceStore("JBrickEditor.properties");
+		prefs.addPropertyChangeListener(mainWindow);
+		try {
+			prefs.load();
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
 
-  /**
-   * Runs the application
-   */
-  public void run() {
-    mainWindow.run();
+	/**
+	 * Sets up the document
+	 */
+	protected void setUpDocument() {
+		// Create the document
+		document = new PersistentDocument();
 
-    // Dispose the colors
-    if (colorManager != null) colorManager.dispose();
-  }
+		// Create the partition scanner
+		scanner = new JBrickPartitionScanner();
 
-  /**
-   * Creates a new file
-   */
-  public void newFile() {
-    if (checkOverwrite()) document.clear();
-  }
+		// Create the partitioner
+		IDocumentPartitioner partitioner = new DefaultPartitioner(scanner,
+				JBrickPartitionScanner.TYPES);
 
-  /**
-   * Opens a file
-   * @param fileName the file name
-   */
-  public void openFile(String fileName) {
-    if (checkOverwrite()) {
-      try {
-        document.clear();
-        document.setFileName(fileName);
-        document.open();
-      } catch (IOException e) {
-        showError(e.getMessage());
-      }
-    }
-  }
+		// Connect the partitioner and document
+		document.setDocumentPartitioner(JBRICK_PARTITIONING, partitioner);
+		partitioner.connect(document);
+	}
 
-  /**
-   * Saves the current file
-   */
-  public void saveFile() {
-    String fileName = document.getFileName();
-    if (fileName == null) {
-      SafeSaveDialog dlg = new SafeSaveDialog(mainWindow.getShell());
-      dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-      dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-      fileName = dlg.open();
-    }
-    if (fileName != null) saveFileAs(fileName);
-  }
+	/**
+	 * Runs the application
+	 */
+	public void run() {
+		mainWindow.run();
 
-  /**
-   * Saves the current file using the specified file name
-   * @param fileName the file name
-   */
-  public void saveFileAs(String fileName) {
-    try {
-      document.setFileName(fileName);
-      document.save();
-    } catch (IOException e) {
-      showError("Can't save file " + fileName + "; " + e.getMessage());
-    }
-  }
+		// Dispose the colors
+		if (colorManager != null)
+			colorManager.dispose();
+	}
 
-  /**
-   * Prints the document
-   */
-  public void print() {
-    mainWindow.getViewer().getTextWidget().print();
-  }
+	/**
+	 * Creates a new file
+	 */
+	public void newFile() {
+		if (checkOverwrite())
+			document.clear();
+	}
 
-  /**
-   * Cuts the selection to the clipboard
-   */
-  public void cut() {
-    mainWindow.getViewer().getTextWidget().cut();
-  }
+	/**
+	 * Opens a file
+	 * 
+	 * @param fileName
+	 *            the file name
+	 */
+	public void openFile(String fileName) {
+		if (checkOverwrite()) {
+			try {
+				document.clear();
+				document.setFileName(fileName);
+				document.open();
+			} catch (IOException e) {
+				showError(e.getMessage());
+			}
+		}
+	}
 
-  /**
-   * Copies the selection to the clipboard
-   */
-  public void copy() {
-    mainWindow.getViewer().getTextWidget().copy();
-  }
+	/**
+	 * Saves the current file
+	 */
+	public void saveFile() {
+		String fileName = document.getFileName();
+		if (fileName == null) {
+			SafeSaveDialog dlg = new SafeSaveDialog(mainWindow.getShell());
+			dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
+			dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
+			fileName = dlg.open();
+		}
+		if (fileName != null)
+			saveFileAs(fileName);
+	}
 
-  /**
-   * Pastes the clipboard
-   */
-  public void paste() {
-    mainWindow.getViewer().getTextWidget().paste();
-  }
+	/**
+	 * Saves the current file using the specified file name
+	 * 
+	 * @param fileName
+	 *            the file name
+	 */
+	public void saveFileAs(String fileName) {
+		try {
+			document.setFileName(fileName);
+			document.save();
+		} catch (IOException e) {
+			showError("Can't save file " + fileName + "; " + e.getMessage());
+		}
+	}
 
-  /**
-   * Undoes the last operation
-   */
-  public void undo() {
-    mainWindow.getUndoManager().undo();
-  }
+	/**
+	 * Prints the document
+	 */
+	public void print() {
+		mainWindow.getViewer().getTextWidget().print();
+	}
 
-  /**
-   * Redoes the last operation
-   */
-  public void redo() {
-    mainWindow.getUndoManager().redo();
-  }
+	/**
+	 * Cuts the selection to the clipboard
+	 */
+	public void cut() {
+		mainWindow.getViewer().getTextWidget().cut();
+	}
 
-  /**
-   * Checks the current file for unsaved changes. If it has unsaved changes,
-   * confirms that user wants to overwrite
-   * @return boolean
-   */
-  public boolean checkOverwrite() {
-    boolean proceed = true;
-    if (document.isDirty()) {
-      proceed = MessageDialog.openConfirm(mainWindow.getShell(), "Are you sure?",
-          "You have unsaved changes--are you sure you want to lose them?");
-    }
-    return proceed;
-  }
+	/**
+	 * Copies the selection to the clipboard
+	 */
+	public void copy() {
+		mainWindow.getViewer().getTextWidget().copy();
+	}
 
-  /**
-   * Gets the main window
-   * @return MainWindow
-   */
-  public MainWindow getMainWindow() {
-    return mainWindow;
-  }
+	/**
+	 * Pastes the clipboard
+	 */
+	public void paste() {
+		mainWindow.getViewer().getTextWidget().paste();
+	}
 
-  /**
-   * Gets the document
-   * @return PersistentDocument
-   */
-  public PersistentDocument getDocument() {
-    return document;
-  }
+	/**
+	 * Undoes the last operation
+	 */
+	public void undo() {
+		mainWindow.getUndoManager().undo();
+	}
 
-  /**
-   * Gets the preferences
-   * @return PreferenceStore
-   */
-  public PreferenceStore getPreferences() {
-    return prefs;
-  }
+	/**
+	 * Redoes the last operation
+	 */
+	public void redo() {
+		mainWindow.getUndoManager().redo();
+	}
 
-  /**
-   * Gets the color manager
-   * @return ColorManager
-   */
-  public ColorManager getColorManager() {
-    return colorManager;
-  }
+	/**
+	 * Checks the current file for unsaved changes. If it has unsaved changes,
+	 * confirms that user wants to overwrite
+	 * 
+	 * @return boolean
+	 */
+	public boolean checkOverwrite() {
+		boolean proceed = true;
+		if (document.isDirty()) {
+			proceed = MessageDialog
+					.openConfirm(mainWindow.getShell(), "Are you sure?",
+							"You have unsaved changes--are you sure you want to lose them?");
+		}
+		return proceed;
+	}
 
-  /**
-   * Gets the code scanner
-   * @return JBrickCodeScanner
-   */
-  public JBrickCodeScanner getCodeScanner() {
-    return codeScanner;
-  }
+	/**
+	 * Gets the main window
+	 * 
+	 * @return MainWindow
+	 */
+	public MainWindow getMainWindow() {
+		return mainWindow;
+	}
 
-  /**
-   * Shows an error
-   * @param msg the error
-   */
-  public void showError(String msg) {
-    MessageDialog.openError(mainWindow.getShell(), "Error", msg);
-  }
+	/**
+	 * Gets the document
+	 * 
+	 * @return PersistentDocument
+	 */
+	public PersistentDocument getDocument() {
+		return document;
+	}
 
-  /**
-   * The application entry point
-   * @param args the command line arguments
-   */
-  public static void main(String[] args) {
-    new JBrickEditor().run();
-  }
+	/**
+	 * Gets the preferences
+	 * 
+	 * @return PreferenceStore
+	 */
+	public PreferenceStore getPreferences() {
+		return prefs;
+	}
+
+	/**
+	 * Gets the color manager
+	 * 
+	 * @return ColorManager
+	 */
+	public ColorManager getColorManager() {
+		return colorManager;
+	}
+
+	/**
+	 * Gets the code scanner
+	 * 
+	 * @return JBrickCodeScanner
+	 */
+	public JBrickCodeScanner getCodeScanner() {
+		return codeScanner;
+	}
+
+	/**
+	 * Shows an error
+	 * 
+	 * @param msg
+	 *            the error
+	 */
+	public void showError(String msg) {
+		MessageDialog.openError(mainWindow.getShell(), "Error", msg);
+	}
+
+	/**
+	 * The application entry point
+	 * 
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) {
+		new JBrickEditor().run();
+	}
 }
