@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -29,8 +30,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TreeItem;
 
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
@@ -89,6 +93,10 @@ public class MainWindow extends ApplicationWindow implements
 	private MenuManager menuManager;
 
 	File treeRootFile;
+	
+	CTabFolder tabFolder;
+	
+	ArrayList<SourceViewer> viewersList;
 
 	/**
 	 * MainWindow constructor
@@ -98,6 +106,8 @@ public class MainWindow extends ApplicationWindow implements
 		addMenuBar();
 		addToolBar(SWT.FLAT);
 		addStatusLine();
+		
+		viewersList= new ArrayList<SourceViewer>();
 
 	}
 
@@ -142,6 +152,19 @@ public class MainWindow extends ApplicationWindow implements
 		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
 		tv.setLabelProvider(new FileTreeLabelProvider());
 		tv.setInput("root"); // pass a non-null that will be ignored
+		
+		tv.getTree().addListener(SWT.DefaultSelection, new Listener() {
+		      public void handleEvent(Event e) {
+		        String string = "";
+		        TreeItem[] selection = tv.getTree().getSelection();
+		        for (int i = 0; i < selection.length; i++){
+		          string = selection[i].getText();
+		          System.out.println(string);
+		        }
+		        
+		        System.out.println("DefaultSelection={" + string + "}");
+		      }
+		    });
 
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
@@ -151,7 +174,7 @@ public class MainWindow extends ApplicationWindow implements
 				255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
 
-		CTabFolder tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
+		tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setMinimizeVisible(true);
 		tabFolder.setMaximizeVisible(true);
@@ -387,5 +410,9 @@ public class MainWindow extends ApplicationWindow implements
 		path = dialog.open();
 		}while (path == null);
 		return path;
+	}
+	
+	public void addFolderInNewTab(String path){
+		
 	}
 }
