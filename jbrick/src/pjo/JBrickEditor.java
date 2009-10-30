@@ -1,6 +1,5 @@
 package pjo;
 
-import java.io.File;
 import java.io.IOException;
 
 import model.PersistentDocument;
@@ -13,8 +12,8 @@ import org.eclipse.jface.text.rules.DefaultPartitioner;
 import source.ColorManager;
 import source.JBrickCodeScanner;
 import source.JBrickPartitionScanner;
+import ui.JBrickTabItem;
 import ui.MainWindow;
-import ui.SafeSaveDialog;
 
 /**
  * This class demonstrates TextViewer and Document.
@@ -26,11 +25,11 @@ public class JBrickEditor {
 	// A reference to the current app
 	private static JBrickEditor APP;
 
-	// The current document
+/*	// The current document
 	private PersistentDocument document;
-
+*/
 	// The main window
-	private MainWindow mainWindow;
+	private static MainWindow mainWindow;
 
 	// The stored preferences
 	private PreferenceStore prefs;
@@ -64,8 +63,21 @@ public class JBrickEditor {
 		colorManager = new ColorManager();
 		codeScanner = new JBrickCodeScanner();
 
-		// Set up the document
-		setUpDocument();
+/*<<<<<<< .mine
+    mainWindow = new MainWindow();
+    prefs = new PreferenceStore("JBrickEditor.properties");
+    prefs.addPropertyChangeListener(mainWindow);
+
+    try {
+      prefs.load();
+    } catch (IOException e) {
+      // Ignore
+    }
+  }
+=======
+*/		// Set up the document
+//		setUpDocument();
+/*>>>>>>> .r43*/
 
 		mainWindow = new MainWindow();
 		prefs = new PreferenceStore("JBrickEditor.properties");
@@ -80,7 +92,7 @@ public class JBrickEditor {
 	/**
 	 * Sets up the document
 	 */
-	protected void setUpDocument() {
+/*	protected void setUpDocument(JBrickTabItem tabItem) {
 		// Create the document
 		document = new PersistentDocument();
 
@@ -95,7 +107,7 @@ public class JBrickEditor {
 		document.setDocumentPartitioner(JBRICK_PARTITIONING, partitioner);
 		partitioner.connect(document);
 	}
-
+*/
 	/**
 	 * Runs the application
 	 */
@@ -110,10 +122,10 @@ public class JBrickEditor {
 	/**
 	 * Creates a new file
 	 */
-	public void newFile() {
+/*	public void newFile() {
 		if (checkOverwrite())
 			document.clear();
-	}
+	}*/
 
 	/**
 	 * Opens a file
@@ -121,7 +133,7 @@ public class JBrickEditor {
 	 * @param fileName
 	 *            the file name
 	 */
-	public void openFile(String fileName) {
+/*	public void openFile(String fileName) {
 		if (checkOverwrite()) {
 			try {
 				document.clear();
@@ -132,11 +144,11 @@ public class JBrickEditor {
 			}
 		}
 	}
-
+*/
 	/**
 	 * Saves the current file
 	 */
-	public void saveFile() {
+/*	public void saveFile() {
 		String fileName = document.getFileName();
 		if (fileName == null) {
 			SafeSaveDialog dlg = new SafeSaveDialog(mainWindow.getShell());
@@ -147,14 +159,14 @@ public class JBrickEditor {
 		if (fileName != null)
 			saveFileAs(fileName);
 	}
-
+*/
 	/**
 	 * Saves the current file using the specified file name
 	 * 
 	 * @param fileName
 	 *            the file name
 	 */
-	public void saveFileAs(String fileName) {
+/*	public void saveFileAs(String fileName) {
 		try {
 			document.setFileName(fileName);
 			document.save();
@@ -162,55 +174,55 @@ public class JBrickEditor {
 			showError("Can't save file " + fileName + "; " + e.getMessage());
 		}
 	}
-
+*/
 	/**
 	 * Prints the document
 	 */
 	public void print() {
-		mainWindow.getViewer().getTextWidget().print();
+		mainWindow.getCurrentTabItem().getViewer().getTextWidget().print();
 	}
 
 	/**
 	 * Cuts the selection to the clipboard
 	 */
 	public void cut() {
-		mainWindow.getViewer().getTextWidget().cut();
+		mainWindow.getCurrentTabItem().getViewer().getTextWidget().cut();
 	}
 
 	/**
 	 * Copies the selection to the clipboard
 	 */
 	public void copy() {
-		mainWindow.getViewer().getTextWidget().copy();
+		mainWindow.getCurrentTabItem().getViewer().getTextWidget().copy();
 	}
 
 	/**
 	 * Pastes the clipboard
 	 */
 	public void paste() {
-		mainWindow.getViewer().getTextWidget().paste();
+		mainWindow.getCurrentTabItem().getViewer().getTextWidget().paste();
 	}
 
 	/**
 	 * Undoes the last operation
 	 */
-	public void undo() {
-		mainWindow.getUndoManager().undo();
+	public void undo(JBrickTabItem tabItem) {
+		tabItem.getUndoManager().undo();
 	}
 
 	/**
 	 * Redoes the last operation
 	 */
-	public void redo() {
-		mainWindow.getUndoManager().redo();
+	public void redo(JBrickTabItem tabItem) {
+		tabItem.getUndoManager().redo();
 	}
 
-	/**
+/*	*//**
 	 * Checks the current file for unsaved changes. If it has unsaved changes,
 	 * confirms that user wants to overwrite
 	 * 
 	 * @return boolean
-	 */
+	 *//*
 	public boolean checkOverwrite() {
 		boolean proceed = true;
 		if (document.isDirty()) {
@@ -220,24 +232,28 @@ public class JBrickEditor {
 		}
 		return proceed;
 	}
-
+*/
 	/**
 	 * Gets the main window
 	 * 
 	 * @return MainWindow
 	 */
-	public MainWindow getMainWindow() {
+	public static MainWindow getMainWindow() {
 		return mainWindow;
 	}
 
+/*	public static MainWindow getCurrentTabItem() {
+		return CTabItem;
+	}
+*/	
 	/**
 	 * Gets the document
 	 * 
 	 * @return PersistentDocument
 	 */
-	public PersistentDocument getDocument() {
+/*	public PersistentDocument getDocument() {
 		return document;
-	}
+	}*/
 
 	/**
 	 * Gets the preferences

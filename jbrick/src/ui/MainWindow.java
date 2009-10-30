@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.DefaultUndoManager;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.IUndoManager;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -32,13 +31,10 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.TreeItem;
 
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
-import source.JBrickEditorSourceViewerConfiguration;
 import treeProviders.FileTreeContentProvider;
 import treeProviders.FileTreeLabelProvider;
 import actions.AboutAction;
@@ -56,15 +52,16 @@ import actions.RedoAction;
 import actions.SaveAction;
 import actions.SaveAsAction;
 import actions.UndoAction;
+import filters.FolderFilter;
 
 /**
  * This class provides the main window of JBrickEditor
  */
 public class MainWindow extends ApplicationWindow implements
 		IPropertyChangeListener {
-	// The viewer
-	private SourceViewer viewer;
-
+	/*
+	 * // The viewer private SourceViewer viewer;
+	 */
 	// The actions
 	private AboutAction aboutAction = new AboutAction();
 	private CopyAction copyAction = new CopyAction();
@@ -86,16 +83,16 @@ public class MainWindow extends ApplicationWindow implements
 	// The font
 	private Font font;
 
-	// The undo manager
-	private IUndoManager undoManager;
-
+	/*
+	 * // The undo manager private IUndoManager undoManager;
+	 */
 	// Right Click Menu
 	private MenuManager menuManager;
 
 	File treeRootFile;
-	
+
 	CTabFolder tabFolder;
-	
+
 	ArrayList<SourceViewer> viewersList;
 
 	/**
@@ -106,8 +103,8 @@ public class MainWindow extends ApplicationWindow implements
 		addMenuBar();
 		addToolBar(SWT.FLAT);
 		addStatusLine();
-		
-		viewersList= new ArrayList<SourceViewer>();
+
+		viewersList = new ArrayList<SourceViewer>();
 
 	}
 
@@ -118,7 +115,9 @@ public class MainWindow extends ApplicationWindow implements
 
 		setBlockOnOpen(true);
 		open();
+		System.out.println("7");
 		Display.getCurrent().dispose();
+		System.out.println("8");
 	}
 
 	/**
@@ -146,25 +145,45 @@ public class MainWindow extends ApplicationWindow implements
 		// create file tree viewer
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 
+		System.out.println("1");
 		// Create the tree viewer to display the file tree
 		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
 		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
 		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
 		tv.setLabelProvider(new FileTreeLabelProvider());
+		tv.addFilter(new FolderFilter());
+
+		//tv.addFilter(new FileExtensionFilter());
 		tv.setInput("root"); // pass a non-null that will be ignored
-		
+
 		tv.getTree().addListener(SWT.DefaultSelection, new Listener() {
-		      public void handleEvent(Event e) {
-		        String string = "";
-		        TreeItem[] selection = tv.getTree().getSelection();
-		        for (int i = 0; i < selection.length; i++){
-		          string = selection[i].getText();
-		          System.out.println(string);
-		        }
-		        
-		        System.out.println("DefaultSelection={" + string + "}");
-		      }
-		    });
+			public void handleEvent(Event e) {
+				String string = "";
+				String parentTxt = "";
+				String rootName =  treeRootFile.getName();
+				//tv.getTree().getse
+		
+				
+				IStructuredSelection selection = (IStructuredSelection)tv.getSelection();
+		        File file = (File)selection.getFirstElement();
+		        JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, file);
+		        tabFolder.setSelection(tabItem);
+		        /*
+				//TreeItem[] selection = tv.getTree().getSelection();
+				for (int i = 0; i < selection.length; i++) {
+					
+					//while()
+					//string = selection[i]. getText();
+					parentTxt = selection[i].getParentItem().getText();
+					
+					System.out.println(parentTxt);
+					new JBrickTabItem(tabFolder, SWT.NULL, string);
+				}
+*/
+				System.out.println("DefaultSelection={" + file.getAbsolutePath() + "}");
+			}
+		});
+		System.out.println("2");
 
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
@@ -173,7 +192,7 @@ public class MainWindow extends ApplicationWindow implements
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
 				255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
-
+		System.out.println("3");
 		tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setMinimizeVisible(true);
@@ -190,55 +209,24 @@ public class MainWindow extends ApplicationWindow implements
 		tabFolder.setSelectionForeground(titleForeColor);
 		tabFolder.setSelectionBackground(new Color[] { titleBackColor1,
 				titleBackColor2 }, new int[] { 100 }, true);
-
+		System.out.println("4");
 		// TODO: change tabs names and content
 		// tab1
-		CTabItem tabItem = new CTabItem(tabFolder, SWT.NULL);
-		tabItem.setText("New File");
-
-		viewer = new SourceViewer(tabFolder, ruler, SWT.V_SCROLL | SWT.H_SCROLL);
-
-		tabItem.setControl(viewer.getControl());
-
-		// Configure it and set the document
-		viewer.configure(new JBrickEditorSourceViewerConfiguration());
-		viewer.setDocument(JBrickEditor.getApp().getDocument());
-
-		// viewer.GAP_SIZE = 1 ;
-
-		// Menu manager initialize
-		menuManager = new MenuManager();
-		menuManager.add(undoAction);
-		menuManager.add(redoAction);
-		menuManager.add(cutAction);
-		menuManager.add(copyAction);
-		menuManager.add(pasteAction);
-		Menu menu = menuManager.createContextMenu(this.viewer.getTextWidget());
-		// Right Click Attach
-		this.viewer.getTextWidget().setMenu(menu);
-
-		// Set any preferences
-		loadPreferences();
-
-		// Create the undo manager
-		undoManager = new DefaultUndoManager(100);
-		undoManager.connect(viewer);
-
-		viewer.getTextWidget().setFocus();
-
-		// Return the StyledText
-		return viewer.getTextWidget();
+		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.NULL, null);
+		return parent;
+	
 	}
 
-	protected void loadPreferences() {
+	protected void loadPreferences(JBrickTabItem tabItem) {
 		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
-		setWrap(ps.getBoolean(FileExtensionConstants.WRAP));
+		// setWrap(ps.getBoolean(FileExtensionConstants.WRAP));
 
 		String fontProp = ps.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) {
 			FontData[] fd = new FontData[1];
 			fd[0] = new FontData(fontProp);
-			setFont(fd);
+			// setFont(fd, tabItem);
+			this.getCurrentTabItem().setFont(fd);
 		}
 	}
 
@@ -247,11 +235,15 @@ public class MainWindow extends ApplicationWindow implements
 	 * 
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (FileExtensionConstants.WRAP.equals(event.getProperty()))
-			setWrap(((Boolean) event.getNewValue()).booleanValue());
-		else if (FileExtensionConstants.FONT.equals(event.getProperty()))
-			setFont((FontData[]) event.getNewValue());
-	}
+		if (FileExtensionConstants.FONT.equals(event.getProperty()))
+			this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
+
+		/*
+		 * if (FileExtensionConstants.WRAP.equals(event.getProperty()))
+		 * setWrap(((Boolean) event.getNewValue()).booleanValue()); else if
+		 * (FileExtensionConstants.FONT.equals(event.getProperty()))
+		 * this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
+		 */}
 
 	/**
 	 * Creates the menu manager
@@ -338,27 +330,25 @@ public class MainWindow extends ApplicationWindow implements
 	 * 
 	 * @return ITextViewer
 	 */
-	public ITextViewer getViewer() {
-		return viewer;
-	}
+	/*
+	 * public ITextViewer getViewer() { return viewer; }
+	 */
 
 	/**
 	 * Sets the font
 	 * 
 	 * @param fontData
 	 */
-	public void setFont(FontData[] fontData) {
-		// Create the font
-		Font temp = new Font(getShell().getDisplay(), fontData);
-
-		// If creation succeeded, dispose the old font
-		if (font != null)
-			font.dispose();
-
-		// Use the new font
-		font = temp;
-		viewer.getTextWidget().setFont(font);
-	}
+	/*
+	 * public void setFont(FontData[] fontData, JBrickTabItem tabItem) { //
+	 * Create the font Font temp = new Font(getShell().getDisplay(), fontData);
+	 * 
+	 * // If creation succeeded, dispose the old font if (font != null)
+	 * font.dispose();
+	 * 
+	 * // Use the new font font = temp;
+	 * tabItem.getViewer().getTextWidget().setFont(font); }
+	 */
 
 	/**
 	 * Turns on/off word wrap
@@ -366,25 +356,25 @@ public class MainWindow extends ApplicationWindow implements
 	 * @param wrap
 	 *            true to wrap
 	 */
-	public void setWrap(boolean wrap) {
-		viewer.getTextWidget().setWordWrap(wrap);
-	}
+	/*
+	 * public void setWrap(boolean wrap) {
+	 * viewer.getTextWidget().setWordWrap(wrap); }
+	 */
 
 	/**
 	 * Gets the undo manager
 	 * 
 	 * @return IUndoManager
 	 */
-	public IUndoManager getUndoManager() {
-		return undoManager;
-	}
-
+	/*
+	 * public IUndoManager getUndoManager() { return undoManager; }
+	 */
 	/**
 	 * Closes the main window
 	 */
 	public boolean close() {
 		boolean close = false;
-		if (JBrickEditor.getApp().checkOverwrite()) {
+		if (checkOverwrite()) {
 			close = super.close();
 			if (close) {
 				if (font != null)
@@ -402,17 +392,63 @@ public class MainWindow extends ApplicationWindow implements
 		this.treeRootFile = treeRootFile;
 	}
 
-	public String getWorkspacePath(Composite parent){
+	public String getWorkspacePath(Composite parent) {
 		String path;
-		do{
-		DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
-		dialog.setText("Workspace Selection");
-		path = dialog.open();
-		}while (path == null);
+		do {
+			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
+			dialog.setText("Workspace Selection");
+			path = dialog.open();
+		} while (path == null);
 		return path;
 	}
-	
-	public void addFolderInNewTab(String path){
-		
+
+	public void addFolderInNewTab(String path) {
+
 	}
+
+	public void openFile(String fileName) {
+		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.NULL,
+				new File(fileName));
+	}
+
+	public void openNewFile() {
+		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.NULL, null);
+		tabFolder.setSelection(newTabItem);
+	}
+
+	public CTabFolder getTabFolder() {
+		return tabFolder;
+	}
+
+	public JBrickTabItem getCurrentTabItem() {
+		CTabItem currentTabItem;
+		int currentIndex = tabFolder.getSelectionIndex();
+		currentTabItem = tabFolder.getItem(currentIndex);
+		return (JBrickTabItem) currentTabItem;
+	}
+
+	public void setTabFolder(CTabFolder tabFolder) {
+		this.tabFolder = tabFolder;
+	}
+
+	/**
+	 * Checks the current file for unsaved changes. If it has unsaved changes,
+	 * confirms that user wants to overwrite
+	 * 
+	 * @return boolean
+	 */
+	public boolean checkOverwrite() {
+		boolean proceed = true;
+
+		for (CTabItem tab : tabFolder.getItems()) {
+			JBrickTabItem tabItem = (JBrickTabItem) tab;
+			if (tabItem.getDocument().isDirty()) {
+				proceed = MessageDialog
+						.openConfirm(this.getShell(), "Are you sure?",
+								"You have unsaved changes--are you sure you want to lose them?");
+			}
+		}
+		return proceed;
+	}
+
 }

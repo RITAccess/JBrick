@@ -1,5 +1,10 @@
 package ui;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import model.PersistentDocument;
 
 import org.eclipse.jface.action.MenuManager;
@@ -13,8 +18,6 @@ import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolderAdapter;
-import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -41,6 +44,8 @@ public class JBrickTabItem extends CTabItem {
 	private SourceViewer viewer;
 	// The current document
 	private PersistentDocument document;
+	
+	File file;
 
 	
 	/**
@@ -49,14 +54,17 @@ public class JBrickTabItem extends CTabItem {
  * @param style
  * @param fileName
  */
-	public JBrickTabItem(CTabFolder parent, int style, String fileName) {
+	//public JBrickTabItem(CTabFolder parent, int style, String fileName) {
+	public JBrickTabItem(CTabFolder parent, int style, File file) {
 		super(parent, style);
-		if (fileName == null){
-			setText("New File") ;			
+		/*if (fileName == null){
+			setText("New File") ;	
+			
 		}
 		else{
 			setText(fileName) ;			
-		}
+		}*/
+		this.file = file;
 		
 		undoManager = new DefaultUndoManager(100);
 		undoManager.connect(viewer);
@@ -67,7 +75,7 @@ public class JBrickTabItem extends CTabItem {
 		
 		System.out.println("1.1");
 
-		setUpDocument();
+		setUpDocument(file);
 		System.out.println("1.2");
 
 		ruler = new CompositeRuler(10);
@@ -146,9 +154,17 @@ public class JBrickTabItem extends CTabItem {
 		return document;
 	}
 	
-	protected void setUpDocument() {
+	protected void setUpDocument(File file) {
+		try{
 		// Create the document
 		document = new PersistentDocument();
+		if(file != null){
+			setText(file.getName());
+			document.setFileName(file.getPath());
+			document.open();
+		}else{
+			setText("New File") ;
+		}
 
 		// Create the partition scanner
 		scanner = new JBrickPartitionScanner();
@@ -160,6 +176,10 @@ public class JBrickTabItem extends CTabItem {
 		// Connect the partitioner and document
 		document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING, partitioner);
 		partitioner.connect(document);
+		}
+		catch(IOException e){
+			JOptionPane.showMessageDialog(null, e.getMessage(), ":)", 1);
+		}
 	}
 	
 	protected MenuManager createRightClickMenuManager(Composite parent) {
