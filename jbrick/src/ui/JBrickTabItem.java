@@ -18,6 +18,8 @@ import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -106,17 +108,6 @@ public class JBrickTabItem extends CTabItem {
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
 
 //		viewer.getTextWidget().setFocus();
-
-		// TODO Add close event for tab close
-/*		this.addCTabFolderListener(new CTabFolderAdapter(){
-            public void itemClosed(CTabFolderEvent event) {
-                    System.out.println("itemClosed() is invoked.");
-                    System.out.println("event: " + event);
-                    if (event.item.equals(uncloseableItem)){
-                            event.doit = false;
-                    }
-            }*/
-//    });
 
 		System.out.println("1.6");
 

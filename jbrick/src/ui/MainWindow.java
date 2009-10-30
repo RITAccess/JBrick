@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
@@ -93,8 +95,8 @@ public class MainWindow extends ApplicationWindow implements
 
 	CTabFolder tabFolder;
 
-	ArrayList<SourceViewer> viewersList;
-
+/*	ArrayList<SourceViewer> viewersList;
+*/
 	/**
 	 * MainWindow constructor
 	 */
@@ -104,8 +106,8 @@ public class MainWindow extends ApplicationWindow implements
 		addToolBar(SWT.FLAT);
 		addStatusLine();
 
-		viewersList = new ArrayList<SourceViewer>();
-
+/*		viewersList = new ArrayList<SourceViewer>();
+*/
 	}
 
 	/**
@@ -212,11 +214,32 @@ public class MainWindow extends ApplicationWindow implements
 		System.out.println("4");
 		// TODO: change tabs names and content
 		// tab1
-		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.NULL, null);
+		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
+		tabFolder.setSelection(tabItem);
+
+		// Add close event for tab close
+		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+		      public void close(CTabFolderEvent event) {
+				if (checkOverwrite()) {
+				}
+				else{
+			          event.doit = false;
+				}
+		      }
+		});
+
+		
+		
 		return parent;
 	
 	}
+    public void TabItemClosed(CTabFolderEvent event) {
+        if (event.item.equals(this)) {
+          event.doit = false;
+        }
+    }
 
+	
 	protected void loadPreferences(JBrickTabItem tabItem) {
 		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
 		// setWrap(ps.getBoolean(FileExtensionConstants.WRAP));
@@ -407,12 +430,12 @@ public class MainWindow extends ApplicationWindow implements
 	}
 
 	public void openFile(String fileName) {
-		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.NULL,
+		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
 				new File(fileName));
 	}
 
 	public void openNewFile() {
-		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.NULL, null);
+		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
 		tabFolder.setSelection(newTabItem);
 	}
 
