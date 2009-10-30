@@ -43,6 +43,7 @@ import actions.AboutAction;
 import actions.CompileAction;
 import actions.CopyAction;
 import actions.CutAction;
+import actions.DownloadAction;
 import actions.ExitAction;
 import actions.FindAction;
 import actions.NewAction;
@@ -79,6 +80,7 @@ public class MainWindow extends ApplicationWindow implements
 	private SaveAction saveAction = new SaveAction();
 	private SaveAsAction saveAsAction = new SaveAsAction();
 	private UndoAction undoAction = new UndoAction();
+	private DownloadAction downloadAction = new DownloadAction();
 
 	private CompileAction compileAction = new CompileAction();
 
@@ -278,12 +280,17 @@ public class MainWindow extends ApplicationWindow implements
 		MenuManager fileMenu = new MenuManager("&File");
 		MenuManager editMenu = new MenuManager("&Edit");
 		MenuManager compileMenu = new MenuManager("&Compile");
+		MenuManager downloadMenu = new MenuManager("&Download");
+		
 		MenuManager helpMenu = new MenuManager("&Help");
 
 		mm.add(fileMenu);
 		mm.add(editMenu);
 		mm.add(compileMenu);
 		mm.add(helpMenu);
+		mm.add(downloadMenu);
+		
+		
 
 		fileMenu.add(newAction);
 		fileMenu.add(openAction);
@@ -342,6 +349,10 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(prefsAction);
 		tm.add(new Separator());
 		tm.add(compileAction);
+		
+		tm.add(new Separator());
+		tm.add(downloadAction);
+		
 		tm.add(new Separator());
 		tm.add(aboutAction);
 
