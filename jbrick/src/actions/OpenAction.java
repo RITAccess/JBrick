@@ -33,7 +33,7 @@ public class OpenAction extends Action {
     dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
     String fileName = dlg.open();
     if (fileName != null) {
-      JBrickEditor.getApp().openFile(fileName);
+      JBrickEditor.getMainWindow().openFile(fileName);
     }
   }
 }

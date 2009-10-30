@@ -28,8 +28,8 @@ public class CompileAction extends Action {
   public void run() {
 	  
     JCompiler c = new JCompiler();
-    System.out.println(JBrickEditor.getApp().getDocument().getFileName());
-    int exitstatus = c.compile(JBrickEditor.getApp().getDocument().getFileName());
+    System.out.println(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+    int exitstatus = c.compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
     
     if (exitstatus == JCompiler.EXITSTATUS_OK){
     	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),

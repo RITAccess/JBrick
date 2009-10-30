@@ -4,6 +4,7 @@ package actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import pjo.ActionControlClass;
 import pjo.JBrickEditor;
 
 
@@ -24,6 +25,6 @@ public class SaveAction extends Action {
    * Saves the file
    */
   public void run() {
-    JBrickEditor.getApp().saveFile();
+	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
   }
 }

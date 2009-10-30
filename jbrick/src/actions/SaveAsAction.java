@@ -4,6 +4,7 @@ package actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import pjo.ActionControlClass;
 import pjo.FileExtensionConstants;
 import pjo.JBrickEditor;
 import ui.SafeSaveDialog;
@@ -31,7 +32,7 @@ public class SaveAsAction extends Action {
     dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
     String fileName = dlg.open();
     if (fileName != null) {
-      JBrickEditor.getApp().saveFileAs(fileName);
+	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
     }
   }
 }

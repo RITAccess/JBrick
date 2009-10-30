@@ -25,8 +25,8 @@ public class FindAction extends Action {
    */
   public void run() {
     FindReplaceDialog dlg = new FindReplaceDialog(JBrickEditor.getApp()
-        .getMainWindow().getShell(), JBrickEditor.getApp().getDocument(),
-        JBrickEditor.getApp().getMainWindow().getViewer());
+        .getMainWindow().getShell(), JBrickEditor.getMainWindow().getCurrentTabItem().getDocument(),
+        JBrickEditor.getApp().getMainWindow().getCurrentTabItem().getViewer());
     dlg.open();
   }
 }
