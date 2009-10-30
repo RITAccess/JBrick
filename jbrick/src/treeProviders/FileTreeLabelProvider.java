@@ -47,8 +47,8 @@ public class FileTreeLabelProvider implements ILabelProvider {
 
     // Create the images
     try {
-      fileIcon = new Image(null, new FileInputStream("src/images/file.png"));
-      dirIcon = new Image(null, new FileInputStream("src/images/folder.png"));
+      fileIcon = new Image(null, new FileInputStream("src/images/accessories-text-editor.png"));
+      dirIcon = new Image(null, new FileInputStream("src/images/package.png"));
     } catch (FileNotFoundException e) {
       // Swallow it; we'll do without images
     }
