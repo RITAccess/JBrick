@@ -6,10 +6,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.program.Program;
 
 /**
  * This class provides the labels for the file tree
@@ -20,12 +25,16 @@ public class FileTreeLabelProvider implements ILabelProvider {
   private List listeners;
 
   // Images for tree nodes
-  private Image file;
+  private Image fileIcon;
 
-  private Image dir;
+  private Image dirIcon;
+  
+  ImageRegistry imageRegistry;
 
   // Label provider state: preserve case of file names/directories
   boolean preserveCase;
+  
+  
 
   /**
    * Constructs a FileTreeLabelProvider
@@ -33,15 +42,20 @@ public class FileTreeLabelProvider implements ILabelProvider {
   public FileTreeLabelProvider() {
     // Create the list to hold the listeners
     listeners = new ArrayList();
+    
+   
 
     // Create the images
     try {
-      file = new Image(null, new FileInputStream("images/file.gif"));
-      dir = new Image(null, new FileInputStream("images/directory.gif"));
+      fileIcon = new Image(null, new FileInputStream("src/images/file.png"));
+      dirIcon = new Image(null, new FileInputStream("src/images/folder.png"));
     } catch (FileNotFoundException e) {
       // Swallow it; we'll do without images
     }
   }
+  
+  
+    
 
   /**
    * Sets the preserve case attribute
@@ -69,11 +83,14 @@ public class FileTreeLabelProvider implements ILabelProvider {
    *            the node
    * @return Image
    */
-  public Image getImage(Object arg0) {
+ /* public Image getImage(Object arg0) {
     // If the node represents a directory, return the directory image.
     // Otherwise, return the file image.
-    return ((File) arg0).isDirectory() ? dir : file;
-  }
+   // return ((File) arg0).isDirectory() ? dir : file;
+  }*/
+  public Image getImage(Object element) {
+      return getIcon((File)element);
+    }
 
   /**
    * Gets the text to display for a node in the tree
@@ -111,10 +128,10 @@ public class FileTreeLabelProvider implements ILabelProvider {
    */
   public void dispose() {
     // Dispose the images
-    if (dir != null)
-      dir.dispose();
-    if (file != null)
-      file.dispose();
+    if (dirIcon != null)
+      dirIcon.dispose();
+    if (fileIcon != null)
+      fileIcon.dispose();
   }
 
   /**
@@ -140,6 +157,37 @@ public class FileTreeLabelProvider implements ILabelProvider {
   public void removeListener(ILabelProviderListener arg0) {
     listeners.remove(arg0);
   }
+  
+  private Image getIcon(File file) {
+	    if (file.isDirectory())
+	      return dirIcon;
+
+	    int lastDotPos = file.getName().indexOf('.');
+	    if (lastDotPos == -1)
+	      return fileIcon;
+
+	    Image image = getIcon(file.getName().substring(lastDotPos + 1));
+	    return image == null ? fileIcon : image;
+	  }
+  
+  private Image getIcon(String extension) {
+	    if (imageRegistry == null)
+	      imageRegistry = new ImageRegistry();
+	    Image image = imageRegistry.get(extension);
+	    if (image != null)
+	      return image;
+
+	    Program program = Program.findProgram(extension);
+	    ImageData imageData = (program == null ? null : program.getImageData());
+	    if (imageData != null) {
+	      image = new Image(null, imageData);
+	      imageRegistry.put(extension, image);
+	    } else {
+	      image = fileIcon;
+	    }
+
+	    return image;
+	  }
 }
 
 
