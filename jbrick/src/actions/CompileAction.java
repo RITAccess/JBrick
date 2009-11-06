@@ -29,15 +29,15 @@ public class CompileAction extends Action {
 	  
     JCompiler c = new JCompiler();
     System.out.println(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
-    int exitstatus = c.compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+    ExitStatus exitstatus = c.compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
     
-    if (exitstatus == JCompiler.EXITSTATUS_OK){
+    if (exitstatus == ExitStatus.Ok){
     	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),
-    	        "Compile", "Compiling was a success!!");
+    	        "Compile", c.getMessage());
     }
-    else if (exitstatus==JCompiler.EXITSTATUS_ERROR){
+    else if (exitstatus==ExitStatus.Error){
     	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),
-    	        "Compile", "Compiling failed: \n"+c.getErrorMessage());
+    	        "Compile", c.getErrorMessage());
     }
   }
 }
