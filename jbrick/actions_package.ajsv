@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.6.0.v20091015-0609">
+        <class className="actions.SaveAsAction" project="jbrick" xLocation="0" yLocation="0"/>
+        <class className="actions.CopyAction" project="jbrick" xLocation="48" yLocation="110"/>
+        <class className="actions.OpenAction" project="jbrick" xLocation="68" yLocation="130"/>
+        <class className="actions.UndoAction" project="jbrick" xLocation="88" yLocation="150"/>
+        <class className="actions.PrintAction" project="jbrick" xLocation="-102" yLocation="-54"/>
+        <class className="actions.AboutAction" project="jbrick" xLocation="-82" yLocation="-34"/>
+        <class className="actions.CompileAction" project="jbrick" xLocation="230" yLocation="228"/>
+        <class className="actions.PreferencesAction" project="jbrick" xLocation="250" yLocation="248"/>
+        <class className="actions.ExitAction" project="jbrick" xLocation="270" yLocation="268"/>
+        <class className="actions.RedoAction" project="jbrick" xLocation="290" yLocation="288"/>
+        <class className="actions.SaveAction" project="jbrick" xLocation="279" yLocation="7"/>
+        <class className="actions.CutAction" project="jbrick" xLocation="299" yLocation="27"/>
+        <class className="actions.DownloadAction" project="jbrick" xLocation="319" yLocation="47"/>
+        <class className="actions.FindAction" project="jbrick" xLocation="-48" yLocation="196"/>
+        <class className="actions.NewAction" project="jbrick" xLocation="302" yLocation="390"/>
+        <class className="actions.PasteAction" project="jbrick" xLocation="-22" yLocation="404"/>
+    </diagram>
+</ajsv>
