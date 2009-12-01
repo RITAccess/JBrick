@@ -48,7 +48,7 @@ public class JCompiler extends ProcessRunner{
 //				System.out.println(sample);
 //				pb = new ProcessBuilder("\"C:/Program Files/BricxCC/nbc.exe\" -S usb -d c:/Users/Spencer/sample.nxc");
 			
-			return run(command,"Compiling was a success!");
+			return run(command,"Downloading was a success!","Download Error!");
 		}
 		
 		errMsg="Your not in Windows!";

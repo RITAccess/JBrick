@@ -11,8 +11,8 @@ import java.util.List;
 
 
 public class Communication extends ProcessRunner {
-	public static final int EXITSTATUS_OK = 0;
-	public static final int EXITSTATUS_ERROR = 1;
+//	public static final int EXITSTATUS_OK = 0;
+//	public static final int EXITSTATUS_ERROR = 1;
 	
 	private String errMsg;
 	
@@ -50,10 +50,8 @@ public class Communication extends ProcessRunner {
 //				System.out.println(sample);
 //				pb = new ProcessBuilder("\"C:/Program Files/BricxCC/nbc.exe\" -S usb -d c:/Users/Spencer/sample.nxc");
 			
-			return run(command,"Downloading was a success!");
+			return run(command,"Downloading was a success!","Communication Error");
 			
-			
-	
 			
 		}
 	

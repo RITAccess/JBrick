@@ -13,7 +13,10 @@ public class ProcessRunner {
 	private String errMsg;
 	private String okMsg;
 	
-	public ExitStatus run(List<String> command,String msg){
+	public ExitStatus run(List<String> command,String okMsg, String errMsg){
+		this.okMsg = okMsg;
+		this.errMsg = this.errMsg+="\n"+errMsg;
+		
 		try{
 			Process p;
 			ProcessBuilder pb = new ProcessBuilder(command);
@@ -34,13 +37,14 @@ public class ProcessRunner {
 	
 			String error;
 			String nonerror;
+			String errout="";
 	
 			while((error=ebufferedreader.readLine()) != null){
 				
 				if (error.contains("# Error")){
 					String line2=ebufferedreader.readLine();
-					errMsg+= line2.substring(line2.indexOf("line"));
-					errMsg+= " "+error.substring(error.indexOf("Error:")) + "\n";
+					errout+= line2.substring(line2.indexOf("line"));
+					errout+= " "+error.substring(error.indexOf("Error:")) + "\n";
 				}
 			}
 			
@@ -53,11 +57,15 @@ public class ProcessRunner {
 				
 				if (p.waitFor() == 1){
 	//				System.err.println("exit value = "+p.exitValue());
+					this.errMsg += errout;
+					System.out.println("lksdjfld");
 					return ExitStatus.Error;
+					
 				}
 				else{
 	//				System.out.println("no errors");
 					return ExitStatus.Ok;
+					
 				}
 				
 			}
@@ -85,6 +93,6 @@ public class ProcessRunner {
 	}
 	
 	public String getMessage(){
-		return errMsg;
+		return okMsg;
 	}
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.6.0.v20091015-0609">
+        <class className="com.jbricx.pjo.FileExtensionConstants" project="jbrick" xLocation="0" yLocation="0"/>
+        <class className="com.jbricx.pjo.JBrickEditor" project="jbrick" xLocation="20" yLocation="20"/>
+        <class className="com.jbricx.pjo.ActionControlClass" project="jbrick" xLocation="40" yLocation="40"/>
+    </diagram>
+</ajsv>
