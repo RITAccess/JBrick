@@ -14,4 +14,5 @@ public class FileExtensionConstants {
 	// Preference names
 	public static final String WRAP = "wrap";
 	public static final String FONT = "font";
+	public static final String WRKSPC = "workspace";
 }

@@ -2,6 +2,7 @@ package com.jbricx.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FontFieldEditor;
 
 import com.jbricx.pjo.FileExtensionConstants;
@@ -14,6 +15,8 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 
 	private FontFieldEditor fontFieldEditor;
 	private BooleanFieldEditor wrapFieldEditor;
+	private DirectoryFieldEditor workspaceFieldEditor;
+	
 
 	/**
 	 * TextPreferencePage constructor
@@ -35,5 +38,11 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 		wrapFieldEditor = new BooleanFieldEditor(FileExtensionConstants.WRAP, "Word Wrap",
 				getFieldEditorParent());
 		addField(wrapFieldEditor);
+		
+		// Workspace Directory
+		workspaceFieldEditor = new DirectoryFieldEditor(FileExtensionConstants.WRKSPC , "Workspace Directory",
+				getFieldEditorParent());
+		addField(workspaceFieldEditor);
+		
 	}
 }

@@ -1,6 +1,7 @@
 package com.jbricx.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.jface.action.MenuManager;
@@ -8,6 +9,9 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -54,6 +58,7 @@ import com.jbricx.actions.UndoAction;
 import com.jbricx.filters.FolderFilter;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.treeProviders.FileTreeContentProvider;
 import com.jbricx.treeProviders.FileTreeLabelProvider;
 
@@ -427,14 +432,35 @@ public class MainWindow extends ApplicationWindow implements
 		this.treeRootFile = treeRootFile;
 	}
 
+	
+	//Going to modify this to request preferences
 	public String getWorkspacePath(Composite parent) {
-		String path;
-		do {
-			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
-			dialog.setText("Workspace Selection");
-			path = dialog.open();
-		} while (path == null);
-		return path;
+		 // Get the preference store
+		 PreferenceManager mgr = new PreferenceManager();
+		 mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
+		 PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		 String workspace = ps.getString(FileExtensionConstants.WRKSPC);
+		 
+		 //Check if directory exists
+		 File file=new File(workspace);
+		 boolean exists = file.exists();
+		 
+		 if(workspace.equals("") || !exists){
+			String path;
+			do {
+				DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
+				dialog.setText("Workspace Selection");
+				path = dialog.open();
+			} while (path == null);
+			ps.putValue(FileExtensionConstants.WRKSPC, path);
+			try {
+				ps.save();
+			} catch (IOException e) {
+				System.out.println("Error Saving Preferences: " + e.getMessage());
+			}
+			workspace = path;
+		}
+		return workspace;
 	}
 
 	public void addFolderInNewTab(String path) {
