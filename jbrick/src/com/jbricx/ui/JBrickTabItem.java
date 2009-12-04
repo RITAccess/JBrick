@@ -93,6 +93,7 @@ public class JBrickTabItem extends CTabItem {
 		setControl(viewer.getControl());
 		viewer.configure(new JBrickEditorSourceViewerConfiguration());
 		viewer.setDocument(document);
+		
 
 		
 		System.out.println("1.4");

@@ -236,7 +236,7 @@ public class MainWindow extends ApplicationWindow implements
 		      }
 		});
 
-		
+		getMenuBarManager().updateAll(true);
 		
 		return parent;
 	
