@@ -18,18 +18,24 @@ public class SaveAction extends Action {
    * SaveAction constructor
    */
   public SaveAction() {
-    super("&Save", ImageDescriptor.createFromFile(SaveAction.class,
+    super("&Save@Ctrl+s", ImageDescriptor.createFromFile(SaveAction.class,
         "/images/document-save.png"));
     
     setToolTipText("Save");
-    setAccelerator(SWT.CTRL + 'S');
+    //setAccelerator(SWT.CTRL + 's');
+    
+    
+    
+    System.out.println("accelerator is: "+ convertAccelerator(getAccelerator())  );
   }
 
   /**
    * Saves the file
    */
   public void run() {
-	  System.out.println("Saving File . . .");
+	  JBrickEditor.getMainWindow().setStatus("Saving File . . .");
 	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
+	  JBrickEditor.getMainWindow().setStatus("Saving File . . .");
+	  
   }
 }
