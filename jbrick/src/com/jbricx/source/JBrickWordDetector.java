@@ -16,7 +16,14 @@ public class JBrickWordDetector implements IWordDetector {
 			if (c == ((String) SyntaxKeyWords.getKeyWords().get(i)).charAt(0)) {
 				return true;
 			}
+			
 		}
+		for (int i = 0; i < SyntaxConstants.getKeyWords().size(); i++) {
+			if (c ==((String) SyntaxConstants.getKeyWords().get(i)).charAt(0)) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
@@ -26,8 +33,14 @@ public class JBrickWordDetector implements IWordDetector {
 	 * @return boolean
 	 */
 	public boolean isWordPart(char c) {
+		
 		for (int i = 0; i < SyntaxKeyWords.getKeyWords().size(); i++) {
 			if (((String) SyntaxKeyWords.getKeyWords().get(i)).indexOf(c) != -1) {
+				return true;
+			}
+		}
+		for (int i = 0; i < SyntaxConstants.getKeyWords().size(); i++) {
+			if (((String) SyntaxConstants.getKeyWords().get(i)).indexOf(c) != -1) {
 				return true;
 			}
 		}

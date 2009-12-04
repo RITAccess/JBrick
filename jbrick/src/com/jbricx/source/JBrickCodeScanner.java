@@ -25,6 +25,12 @@ public class JBrickCodeScanner extends RuleBasedScanner {
 							new TextAttribute(
 									cm.getColor(ColorManager.KEYWORD), 
 									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD));
+		
+		IToken specialKeyword = new Token(
+				new TextAttribute(
+						cm.getColor(ColorManager.KEYWORD), 
+						cm.getColor(ColorManager.BACKGROUND), SWT.BOLD|SWT.ITALIC));
+		
 		IToken other = new Token(new TextAttribute(cm.getColor(ColorManager.DEFAULT)));
 		IToken string = new Token(new TextAttribute(cm.getColor(ColorManager.STRING)));
 		
@@ -63,14 +69,11 @@ public class JBrickCodeScanner extends RuleBasedScanner {
 		for (int i = 0; i<SyntaxKeyWords.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxKeyWords.getKeyWords().get(i), keyword);
 		}
-		rules.add(wordRule);
 		
-		// Add rule for constants, and add the words to the rule
-		WordRule constantRule = new WordRule(new JBrickConstantWordDetector(), other);
-		for (int i = 0; i < SyntaxConstants.getKeyWords().size(); i++){
-			constantRule.addWord(SyntaxConstants.getKeyWords().get(i), keyword);
+		for (int i = 0; i<SyntaxConstants.getKeyWords().size(); i++){
+			wordRule.addWord(SyntaxConstants.getKeyWords().get(i), specialKeyword);
 		}
-		rules.add(constantRule);
+		rules.add(wordRule);
 		
 		
 

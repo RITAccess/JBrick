@@ -14,7 +14,7 @@ import org.w3c.dom.NodeList;
  * This class contains the syntax keywords
  */
 public class SyntaxKeyWords {
-	public static  ArrayList<String> KEYWORDS = null;
+	public static  ArrayList<String> KEYWORDS ;
 
 	/**
 	 * lazy creation of the constant list. if the list is already populated just
