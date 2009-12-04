@@ -23,7 +23,7 @@ public class ActionControlClass {
 			try {
 				TabItem.getDocument().setFileName(fileName);
 				TabItem.getDocument().save();
-				TabItem.setText(fileName);
+				
 			} catch (IOException e) {
 				showError(TabItem.getParent().getShell(), "Can't save file " + fileName + "; " + e.getMessage());
 			}
