@@ -76,17 +76,13 @@ public class JBrickTabItem extends CTabItem {
 		// Create the viewer
 		// Set up the document
 		
-		System.out.println("1.1");
-
 		setUpDocument(file);
-		System.out.println("1.2");
-
+		
 		ruler = new CompositeRuler(10);
 		lnrc = new LineNumberRulerColumn();
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
 
-		System.out.println("1.3");
 		viewer = new SourceViewer(parent, ruler, SWT.V_SCROLL | SWT.H_SCROLL);
 		// Configure it and set the document
 
@@ -95,23 +91,15 @@ public class JBrickTabItem extends CTabItem {
 		viewer.setDocument(document);
 		
 
-		
-		System.out.println("1.4");
 
 		menuManager = createRightClickMenuManager(viewer.getTextWidget());
 		Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
 		viewer.getTextWidget().setMenu(menu);
 
-		System.out.println("1.5");
-
 		// viewer.GAP_SIZE = 1 ;
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-
-//		viewer.getTextWidget().setFocus();
-
-		System.out.println("1.6");
 
 	
 	}

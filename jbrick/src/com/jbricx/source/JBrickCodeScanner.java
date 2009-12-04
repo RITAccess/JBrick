@@ -35,7 +35,7 @@ public class JBrickCodeScanner extends RuleBasedScanner {
 		setDefaultReturnToken(other);
 
 		// Create the rules
-		List rules = new ArrayList();
+		ArrayList<IRule>  rules = new ArrayList<IRule>();
 
 		// Add rules for strings --> starts with " and ends with " and escapes \\
 		rules.add(new SingleLineRule("\"", "\"", string, '\\'));
@@ -60,9 +60,17 @@ public class JBrickCodeScanner extends RuleBasedScanner {
 
 		// Add rule for keywords, and add the words to the rule
 		WordRule wordRule = new WordRule(new JBrickWordDetector(), other);
-		for (int i = 0, n = SyntaxKeyWords.KEYWORDS.length; i < n; i++)
-			wordRule.addWord(SyntaxKeyWords.KEYWORDS[i], keyword);
+		for (int i = 0; i<SyntaxKeyWords.getKeyWords().size(); i++){
+			wordRule.addWord(SyntaxKeyWords.getKeyWords().get(i), keyword);
+		}
 		rules.add(wordRule);
+		
+		// Add rule for constants, and add the words to the rule
+		WordRule constantRule = new WordRule(new JBrickConstantWordDetector(), other);
+		for (int i = 0; i < SyntaxConstants.getKeyWords().size(); i++){
+			constantRule.addWord(SyntaxConstants.getKeyWords().get(i), keyword);
+		}
+		rules.add(constantRule);
 		
 		
 

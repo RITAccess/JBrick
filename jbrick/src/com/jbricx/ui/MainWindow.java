@@ -62,7 +62,6 @@ import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.treeProviders.FileTreeContentProvider;
 import com.jbricx.treeProviders.FileTreeLabelProvider;
 
-
 /**
  * This class provides the main window of JBrickEditor
  */
@@ -103,8 +102,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	CTabFolder tabFolder;
 
-/*	ArrayList<SourceViewer> viewersList;
-*/
+	/* ArrayList<SourceViewer> viewersList; */
 	/**
 	 * MainWindow constructor
 	 */
@@ -114,8 +112,7 @@ public class MainWindow extends ApplicationWindow implements
 		addToolBar(SWT.FLAT);
 		addStatusLine();
 
-/*		viewersList = new ArrayList<SourceViewer>();
-*/
+		/* viewersList = new ArrayList<SourceViewer>(); */
 	}
 
 	/**
@@ -125,9 +122,8 @@ public class MainWindow extends ApplicationWindow implements
 
 		setBlockOnOpen(true);
 		open();
-		System.out.println("7");
 		Display.getCurrent().dispose();
-		System.out.println("8");
+	
 	}
 
 	/**
@@ -155,7 +151,6 @@ public class MainWindow extends ApplicationWindow implements
 		// create file tree viewer
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 
-		System.out.println("1");
 		// Create the tree viewer to display the file tree
 		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
 		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
@@ -163,37 +158,30 @@ public class MainWindow extends ApplicationWindow implements
 		tv.setLabelProvider(new FileTreeLabelProvider());
 		tv.addFilter(new FolderFilter());
 
-		//tv.addFilter(new FileExtensionFilter());
+		// tv.addFilter(new FileExtensionFilter());
 		tv.setInput("root"); // pass a non-null that will be ignored
 
 		tv.getTree().addListener(SWT.DefaultSelection, new Listener() {
 			public void handleEvent(Event e) {
 				String string = "";
 				String parentTxt = "";
-				String rootName =  treeRootFile.getName();
-				//tv.getTree().getse
-		
+				String rootName = treeRootFile.getName();
+				// tv.getTree().getse
+
+				IStructuredSelection selection = (IStructuredSelection) tv
+						.getSelection();
+				File file = (File) selection.getFirstElement();
 				
-				IStructuredSelection selection = (IStructuredSelection)tv.getSelection();
-		        File file = (File)selection.getFirstElement();
-		        JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, file);
-		        tabFolder.setSelection(tabItem);
-		        /*
-				//TreeItem[] selection = tv.getTree().getSelection();
-				for (int i = 0; i < selection.length; i++) {
-					
-					//while()
-					//string = selection[i]. getText();
-					parentTxt = selection[i].getParentItem().getText();
-					
-					System.out.println(parentTxt);
-					new JBrickTabItem(tabFolder, SWT.NULL, string);
+				if (!file.isDirectory()) {
+					JBrickTabItem tabItem = new JBrickTabItem(tabFolder,
+							SWT.CLOSE, file);
+					tabFolder.setSelection(tabItem);
 				}
-*/
-				System.out.println("DefaultSelection={" + file.getAbsolutePath() + "}");
+				
+				
 			}
 		});
-		System.out.println("2");
+		
 
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
@@ -202,7 +190,7 @@ public class MainWindow extends ApplicationWindow implements
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
 				255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
-		System.out.println("3");
+		
 		tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setMinimizeVisible(true);
@@ -219,7 +207,6 @@ public class MainWindow extends ApplicationWindow implements
 		tabFolder.setSelectionForeground(titleForeColor);
 		tabFolder.setSelectionBackground(new Color[] { titleBackColor1,
 				titleBackColor2 }, new int[] { 100 }, true);
-		System.out.println("4");
 		// TODO: change tabs names and content
 		// tab1
 		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
@@ -227,27 +214,26 @@ public class MainWindow extends ApplicationWindow implements
 
 		// Add close event for tab close
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-		      public void close(CTabFolderEvent event) {
+			public void close(CTabFolderEvent event) {
 				if (checkOverwrite()) {
+				} else {
+					event.doit = false;
 				}
-				else{
-			          event.doit = false;
-				}
-		      }
+			}
 		});
 
 		getMenuBarManager().updateAll(true);
-		
-		return parent;
-	
-	}
-    public void TabItemClosed(CTabFolderEvent event) {
-        if (event.item.equals(this)) {
-          event.doit = false;
-        }
-    }
 
-	
+		return parent;
+
+	}
+
+	public void TabItemClosed(CTabFolderEvent event) {
+		if (event.item.equals(this)) {
+			event.doit = false;
+		}
+	}
+
 	protected void loadPreferences(JBrickTabItem tabItem) {
 		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
 		// setWrap(ps.getBoolean(FileExtensionConstants.WRAP));
@@ -287,7 +273,7 @@ public class MainWindow extends ApplicationWindow implements
 		MenuManager editMenu = new MenuManager("&Edit");
 		MenuManager compileMenu = new MenuManager("&Compile");
 		MenuManager downloadMenu = new MenuManager("&Download");
-		
+
 		MenuManager helpMenu = new MenuManager("&Help");
 
 		mm.add(fileMenu);
@@ -295,8 +281,6 @@ public class MainWindow extends ApplicationWindow implements
 		mm.add(compileMenu);
 		mm.add(helpMenu);
 		mm.add(downloadMenu);
-		
-		
 
 		fileMenu.add(newAction);
 		fileMenu.add(openAction);
@@ -355,10 +339,10 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(prefsAction);
 		tm.add(new Separator());
 		tm.add(compileAction);
-		
+
 		tm.add(new Separator());
 		tm.add(downloadAction);
-		
+
 		tm.add(new Separator());
 		tm.add(aboutAction);
 
@@ -432,20 +416,20 @@ public class MainWindow extends ApplicationWindow implements
 		this.treeRootFile = treeRootFile;
 	}
 
-	
-	//Going to modify this to request preferences
+	// Going to modify this to request preferences
 	public String getWorkspacePath(Composite parent) {
-		 // Get the preference store
-		 PreferenceManager mgr = new PreferenceManager();
-		 mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
-		 PreferenceStore ps = JBrickEditor.getApp().getPreferences();
-		 String workspace = ps.getString(FileExtensionConstants.WRKSPC);
-		 
-		 //Check if directory exists
-		 File file=new File(workspace);
-		 boolean exists = file.exists();
-		 
-		 if(workspace.equals("") || !exists){
+		// Get the preference store
+		PreferenceManager mgr = new PreferenceManager();
+		mgr.addToRoot(new PreferenceNode("text", "Text", null,
+				TextPreferencePage.class.getName()));
+		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		String workspace = ps.getString(FileExtensionConstants.WRKSPC);
+
+		// Check if directory exists
+		File file = new File(workspace);
+		boolean exists = file.exists();
+
+		if (workspace.equals("") || !exists) {
 			String path;
 			do {
 				DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
@@ -456,7 +440,8 @@ public class MainWindow extends ApplicationWindow implements
 			try {
 				ps.save();
 			} catch (IOException e) {
-				System.out.println("Error Saving Preferences: " + e.getMessage());
+				System.out.println("Error Saving Preferences: "
+						+ e.getMessage());
 			}
 			workspace = path;
 		}

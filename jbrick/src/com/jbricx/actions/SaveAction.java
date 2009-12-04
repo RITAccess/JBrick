@@ -26,7 +26,7 @@ public class SaveAction extends Action {
     
     
     
-    System.out.println("accelerator is: "+ convertAccelerator(getAccelerator())  );
+    
   }
 
   /**
