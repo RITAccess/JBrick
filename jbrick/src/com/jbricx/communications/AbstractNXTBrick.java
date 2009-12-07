@@ -1,27 +1,34 @@
 package com.jbricx.communications;
 
 import java.util.Enumeration;
+import java.util.List;
 
-abstract class AbstractNXTBrick {
+public abstract class AbstractNXTBrick {
 
 	private String comm;
 	
-	public void setComm(String com){
+	public ExitStatus run(List<String> command){
+		return (new ProcessRunner()).run(command);
+	}
+	
+	private void setComm(String com){
 		this.comm=com;
 	}
 	
-	abstract ExitStatus getBatteryLevel();
+	public abstract ExitStatus compile(String filename);
 	
-	abstract ExitStatus playTone(int frequency, int duration);
+	public abstract ExitStatus getBatteryLevel();
 	
-	abstract ExitStatus playTone(int frequency, int duration, boolean loop);
+	public abstract ExitStatus playTone(int frequency, int duration);
 	
-	abstract ExitStatus run(String filename);
+	public abstract ExitStatus playTone(int frequency, int duration, boolean loop);
 	
-	abstract ExitStatus getRunningProgram();
+	public abstract ExitStatus run(String filename);
 	
-	abstract ExitStatus downloadFile(String filename);
+	public abstract ExitStatus getRunningProgram();
 	
-	abstract ExitStatus deleteFile(String filename);
+	public abstract ExitStatus downloadFile(String filename);
+	
+	public abstract ExitStatus deleteFile(String filename);
 	
 }

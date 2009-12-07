@@ -4,8 +4,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.ExitStatus;
-import com.jbricx.communications.JCompiler;
 import com.jbricx.pjo.JBrickEditor;
 
 /**
@@ -24,19 +24,16 @@ public class CompileAction extends Action {
   /**
    * Shows an about box
    */
-  public void run() {
+  public void run(){
 	  
-    JCompiler c = new JCompiler();
-   
-    ExitStatus exitstatus = c.compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+    ExitStatus e = BrickCreator.createBrick().compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
     
-    if (exitstatus == ExitStatus.Ok){
-    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),
-    	        "Compile", c.getMessage());
+    if (e.isOk()){
+    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),"Compile", "Compile was a success!");
     }
-    else if (exitstatus==ExitStatus.Error){
-    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),
-    	        "Compile", c.getErrorMessage());
+    else{
+    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),"Compile", e.getMesage());
     }
+    	        
   }
 }

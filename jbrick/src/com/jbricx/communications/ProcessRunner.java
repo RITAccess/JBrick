@@ -10,12 +10,8 @@ import org.eclipse.core.commands.Command;
 
 public class ProcessRunner {
 
-	private String errMsg;
-	private String okMsg;
 	
-	public ExitStatus run(List<String> command,String okMsg, String errMsg){
-		this.okMsg = okMsg;
-		this.errMsg = this.errMsg+="\n"+errMsg;
+	public ExitStatus run(List<String> command){
 		
 		try{
 			Process p;
@@ -25,7 +21,6 @@ public class ProcessRunner {
 			InputStream is = p.getInputStream();
 			InputStream es = p.getErrorStream();
 			
-			
 			BufferedInputStream ebuf = new BufferedInputStream(es);
 			InputStreamReader einread = new InputStreamReader(ebuf);
 			BufferedReader ebufferedreader = new BufferedReader(einread);
@@ -34,9 +29,8 @@ public class ProcessRunner {
 			InputStreamReader inread = new InputStreamReader(buf);
 			BufferedReader bufferedreader = new BufferedReader(inread);
 			
-	
 			String error;
-			String nonerror;
+			String nonerror="";
 			String errout="";
 	
 			while((error=ebufferedreader.readLine()) != null){
@@ -49,22 +43,21 @@ public class ProcessRunner {
 			}
 			
 			while((nonerror=bufferedreader.readLine()) != null){
-				System.out.println(nonerror);
+				nonerror += nonerror;
 			}
 			
 			
 			try{
 				
 				if (p.waitFor() == 1){
-	//				System.err.println("exit value = "+p.exitValue());
-					this.errMsg += errout;
+//					System.err.println("exit value = "+p.exitValue());
 					System.out.println("lksdjfld");
-					return ExitStatus.Error;
+					return new ExitStatus(ExitStatus.ERROR,errout);
 					
 				}
 				else{
-	//				System.out.println("no errors");
-					return ExitStatus.Ok;
+//					System.out.println("no errors");
+					return new ExitStatus(ExitStatus.OK,nonerror);
 					
 				}
 				
@@ -82,17 +75,11 @@ public class ProcessRunner {
 		}
 		catch (Exception e){
 			e.printStackTrace();
-			return ExitStatus.Error;
+			return new ExitStatus(ExitStatus.ERROR,"Epic Process Failure!!");
 		}
 		
-		return ExitStatus.Ok;
+		return new ExitStatus(ExitStatus.ERROR,"If you got this error something terrible happened. Good finding out what happend. Let the force be with you.");
 	}
 	
-	public String getErrorMessage(){
-		return errMsg;
-	}
 	
-	public String getMessage(){
-		return okMsg;
-	}
 }

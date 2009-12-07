@@ -3,7 +3,7 @@ package com.jbricx.communications;
 public class BrickCreator {
 
 	
-	static AbstractNXTBrick createBrick(){
+	public static AbstractNXTBrick createBrick(){
 		AbstractNXTBrick brick=null;
 		
 		if(  System.getProperty("os.name").contains("indow") ){
