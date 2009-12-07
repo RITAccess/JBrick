@@ -7,7 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import com.jbricx.pjo.JBrickEditor;
 
 
-
+//test
 /**
  * This action copies the current selection to the clipboard
  */
