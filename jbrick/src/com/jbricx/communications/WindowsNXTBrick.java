@@ -7,11 +7,16 @@ import org.w3c.dom.views.AbstractView;
 
 public class WindowsNXTBrick extends AbstractNXTBrick{
 
+	private static final String NBC = "C:\\Program Files\\BricxCC\\nbc.exe";
+	private static final String NEXTTOOL = "C:\\Program Files\\BricxCC\\NeXTTool.exe";
+	
+	private static final String COM = "/COM=usb";//USB0::0X0694::0X0002::0016530996B4::RAW";
+	
 	@Override
 	public ExitStatus compile(String filename) {
 		System.out.println("Trying to compile: "+filename);
 		List<String> command = new ArrayList<String>();
-		command.add("C:\\Program Files\\BricxCC\\nbc.exe");
+		command.add(NBC);
 		//command.add("-help");
 		command.add("-S");//+where);
 		command.add("usb");
@@ -21,7 +26,6 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		
 //			command.add("-O");
 //			command.add("c:\\Users\\Spencer\\out");
-		System.out.println(command);
 		return run(command);
 	}
 	
@@ -34,7 +38,7 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	@Override
 	public ExitStatus downloadFile(String filename) {
 		List<String> command = new ArrayList<String>();
-		command.add("C:\\Program Files\\BricxCC\\nbc.exe");
+		command.add(NBC);
 		//command.add("-help");
 //		command.add("-S");//+where);
 //			command.add("usb");
@@ -48,7 +52,12 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	@Override
 	public ExitStatus getBatteryLevel() {
 		// TODO Auto-generated method stub
-		return null;
+		List<String> command = new ArrayList<String>();
+		command.add(NEXTTOOL);
+		command.add(COM);
+		command.add("-listfiles");
+//		command.add(COM);
+		return run(command);
 	}
 
 	@Override

@@ -7,7 +7,22 @@ public abstract class AbstractNXTBrick {
 
 	private String comm;
 	
+	private String joinToString(List<String> lst){
+		String str = "";
+		for (String s: lst){
+			if (s.split(" ").length > 1 ){
+				str+="\""+s+"\"";
+			}
+			else{
+				str+=s;
+			}
+			str+=" ";
+		}
+		
+		return str;
+	}
 	public ExitStatus run(List<String> command){
+		System.out.println(joinToString(command));
 		return (new ProcessRunner()).run(command);
 	}
 	

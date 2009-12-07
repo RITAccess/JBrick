@@ -2,13 +2,11 @@ package com.jbricx.pjo;
 
 import java.io.IOException;
 
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.jface.text.rules.DefaultPartitioner;
 
-import com.jbricx.model.PersistentDocument;
+import com.jbricx.communications.BrickCreator;
+import com.jbricx.communications.ExitStatus;
 import com.jbricx.source.ColorManager;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickPartitionScanner;
@@ -179,7 +177,10 @@ public class JBrickEditor {
 	 *            the command line arguments
 	 */
 	public static void main(String[] args) {
+		
 		new JBrickEditor().run();
+		
+		
 	}
 }
  

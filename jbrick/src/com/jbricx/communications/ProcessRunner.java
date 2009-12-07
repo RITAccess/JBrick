@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.List;
 
 import org.eclipse.core.commands.Command;
@@ -29,21 +30,23 @@ public class ProcessRunner {
 			InputStreamReader inread = new InputStreamReader(buf);
 			BufferedReader bufferedreader = new BufferedReader(inread);
 			
-			String error;
+			String out="";
 			String nonerror="";
 			String errout="";
-	
-			while((error=ebufferedreader.readLine()) != null){
+			
+			while((out=ebufferedreader.readLine()) != null){
 				
-				if (error.contains("# Error")){
+				if (out.contains("# Error")){
 					String line2=ebufferedreader.readLine();
 					errout+= line2.substring(line2.indexOf("line"));
-					errout+= " "+error.substring(error.indexOf("Error:")) + "\n";
+					errout+= " "+out.substring(out.indexOf("Error:")) + "\n";
 				}
 			}
 			
-			while((nonerror=bufferedreader.readLine()) != null){
-				nonerror += nonerror;
+			while((out=bufferedreader.readLine()) != null){
+				nonerror += out;
+				System.out.println("\tNonError");
+				
 			}
 			
 			
