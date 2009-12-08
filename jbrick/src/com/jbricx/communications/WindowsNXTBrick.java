@@ -1,5 +1,6 @@
 package com.jbricx.communications;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,35 @@ import org.w3c.dom.views.AbstractView;
 
 public class WindowsNXTBrick extends AbstractNXTBrick{
 
-	private static final String NBC = "C:\\Program Files\\BricxCC\\nbc.exe";
-	private static final String NEXTTOOL = "C:\\Program Files\\BricxCC\\NeXTTool.exe";
+	private static final String NBC86 = "C:\\Program Files\\BricxCC\\nbc.exe";
+	private static final String NEXTTOOL86 = "C:\\Program Files\\BricxCC\\NeXTTool.exe";
+	private static final String NBC64 = "C:\\Program Files (x86)\\BricxCC\\nbc.exe";
+	private static final String NEXTTOOL64 = "C:\\Program Files (x86)\\BricxCC\\NeXTTool.exe";
+	
 	
 	private static final String COM = "/COM=usb";//USB0::0X0694::0X0002::0016530996B4::RAW";
+	
+	private static String NBC;
+	private static String NEXTTOOL; 
+	
+	public WindowsNXTBrick(){
+		//Check if file exists
+		File file=new File(NBC86);
+		boolean exists86 = file.exists();
+		file=new File(NBC64);
+		boolean exists64 = file.exists();
+		
+		if (exists86){
+			NBC = NBC86;
+			NEXTTOOL = NEXTTOOL86;
+		}else if(exists64){
+			NBC = NBC64;
+			NEXTTOOL = NEXTTOOL64;
+		}else{
+			//Crap, its somewhere else or not installed, handle this somehow
+		}
+	}
+	
 	
 	@Override
 	public ExitStatus compile(String filename) {
