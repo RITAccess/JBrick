@@ -455,6 +455,7 @@ public class MainWindow extends ApplicationWindow implements
 	public void openFile(String fileName) {
 		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
 				new File(fileName));
+		tabFolder.setSelection(newTabItem) ;
 	}
 
 	public void openNewFile() {
