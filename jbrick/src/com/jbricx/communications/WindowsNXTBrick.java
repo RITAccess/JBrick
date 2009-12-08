@@ -16,25 +16,25 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	
 	private static final String COM = "/COM=usb";//USB0::0X0694::0X0002::0016530996B4::RAW";
 	
-	private static String NBC;
-	private static String NEXTTOOL; 
+	private static String NBC="nbc.exe";
+	private static String NEXTTOOL="nexttool.exe"; 
 	
 	public WindowsNXTBrick(){
 		//Check if file exists
-		File file=new File(NBC86);
-		boolean exists86 = file.exists();
-		file=new File(NBC64);
-		boolean exists64 = file.exists();
-		
-		if (exists86){
-			NBC = NBC86;
-			NEXTTOOL = NEXTTOOL86;
-		}else if(exists64){
-			NBC = NBC64;
-			NEXTTOOL = NEXTTOOL64;
-		}else{
-			//Crap, its somewhere else or not installed, handle this somehow
-		}
+//		File file=new File(NBC86);
+//		boolean exists86 = file.exists();
+//		file=new File(NBC64);
+//		boolean exists64 = file.exists();
+//		
+//		if (exists86){
+//			NBC = NBC86;
+//			NEXTTOOL = NEXTTOOL86;
+//		}else if(exists64){
+//			NBC = NBC64;
+//			NEXTTOOL = NEXTTOOL64;
+//		}else{
+//			//Crap, its somewhere else or not installed, handle this somehow
+//		}
 	}
 	
 	
