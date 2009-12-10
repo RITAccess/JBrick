@@ -29,10 +29,10 @@ public class DownloadAction extends Action {
 		ExitStatus e = BrickCreator.createBrick().downloadFile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
 		
 		if (e.isOk()){
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Compile", "Compiling was a success!!");
+			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Compile", "Downloading was a success!!");
 		}
 		else{
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Compile", "Compiling failed: \n"+e.getMesage());
+			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Compile", "Downloading failed: \n"+e.getMesage());
 		}
 	  }
 	}

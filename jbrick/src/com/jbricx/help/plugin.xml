@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<plugin
+   name = "Online Help Sample"
+   id = "org.eclipse.helparticle"
+   version = "1.0"
+   provider-name = "Eclipse.org">
+
+<!-- ============================================== -->
+<!-- Define the main book                           -->
+<!-- ============================================== -->
+
+    <extension point="org.eclipse.help.toc">
+        <toc file="book.xml" primary="true" />
+    </extension>
+
+<!-- =============================================== -->
+<!-- Link the sections into the book                 -->
+<!-- =============================================== -->
+
+    <extension point="org.eclipse.help.toc">
+        <toc file="toc_Concepts.xml" />
+        <toc file="toc_Tasks.xml" />
+        <toc file="toc_Ref.xml" />
+    </extension>
+
+</plugin>
