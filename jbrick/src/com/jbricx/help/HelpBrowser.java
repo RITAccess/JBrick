@@ -41,7 +41,8 @@ public class HelpBrowser{
 	private void buildUrls(){
 		
 		DirectoryDialog dialog = new DirectoryDialog(shell);
-	      String folder = "help";//dialog.open();
+	      String folder = "C:\\Users\\spencer\\workspace\\jbrick\\help\\html";//dialog.open();
+	      System.out.println(folder);
 	      if (folder == null) return;
 	      File file = new File(folder);
 	      File[] files = file.listFiles(new FilenameFilter() {
