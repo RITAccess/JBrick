@@ -10,6 +10,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.jbricx.communications.WindowsNXTBrick;
+
 public class XMLSWTListBuilder{
 
 	private class SAX extends DefaultHandler{
@@ -50,8 +52,17 @@ public class XMLSWTListBuilder{
 
                  
                   SAXParser saxParser = factory.newSAXParser();
-                  saxParser.parse( new File(System.getProperty("user.dir")+"\\help\\toc.xml"), SAXHandler );
+                  if(  System.getProperty("os.name").contains("indow") ){
+                	  //windows
+                	  saxParser.parse( new File(System.getProperty("user.dir")+"\\help\\toc.xml"), SAXHandler );
 
+                  }
+                  else{
+                	  //linux
+                	  saxParser.parse( new File(System.getProperty("user.dir")+"/help/toc.xml"), SAXHandler );
+
+                  }
+                  
             } catch (Throwable err) {
                   err.printStackTrace ();
             }
