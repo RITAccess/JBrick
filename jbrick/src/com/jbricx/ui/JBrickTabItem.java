@@ -70,9 +70,7 @@ public class JBrickTabItem extends CTabItem {
 		}*/
 		this.file = file;
 		
-		undoManager = new TextViewerUndoManager(100);
-		undoManager.connect(viewer);
-
+		
 		// TODO Auto-generated constructor stub
 		// Create the viewer
 		// Set up the document
@@ -89,6 +87,8 @@ public class JBrickTabItem extends CTabItem {
 		
 		viewer = new SourceViewer(parent, ruler,overviewRuler, true , SWT.V_SCROLL | SWT.H_SCROLL);
 		// Configure it and set the document
+		undoManager = new TextViewerUndoManager(100);
+		undoManager.connect(viewer);
 
 		setControl(viewer.getControl());
 		viewer.configure(new JBrickEditorSourceViewerConfiguration());

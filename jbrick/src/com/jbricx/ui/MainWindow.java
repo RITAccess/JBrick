@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JTable;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 
 import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
@@ -161,8 +163,8 @@ public class MainWindow extends ApplicationWindow implements
 
 		// //////// Left panel ////////////////
 		// Create the tree viewer to display the file tree
-		Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
-		final TreeViewer tv = new TreeViewer(treePanel, SWT.LEFT);
+		//Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
+		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
 		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
 		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
 		tv.setLabelProvider(new FileTreeLabelProvider());
@@ -186,10 +188,12 @@ public class MainWindow extends ApplicationWindow implements
 
 		///////////////////////// right panel //////////////////
 		//parent panel containing both the editing area and debugging area
-		Composite rightPanel = new Composite(sashForm, SWT.RIGHT);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		rightPanel.setLayout(gridLayout);
+		Composite rightPanel = new Composite(sashForm, SWT.NONE);
+		GridLayout fLayout = new GridLayout();
+		
+		/*GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;*/
+		rightPanel.setLayout(fLayout);
 		
 		
 			
@@ -203,7 +207,7 @@ public class MainWindow extends ApplicationWindow implements
 		ruler.addDecorator(0, lnrc);
 
 		tabFolder = new CTabFolder(rightPanel, SWT.TOP);
-		//tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setMinimizeVisible(true);
 		tabFolder.setMaximizeVisible(true);
 		tabFolder.setSimple(false);
@@ -234,35 +238,10 @@ public class MainWindow extends ApplicationWindow implements
 		});
 		
 		//******** bottom part of the right panel **********************
-		Composite debuggingPanel = new Composite(rightPanel, SWT.BOTTOM);
+			
+		Table table = new Table(rightPanel, SWT.BORDER);
 		
-		// Create the tree viewer to display the file tree
-		final TreeViewer tv1 = new TreeViewer(debuggingPanel, SWT.NONE);
-		tv1.getTree().setLayoutData(new GridData(GridData.BEGINNING));
-		tv1.setContentProvider(new FileTreeContentProvider(workspacePath));
-		tv1.setLabelProvider(new FileTreeLabelProvider());
-		tv1.addFilter(new FolderFilter());
-		tv1.setInput("root"); // pass a non-null that will be ignored
-
-		tv1.getTree().addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				IStructuredSelection selection = (IStructuredSelection) tv
-						.getSelection();
-				File file = (File) selection.getFirstElement();
-
-				if (!file.isDirectory()) {
-					JBrickTabItem tabItem = new JBrickTabItem(tabFolder,
-							SWT.CLOSE, file);
-					tabFolder.setSelection(tabItem);
-				}
-			}
-		});
-		
-		
-		debuggingPanel.setLayout(new FillLayout());
-		Label label = new Label(debuggingPanel, SWT.FILL);
-	    label.setText("Greetings from SWT");
-	    //label.setFont(new Font(null, "Arial",14,SWT.BOLD | SWT.ITALIC)); 
+			
 
 		getMenuBarManager().updateAll(true);
 
@@ -278,8 +257,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	protected void loadPreferences(JBrickTabItem tabItem) {
 		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
-		// setWrap(ps.getBoolean(FileExtensionConstants.WRAP));
-
+		
 		String fontProp = ps.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) {
 			FontData[] fd = new FontData[1];
