@@ -189,6 +189,8 @@ public class MainWindow extends ApplicationWindow implements
 		///////////////////////// right panel //////////////////
 		//parent panel containing both the editing area and debugging area
 		SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
+		
+		
 		//Composite rightPanel = new Composite(sashForm, SWT.NONE);
 		GridLayout fLayout = new GridLayout();
 		
@@ -241,6 +243,9 @@ public class MainWindow extends ApplicationWindow implements
 		//******** bottom part of the right panel **********************
 			
 		Table table = new Table(rightPanel, SWT.BORDER);
+		
+		rightPanel.setWeights( new int[]{80 , 20});
+		sashForm.setWeights( new int[]{ 20, 80});
 		
 			
 
