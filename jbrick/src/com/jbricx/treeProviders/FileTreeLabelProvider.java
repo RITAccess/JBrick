@@ -22,7 +22,7 @@ import org.eclipse.swt.program.Program;
 
 public class FileTreeLabelProvider implements ILabelProvider {
   // The listeners
-  private List listeners;
+  private ArrayList<ILabelProviderListener> listeners;
 
   // Images for tree nodes
   private Image fileIcon;
@@ -41,7 +41,7 @@ public class FileTreeLabelProvider implements ILabelProvider {
    */
   public FileTreeLabelProvider() {
     // Create the list to hold the listeners
-    listeners = new ArrayList();
+    listeners = new ArrayList<ILabelProviderListener>();
     
    
 

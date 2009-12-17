@@ -1,11 +1,9 @@
 package com.jbricx.communications;
 
-import java.util.Enumeration;
 import java.util.List;
 
 public abstract class AbstractNXTBrick {
 
-	private String comm;
 	
 	private String joinToString(List<String> lst){
 		String str = "";
@@ -26,9 +24,7 @@ public abstract class AbstractNXTBrick {
 		return (new ProcessRunner()).run(command);
 	}
 	
-	private void setComm(String com){
-		this.comm=com;
-	}
+	
 	
 	public abstract ExitStatus compile(String filename);
 	

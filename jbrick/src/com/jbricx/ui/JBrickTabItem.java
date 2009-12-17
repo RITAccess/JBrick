@@ -11,10 +11,10 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.DefaultUndoManager;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.IUndoManager;
+import org.eclipse.jface.text.TextViewerUndoManager;
 import org.eclipse.jface.text.rules.DefaultPartitioner;
-import org.eclipse.jface.text.source.CompositeRuler;
-import org.eclipse.jface.text.source.LineNumberRulerColumn;
-import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.rules.FastPartitioner;
+import org.eclipse.jface.text.source.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -25,6 +25,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 
 import com.jbricx.model.PersistentDocument;
@@ -69,7 +70,7 @@ public class JBrickTabItem extends CTabItem {
 		}*/
 		this.file = file;
 		
-		undoManager = new DefaultUndoManager(100);
+		undoManager = new TextViewerUndoManager(100);
 		undoManager.connect(viewer);
 
 		// TODO Auto-generated constructor stub
@@ -83,7 +84,10 @@ public class JBrickTabItem extends CTabItem {
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
 
-		viewer = new SourceViewer(parent, ruler, SWT.V_SCROLL | SWT.H_SCROLL);
+		//annotation ruler to view annotation
+		IOverviewRuler overviewRuler = new OverviewRuler(null, 12, new ColorCache());
+		
+		viewer = new SourceViewer(parent, ruler,overviewRuler, true , SWT.V_SCROLL | SWT.H_SCROLL);
 		// Configure it and set the document
 
 		setControl(viewer.getControl());
@@ -151,8 +155,8 @@ public class JBrickTabItem extends CTabItem {
 		scanner = new JBrickPartitionScanner();
 
 		// Create the partitioner
-		IDocumentPartitioner partitioner = new DefaultPartitioner(scanner,
-				JBrickPartitionScanner.TYPES);
+		IDocumentPartitioner partitioner; 
+		partitioner = new FastPartitioner(scanner, JBrickPartitionScanner.TYPES);
 
 		// Connect the partitioner and document
 		document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING, partitioner);
@@ -175,5 +179,13 @@ public class JBrickTabItem extends CTabItem {
 		// Right Click Attach
 		parent.setMenu(menu);
 		return rightMenuBar;
+	}
+	class ColorCache implements ISharedTextColors {
+		public Color getColor(RGB rgb) {
+			return new Color(Display.getDefault(), rgb);
+		}
+
+		public void dispose() {
+		}
 	}
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
+
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -30,12 +32,16 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
@@ -123,7 +129,7 @@ public class MainWindow extends ApplicationWindow implements
 		setBlockOnOpen(true);
 		open();
 		Display.getCurrent().dispose();
-	
+
 	}
 
 	/**
@@ -148,41 +154,46 @@ public class MainWindow extends ApplicationWindow implements
 		String workspacePath = getWorkspacePath(parent);
 		this.treeRootFile = new File(workspacePath);
 		setStatus("cool status line");
-		// create file tree viewer
-		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 
+		// divide the main window
+		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
+		sashForm.setLayout(new RowLayout());
+
+		// //////// Left panel ////////////////
 		// Create the tree viewer to display the file tree
-		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
+		Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
+		final TreeViewer tv = new TreeViewer(treePanel, SWT.LEFT);
 		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
 		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
 		tv.setLabelProvider(new FileTreeLabelProvider());
 		tv.addFilter(new FolderFilter());
 
-		// tv.addFilter(new FileExtensionFilter());
 		tv.setInput("root"); // pass a non-null that will be ignored
 
 		tv.getTree().addListener(SWT.DefaultSelection, new Listener() {
 			public void handleEvent(Event e) {
-				String string = "";
-				String parentTxt = "";
-				String rootName = treeRootFile.getName();
-				// tv.getTree().getse
-
 				IStructuredSelection selection = (IStructuredSelection) tv
 						.getSelection();
 				File file = (File) selection.getFirstElement();
-				
+
 				if (!file.isDirectory()) {
 					JBrickTabItem tabItem = new JBrickTabItem(tabFolder,
 							SWT.CLOSE, file);
 					tabFolder.setSelection(tabItem);
 				}
-				
-				
 			}
 		});
-		
 
+		///////////////////////// right panel //////////////////
+		//parent panel containing both the editing area and debugging area
+		Composite rightPanel = new Composite(sashForm, SWT.RIGHT);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		rightPanel.setLayout(gridLayout);
+		
+		
+			
+		//******** top part of the right panel **********************
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
 
@@ -190,9 +201,9 @@ public class MainWindow extends ApplicationWindow implements
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
 				255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
-		
-		tabFolder = new CTabFolder(sashForm, SWT.RIGHT);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		tabFolder = new CTabFolder(rightPanel, SWT.TOP);
+		//tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setMinimizeVisible(true);
 		tabFolder.setMaximizeVisible(true);
 		tabFolder.setSimple(false);
@@ -221,6 +232,37 @@ public class MainWindow extends ApplicationWindow implements
 				}
 			}
 		});
+		
+		//******** bottom part of the right panel **********************
+		Composite debuggingPanel = new Composite(rightPanel, SWT.BOTTOM);
+		
+		// Create the tree viewer to display the file tree
+		final TreeViewer tv1 = new TreeViewer(debuggingPanel, SWT.NONE);
+		tv1.getTree().setLayoutData(new GridData(GridData.BEGINNING));
+		tv1.setContentProvider(new FileTreeContentProvider(workspacePath));
+		tv1.setLabelProvider(new FileTreeLabelProvider());
+		tv1.addFilter(new FolderFilter());
+		tv1.setInput("root"); // pass a non-null that will be ignored
+
+		tv1.getTree().addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
+				IStructuredSelection selection = (IStructuredSelection) tv
+						.getSelection();
+				File file = (File) selection.getFirstElement();
+
+				if (!file.isDirectory()) {
+					JBrickTabItem tabItem = new JBrickTabItem(tabFolder,
+							SWT.CLOSE, file);
+					tabFolder.setSelection(tabItem);
+				}
+			}
+		});
+		
+		
+		debuggingPanel.setLayout(new FillLayout());
+		Label label = new Label(debuggingPanel, SWT.FILL);
+	    label.setText("Greetings from SWT");
+	    //label.setFont(new Font(null, "Arial",14,SWT.BOLD | SWT.ITALIC)); 
 
 		getMenuBarManager().updateAll(true);
 
@@ -455,7 +497,7 @@ public class MainWindow extends ApplicationWindow implements
 	public void openFile(String fileName) {
 		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
 				new File(fileName));
-		tabFolder.setSelection(newTabItem) ;
+		tabFolder.setSelection(newTabItem);
 	}
 
 	public void openNewFile() {

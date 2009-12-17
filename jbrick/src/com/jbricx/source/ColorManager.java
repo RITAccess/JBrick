@@ -18,7 +18,7 @@ public class ColorManager {
   public static final RGB STRING = new RGB(255, 0, 0);
 
   // Map to store created colors, with the corresponding RGB as key
-  private Map colors = new HashMap();
+  private Map<RGB, Color> colors = new HashMap<RGB, Color>();
 
   /**
    * Gets a color
@@ -41,7 +41,7 @@ public class ColorManager {
    * Dispose any created colors
    */
   public void dispose() {
-    for (Iterator itr = colors.values().iterator(); itr.hasNext();)
-      ((Color) itr.next()).dispose();
+    for (Iterator<Color> itr = colors.values().iterator(); itr.hasNext();)
+      ( itr.next()).dispose();
   }
 }
