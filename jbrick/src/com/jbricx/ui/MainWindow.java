@@ -188,7 +188,8 @@ public class MainWindow extends ApplicationWindow implements
 
 		///////////////////////// right panel //////////////////
 		//parent panel containing both the editing area and debugging area
-		Composite rightPanel = new Composite(sashForm, SWT.NONE);
+		SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
+		//Composite rightPanel = new Composite(sashForm, SWT.NONE);
 		GridLayout fLayout = new GridLayout();
 		
 		/*GridLayout gridLayout = new GridLayout();
