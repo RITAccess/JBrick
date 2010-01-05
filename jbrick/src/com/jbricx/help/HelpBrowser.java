@@ -39,7 +39,7 @@ public class HelpBrowser{
 
 	@SuppressWarnings("deprecation")
 	private void buildUrls(){
-		
+		urls.add("www.google.com");
 		DirectoryDialog dialog = new DirectoryDialog(shell);
 	      String folder = "C:\\Users\\spencer\\workspace\\jbrick\\help\\html";//dialog.open();
 	      System.out.println(folder);

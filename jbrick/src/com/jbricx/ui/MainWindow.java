@@ -97,6 +97,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	private CompileAction compileAction = new CompileAction();
 
+	public Table table;
 	// The font
 	private Font font;
 
@@ -242,7 +243,7 @@ public class MainWindow extends ApplicationWindow implements
 		
 		//******** bottom part of the right panel **********************
 			
-		Table table = new Table(rightPanel, SWT.BORDER);
+		table = new Table(rightPanel, SWT.BORDER);
 		
 		rightPanel.setWeights( new int[]{80 , 20});
 		sashForm.setWeights( new int[]{ 20, 80});

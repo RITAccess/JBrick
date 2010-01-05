@@ -14,7 +14,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	//these must be on the build path. we will want to have 
 	// this in preferences eventually.
 	private static String NBC="nbc.exe";
-	private static String NEXTTOOL="nexttool.exe"; 
+	private static String NEXTTOOL="nexttool.exe";
+	private static String BRICKTOOL = "BrickTool.exe";
 	
 	
 	@Override
@@ -59,9 +60,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		// TODO Auto-generated method stub
 		List<String> command = new ArrayList<String>();
 		command.add(NEXTTOOL);
-		command.add(COM);
-		command.add("-listfiles");
-//		command.add(COM);
+		command.add("/COM=usb");
+		command.add("-listbricks");
 		return run(command);
 	}
 

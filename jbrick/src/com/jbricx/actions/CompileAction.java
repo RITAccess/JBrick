@@ -1,15 +1,19 @@
 package com.jbricx.actions;
 
+import java.io.IOException;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.ExitStatus;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.pjo.ActionControlClass;
-import org.eclipse.swt.SWT;
+import com.jbricx.pjo.JBrickEditor;
 
 /**
  * This class shows an About box
@@ -38,13 +42,36 @@ public class CompileAction extends Action {
 			ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
 		}		
 	}
+	
+	if (JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().isDirty()){
+		try {
+			JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().save();
+			JBrickEditor.getMainWindow().setStatus("Saving File . . .");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
     
     ExitStatus e = BrickCreator.createBrick().compile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
     if (e.isOk()){
     	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),"Compile", "Compile was a success!");
     }
     else{
-    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),"Compile", e.getMesage());
+    	String msg = e.getMesage();
+    	String lineNum = msg.substring(msg.indexOf("line ")+5, msg.indexOf("line ")+7);
+    	System.out.println("Line: "+lineNum);
+    	
+    	String error = msg.substring(msg.indexOf("Error: "), msg.indexOf("Error: ")+30);
+    	System.out.println(error);
+    	
+    	
+    	Table tbl = JBrickEditor.getMainWindow().table;
+    	TableItem line = new TableItem(tbl, SWT.NONE);
+    	line.setText(lineNum + " " +error);
+    	
+    	
+//    	MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),"Compile", );
     }
     	        
   }

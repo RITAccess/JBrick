@@ -30,17 +30,22 @@ public class ProcessRunner {
 			InputStreamReader inread = new InputStreamReader(buf);
 			BufferedReader bufferedreader = new BufferedReader(inread);
 			
+			InputStreamReader tempReader = new InputStreamReader(
+	                new BufferedInputStream(p.getInputStream()));
+	            BufferedReader reader = new BufferedReader(tempReader);
+	            
 			String out="";
 			String nonerror="";
 			String errout="";
 			
 			while((out=ebufferedreader.readLine()) != null){
 				
-				if (out.contains("# Error")){
-					String line2=ebufferedreader.readLine();
-					errout+= line2.substring(line2.indexOf("line"));
-					errout+= " "+out.substring(out.indexOf("Error:")) + "\n";
-				}
+				errout+=out;
+//				if (out.contains("# Error")){
+//					String line2=ebufferedreader.readLine();
+//					errout+= line2.substring(line2.indexOf("line"));
+//					errout+= " "+out.substring(out.indexOf("Error:")) + "\n";
+//				}
 			}
 			
 			while((out=bufferedreader.readLine()) != null){
@@ -54,7 +59,6 @@ public class ProcessRunner {
 				
 				if (p.waitFor() == 1){
 //					System.err.println("exit value = "+p.exitValue());
-					System.out.println("lksdjfld");
 					return new ExitStatus(ExitStatus.ERROR,errout);
 					
 				}
