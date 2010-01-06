@@ -16,7 +16,7 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 	private FontFieldEditor fontFieldEditor;
 	private BooleanFieldEditor wrapFieldEditor;
 	private DirectoryFieldEditor workspaceFieldEditor;
-	
+	private BooleanFieldEditor boolrecentfiles;
 
 	/**
 	 * TextPreferencePage constructor
@@ -43,6 +43,12 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 		workspaceFieldEditor = new DirectoryFieldEditor(FileExtensionConstants.WRKSPC , "Workspace Directory",
 				getFieldEditorParent());
 		addField(workspaceFieldEditor);
+		
+		
+		// Add the field for word wrap
+		boolrecentfiles = new BooleanFieldEditor(FileExtensionConstants.BOOLRECENTFILES, "Load Recently Opened Files",
+				getFieldEditorParent());
+		addField(boolrecentfiles);
 		
 	}
 }

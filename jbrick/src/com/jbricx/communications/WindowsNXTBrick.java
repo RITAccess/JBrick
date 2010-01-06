@@ -27,11 +27,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		command.add("-S");//+where);
 		command.add("usb");
 		command.add("-d");
-//			command.add("C:\\Users\\spencer\\sample.nxc");
 		command.add(filename);
 		
-//			command.add("-O");
-//			command.add("c:\\Users\\Spencer\\out");
 		return run(command);
 	}
 	

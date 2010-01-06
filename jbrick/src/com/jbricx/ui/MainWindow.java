@@ -156,7 +156,7 @@ public class MainWindow extends ApplicationWindow implements
 	protected Control createContents(Composite parent) {
 		String workspacePath = getWorkspacePath(parent);
 		this.treeRootFile = new File(workspacePath);
-		setStatus("cool status line");
+		setStatus("Successfully Lauched!");
 
 		// divide the main window
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
@@ -228,9 +228,30 @@ public class MainWindow extends ApplicationWindow implements
 				titleBackColor2 }, new int[] { 100 }, true);
 		// TODO: change tabs names and content
 		// tab1
-		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
-		tabFolder.setSelection(tabItem);
+//		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
+//		tabFolder.setSelection(tabItem);
 
+		ArrayList<String> recentfiles = getRecentFiles(parent);
+		System.out.println(recentfiles);
+		
+		boolean openedfile = false;
+		
+		for (String file: recentfiles){
+			File f = new File(file);
+			boolean exists = f.exists();
+			if (exists){
+				openFile(file);
+				openedfile=true;
+			}
+			
+			
+		}
+
+		if (!openedfile){
+			JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
+			tabFolder.setSelection(tabItem);
+		}
+		
 		// Add close event for tab close
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			public void close(CTabFolderEvent event) {
@@ -430,6 +451,25 @@ public class MainWindow extends ApplicationWindow implements
 			if (close) {
 				if (font != null)
 					font.dispose();
+				
+				String recentfiles = "";
+				for (CTabItem t: tabFolder.getItems()){
+					JBrickTabItem i = (JBrickTabItem) t;
+					
+					recentfiles+= i.getDocument().getFileName()+";";
+				}
+				PreferenceManager mgr = new PreferenceManager();
+				mgr.addToRoot(new PreferenceNode("text", "Text", null,
+						TextPreferencePage.class.getName()));
+				PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+				ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles);
+				try {
+					ps.save();
+				} catch (IOException e) {
+					System.out.println("Error Saving Preferences: "
+							+ e.getMessage());
+				}
+				System.out.println(recentfiles);
 			}
 		}
 		return close;
@@ -443,6 +483,24 @@ public class MainWindow extends ApplicationWindow implements
 		this.treeRootFile = treeRootFile;
 	}
 
+	public ArrayList<String> getRecentFiles(Composite parent) {
+		// Get the preference store
+		PreferenceManager mgr = new PreferenceManager();
+		mgr.addToRoot(new PreferenceNode("text", "Text", null,
+				TextPreferencePage.class.getName()));
+		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
+		
+		ArrayList<String> recentfiles = new ArrayList<String>();
+		if (loadrecent){
+			for (String s: ps.getString(FileExtensionConstants.RECENTFILES).split(";")){
+				recentfiles.add(s);
+			}
+		}
+				
+		return recentfiles;
+	}
+	
 	// Going to modify this to request preferences
 	public String getWorkspacePath(Composite parent) {
 		// Get the preference store
@@ -486,6 +544,7 @@ public class MainWindow extends ApplicationWindow implements
 	}
 
 	public void openNewFile() {
+		System.out.println("opening new file");
 		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
 		tabFolder.setSelection(newTabItem);
 	}

@@ -59,6 +59,7 @@ public class CompileAction extends Action {
     }
     else{
     	String msg = e.getMesage();
+    	System.out.println(msg);
     	String lineNum = msg.substring(msg.indexOf("line ")+5, msg.indexOf("line ")+7);
     	System.out.println("Line: "+lineNum);
     	
