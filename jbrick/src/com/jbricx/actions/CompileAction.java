@@ -60,10 +60,12 @@ public class CompileAction extends Action {
     else{
     	String msg = e.getMesage();
     	System.out.println(msg);
-    	String lineNum = msg.substring(msg.indexOf("line ")+5, msg.indexOf("line ")+7);
-    	System.out.println("Line: "+lineNum);
+    	int startpt = msg.indexOf("line ")+5;
+    	String lineNum = "Line: "+msg.substring(startpt, msg.indexOf("#",startpt));
+    	System.out.print(lineNum);
     	
-    	String error = msg.substring(msg.indexOf("Error: "), msg.indexOf("Error: ")+30);
+    	startpt = msg.indexOf("Error: ");
+    	String error = msg.substring(startpt, msg.indexOf("File ",startpt));
     	System.out.println(error);
     	
     	
