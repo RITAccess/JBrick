@@ -6,9 +6,20 @@ import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.OpenWindowListener;
+import org.eclipse.swt.browser.ProgressEvent;
+import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swt.browser.StatusTextEvent;
+import org.eclipse.swt.browser.StatusTextListener;
+import org.eclipse.swt.browser.TitleEvent;
+import org.eclipse.swt.browser.TitleListener;
+import org.eclipse.swt.browser.WindowEvent;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -17,21 +28,29 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
 
 public class HelpBrowser{
  
-	private Display display = new Display();
+	private Display display = Display.getCurrent();//new Display();
 	private final Shell shell = new Shell(display);
 	private Browser browser;
 	private ArrayList<String> urls = new ArrayList<String>();
 	private String[] titles;
 	private int index;
 	
+	Label labelStatus;
+	Text textLocation;
+    
 	
+    
 	public HelpBrowser(){
 		
 		buildUrls();
@@ -67,6 +86,12 @@ public class HelpBrowser{
 		shell.setText("Jbricx Help Browser");
 		shell.setLayout(new GridLayout());
 		
+		ToolBar toolBar = new ToolBar(shell, SWT.FLAT | SWT.RIGHT);
+	    final ToolBarManager manager = new ToolBarManager(toolBar);
+	    
+	    	    
+	    
+	    
 		Composite compTools = new Composite(shell,SWT.NONE);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		compTools.setLayoutData(data);
@@ -75,6 +100,7 @@ public class HelpBrowser{
 		
 		Composite compWin = new Composite(shell,SWT.NONE);
 		data = new GridData(GridData.FILL_BOTH);
+		
 		compWin.setLayoutData(data);
 		compWin.setLayout(new FillLayout());
 		final SashForm form = new SashForm(compWin, SWT.HORIZONTAL);
@@ -86,19 +112,7 @@ public class HelpBrowser{
 			list.add(s);
 		}
 		
-		
-
-		
-		try{
-			browser = new Browser(form, SWT.NONE);
-		}
-		catch (SWTError e) {
-			MessageBox msg = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-			msg.setMessage("Help Browser cannot be initialized.");
-			msg.setText("Exit");
-			msg.open();
-		}
-		
+		browser = new Browser(form, SWT.NONE);
 		
 		list.addListener(SWT.Selection, new Listener(){
 			@Override
@@ -109,6 +123,130 @@ public class HelpBrowser{
 			}
 		});
 		
+		Composite compositeStatus = new Composite(shell, SWT.NULL);
+	    compositeStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    compositeStatus.setLayout(new GridLayout(2, false));
+
+		labelStatus = new Label(compositeStatus, SWT.NULL);
+	    labelStatus.setText("Ready");
+	    labelStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+	    final ProgressBar progressBar =	new ProgressBar(compositeStatus, SWT.SMOOTH);
+	
+
+	   
+	    // Adds tool bar items using actions.
+	    final Action actionBackward =
+	      new Action(
+	        "&Back",
+	        ImageDescriptor.createFromFile(
+	        		HelpBrowser.class,
+	          "/images/go-previous.png")) {
+	      public void run() {
+	        browser.back();
+	      }
+	    };
+	    actionBackward.setEnabled(true); // action is disabled at start up.
+	    
+	    final Action actionForward =
+	        new Action(
+	          "&Forward",
+	          ImageDescriptor.createFromFile(
+		        		HelpBrowser.class,
+		          "/images/go-next.png")) {
+	        public void run() {
+	          browser.forward();
+	        }
+	      };
+	      actionForward.setEnabled(true); // action is disabled at start up.
+
+	      Action actionStop =
+	        new Action(
+	          "&Stop",
+	          ImageDescriptor.createFromFile(
+		        		HelpBrowser.class,
+		          "/images/process-stop.png")) {
+	        public void run() {
+	          browser.stop();
+	        }
+	      };
+
+	      Action actionRefresh =
+	        new Action(
+	          "&Refresh",
+	          ImageDescriptor.createFromFile(
+		        		HelpBrowser.class,
+		          "/images/view-refresh.png")) {
+	        public void run() {
+	          browser.refresh();
+	        }
+	      };
+
+	      Action actionHome =
+	        new Action(
+	          "&Home",
+	          ImageDescriptor.createFromFile(
+		        		HelpBrowser.class,
+		          "/images/go-home.png")) {
+	        public void run() {
+	          browser.setUrl("http://www.google.com/phone");
+	        }
+	      };
+	      
+	      
+	    
+	    manager.add(actionBackward);
+	    manager.add(actionForward);
+	    manager.add(actionStop);
+	    manager.add(actionRefresh);
+	    manager.add(actionHome);
+	    manager.update(true);
+	    toolBar.pack();
+	    
+	    
+	    
+		
+		
+	    
+			
+		
+		
+	    
+		browser.addProgressListener(new ProgressListener() {
+		    public void changed(ProgressEvent event) {
+		      progressBar.setMaximum(event.total);
+		      progressBar.setSelection(event.current);
+		    }
+
+		    public void completed(ProgressEvent event) {
+		      progressBar.setSelection(0);
+		    }
+		  });
+
+		  browser.addStatusTextListener(new StatusTextListener() {
+		    public void changed(StatusTextEvent event) {
+		      labelStatus.setText(event.text);
+		    }
+		  });
+
+		  browser.addTitleListener(new TitleListener() {
+		    public void changed(TitleEvent event) {
+		      shell.setText(event.title + " - powered by SWT");
+		    }
+		  });
+	      
+		  browser.addOpenWindowListener(new OpenWindowListener() {
+			
+			@Override
+			public void open(WindowEvent we) {
+				// TODO Auto-generated method stub
+				we.browser = browser;
+			}
+		  });
+	      
+	      
+		
+		
 		
 		shell.open();
 		while (!shell.isDisposed ()) {
@@ -117,7 +255,10 @@ public class HelpBrowser{
 		display.dispose();
 	}
 	
+
+	
 	public static void main(String[] args) {
+		Display d = new Display();
 		HelpBrowser hb = new HelpBrowser();
 		hb.show();
 		

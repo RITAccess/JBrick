@@ -54,6 +54,7 @@ import com.jbricx.actions.CutAction;
 import com.jbricx.actions.DownloadAction;
 import com.jbricx.actions.ExitAction;
 import com.jbricx.actions.FindAction;
+import com.jbricx.actions.HelpContentAction;
 import com.jbricx.actions.NewAction;
 import com.jbricx.actions.OpenAction;
 import com.jbricx.actions.PasteAction;
@@ -80,6 +81,7 @@ public class MainWindow extends ApplicationWindow implements
 	 */
 	// The actions
 	private AboutAction aboutAction = new AboutAction();
+	private HelpContentAction helpContentAction = new HelpContentAction();
 	private CopyAction copyAction = new CopyAction();
 	private CutAction cutAction = new CutAction();
 	private ExitAction exitAction = new ExitAction();
@@ -353,6 +355,7 @@ public class MainWindow extends ApplicationWindow implements
 		compileMenu.add(compileAction);
 
 		helpMenu.add(aboutAction);
+		helpMenu.add(helpContentAction);
 
 		return mm;
 	}
