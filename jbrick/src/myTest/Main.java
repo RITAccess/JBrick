@@ -19,6 +19,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import annotation.AnnotationConfiguration;
+import annotation.AnnotationHover;
+import annotation.AnnotationMarkerAccess;
+import annotation.CodeViewerConfiguration;
+import annotation.ColorCache;
+import annotation.ErrorAnnotation;
+
 public class Main {
 
 	// error identifiers, images and colors

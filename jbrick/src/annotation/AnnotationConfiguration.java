@@ -1,4 +1,4 @@
-package myTest;
+package annotation;
 
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IInformationControl;

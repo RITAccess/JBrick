@@ -15,8 +15,15 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.source.AnnotationModel;
+import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
+import org.eclipse.jface.text.source.IAnnotationAccess;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
+import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -46,6 +53,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+
+import annotation.AnnotationMarkerAccess;
+import annotation.ColorCache;
 
 import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
@@ -166,7 +177,7 @@ public class MainWindow extends ApplicationWindow implements
 
 		// //////// Left panel ////////////////
 		// Create the tree viewer to display the file tree
-		//Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
+		// Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
 		final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
 		tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
 		tv.setContentProvider(new FileTreeContentProvider(workspacePath));
@@ -189,21 +200,19 @@ public class MainWindow extends ApplicationWindow implements
 			}
 		});
 
-		///////////////////////// right panel //////////////////
-		//parent panel containing both the editing area and debugging area
+		// /////////////////////// right panel //////////////////
+		// parent panel containing both the editing area and debugging area
 		SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
-		
-		
-		//Composite rightPanel = new Composite(sashForm, SWT.NONE);
+
+		// Composite rightPanel = new Composite(sashForm, SWT.NONE);
 		GridLayout fLayout = new GridLayout();
-		
-		/*GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;*/
+
+		/*
+		 * GridLayout gridLayout = new GridLayout(); gridLayout.numColumns = 1;
+		 */
 		rightPanel.setLayout(fLayout);
-		
-		
-			
-		//******** top part of the right panel **********************
+
+		// ******** top part of the right panel **********************
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
 
@@ -230,30 +239,31 @@ public class MainWindow extends ApplicationWindow implements
 				titleBackColor2 }, new int[] { 100 }, true);
 		// TODO: change tabs names and content
 		// tab1
-//		JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
-//		tabFolder.setSelection(tabItem);
+		// JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
+		// null);
+		// tabFolder.setSelection(tabItem);
 
 		ArrayList<String> recentfiles = getRecentFiles(parent);
 		System.out.println(recentfiles);
-		
+
 		boolean openedfile = false;
-		
-		for (String file: recentfiles){
+
+		for (String file : recentfiles) {
 			File f = new File(file);
 			boolean exists = f.exists();
-			if (exists){
+			if (exists) {
 				openFile(file);
-				openedfile=true;
+				openedfile = true;
 			}
-			
-			
+
 		}
 
-		if (!openedfile){
-			JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
+		if (!openedfile) {
+			JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
+					null);
 			tabFolder.setSelection(tabItem);
 		}
-		
+
 		// Add close event for tab close
 		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
 			public void close(CTabFolderEvent event) {
@@ -264,16 +274,73 @@ public class MainWindow extends ApplicationWindow implements
 			}
 		});
 		
-		//******** bottom part of the right panel **********************
-			
+		/////////////////////////////////////////////////////////////////
+		
+		
+		// rulers
+		AnnotationModel fAnnotationModel = new AnnotationModel();
+		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
+
+		ColorCache cc = new ColorCache();
+		CompositeRuler fCompositeRuler = new CompositeRuler();
+		OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,	cc);
+		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
+				fAnnotationModel, 16, fAnnotationAccess);
+		fCompositeRuler.setModel(fAnnotationModel);
+		fOverviewRuler.setModel(fAnnotationModel);
+
+		// annotation ruler is decorating our composite ruler
+		fCompositeRuler.addDecorator(0, annotationRuler);
+/////////////////////////////////////////////////////////////////
+		
+		
+
+		// ******** bottom part of the right panel **********************
+
 		table = new Table(rightPanel, SWT.BORDER);
+		table.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
+				IDocument document = getCurrentTabItem().getDocument();
+				/*String txt = getCurrentTabItem().getViewer().getTextWidget().getText();
+				System.out.println("txt"+ txt);
+				getCurrentTabItem().getViewer().setSelectedRange(12, 2);
+				System.out.println("Item Text is:  " + ((TableItem)e.item ).getText());
+			*/
+				try {
+					
+					
+					String errorMessageText =((TableItem)e.item ).getText();
+					System.out.println("Item Text is:  " + errorMessageText);
+					String strLineNumber = errorMessageText.substring(
+							errorMessageText.indexOf("Line:")+5, errorMessageText.indexOf("Error"));
+					
+					
+					int errorLineNumber = Integer.parseInt(strLineNumber.trim()) -1;
+					
 		
-		rightPanel.setWeights( new int[]{80 , 20});
-		sashForm.setWeights( new int[]{ 20, 80});
-		
+					int offset = document.getLineOffset(errorLineNumber);
+					int lineLength = document.getLineLength(errorLineNumber);
+					getCurrentTabItem().getViewer().setSelectedRange(offset, lineLength);
+					
+					System.out.println( document.getLineInformation(1));
+					//System.out.println( document.getLineOffset(1));
+				} catch (BadLocationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+
 			
+			
+		
+			}
+			
+		});
+		rightPanel.setWeights(new int[] { 80, 20 });
+		sashForm.setWeights(new int[] { 20, 80 });
 
 		getMenuBarManager().updateAll(true);
+		
 
 		return parent;
 
@@ -287,7 +354,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	protected void loadPreferences(JBrickTabItem tabItem) {
 		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
-		
+
 		String fontProp = ps.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) {
 			FontData[] fd = new FontData[1];
@@ -454,12 +521,12 @@ public class MainWindow extends ApplicationWindow implements
 			if (close) {
 				if (font != null)
 					font.dispose();
-				
+
 				String recentfiles = "";
-				for (CTabItem t: tabFolder.getItems()){
+				for (CTabItem t : tabFolder.getItems()) {
 					JBrickTabItem i = (JBrickTabItem) t;
-					
-					recentfiles+= i.getDocument().getFileName()+";";
+
+					recentfiles += i.getDocument().getFileName() + ";";
 				}
 				PreferenceManager mgr = new PreferenceManager();
 				mgr.addToRoot(new PreferenceNode("text", "Text", null,
@@ -492,18 +559,20 @@ public class MainWindow extends ApplicationWindow implements
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
 		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
-		Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
-		
+		Boolean loadrecent = ps
+				.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
+
 		ArrayList<String> recentfiles = new ArrayList<String>();
-		if (loadrecent){
-			for (String s: ps.getString(FileExtensionConstants.RECENTFILES).split(";")){
+		if (loadrecent) {
+			for (String s : ps.getString(FileExtensionConstants.RECENTFILES)
+					.split(";")) {
 				recentfiles.add(s);
 			}
 		}
-				
+
 		return recentfiles;
 	}
-	
+
 	// Going to modify this to request preferences
 	public String getWorkspacePath(Composite parent) {
 		// Get the preference store

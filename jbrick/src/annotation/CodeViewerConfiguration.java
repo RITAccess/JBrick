@@ -1,4 +1,4 @@
-package myTest;
+package annotation;
 
 
 
@@ -9,7 +9,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
 //source viewer configuration
-class CodeViewerConfiguration extends SourceViewerConfiguration {
+public class CodeViewerConfiguration extends SourceViewerConfiguration {
 	private ColorCache manager;
 
 	public CodeViewerConfiguration(ColorCache manager) {

@@ -1,4 +1,4 @@
-package myTest;
+package annotation;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -13,8 +13,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	
 	//these must be on the build path. we will want to have 
 	// this in preferences eventually.
-	private static String NBC="nbc.exe";
-	private static String NEXTTOOL="nexttool.exe";
+	private static String NBC="lib/nbc.exe";
+	private static String NEXTTOOL="lib/NeXTTool.exe";
 	private static String BRICKTOOL = "BrickTool.exe";
 	
 	

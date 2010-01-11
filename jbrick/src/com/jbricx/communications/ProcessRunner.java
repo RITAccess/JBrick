@@ -17,6 +17,7 @@ public class ProcessRunner {
 		try{
 			Process p;
 			ProcessBuilder pb = new ProcessBuilder(command);
+			
 			p = pb.start();
 			
 			InputStream is = p.getInputStream();
@@ -59,15 +60,17 @@ public class ProcessRunner {
 				
 				if (p.waitFor() == 1){
 //					System.err.println("exit value = "+p.exitValue());
+				
 					return new ExitStatus(ExitStatus.ERROR,errout);
 					
 				}
 				else{
 //					System.out.println("no errors");
+				
 					return new ExitStatus(ExitStatus.OK,nonerror);
 					
 				}
-				
+				//System.out.println("1");
 			}
 			catch (InterruptedException e){
 				System.err.println(e);
@@ -82,7 +85,9 @@ public class ProcessRunner {
 		}
 		catch (Exception e){
 			e.printStackTrace();
-			return new ExitStatus(ExitStatus.ERROR,"Epic Process Failure!!");
+			//return new ExitStatus(ExitStatus.ERROR,"Epic Process Failure!!");
+			return new ExitStatus(ExitStatus.ERROR,e.getMessage());
+			
 		}
 		
 		return new ExitStatus(ExitStatus.ERROR,"If you got this error something terrible happened. Good finding out what happend. Let the force be with you.");

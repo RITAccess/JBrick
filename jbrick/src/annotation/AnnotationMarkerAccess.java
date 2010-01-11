@@ -1,4 +1,4 @@
-package myTest;
+package annotation;
 
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationAccess;

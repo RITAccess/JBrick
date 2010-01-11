@@ -1,4 +1,4 @@
-package myTest;
+package annotation;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.text.Position;
