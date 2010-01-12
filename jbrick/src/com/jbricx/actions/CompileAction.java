@@ -34,7 +34,7 @@ public class CompileAction extends Action {
 	 * Shows an about box
 	 */
 	public void run() {
-
+		
 		if (JBrickEditor.getMainWindow().getCurrentTabItem().getDocument()
 				.getFileName() == null) { /* Save before compiling */
 			MessageBox box = new MessageBox(JBrickEditor.getApp()
@@ -61,6 +61,9 @@ public class CompileAction extends Action {
 			}
 		}
 
+		//get the debugging table from the main window
+		Table tbl = JBrickEditor.getMainWindow().table;
+		tbl.removeAll();
 		ExitStatus e = BrickCreator.createBrick().compile(
 				JBrickEditor.getMainWindow().getCurrentTabItem().getDocument()
 						.getFileName());
@@ -70,7 +73,7 @@ public class CompileAction extends Action {
 		} else {
 			String msg = e.getMesage();
 			//get the debugging table from the main window
-			Table tbl = JBrickEditor.getMainWindow().table;
+//			tbl.clearAll();
 			int errorMessageIndex;
 			String errorTxt = "";
 			String lineNumber;
