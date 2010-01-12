@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.jbricx.fileOperation.FileIO;
+import com.jbricx.pjo.JBrickEditor;
 
 public aspect LogAspect {
 	pointcut saveFile() : call(*  *.saveFile(..));
@@ -18,7 +19,13 @@ public aspect LogAspect {
 	    Date date1 = new Date();  //(1)Dateオブジェクトを生成
 	    SimpleDateFormat sdf1 = new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]");
 	    System.out.println(sdf1.format( date1)) ;  
-		FileIO.append("C:\\temp\\JBrickLog.txt", sdf1.format( date1) + thisJoinPoint + "\r\n") ;
+	    if (JBrickEditor.getMainWindow() != null ){
+		    String workSpace = JBrickEditor.getMainWindow().getWorkspacePath() ; 
+		    if (workSpace != null){
+			    FileIO.append(workSpace + "\\JBrickLog.txt", sdf1.format( date1) + thisJoinPoint + "\r\n") ;
+		    }
+	    	
+	    }
 	}
 	
 	pointcut allMessageBox() : call(* *.openInformation(..)) && !within(LogAspect);
