@@ -167,7 +167,8 @@ public class MainWindow extends ApplicationWindow implements
 	 * @return Control
 	 */
 	protected Control createContents(Composite parent) {
-		String workspacePath = getWorkspacePath(parent);
+		String workspacePath = getWorkspacePath();
+		if (workspacePath == null) 	workspacePath = setWorkspacePath(parent);
 		this.treeRootFile = new File(workspacePath);
 		setStatus("Successfully Lauched!");
 
@@ -574,7 +575,28 @@ public class MainWindow extends ApplicationWindow implements
 	}
 
 	// Going to modify this to request preferences
-	public String getWorkspacePath(Composite parent) {
+	public String setWorkspacePath(Composite parent) {
+		String workspace = null ;
+		String path;
+		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		do {
+			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
+			dialog.setText("Workspace Selection");
+			path = dialog.open();
+		} while (path == null);
+		ps.putValue(FileExtensionConstants.WRKSPC, path);
+		try {
+			ps.save();
+		} catch (IOException e) {
+			System.out.println("Error Saving Preferences: "
+					+ e.getMessage());
+		}
+		workspace = path;
+		return workspace;
+
+	}
+	// Going to modify this to request preferences
+	public String getWorkspacePath() {
 		// Get the preference store
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
@@ -585,24 +607,12 @@ public class MainWindow extends ApplicationWindow implements
 		// Check if directory exists
 		File file = new File(workspace);
 		boolean exists = file.exists();
-
 		if (workspace.equals("") || !exists) {
-			String path;
-			do {
-				DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
-				dialog.setText("Workspace Selection");
-				path = dialog.open();
-			} while (path == null);
-			ps.putValue(FileExtensionConstants.WRKSPC, path);
-			try {
-				ps.save();
-			} catch (IOException e) {
-				System.out.println("Error Saving Preferences: "
-						+ e.getMessage());
-			}
-			workspace = path;
+			return null;
 		}
-		return workspace;
+		else{
+			return workspace;
+		}
 	}
 
 	public void addFolderInNewTab(String path) {
