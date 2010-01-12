@@ -1,8 +1,12 @@
 package com.jbricx.fileOperation;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 /**
@@ -45,6 +49,24 @@ public class FileIO {
 	 * save method just writes the information back into a file which is available
 	 * if the file is not available it calls the save as method
 	 */
+	public static void append(String fileNameLocation, String appendText) {		
+		try{
+		    // Open the file that is the first 
+		    // command line parameter
+
+		    FileWriter outFile = new FileWriter(fileNameLocation, true);
+		    BufferedWriter outBuffer = new BufferedWriter(outFile);
+		    
+		    outBuffer.append(appendText) ;
+
+		    //Close the output stream
+		    outBuffer.flush() ;
+		    outBuffer.close() ;
+		   
+		    }catch (Exception e){//Catch exception if any
+		      System.err.println("Error: " + e.getMessage());
+		    }
+	}	
 	public void save() {
 		
 	}
