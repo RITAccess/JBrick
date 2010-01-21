@@ -13,6 +13,7 @@ public aspect LogAspect {
 		System.out.println("Aspect : before " + thisJoinPoint);
 	}
 	
+	// detect all run
 	pointcut allrun() : execution(* *.run(..)) && !within(LogAspect);
 
 	before() : allrun() {
