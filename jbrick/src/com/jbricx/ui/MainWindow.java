@@ -67,6 +67,7 @@ import com.jbricx.actions.ExitAction;
 import com.jbricx.actions.FindAction;
 import com.jbricx.actions.GotoAction;
 import com.jbricx.actions.HelpContentAction;
+import com.jbricx.actions.JoyStickAction;
 import com.jbricx.actions.NewAction;
 import com.jbricx.actions.OpenAction;
 import com.jbricx.actions.PasteAction;
@@ -109,7 +110,7 @@ public class MainWindow extends ApplicationWindow implements
 	private SaveAsAction saveAsAction = new SaveAsAction();
 	private UndoAction undoAction = new UndoAction();
 	private DownloadAction downloadAction = new DownloadAction();
-
+	private JoyStickAction joystickAction = new JoyStickAction();
 	private CompileAction compileAction = new CompileAction();
 
 	public Table table;
@@ -426,6 +427,7 @@ public class MainWindow extends ApplicationWindow implements
 		compileMenu.add(compileAction);
 
 		helpMenu.add(aboutAction);
+		helpMenu.add(joystickAction);
 		helpMenu.add(helpContentAction);
 
 		return mm;
@@ -467,6 +469,9 @@ public class MainWindow extends ApplicationWindow implements
 
 		tm.add(new Separator());
 		tm.add(aboutAction);
+		
+		tm.add(new Separator());
+		tm.add(joystickAction);
 
 		return tm;
 	}
