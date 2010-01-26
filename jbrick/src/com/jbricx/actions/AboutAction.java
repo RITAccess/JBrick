@@ -5,9 +5,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.JBrickEditor;
-
-
-
 /**
  * This class shows an About box
  */
