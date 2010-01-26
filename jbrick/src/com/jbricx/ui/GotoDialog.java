@@ -1,12 +1,10 @@
 package com.jbricx.ui;
 
-import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -17,7 +15,6 @@ import com.jbricx.model.PersistentDocument;
  */
 public class GotoDialog extends Dialog {
   // The adapter that does the finding/replacing
-  private IDocumentAdapter da;
 
   // The associated viewer
   private ITextViewer viewer;
@@ -69,7 +66,6 @@ public class GotoDialog extends Dialog {
 		int ln = document.getLineOffset(Integer.parseInt(find)-1);
 		viewer.setSelectedRange(ln, 0);
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		//e.printStackTrace();
 	}
 	  
