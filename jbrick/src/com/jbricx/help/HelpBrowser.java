@@ -5,12 +5,12 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-
+import java.util.Vector;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.OpenWindowListener;
 import org.eclipse.swt.browser.ProgressEvent;
@@ -27,11 +27,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -49,6 +45,8 @@ public class HelpBrowser{
 	Label labelStatus;
 	Text textLocation;
     
+	
+	static Vector nodes = new Vector();
 	
     
 	public HelpBrowser(){
@@ -109,23 +107,25 @@ public class HelpBrowser{
 		form.setLayout(new FillLayout());
 
 		
-		final List list = new List(form,SWT.SIMPLE);
 		
-		list.setSize(300, SWT.FILL);
-		for (String s: urls){
-			list.add(s);
-		}
+//		final List list = new List(form,SWT.SIMPLE);
 		
+//		list.setSize(300, SWT.FILL);
+//		for (String s: urls){
+//			list.add(s);
+//		}
+		
+		final CustomTree tree = new CustomTree(form,this);
 		browser = new Browser(form, SWT.NONE);
 		
-		list.addListener(SWT.Selection, new Listener(){
-			@Override
-			public void handleEvent(Event arg0) {
-				int index = list.getSelectionIndex();
-				browser.setUrl(urls.get(index));
-				
-			}
-		});
+//		list.addListener(SWT.Selection, new Listener(){
+//			@Override
+//			public void handleEvent(Event arg0) {
+//				int index = list.getSelectionIndex();
+//				browser.setUrl(urls.get(index));
+//				
+//			}
+//		});
 		
 		Composite compositeStatus = new Composite(shell, SWT.NULL);
 	    compositeStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -193,7 +193,7 @@ public class HelpBrowser{
 		        		HelpBrowser.class,
 		          "/images/go-home.png")) {
 	        public void run() {
-	          browser.setUrl("http://www.google.com/phone");
+	          browser.setUrl(tree.getHome());
 	        }
 	      };
 	      
@@ -251,7 +251,7 @@ public class HelpBrowser{
 	      
 		
 		
-		form.setWeights(new int[] { 30, 70 });
+		form.setWeights(new int[] { 15, 85 });
 		shell.open();
 		while (!shell.isDisposed ()) {
 			if (!display.readAndDispatch ()) display.sleep ();
@@ -260,6 +260,10 @@ public class HelpBrowser{
 	}
 	
 
+	public void setUrl(String url){
+		System.out.println(url);
+		browser.setUrl(url);
+	}
 	
 	public static void main(String[] args) {
 		Display d = new Display();
