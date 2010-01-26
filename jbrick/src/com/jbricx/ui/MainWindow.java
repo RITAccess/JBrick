@@ -65,6 +65,7 @@ import com.jbricx.actions.CutAction;
 import com.jbricx.actions.DownloadAction;
 import com.jbricx.actions.ExitAction;
 import com.jbricx.actions.FindAction;
+import com.jbricx.actions.GotoAction;
 import com.jbricx.actions.HelpContentAction;
 import com.jbricx.actions.NewAction;
 import com.jbricx.actions.OpenAction;
@@ -97,6 +98,7 @@ public class MainWindow extends ApplicationWindow implements
 	private CutAction cutAction = new CutAction();
 	private ExitAction exitAction = new ExitAction();
 	private FindAction findAction = new FindAction();
+	private GotoAction gotoAction = new GotoAction();
 	private NewAction newAction = new NewAction();
 	private OpenAction openAction = new OpenAction();
 	private PasteAction pasteAction = new PasteAction();
@@ -417,6 +419,7 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(pasteAction);
 		editMenu.add(new Separator());
 		editMenu.add(findAction);
+		editMenu.add(gotoAction);
 		editMenu.add(new Separator());
 		editMenu.add(prefsAction);
 
