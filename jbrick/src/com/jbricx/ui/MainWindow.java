@@ -62,6 +62,7 @@ import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
 import com.jbricx.actions.CopyAction;
 import com.jbricx.actions.CutAction;
+import com.jbricx.actions.DirectControlAction;
 import com.jbricx.actions.DownloadAction;
 import com.jbricx.actions.ExitAction;
 import com.jbricx.actions.FindAction;
@@ -110,6 +111,7 @@ public class MainWindow extends ApplicationWindow implements
 	private SaveAsAction saveAsAction = new SaveAsAction();
 	private UndoAction undoAction = new UndoAction();
 	private DownloadAction downloadAction = new DownloadAction();
+	private DirectControlAction directControlAction = new DirectControlAction();
 	private JoyStickAction joystickAction = new JoyStickAction();
 	private CompileAction compileAction = new CompileAction();
 
@@ -393,6 +395,7 @@ public class MainWindow extends ApplicationWindow implements
 		MenuManager fileMenu = new MenuManager("&File");
 		MenuManager editMenu = new MenuManager("&Edit");
 		MenuManager compileMenu = new MenuManager("&Compile");
+		MenuManager toolMenu = new MenuManager("&Tool");
 		MenuManager downloadMenu = new MenuManager("&Download");
 
 		MenuManager helpMenu = new MenuManager("&Help");
@@ -400,6 +403,7 @@ public class MainWindow extends ApplicationWindow implements
 		mm.add(fileMenu);
 		mm.add(editMenu);
 		mm.add(compileMenu);
+		mm.add(toolMenu);
 		mm.add(helpMenu);
 		mm.add(downloadMenu);
 
@@ -424,6 +428,8 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(new Separator());
 		editMenu.add(prefsAction);
 
+		toolMenu.add(directControlAction);
+		
 		compileMenu.add(compileAction);
 
 		helpMenu.add(aboutAction);
