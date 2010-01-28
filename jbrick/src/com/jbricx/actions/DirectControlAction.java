@@ -3,11 +3,8 @@ package  com.jbricx.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-
-import DirectControl.DirectControlWindow;
-
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.JoyStickWindow;
+import com.jbricx.ui.DirectControl.DirectControlWindow;;
 
 //test
 /**
