@@ -1,5 +1,6 @@
 package com.jbricx.ui.DirectControl;
-import com.cloudgarden.resource.SWTResourceManager;
+
+import java.io.FileInputStream;
 
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -32,11 +33,6 @@ import org.eclipse.swt.events.SelectionEvent;
 */
 public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
-	{
-		//Register as a resource user - SWTResourceManager will
-		//handle the obtaining and disposing of resources
-		SWTResourceManager.registerResourceUser(this);
-	}
 	
 	private Combo cmbSensor1;
 	private Combo cmbSensor2;
@@ -120,17 +116,6 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		try {
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
-			{
-				label1 = new Label(this, SWT.NONE);
-				FormData label1LData = new FormData();
-				label1LData.left =  new FormAttachment(0, 1000, 12);
-				label1LData.top =  new FormAttachment(0, 1000, 26);
-				label1LData.width = 14;
-				label1LData.height = 26;
-				label1.setLayoutData(label1LData);
-				label1.setText("1");
-				label1.setFont(SWTResourceManager.getFont("Courier New", 14, 0, false, false));
-			}
 			{
 				FormData scale1LData = new FormData();
 				scale1LData.left =  new FormAttachment(0, 1000, 228);
@@ -236,7 +221,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button1LData.width = 40;
 				button1LData.height = 31;
 				btnARight.setLayoutData(button1LData);
-				Image image = SWTResourceManager.getImage("images/RightArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnARight.setImage(scaledImage) ;
 				btnARight.addSelectionListener(new SelectionAdapter() {
@@ -253,7 +238,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button2LData1.width = 40;
 				button2LData1.height = 31;
 				btnALeft.setLayoutData(button2LData1);
-				Image image = SWTResourceManager.getImage("images/LeftArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnALeft.setImage(scaledImage);
 			}
@@ -265,7 +250,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button3LData.width = 40;
 				button3LData.height = 31;
 				btnARed.setLayoutData(button3LData);
-				Image image = SWTResourceManager.getImage("images/RedBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnARed.setImage(scaledImage);
 			}
@@ -277,7 +262,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button4LData.width = 40;
 				button4LData.height = 31;
 				btnAYellow.setLayoutData(button4LData);
-				Image image = SWTResourceManager.getImage("images/YellowBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnAYellow.setImage(scaledImage);
 			}
@@ -289,7 +274,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button5LData.width = 40;
 				button5LData.height = 31;
 				btnBRight.setLayoutData(button5LData);
-				Image image = SWTResourceManager.getImage("images/RightArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRight.setImage(scaledImage) ;
 			}
@@ -301,7 +286,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button6LData.width = 40;
 				button6LData.height = 31;
 				btnBLeft.setLayoutData(button6LData);
-				Image image = SWTResourceManager.getImage("images/LeftArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBLeft.setImage(scaledImage);
 			}
@@ -313,7 +298,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button7LData.width = 40;
 				button7LData.height = 31;
 				btnBRed.setLayoutData(button7LData);
-				Image image = SWTResourceManager.getImage("images/RedBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRed.setImage(scaledImage);
 			}
@@ -325,7 +310,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button8LData.width = 40;
 				button8LData.height = 31;
 				btnBYellow.setLayoutData(button8LData);
-				Image image = SWTResourceManager.getImage("images/YellowBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBYellow.setImage(scaledImage);
 			}
@@ -355,7 +340,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button9LData.width = 40;
 				button9LData.height = 31;
 				btnCRight.setLayoutData(button9LData);
-				Image image = SWTResourceManager.getImage("images/RightArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCRight.setImage(scaledImage) ;
 			}
@@ -367,7 +352,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button10LData.width = 40;
 				button10LData.height = 31;
 				btnCLeft.setLayoutData(button10LData);
-				Image image = SWTResourceManager.getImage("images/LeftArrow.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCLeft.setImage(scaledImage);
 			}
@@ -379,7 +364,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button11LData.width = 40;
 				button11LData.height = 31;
 				bntCRed.setLayoutData(button11LData);
-				Image image = SWTResourceManager.getImage("images/RedBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				bntCRed.setImage(scaledImage);
 			}
@@ -391,9 +376,20 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button12LData.width = 40;
 				button12LData.height = 31;
 				btnCYellow.setLayoutData(button12LData);
-				Image image = SWTResourceManager.getImage("images/YellowBox.png") ;
+				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCYellow.setImage(scaledImage);
+			}
+			{
+				label1 = new Label(this, SWT.NONE);
+				FormData label1LData = new FormData();
+				label1LData.left =  new FormAttachment(0, 1000, 12);
+				label1LData.top =  new FormAttachment(0, 1000, 26);
+				label1LData.width = 14;
+				label1LData.height = 26;
+				label1.setLayoutData(label1LData);
+				label1.setText("1");
+				label1.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label2 = new Label(this, SWT.NONE);
@@ -404,7 +400,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label2LData.height = 26;
 				label2.setLayoutData(label2LData);
 				label2.setText("2");
-				label2.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label2.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label3 = new Label(this, SWT.NONE);
@@ -415,7 +411,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label3LData.height = 26;
 				label3.setLayoutData(label3LData);
 				label3.setText("3");
-				label3.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label3.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label4 = new Label(this, SWT.NONE);
@@ -426,7 +422,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label4LData.height = 26;
 				label4.setLayoutData(label4LData);
 				label4.setText("4");
-				label4.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label4.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label5 = new Label(this, SWT.NONE);
@@ -437,7 +433,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label5LData.height = 26;
 				label5.setLayoutData(label5LData);
 				label5.setText("A");
-				label5.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label5.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label6 = new Label(this, SWT.NONE);
@@ -448,7 +444,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label6LData.height = 26;
 				label6.setLayoutData(label6LData);
 				label6.setText("B");
-				label6.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label6.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label7 = new Label(this, SWT.NONE);
@@ -459,7 +455,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label7LData.height = 26;
 				label7.setLayoutData(label7LData);
 				label7.setText("C");
-				label7.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label7.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label8 = new Label(this, SWT.NONE);
@@ -470,7 +466,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label8LData.height = 26;
 				label8.setLayoutData(label8LData);
 				label8.setText("Motors");
-				label8.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label8.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			{
 				label9 = new Label(this, SWT.NONE);
@@ -481,7 +477,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label9LData.height = 26;
 				label9.setLayoutData(label9LData);
 				label9.setText("Sensors");
-				label9.setFont(SWTResourceManager.getFont("Courier New",14,0,false,false));
+				label9.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
 			this.layout();
 			pack();
