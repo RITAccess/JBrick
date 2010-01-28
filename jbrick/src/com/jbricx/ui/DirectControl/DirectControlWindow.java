@@ -1,6 +1,7 @@
 package com.jbricx.ui.DirectControl;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -49,9 +50,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private Label label3;
 	private Label label2;
 	private Label label1;
-	private Scale scale2;
+	private Scale scaleC;
 	private Button btnCYellow;
-	private Button bntCRed;
+	private Button btnCRed;
 	private Button btnCLeft;
 	private Button btnCRight;
 	private Scale scaleB;
@@ -66,6 +67,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private Label label8;
 	private Button btnALeft;
 	private Button btnARight;
+	
+	private ArrayList<Button> allButtons = new ArrayList<Button>() ;
+	private ArrayList<Scale> allScale = new ArrayList<Scale>() ;
 
 	/**
 	* Auto-generated main method to display this 
@@ -124,6 +128,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scale1LData.height = 42;
 				scaleA = new Scale(this, SWT.NONE);
 				scaleA.setLayoutData(scale1LData);
+				scaleA.setSelection(50) ;
 			}
 			{
 				cmbSensor1 = new Combo(this, SWT.NONE);
@@ -241,6 +246,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnALeft.setImage(scaledImage);
+				btnALeft.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnARed = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -253,6 +263,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnARed.setImage(scaledImage);
+				btnARed.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnAYellow = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -265,6 +280,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnAYellow.setImage(scaledImage);
+				btnAYellow.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnBRight = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -277,6 +297,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRight.setImage(scaledImage) ;
+				btnBRight.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnBLeft = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -289,6 +314,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBLeft.setImage(scaledImage);
+				btnBLeft.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnBRed = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -301,6 +331,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRed.setImage(scaledImage);
+				btnBRed.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnBYellow = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -313,6 +348,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBYellow.setImage(scaledImage);
+				btnBYellow.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				FormData scale2LData = new FormData();
@@ -320,8 +360,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scale2LData.top =  new FormAttachment(0, 1000, 245);
 				scale2LData.width = 158;
 				scale2LData.height = 42;
-				scale2 = new Scale(this, SWT.NONE);
-				scale2.setLayoutData(scale2LData);
+				scaleB = new Scale(this, SWT.NONE);
+				scaleB.setLayoutData(scale2LData);
+				scaleB.setSelection(50) ;
 			}
 			{
 				FormData scale3LData = new FormData();
@@ -329,8 +370,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scale3LData.top =  new FormAttachment(0, 1000, 293);
 				scale3LData.width = 158;
 				scale3LData.height = 42;
-				scaleB = new Scale(this, SWT.NONE);
-				scaleB.setLayoutData(scale3LData);
+				scaleC = new Scale(this, SWT.NONE);
+				scaleC.setLayoutData(scale3LData);
+				scaleC.setSelection(50) ;
 			}
 			{
 				btnCRight = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -343,6 +385,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCRight.setImage(scaledImage) ;
+				btnCRight.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnCLeft = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -355,18 +402,28 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCLeft.setImage(scaledImage);
+				btnCLeft.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
-				bntCRed = new Button(this, SWT.PUSH | SWT.CENTER);
+				btnCRed = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData button11LData = new FormData();
 				button11LData.left =  new FormAttachment(0, 1000, 133);
 				button11LData.top =  new FormAttachment(0, 1000, 298);
 				button11LData.width = 40;
 				button11LData.height = 31;
-				bntCRed.setLayoutData(button11LData);
+				btnCRed.setLayoutData(button11LData);
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
-				bntCRed.setImage(scaledImage);
+				btnCRed.setImage(scaledImage);
+				btnCRed.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				btnCYellow = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -379,6 +436,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCYellow.setImage(scaledImage);
+				btnCYellow.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						button1WidgetSelected(evt);
+					}
+				});
 			}
 			{
 				label1 = new Label(this, SWT.NONE);
@@ -479,6 +541,23 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label9.setText("Sensors");
 				label9.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
+
+			allButtons.add(btnARight) ;
+			allButtons.add(btnALeft) ;
+			allButtons.add(btnARed) ;
+			allButtons.add(btnAYellow) ;
+			allButtons.add(btnBRight) ;
+			allButtons.add(btnBLeft) ;
+			allButtons.add(btnBRed) ;
+			allButtons.add(btnBYellow) ;
+			allButtons.add(btnCRight) ;
+			allButtons.add(btnCLeft) ;
+			allButtons.add(btnCRed) ;
+			allButtons.add(btnCYellow) ;
+			allScale.add(scaleA) ;
+			allScale.add(scaleB) ;
+			allScale.add(scaleC) ;
+			
 			this.layout();
 			pack();
 		} catch (Exception e) {
@@ -487,9 +566,14 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	}
 	
 	private void button1WidgetSelected(SelectionEvent evt) {
-		System.out.println("button1.widgetSelected, event="+evt);
-		//TODO add your code for button1.widgetSelected
+		Button btn = (Button)evt.getSource() ;
+		int idx = allButtons.indexOf(btn) ;
+		int rowNum = idx/4 ;
+		String Row[] = {"A", "B", "C"} ;
+		System.out.println("button.widgetSelected, event="+evt);
+		System.out.println("button Number : " 
+				+ Row[rowNum] + Integer.toString(idx%4) + " Scale" + Row[rowNum] + ":" + Integer.toString(allScale.get(rowNum).getSelection()));
 	}
-
 }
+
 
