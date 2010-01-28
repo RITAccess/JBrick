@@ -1,4 +1,4 @@
-package DirectControl;
+package com.jbricx.ui.DirectControl;
 import com.cloudgarden.resource.SWTResourceManager;
 
 import org.eclipse.swt.layout.FillLayout;
