@@ -7,8 +7,14 @@ import javax.swing.JOptionPane;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
+import org.eclipse.jface.text.ITextViewerExtension3;
+import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.IUndoManager;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.TextViewerUndoManager;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationBarHoverManager;
@@ -19,6 +25,7 @@ import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
 import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISharedTextColors;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -27,6 +34,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
@@ -42,6 +51,7 @@ import org.eclipse.swt.widgets.Menu;
 import annotation.AnnotationConfiguration;
 import annotation.AnnotationHover;
 import annotation.AnnotationMarkerAccess;
+import annotation.ErrorAnnotation;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.JBrickEditor;
@@ -167,13 +177,14 @@ public class JBrickTabItem extends CTabItem {
 
 		// ////////////////////////////////////////////////////////////////
 
-		viewer.getTextWidget().addTraverseListener(new TraverseListener() {
+		viewer.getTextWidget().addKeyListener(new KeyListener() {
 
-			@Override
+			/*@Override
 			public void keyTraversed(TraverseEvent arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("good listener");
-				System.out.println(new SourceViewerConfiguration()
+				
+				System.out.println("line is: "+ getCursorLocation());
+			*/	/*System.out.println(new SourceViewerConfiguration()
 						.getInformationPresenter(viewer));
 				// System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
 				// );
@@ -182,24 +193,59 @@ public class JBrickTabItem extends CTabItem {
 				// try {
 				StyledText viewerTxtWidget = viewer.getTextWidget();
 				// Point cursorLocation = viewer.getTextWidget().getSelection();
-				Point cursorLocation = viewer.getTextWidget().getDisplay()
-						.getCursorLocation();
-				viewerTxtWidget.setSelectionRange(cursorLocation.x, 12);
+				
+				
+				try {
+					Point cursorLocation = viewer.getTextWidget().getDisplay()
+					.getCursorLocation();
+					System.out.println("cursorLocation: "+cursorLocation);
+							
+					document.getLineOffset(0);
+					System.out.println("offset is: "+document.getLineOffset(0));
+							
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//ErrorAnnotation errorAnnotation = new ErrorAnnotation(0,
+				//"Learn how to spell \"text!\"");
+				//JBrickEditor.getMainWindow().getCurrentTabItem().fAnnotationModel.addAnnotation(errorAnnotation, new Position(0,document.getLength()));
+				viewer.setSelectedRange(0, document.getLength());
+				
+				
+				/*viewerTxtWidget.setSelectionRange(cursorLocation.x, 12);
 
 				// System.out.println("cursor line is: "+
-				// document.getLineOffset(cursorLocation));
-				// int cursorOffset =
-				// viewerTxtWidget.getOffsetAtLocation(cursorLocation);
+				//document.getLineOffset(cursorLocation));
+				int cursorOffset =viewerTxtWidget.getOffsetAtLocation(cursorLocation);
 
-				// int cursorLineNumber =
-				// document.getLineOfOffset(cursorOffset);
+				 try {
+					int cursorLineNumber = document.getLineOfOffset(cursorOffset);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// System.out.println("cursor line is: "+ cursorLineNumber);
 				// } catch (BadLocationException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 				// System.out.println("bad location");
 				// }
+				 * 
+				 */
 
+			//}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				JBrickEditor.getMainWindow().setStatus("Line: "+getCursorLocation());
+				
 			}
 		});
 
@@ -224,6 +270,48 @@ public class JBrickTabItem extends CTabItem {
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
 
+	}
+	
+	/**
+	 * Returns the offset of the given source viewer's document that corresponds
+	 * to the given widget offset or <code>-1</code> if there is no such offset.
+	 * 
+	 * @param viewer the source viewer
+	 * @param widgetOffset the widget offset
+	 * @return the corresponding offset in the source viewer's document or <code>-1</code>
+	 * @since 2.1
+	 */
+	/*protected final static int widgetOffset2ModelOffset(ISourceViewer viewer, int widgetOffset) {
+	
+		//if (viewer instanceof ITextViewerExtension5) {
+			System.out.println("offset is: "+ widgetOffset);
+			TextViewer extension= (TextViewer) viewer;
+			
+			
+			return extension.widgetOffset2ModelOffset(widgetOffset);
+		//}
+		//return widgetOffset + viewer.getVisibleRegion().getOffset();
+	}*/
+	
+	public  int getCursorLocation(){
+		int line = -1;
+		if (viewer != null && document !=null){
+			StyledText styledText= viewer.getTextWidget();
+			//int caret= viewer.widgetOffset2ModelOffset(styledText.getCaretOffset());
+			int caret= styledText.getCaretOffset();
+			//styledText.getCaretLine();
+			IDocument document= viewer.getDocument();
+			try {
+				
+				line= document.getLineOfOffset(caret)+1;
+			} catch (BadLocationException x) {
+				
+			}
+		}
+		
+		return line;
+		
+		
 	}
 
 	public void setFont(FontData[] fontData) {
