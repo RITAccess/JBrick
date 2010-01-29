@@ -22,9 +22,11 @@ import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
+import org.eclipse.jface.text.source.LineNumberChangeRulerColumn;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -44,6 +46,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -114,10 +117,13 @@ public class MainWindow extends ApplicationWindow implements
 	private DirectControlAction directControlAction = new DirectControlAction();
 	private JoyStickAction joystickAction = new JoyStickAction();
 	private CompileAction compileAction = new CompileAction();
+	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 
 	public Table table;
 	// The font
 	private Font font;
+	
+	public LineNumberChangeRulerColumn lnrc;
 
 	/*
 	 * // The undo manager private IUndoManager undoManager;
@@ -172,15 +178,22 @@ public class MainWindow extends ApplicationWindow implements
 	 * @return Control
 	 */
 	protected Control createContents(Composite parent) {
+		long start = System.currentTimeMillis();
+		System.out.println("start ");
 		String workspacePath = getWorkspacePath();
 		if (workspacePath == null) 	workspacePath = setWorkspacePath(parent);
 		this.treeRootFile = new File(workspacePath);
 		setStatus("Successfully Lauched!");
+		
 
 		// divide the main window
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		sashForm.setLayout(new RowLayout());
 
+		
+		final Label l = new Label(parent, SWT.NONE);
+		l.setToolTipText("helllllll oooooo Jaws:");
+		l.setVisible(false);
 		// //////// Left panel ////////////////
 		// Create the tree viewer to display the file tree
 		// Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
@@ -222,9 +235,16 @@ public class MainWindow extends ApplicationWindow implements
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
 
-		LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
+		/*LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
+		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
+				255, 0, 0)));*/
+		lnrc = new LineNumberChangeRulerColumn(new ColorCache());
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
 				255, 0, 0)));
+		//lnrc.getLineOfLastMouseButtonActivity();
+		
+		
+		//lnrc.getControl().getAccessible().textSelectionChanged()
 		ruler.addDecorator(0, lnrc);
 
 		tabFolder = new CTabFolder(rightPanel, SWT.TOP);
@@ -327,16 +347,30 @@ public class MainWindow extends ApplicationWindow implements
 					int offset = document.getLineOffset(errorLineNumber);
 					int lineLength = document.getLineLength(errorLineNumber);
 					getCurrentTabItem().getViewer().setSelectedRange(offset, lineLength);
+					setStatus(" status bar Line "+strLineNumber);
 					
-					System.out.println( document.getLineInformation(1));
-					//System.out.println( document.getLineOffset(1));
+					
+					//System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer()) );
+					System.out.println("Info is: "+getCurrentTabItem().getViewer().getTextWidget().getSelection() );
+					
+					
+					/*if(lnrc != null){
+						System.out.println("mouse thing -- "+lnrc.getLineOfLastMouseButtonActivity());
+					}
+					else{
+						System.out.println("it is null");
+					}
+					*/
+					
+					getStatusLineManager().getControl().setFocus();
+					
 				} catch (BadLocationException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
 
-			
+			l.setFocus();
 			
 		
 			}
@@ -347,7 +381,9 @@ public class MainWindow extends ApplicationWindow implements
 
 		getMenuBarManager().updateAll(true);
 		
-
+		long end = System.currentTimeMillis(); 
+		start = end-start;
+		System.out.println("it took : "+ start);
 		return parent;
 
 	}

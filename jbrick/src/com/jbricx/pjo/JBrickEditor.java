@@ -177,9 +177,9 @@ public class JBrickEditor {
 	 *            the command line arguments
 	 */
 	public static void main(String[] args) {
-		ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
+		//ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
 		
-		System.out.println(e);
+		//System.out.println(e);
 		
 		new JBrickEditor().run();
 		

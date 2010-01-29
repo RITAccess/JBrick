@@ -7,17 +7,13 @@ import com.jbricx.fileOperation.FileIO;
 import com.jbricx.pjo.JBrickEditor;
 
 public aspect LogAspect {
-	pointcut saveFile() : call(*  *.saveFile(..));
+/*	
 
-	before() : saveFile() {
-		System.out.println("Aspect : before " + thisJoinPoint);
-	}
-	
 	// detect all run
 	pointcut allrun() : execution(* *.run(..)) && !within(LogAspect);
 
 	before() : allrun() {
-	    Date date1 = new Date();  //(1)Dateオブジェクトを生成
+	    Date date1 = new Date();  //(1)
 	    SimpleDateFormat sdf1 = new SimpleDateFormat("[yyyy/MM/dd HH:mm:ss]");
 	    System.out.println(sdf1.format( date1)) ;  
 	    if (JBrickEditor.getMainWindow() != null ){
@@ -28,16 +24,6 @@ public aspect LogAspect {
 	    	
 	    }
 	}
+*/
 	
-	pointcut allMessageBox() : call(* *.openInformation(..)) && !within(LogAspect);
-
-	before() : allMessageBox() {
-		System.out.println("Aspect : openInformation " + thisJoinPoint);
-	}
-
-	pointcut errorDetection(Exception e) : handler(Exception) && args(e);
-	before(Exception e) : errorDetection(e) {
-	    System.out.println(" Aspect : exception detected! " + e.getMessage());
-	}
-
 }
