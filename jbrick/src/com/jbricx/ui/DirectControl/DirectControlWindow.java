@@ -312,7 +312,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				btnALeft.setImage(scaledImage);
 				btnALeft.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						button1WidgetSelected(evt);
+						button1WidgetSelected(evt) ;
 					}
 				});
 			}
