@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
-
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
@@ -17,15 +14,12 @@ import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
 import org.eclipse.jface.text.source.LineNumberChangeRulerColumn;
-import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
-import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -42,11 +36,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -69,6 +61,7 @@ import com.jbricx.actions.DirectControlAction;
 import com.jbricx.actions.DownloadAction;
 import com.jbricx.actions.ExitAction;
 import com.jbricx.actions.FindAction;
+import com.jbricx.actions.FindBrickAction;
 import com.jbricx.actions.GotoAction;
 import com.jbricx.actions.HelpContentAction;
 import com.jbricx.actions.JoyStickAction;
@@ -116,6 +109,7 @@ public class MainWindow extends ApplicationWindow implements
 	private DownloadAction downloadAction = new DownloadAction();
 	private DirectControlAction directControlAction = new DirectControlAction();
 	private JoyStickAction joystickAction = new JoyStickAction();
+	private FindBrickAction findBrickAction = new FindBrickAction();
 	private CompileAction compileAction = new CompileAction();
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 
@@ -463,13 +457,14 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(gotoAction);
 		editMenu.add(new Separator());
 		editMenu.add(prefsAction);
-
+		
+		compileMenu.add(findBrickAction);
 		toolMenu.add(directControlAction);
 		
 		compileMenu.add(compileAction);
-
+		compileMenu.add(joystickAction);
+		
 		helpMenu.add(aboutAction);
-		helpMenu.add(joystickAction);
 		helpMenu.add(helpContentAction);
 
 		return mm;
@@ -505,7 +500,7 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(prefsAction);
 		tm.add(new Separator());
 		tm.add(compileAction);
-
+		
 		tm.add(new Separator());
 		tm.add(downloadAction);
 
@@ -514,7 +509,9 @@ public class MainWindow extends ApplicationWindow implements
 		
 		tm.add(new Separator());
 		tm.add(joystickAction);
-
+		
+		tm.add(new Separator());
+		tm.add(findBrickAction);
 		return tm;
 	}
 
