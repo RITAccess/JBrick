@@ -50,7 +50,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button UpRight;
 	private Button Up;
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
-	JoyStickEvents joyStickEvents = new JoyStickEvents();
+
 	
 	ArrayList<Button> buttonArray = new ArrayList<Button>();
 
