@@ -1,4 +1,5 @@
 package com.jbricx.ui.DirectControl;
+import com.cloudgarden.resource.SWTResourceManager;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -34,6 +35,13 @@ import org.eclipse.swt.events.SelectionEvent;
 */
 public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
+	{
+		//Register as a resource user - SWTResourceManager will
+		//handle the obtaining and disposing of resources
+		SWTResourceManager.registerResourceUser(this);
+	}
+	
+	
 	
 	private Combo cmbSensor1;
 	private Combo cmbSensor2;
@@ -63,6 +71,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private Scale scaleA;
 	private Button btnAYellow;
 	private Button btnARed;
+	private Label lblValue2;
+	private Button btnGet;
+	private Label lblValue4;
+	private Label lblValue3;
+	private Label lblValue1;
 	private Label label9;
 	private Label label8;
 	private Button btnALeft;
@@ -120,6 +133,21 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		try {
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
+			{
+				btnGet = new Button(this, SWT.PUSH | SWT.CENTER);
+				FormData btnGetLData = new FormData();
+				btnGetLData.left =  new FormAttachment(0, 1000, 234);
+				btnGetLData.top =  new FormAttachment(0, 1000, 172);
+				btnGetLData.width = 71;
+				btnGetLData.height = 28;
+				btnGet.setLayoutData(btnGetLData);
+				btnGet.setText("Get");
+				btnGet.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						btnGetWidgetSelected(evt);
+					}
+				});
+			}
 			{
 				FormData scale1LData = new FormData();
 				scale1LData.left =  new FormAttachment(0, 1000, 228);
@@ -541,6 +569,50 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				label9.setText("Sensors");
 				label9.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14, SWT.NORMAL ));
 			}
+			{
+				lblValue1 = new Label(this, SWT.NONE);
+				FormData label10LData = new FormData();
+				label10LData.left =  new FormAttachment(0, 1000, 234);
+				label10LData.top =  new FormAttachment(0, 1000, 26);
+				label10LData.width = 83;
+				label10LData.height = 26;
+				lblValue1.setLayoutData(label10LData);
+				lblValue1.setText("value 1");
+				lblValue1.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14,SWT.NORMAL));
+			}
+			{
+				lblValue2 = new Label(this, SWT.NONE);
+				FormData label11LData = new FormData();
+				label11LData.left =  new FormAttachment(0, 1000, 234);
+				label11LData.top =  new FormAttachment(0, 1000, 64);
+				label11LData.width = 83;
+				label11LData.height = 26;
+				lblValue2.setLayoutData(label11LData);
+				lblValue2.setText("value 2");
+				lblValue2.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14,SWT.NORMAL));
+			}
+			{
+				lblValue3 = new Label(this, SWT.NONE);
+				FormData label12LData = new FormData();
+				label12LData.left =  new FormAttachment(0, 1000, 234);
+				label12LData.top =  new FormAttachment(0, 1000, 102);
+				label12LData.width = 83;
+				label12LData.height = 26;
+				lblValue3.setLayoutData(label12LData);
+				lblValue3.setText("value 3");
+				lblValue3.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14,SWT.NORMAL));
+			}
+			{
+				lblValue4 = new Label(this, SWT.NONE);
+				FormData label13LData = new FormData();
+				label13LData.left =  new FormAttachment(0, 1000, 234);
+				label13LData.top =  new FormAttachment(0, 1000, 140);
+				label13LData.width = 83;
+				label13LData.height = 26;
+				lblValue4.setLayoutData(label13LData);
+				lblValue4.setText("value 4");
+				lblValue4.setFont(new org.eclipse.swt.graphics.Font(display,"Courier New",14,SWT.NORMAL));
+			}
 
 			allButtons.add(btnARight) ;
 			allButtons.add(btnALeft) ;
@@ -573,6 +645,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		System.out.println("button.widgetSelected, event="+evt);
 		System.out.println("button Number : " 
 				+ Row[rowNum] + Integer.toString(idx%4) + " Scale" + Row[rowNum] + ":" + Integer.toString(allScale.get(rowNum).getSelection()));
+	}
+	
+	private void btnGetWidgetSelected(SelectionEvent evt) {
+		System.out.println("btnGet.widgetSelected, event="+evt);
+		//TODO add your code for btnGet.widgetSelected
 	}
 }
 
