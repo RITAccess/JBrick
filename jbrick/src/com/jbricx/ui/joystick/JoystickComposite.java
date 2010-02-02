@@ -1,6 +1,7 @@
 package com.jbricx.ui.joystick;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -9,11 +10,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
@@ -51,6 +51,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button Up;
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 	JoyStickEvents joyStickEvents = new JoyStickEvents();
+	
+	ArrayList<Button> buttonArray = new ArrayList<Button>();
 
 	/**
 	 * Auto-generated main method to display this
@@ -398,7 +400,22 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					}
 				});
 			}
-			// FormLayout thisLayout = new FormLayout();
+			
+			buttonArray.add(UpLeft);
+			buttonArray.add(Up);
+			buttonArray.add(UpRight);
+			buttonArray.add(centreStop);
+			buttonArray.add(Left);
+			buttonArray.add(right);
+			buttonArray.add(down);
+			buttonArray.add(downRight);
+			buttonArray.add(downLeft);
+			buttonArray.add(T1);
+			buttonArray.add(T2);
+			buttonArray.add(help);
+			
+			
+			FormLayout thisLayout = new FormLayout();
 
 			this.layout();
 			pack();
