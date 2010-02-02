@@ -27,6 +27,7 @@ import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.NXT.SensorMode;
 import com.jbricx.communications.NXT.SensorType;
+import com.jbricx.ui.JBrickButtonUtil;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -82,7 +83,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private Label label8;
 	private Button btnALeft;
 	private Button btnARight;
-	
+	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
+
 	private ArrayList<Button> allButtons = new ArrayList<Button>() ;
 	private ArrayList<Scale> allScale = new ArrayList<Scale>() ;
 
@@ -157,6 +159,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				btnGetLData.height = 28;
 				btnGet.setLayoutData(btnGetLData);
 				btnGet.setText("Get");
+				buttonUtil.setAccessibleString(btnGet, "Get");
 				btnGet.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						btnGetWidgetSelected(evt);
@@ -285,6 +288,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button1LData.width = 40;
 				button1LData.height = 31;
 				btnARight.setLayoutData(button1LData);
+				buttonUtil.setAccessibleString(btnARight, "button A right arrow");
 				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnARight.setImage(scaledImage) ;
@@ -302,6 +306,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button2LData1.width = 40;
 				button2LData1.height = 31;
 				btnALeft.setLayoutData(button2LData1);
+				buttonUtil.setAccessibleString(btnALeft, "button A left arrow");
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnALeft.setImage(scaledImage);
@@ -319,6 +324,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button3LData.width = 40;
 				button3LData.height = 31;
 				btnARed.setLayoutData(button3LData);
+				buttonUtil.setAccessibleString(btnARed, "button A red");
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnARed.setImage(scaledImage);
@@ -336,6 +342,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button4LData.width = 40;
 				button4LData.height = 31;
 				btnAYellow.setLayoutData(button4LData);
+				buttonUtil.setAccessibleString(btnAYellow, "button A yellow");
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnAYellow.setImage(scaledImage);
@@ -353,6 +360,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button5LData.width = 40;
 				button5LData.height = 31;
 				btnBRight.setLayoutData(button5LData);
+				buttonUtil.setAccessibleString(btnBRight, "button B right arrow");
 				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRight.setImage(scaledImage) ;
@@ -370,6 +378,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button6LData.width = 40;
 				button6LData.height = 31;
 				btnBLeft.setLayoutData(button6LData);
+				buttonUtil.setAccessibleString(btnBLeft, "button B left arrow");
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBLeft.setImage(scaledImage);
@@ -387,6 +396,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button7LData.width = 40;
 				button7LData.height = 31;
 				btnBRed.setLayoutData(button7LData);
+				buttonUtil.setAccessibleString(btnBRed, "button B red");
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBRed.setImage(scaledImage);
@@ -404,6 +414,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button8LData.width = 40;
 				button8LData.height = 31;
 				btnBYellow.setLayoutData(button8LData);
+				buttonUtil.setAccessibleString(btnBYellow, "button B yellow");
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnBYellow.setImage(scaledImage);
@@ -441,6 +452,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button9LData.width = 40;
 				button9LData.height = 31;
 				btnCRight.setLayoutData(button9LData);
+				buttonUtil.setAccessibleString(btnCRight, "button C right arrow");
 				Image image = new Image(null, new FileInputStream("src/images/RightArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCRight.setImage(scaledImage) ;
@@ -458,6 +470,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button10LData.width = 40;
 				button10LData.height = 31;
 				btnCLeft.setLayoutData(button10LData);
+				buttonUtil.setAccessibleString(btnCLeft, "button C left arrow");
 				Image image = new Image(null, new FileInputStream("src/images/LeftArrow.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCLeft.setImage(scaledImage);
@@ -475,6 +488,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button11LData.width = 40;
 				button11LData.height = 31;
 				btnCRed.setLayoutData(button11LData);
+				buttonUtil.setAccessibleString(btnCRed, "button C red");
 				Image image = new Image(null, new FileInputStream("src/images/RedBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCRed.setImage(scaledImage);
@@ -492,6 +506,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				button12LData.width = 40;
 				button12LData.height = 31;
 				btnCYellow.setLayoutData(button12LData);
+				buttonUtil.setAccessibleString(btnCYellow, "button C yellow");
 				Image image = new Image(null, new FileInputStream("src/images/YellowBox.png")) ;
 				Image scaledImage = new Image(display, image.getImageData().scaledTo(35, 25)) ;
 				btnCYellow.setImage(scaledImage);
