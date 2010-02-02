@@ -10,10 +10,15 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.ui.JBrickButtonUtil;
+
+@SuppressWarnings("unused")
 public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 
 	private Group rightMotor;
@@ -25,11 +30,12 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button brickOS;
 	private Button standard;
 	private Button ok;
-	private Button button1;
+	private Button help;
 	private List brickType;
 	private List portList;
 	private StyledText searchBrick;
 	private Group driveMode;
+	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 
 	/**
 	* Auto-generated main method to display this 
@@ -84,6 +90,15 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 				{
 					brickType = new List(driveMode, SWT.NONE);
 					brickType.setBounds(17, 28, 117, 24);
+					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
+
+					brickType.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("Selection: " + event.button);
+							System.out.println("Brick Type list selected");
+						}
+
+					});
 				}
 			}
 			{
@@ -93,6 +108,14 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 				{
 					portList = new List(leftMotor, SWT.NONE);
 					portList.setBounds(17, 28, 121, 24);
+					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
+
+					portList.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("Portlist selected");
+						}
+
+					});
 				}
 			}
 			{
@@ -103,27 +126,67 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 					standard = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					standard.setText("Standard");
 					standard.setBounds(12, 26, 65, 30);
+					buttonUtil.setAccessibleString(standard, "Brick Type List");
+
+					standard.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("Standard radio Button selected");
+						}
+
+					});
 				}
 				{
 					brickOS = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					brickOS.setText("brickOS");
 					brickOS.setSize(60, 30);
 					brickOS.setBounds(89, 26, 60, 30);
+					buttonUtil.setAccessibleString(brickOS, "BrickOS");
+
+					brickOS.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("brickOS radio Button selected");
+						}
+
+					});
 				}
 				{
 					pbForth = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					pbForth.setText("pbForth");
 					pbForth.setBounds(162, 26, 60, 30);
+					buttonUtil.setAccessibleString(pbForth, "pbForth");
+
+					pbForth.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("pbForth radio Button selected");
+						}
+
+					});
 				}
 				{
 					leJOS = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					leJOS.setText("leJOS");
 					leJOS.setBounds(234, 26, 60, 30);
+					buttonUtil.setAccessibleString(leJOS, "leJOS");
+
+					leJOS.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("leJOS radio Button selected");
+						}
+
+					});
 				}
 				{
 					other = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					other.setText("Other");
 					other.setBounds(294, 26, 54, 30);
+					buttonUtil.setAccessibleString(other, "Other");
+
+					other.addListener(SWT.Selection, new Listener() {
+						public void handleEvent(Event event) {
+							System.out.println("Other radio Button selected");
+						}
+
+					});
 				}
 			}
 			{
@@ -133,17 +196,41 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 				cancel = new Button(this, SWT.PUSH | SWT.CENTER);
 				cancel.setText("Cancel");
 				cancel.setBounds(157, 231, 60, 30);
+				buttonUtil.setAccessibleString(cancel, "Cancel");
+
+				cancel.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event event) {
+						System.out.println("Cancel Button selected");
+					}
+
+				});
 			}
 			{
-				button1 = new Button(this, SWT.PUSH | SWT.CENTER);
-				button1.setText("Help");
-				button1.setSize(60, 30);
-				button1.setBounds(237, 231, 60, 30);
+				help = new Button(this, SWT.PUSH | SWT.CENTER);
+				help.setText("Help");
+				help.setSize(60, 30);
+				help.setBounds(237, 231, 60, 30);
+				buttonUtil.setAccessibleString(help, "Help");
+
+				help.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event event) {
+						System.out.println("Help Button selected");
+					}
+
+				});
 			}
 			{
 				ok = new Button(this, SWT.PUSH | SWT.CENTER);
 				ok.setText("Ok");
 				ok.setBounds(74, 231, 60, 30);
+				buttonUtil.setAccessibleString(ok, "OK");
+
+				ok.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event event) {
+						System.out.println("OK Button selected");
+					}
+
+				});
 			}
 			FormLayout thisLayout = new FormLayout();
 			
