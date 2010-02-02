@@ -3,6 +3,8 @@ package com.jbricx.ui.joystick;
 import java.io.FileInputStream;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -16,7 +18,6 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.ui.JBrickButtonUtil;
-
 
 public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
@@ -49,6 +50,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button UpRight;
 	private Button Up;
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
+	JoyStickEvents joyStickEvents = new JoyStickEvents();
 
 	/**
 	 * Auto-generated main method to display this
@@ -108,12 +110,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
 					UpLeft.setBounds(18, 36, 26, 26);
 					buttonUtil.setAccessibleString(UpLeft, "Up Left Arrow");
-
-					UpLeft.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("up left arrow selected");
+	
+					UpLeft.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -123,11 +124,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					Up.setBounds(42, 36, 27, 26);
 					buttonUtil.setAccessibleString(Up, "Up Arrow");
 
-					Up.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("up arrow selected");
+					Up.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -136,13 +136,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/UpRight.png")));
 					UpRight.setBounds(67, 37, 27, 26);
 					buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
-					UpRight.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("up right arrow selected");
+					UpRight.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
-
 				}
 				{
 					Left = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -150,11 +148,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/left.png")));
 					Left.setBounds(18, 59, 24, 30);
 					buttonUtil.setAccessibleString(Left, "Left Arrow");
-					Left.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("left arrow selected");
+					Left.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -163,11 +160,9 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/centreStop.png")));
 					centreStop.setBounds(41, 62, 27, 26);
 					buttonUtil.setAccessibleString(centreStop, "Stop");
-					centreStop.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("centre stop button selected");
+					centreStop.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {							
 						}
-
 					});
 				}
 				{
@@ -176,11 +171,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/right.png")));
 					right.setBounds(66, 59, 28, 30);
 					buttonUtil.setAccessibleString(right, "Right Arrow");
-					right.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("right arrow selected");
+					right.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -189,11 +183,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/downLeft.png")));
 					downLeft.setBounds(18, 84, 24, 28);
 					buttonUtil.setAccessibleString(downLeft, "Down Left Arrow");
-					downLeft.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("down left arrow selected");
+					downLeft.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -202,11 +195,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/down.png")));
 					down.setBounds(43, 87, 25, 24);
 					buttonUtil.setAccessibleString(down, "Down Arrow");
-					down.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("down arrow selected");
+					down.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -216,11 +208,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					downRight.setBounds(68, 86, 25, 26);
 					buttonUtil.setAccessibleString(downRight,
 							"Down Right Arrow");
-					downRight.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("down right arrow selected");
+					downRight.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -229,11 +220,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/T1.png")));
 					T1.setBounds(30, 125, 24, 24);
 					buttonUtil.setAccessibleString(T1, "T1");
-					T1.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("T1 selected");
+					T1.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -242,11 +232,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"src/images/T2.png")));
 					T2.setBounds(55, 124, 25, 24);
 					buttonUtil.setAccessibleString(T2, "T2");
-					T2.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("T2 selected");
+					T2.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 			}
@@ -258,12 +247,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					leftRight = new Button(driveMode, SWT.RADIO | SWT.LEFT);
 					leftRight.setText("Left-Right");
 					leftRight.setBounds(12, 21, 73, 30);
-					buttonUtil.setAccessibleString(leftRight, "Left Right Drive Mode");
-					leftRight.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("left right selected");
+					buttonUtil.setAccessibleString(leftRight,
+							"Left Right Drive Mode");
+					leftRight.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -271,11 +260,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					driveSteer.setText("Drive-Steer");
 					driveSteer.setBounds(12, 47, 80, 30);
 					buttonUtil.setAccessibleString(driveSteer, "Drive Steer");
-					driveSteer.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("drive steer selected");
+					driveSteer.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 			}
@@ -288,11 +276,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					leftMotor_A.setText("A");
 					leftMotor_A.setBounds(12, 22, 30, 24);
 					buttonUtil.setAccessibleString(leftMotor_A, "Left Motor A");
-					leftMotor_A.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("left motor A selected");
+					leftMotor_A.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -300,11 +287,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					leftMotor_B.setText("B");
 					leftMotor_B.setBounds(47, 22, 29, 24);
 					buttonUtil.setAccessibleString(leftMotor_B, "Left Motor B");
-					leftMotor_B.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("left motor B selected");
+					leftMotor_B.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -312,11 +298,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					leftMotor_C.setText("C");
 					leftMotor_C.setBounds(81, 22, 26, 24);
 					buttonUtil.setAccessibleString(leftMotor_C, "Left Motor C");
-					leftMotor_C.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("left motor C selected");
+					leftMotor_C.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -324,12 +309,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							| SWT.LEFT);
 					leftMotor_Reversed.setText("Reversed");
 					leftMotor_Reversed.setBounds(12, 48, 80, 20);
-					buttonUtil.setAccessibleString(leftMotor_Reversed, "Left Motor Reversed");
-					leftMotor_Reversed.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Left motor reversed");
+					buttonUtil.setAccessibleString(leftMotor_Reversed,
+							"Left Motor Reversed");
+					leftMotor_Reversed.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 			}
@@ -341,36 +326,36 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					rightMotor_A = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					rightMotor_A.setText("A");
 					rightMotor_A.setBounds(12, 20, 27, 23);
-					buttonUtil.setAccessibleString(rightMotor_A, "Right Motor A");
-					rightMotor_A.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Right Motor A selected");
+					buttonUtil.setAccessibleString(rightMotor_A,
+							"Right Motor A");
+					rightMotor_A.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
 					rightMotor_B = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					rightMotor_B.setText("B");
 					rightMotor_B.setBounds(48, 20, 26, 23);
-					buttonUtil.setAccessibleString(rightMotor_B, "Right Motor B");
-					rightMotor_B.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Right Motor B selected");
+					buttonUtil.setAccessibleString(rightMotor_B,
+							"Right Motor B");
+					rightMotor_B.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
 					rightMotor_C = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					rightMotor_C.setText("C");
 					rightMotor_C.setBounds(82, 19, 24, 23);
-					buttonUtil.setAccessibleString(rightMotor_C, "Right Motor C");
-					rightMotor_C.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("right motor C selected");
+					buttonUtil.setAccessibleString(rightMotor_C,
+							"Right Motor C");
+					rightMotor_C.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 				{
@@ -378,12 +363,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							| SWT.LEFT);
 					rightMotor_Reversed.setText("Reversed");
 					rightMotor_Reversed.setBounds(12, 45, 70, 24);
-					buttonUtil.setAccessibleString(rightMotor_Reversed, "Right Motor Reversed");
-					rightMotor_Reversed.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Right Motor reversed");
+					buttonUtil.setAccessibleString(rightMotor_Reversed,
+							"Right Motor Reversed");
+					rightMotor_Reversed.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 			}
@@ -394,12 +379,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 				{
 					speedBar = new Scale(speed, SWT.NONE);
 					speedBar.setBounds(12, 15, 85, 33);
-					//buttonUtil.setAccessibleString(speedBar, "Speed Bar");
-					speedBar.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Speed scale selected");
+					// buttonUtil.setAccessibleString(speedBar, "Speed Bar");
+					speedBar.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							
 						}
-
 					});
 				}
 			}
@@ -408,11 +392,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 				help.setText("HELP");
 				help.setBounds(116, 337, 60, 25);
 				buttonUtil.setAccessibleString(help, "Help");
-				help.addListener(SWT.Selection, new Listener() {
-					public void handleEvent(Event event) {
-						System.out.println("Help button selected");
+				help.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						
 					}
-
 				});
 			}
 			// FormLayout thisLayout = new FormLayout();
