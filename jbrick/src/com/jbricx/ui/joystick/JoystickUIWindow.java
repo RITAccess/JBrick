@@ -1,7 +1,5 @@
 package com.jbricx.ui.joystick;
 
-import java.io.FileNotFoundException;
-
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -16,7 +14,7 @@ public class JoystickUIWindow extends ApplicationWindow {
 
 	protected Control createContents(Composite parent) {
 		getShell().setText("Joystick");
-		parent.setSize(170, 610);
+		parent.setSize(300, 410);
 
 		new JoystickComposite(parent, SWT.NULL);
 
