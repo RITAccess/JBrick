@@ -100,7 +100,9 @@ public class CompileAction extends Action {
 			int errorMessageIndex;
 			String errorTxt = "";
 			String lineNumber;
-			JBrickTabItem tab = JBrickEditor.getMainWindow().getCurrentTabItem();			
+			JBrickTabItem tab = JBrickEditor.getMainWindow().getCurrentTabItem();		
+			
+			tab.fAnnotationModel.removeAllAnnotations();
 			
 			//iterate throw the returned message from the compiler 
 			while ((errorMessageIndex = msg.indexOf("Error:")) > 0) {
