@@ -4,8 +4,15 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DragDetectEvent;
+import org.eclipse.swt.events.DragDetectListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -95,18 +102,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	*/
 	public static void main(String[] args) {
 		
-		try {
-			nxt = new WindowsNXTBrick();
-			nxt.NXTConnect(ConnectionType.USB);
-		} catch (NXTNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnableToCreateNXTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		showGUI();
+		
 	}
 	
 	/**
@@ -147,6 +145,20 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void initGUI() {
+		
+		try {
+			nxt = new WindowsNXTBrick();
+			nxt.NXTConnect(ConnectionType.USB);
+			
+		} catch (NXTNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnableToCreateNXTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		try {
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
@@ -175,6 +187,22 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scaleA = new Scale(this, SWT.NONE);
 				scaleA.setLayoutData(scale1LData);
 				scaleA.setSelection(50) ;
+				scaleA.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						updateSpeed(Motor.MOTOR_A,scaleA.getSelection());
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				
+				
 			}
 			{
 				cmbSensor1 = new Combo(this, SWT.NONE);
@@ -188,6 +216,22 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 					cmbSensor1.add(t.getName());
 				}
 				cmbSensor1.setText(cmbSensor1.getItem(0));
+				cmbSensor1.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						updateMode(0, cmbSensor1.getText());
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+					
+					
 			}
 			{
 				cmbSensor2 = new Combo(this, SWT.NONE);
@@ -433,6 +477,20 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scaleB = new Scale(this, SWT.NONE);
 				scaleB.setLayoutData(scale2LData);
 				scaleB.setSelection(50) ;
+				scaleB.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						updateSpeed(Motor.MOTOR_B,scaleB.getSelection());
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 			{
 				FormData scale3LData = new FormData();
@@ -443,6 +501,20 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				scaleC = new Scale(this, SWT.NONE);
 				scaleC.setLayoutData(scale3LData);
 				scaleC.setSelection(50) ;
+				scaleC.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						updateSpeed(Motor.MOTOR_C,scaleC.getSelection());
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 			{
 				btnCRight = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -701,13 +773,13 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		switch(rowNum){
 		case 0: 
 			m = Motor.MOTOR_A;
-			speed = map(scaleA.getSelection(),0,100,50,100);
+			speed = map(scaleA.getSelection(),0,100,65,100);
 			break;
 		case 1:
 			m = Motor.MOTOR_B;
-			speed = map(scaleB.getSelection(),0,100,50,100);
+			speed = map(scaleB.getSelection(),0,100,65,100);
 			break;
-		case 3:
+		case 2:
 			m = Motor.MOTOR_C;
 			speed =  map(scaleC.getSelection(),0,100,50,100);
 			break;
@@ -736,6 +808,42 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private void btnGetWidgetSelected(SelectionEvent evt) {
 		System.out.println("btnGet.widgetSelected, event="+evt);
 		//TODO add your code for btnGet.widgetSelected
+	}
+	
+	private void updateSpeed(Motor motor, int speed){
+		nxt.motorOn(motor, map(speed,0,100,65,100));
+	}
+	
+	public void updateMode(int port, String sensor){
+		Combo control;
+		switch(port){
+		case 0:
+			control = cmbSensorType1;
+			break;
+		case 1:
+			control = cmbSensorType2;
+			break;
+		case 2:
+			control = cmbSensorType3;
+			break;
+		case 3:
+			control = cmbSensorType4;
+			break;
+		default:
+			control = cmbSensorType1;
+			break;
+		}
+		
+		int i=0;
+		for (int j=0; j<control.getItems().length;j++){
+			SensorType s = SensorType.valueOf(sensor);
+			
+			System.out.println(s.getName()+ " ");
+			if (control.getItem(j).equals(s.getName())){
+				System.out.println("YES "+j);
+				break;
+			}
+		}
 	}
 	
 	public static int map(long x, long in_min, long in_max, long out_min, long out_max)

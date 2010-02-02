@@ -90,6 +90,9 @@ public class CompileAction extends Action {
 		ExitStatus e = BrickCreator.createBrick().compile(
 				JBrickEditor.getMainWindow().getCurrentTabItem().getDocument()
 						.getFileName());
+		
+		JBrickTabItem tab = JBrickEditor.getMainWindow().getCurrentTabItem();	
+		tab.fAnnotationModel.removeAllAnnotations();
 		if (e.isOk()) {
 			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow()
 					.getShell(), "Compile", "Compile was a success!");
@@ -100,9 +103,9 @@ public class CompileAction extends Action {
 			int errorMessageIndex;
 			String errorTxt = "";
 			String lineNumber;
-			JBrickTabItem tab = JBrickEditor.getMainWindow().getCurrentTabItem();		
+				
 			
-			tab.fAnnotationModel.removeAllAnnotations();
+			
 			
 			//iterate throw the returned message from the compiler 
 			while ((errorMessageIndex = msg.indexOf("Error:")) > 0) {
