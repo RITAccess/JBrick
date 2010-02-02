@@ -11,7 +11,7 @@ public class JoyStickAction extends Action{
 	   * PreferencesAction constructor
 	   */
 	  public JoyStickAction() {
-		  super("&Download@Ctrl+D", ImageDescriptor.createFromFile(JoyStickAction.class,
+		  super("&JoyStick@Ctrl+D", ImageDescriptor.createFromFile(JoyStickAction.class,
 	        "/images/joystick_icon.png"));
       setToolTipText("Joystick");
 	  }
