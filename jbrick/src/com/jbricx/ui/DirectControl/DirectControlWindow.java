@@ -3,6 +3,12 @@ package com.jbricx.ui.DirectControl;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -13,12 +19,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+
+import com.jbricx.communications.NXTNotFoundException;
+import com.jbricx.communications.UnableToCreateNXTException;
+import com.jbricx.communications.WindowsNXTBrick;
+import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXT.SensorMode;
+import com.jbricx.communications.NXT.SensorType;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -78,11 +86,24 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private ArrayList<Button> allButtons = new ArrayList<Button>() ;
 	private ArrayList<Scale> allScale = new ArrayList<Scale>() ;
 
+	private static WindowsNXTBrick nxt;
 	/**
 	* Auto-generated main method to display this 
 	* org.eclipse.swt.widgets.Composite inside a new Shell.
 	*/
 	public static void main(String[] args) {
+		
+		try {
+			nxt = new WindowsNXTBrick();
+			nxt.NXTConnect(ConnectionType.USB);
+		} catch (NXTNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnableToCreateNXTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		showGUI();
 	}
 	
@@ -160,8 +181,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo1LData.width = 46;
 				combo1LData.height = 26;
 				cmbSensor1.setLayoutData(combo1LData);
-				cmbSensor1.add("None");
-				cmbSensor1.setText("None");
+				for(SensorType t: SensorType.values()){
+					cmbSensor1.add(t.getName());
+				}
+				cmbSensor1.setText(cmbSensor1.getItem(0));
 			}
 			{
 				cmbSensor2 = new Combo(this, SWT.NONE);
@@ -171,8 +194,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo2LData.width = 46;
 				combo2LData.height = 26;
 				cmbSensor2.setLayoutData(combo2LData);
-				cmbSensor2.add("None");
-				cmbSensor2.setText("None");
+				for(SensorType t: SensorType.values()){
+					cmbSensor2.add(t.getName());
+				}
+				cmbSensor2.setText(cmbSensor2.getItem(0));
 			}
 			{
 				cmbSensor3 = new Combo(this, SWT.NONE);
@@ -182,8 +207,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo3LData.width = 46;
 				combo3LData.height = 26;
 				cmbSensor3.setLayoutData(combo3LData);
-				cmbSensor3.add("None");
-				cmbSensor3.setText("None");
+				for(SensorType t: SensorType.values()){
+					cmbSensor3.add(t.getName());
+				}
+				cmbSensor3.setText(cmbSensor3.getItem(0));
 			}
 			{
 				cmbSensor4 = new Combo(this, SWT.NONE);
@@ -193,8 +220,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo4LData.width = 46;
 				combo4LData.height = 26;
 				cmbSensor4.setLayoutData(combo4LData);
-				cmbSensor4.add("None");
-				cmbSensor4.setText("None");
+				for(SensorType t: SensorType.values()){
+					cmbSensor4.add(t.getName());
+				}
+				cmbSensor4.setText(cmbSensor4.getItem(0));
 			}
 			{
 				cmbSensorType1 = new Combo(this, SWT.NONE);
@@ -204,8 +233,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo5LData.width = 46;
 				combo5LData.height = 26;
 				cmbSensorType1.setLayoutData(combo5LData);
-				cmbSensorType1.add("Raw");
-				cmbSensorType1.setText("Raw");
+				for(SensorMode m: SensorMode.values()){
+					cmbSensorType1.add(m.getName());
+				}
+				cmbSensorType1.setText(cmbSensorType1.getItem(0));
 			}
 			{
 				cmbSensorType4 = new Combo(this, SWT.NONE);
@@ -215,8 +246,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo6LData.width = 46;
 				combo6LData.height = 26;
 				cmbSensorType4.setLayoutData(combo6LData);
-				cmbSensorType4.add("Raw");
-				cmbSensorType4.setText("Raw");
+				for(SensorMode m: SensorMode.values()){
+					cmbSensorType4.add(m.getName());
+				}
+				cmbSensorType4.setText(cmbSensorType4.getItem(0));
 			}
 			{
 				cmbSensorType3 = new Combo(this, SWT.NONE);
@@ -226,8 +259,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo7LData.width = 46;
 				combo7LData.height = 26;
 				cmbSensorType3.setLayoutData(combo7LData);
-				cmbSensorType3.add("Raw");
-				cmbSensorType3.setText("Raw");
+				for(SensorMode m: SensorMode.values()){
+					cmbSensorType3.add(m.getName());
+				}
+				cmbSensorType3.setText(cmbSensorType3.getItem(0));
 			}
 			{
 				cmbSensorType2 = new Combo(this, SWT.NONE);
@@ -237,8 +272,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				combo8LData.width = 46;
 				combo8LData.height = 26;
 				cmbSensorType2.setLayoutData(combo8LData);
-				cmbSensorType2.add("Raw");
-				cmbSensorType2.setText("Raw");
+				for(SensorMode m: SensorMode.values()){
+					cmbSensorType2.add(m.getName());
+				}
+				cmbSensorType2.setText(cmbSensorType2.getItem(0));
 			}
 			{
 				btnARight = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -636,14 +673,59 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		int idx = allButtons.indexOf(btn) ;
 		int rowNum = idx/4 ;
 		String Row[] = {"A", "B", "C"} ;
-		System.out.println("button.widgetSelected, event="+evt);
-		System.out.println("button Number : " 
-				+ Row[rowNum] + Integer.toString(idx%4) + " Scale" + Row[rowNum] + ":" + Integer.toString(allScale.get(rowNum).getSelection()));
+//		System.out.println("button.widgetSelected, event="+evt);
+		String motor = Row[rowNum];
+		int option = idx%4;
+//		System.out.println("button Number : " 
+//				+ motor + option + " Scale" + Row[rowNum] + ":" + Integer.toString(allScale.get(rowNum).getSelection()));
+		
+		System.out.println(motor);
+		
+		Motor m;
+		int speed;
+		switch(rowNum){
+		case 0: 
+			m = Motor.MOTOR_A;
+			speed = map(scaleA.getSelection(),0,100,50,100);
+			break;
+		case 1:
+			m = Motor.MOTOR_B;
+			speed = map(scaleB.getSelection(),0,100,50,100);
+			break;
+		case 3:
+			m = Motor.MOTOR_C;
+			speed =  map(scaleC.getSelection(),0,100,50,100);
+			break;
+		default:
+			m=Motor.MOTOR_A;
+			speed = 100;
+		}
+		switch(option){
+		case 0:
+			nxt.motorOn(m, speed);
+			break;
+		case 1:
+			nxt.motorOn(m, speed*-1);
+			break;
+		case 2:
+			nxt.motorOff(m);
+			break;
+		case 3:
+			// TODO floating is not implemented yet...
+			break;
+		default:
+			break;
+		}
 	}
 	
 	private void btnGetWidgetSelected(SelectionEvent evt) {
 		System.out.println("btnGet.widgetSelected, event="+evt);
 		//TODO add your code for btnGet.widgetSelected
+	}
+	
+	public static int map(long x, long in_min, long in_max, long out_min, long out_max)
+	{
+	  return new Integer((int) ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min));
 	}
 }
 

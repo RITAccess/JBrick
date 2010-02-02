@@ -1,10 +1,13 @@
 package com.jbricx.communications;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.views.AbstractView;
+import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXT.Sensor;
+import com.jbricx.communications.NXT.SensorMode;
+import com.jbricx.communications.NXT.SensorType;
 
 public class WindowsNXTBrick extends AbstractNXTBrick{
 
@@ -16,6 +19,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	private static String NBC="lib/nbc.exe";
 	private static String NEXTTOOL="lib/NeXTTool.exe";
 	private static String BRICKTOOL = "BrickTool.exe";
+	
+	private static NXT nxt;
 	
 	
 	@Override
@@ -84,6 +89,106 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	public ExitStatus run(String filename) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void NXTConnect(ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException {
+		nxt = new NXT(type.getName());
+	}
+
+	@Override
+	public byte getRawSensorValue(String name) {
+		return nxt.getRawSensorValue(name);
+	}
+
+	@Override
+	public byte getRawSensorValue(Sensor sensor) {
+		return nxt.getRawSensorValue(sensor.getName());
+	}
+
+	@Override
+	public byte[] getSensorValues(String name) {
+		return nxt.getSensorValues(name);
+	}
+
+	@Override
+	public byte[] getSensorValues(Sensor sensor) {
+		return nxt.getSensorValues(sensor.getName());
+	}
+
+	@Override
+	public SensorMode[] listSensorModes() {
+		return SensorMode.values();
+	}
+
+	@Override
+	public SensorType[] listSensorTypes() {
+		return SensorType.values();
+	}
+
+	@Override
+	public Sensor[] listSensors() {
+		return Sensor.values();
+	}
+
+	@Override
+	public void motorOff(String motorName) {
+		nxt.stopMotor(Motor.valueOf(motorName).getPort());
+		
+	}
+
+	@Override
+	public void motorOff(Motor motor) {
+		nxt.stopMotor(motor.getPort());
+		
+	}
+
+	@Override
+	public void motorOn(String motorName, int speed) {
+		nxt.runMotor(Motor.valueOf(motorName).getPort(), speed);
+		
+	}
+
+	@Override
+	public void motorOn(Motor motor, int speed) {
+		nxt.runMotor(motor.getPort(), speed);
+		
+	}
+
+	@Override
+	public void motorReset(String motorName) {
+		nxt.resetMotor(Motor.valueOf(motorName).getPort());
+		
+	}
+
+	@Override
+	public void motorReset(Motor motor) {
+		nxt.resetMotor(motor.getPort());
+		
+	}
+
+	@Override
+	public void setSensorMode(String name, SensorMode mode) {
+		nxt.setSensorMode(name, mode);
+		
+	}
+
+	@Override
+	public void setSensorMode(Sensor sensor, SensorMode mode) {
+		nxt.setSensorMode(sensor.getName(), mode);
+		
+	}
+
+	@Override
+	public void setSensorType(String name, SensorType type) {
+		nxt.setSensorType(name, type);
+		
+	}
+
+	@Override
+	public void setSensorType(Sensor sensor, SensorType type) {
+		nxt.setSensorType(sensor.getName(), type);
+		
 	}
 
 	

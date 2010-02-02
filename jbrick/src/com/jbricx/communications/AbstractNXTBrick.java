@@ -2,6 +2,12 @@ package com.jbricx.communications;
 
 import java.util.List;
 
+import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXT.Sensor;
+import com.jbricx.communications.NXT.SensorMode;
+import com.jbricx.communications.NXT.SensorType;
+
 public abstract class AbstractNXTBrick {
 
 	
@@ -41,5 +47,36 @@ public abstract class AbstractNXTBrick {
 	public abstract ExitStatus downloadFile(String filename);
 	
 	public abstract ExitStatus deleteFile(String filename);
+	
+	
+	
+	
+	public abstract void NXTConnect(ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException;
+	
+	public abstract void motorOn(String motorName, int speed);
+	public abstract void motorOn(Motor motor, int speed);
+	
+	public abstract void motorOff(String motorName);
+	public abstract void motorOff(Motor motor);
+	
+	public abstract void motorReset(String motorName);
+	public abstract void motorReset(Motor motor);
+	
+	
+	public abstract void setSensorType(String name, SensorType type);
+	public abstract void setSensorType(Sensor sensor, SensorType type);
+	
+	public abstract void setSensorMode(String name, SensorMode mode);
+	public abstract void setSensorMode(Sensor sensor, SensorMode mode);
+	
+	public abstract byte[] getSensorValues(String name);
+	public abstract byte[] getSensorValues(Sensor name);
+	
+	public abstract byte getRawSensorValue(String name);
+	public abstract byte getRawSensorValue(Sensor name);
+	
+	public abstract Sensor[] listSensors();
+	public abstract SensorType[] listSensorTypes();
+	public abstract SensorMode[] listSensorModes();
 	
 }
