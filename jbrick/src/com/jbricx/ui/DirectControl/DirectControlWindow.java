@@ -1,5 +1,4 @@
 package com.jbricx.ui.DirectControl;
-import com.cloudgarden.resource.SWTResourceManager;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -35,12 +34,7 @@ import org.eclipse.swt.events.SelectionEvent;
 */
 public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
-	{
-		//Register as a resource user - SWTResourceManager will
-		//handle the obtaining and disposing of resources
-		SWTResourceManager.registerResourceUser(this);
-	}
-	
+
 	
 	
 	private Combo cmbSensor1;
