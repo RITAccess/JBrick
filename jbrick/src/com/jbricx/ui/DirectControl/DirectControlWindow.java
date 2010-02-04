@@ -63,7 +63,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private Label label8;
 	private Button btnALeft;
 	private Button btnARight;
-	private Checkbox poll;
+	private Button poll;
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 
 	private ArrayList<Button> allButtons = new ArrayList<Button>() ;
@@ -171,20 +171,18 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				});
 			}
 			{
-				poll = new Checkbox("poll", false);
+				poll = new Button(this, SWT.CHECK);
 				FormData btnPoll = new FormData();
 				btnPoll.left =  new FormAttachment(0, 1000, 300);
 				btnPoll.top =  new FormAttachment(0, 1000, 172);
 				btnPoll.width = 71;
 				btnPoll.height = 28;
-				//poll.setLayoutData(btnPoll);
-				//poll.setText("Get");
+				poll.setLayoutData(btnPoll);
+				poll.setText("Get");
 				// TODO
 				//buttonUtil.setAccessibleString(poll, "Poll");
-				poll.addPropertyChangeListener(new PropertyChangeListener() {
-					
-					@Override
-					public void propertyChange(PropertyChangeEvent evt) {
+				poll.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
 						pollSelected();
 						
 					}
@@ -867,11 +865,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		
 		if(!cmbSensor1.getText().equals("None")){
 			String sensor = Sensor.SENSOR_1.getName();
-			SensorMode mode = SensorMode.getTypeByName(cmbSensorType1.getText());
-			SensorType type = SensorType.getTypeByName(cmbSensor1.getText());
+			//			SensorMode mode = SensorMode.getTypeByName(cmbSensorType1.getText());
+			//			SensorType type = SensorType.getTypeByName(cmbSensor1.getText());
 //			System.out.println(sensor+" "+mode+ " "+type);
-			nxt.setSensorMode(sensor, mode);
-			nxt.setSensorType(sensor, type);
+			//			nxt.setSensorMode(sensor, mode);
+			//			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_1);
 			System.out.println(val);
@@ -882,11 +880,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		}
 		if(!cmbSensor2.getText().equals("None")){
 			String sensor = Sensor.SENSOR_2.getName();
-			SensorMode mode = SensorMode.getTypeByName(cmbSensorType2.getText());
-			SensorType type = SensorType.getTypeByName(cmbSensor2.getText());
+//			SensorMode mode = SensorMode.getTypeByName(cmbSensorType2.getText());
+			//			SensorType type = SensorType.getTypeByName(cmbSensor2.getText());
 //			System.out.println(sensor+" "+mode+ " "+type);
-			nxt.setSensorMode(sensor, mode);
-			nxt.setSensorType(sensor, type);
+			//			nxt.setSensorMode(sensor, mode);
+			//			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_2);
 			System.out.println(val);
@@ -897,11 +895,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		}
 		if(!cmbSensor3.getText().equals("None")){
 			String sensor = Sensor.SENSOR_3.getName();
-			SensorMode mode = SensorMode.getTypeByName(cmbSensorType3.getText());
-			SensorType type = SensorType.getTypeByName(cmbSensor3.getText());
+			//			SensorMode mode = SensorMode.getTypeByName(cmbSensorType3.getText());
+			//			SensorType type = SensorType.getTypeByName(cmbSensor3.getText());
 //			System.out.println(sensor+" "+mode+ " "+type);
-			nxt.setSensorMode(sensor, mode);
-			nxt.setSensorType(sensor, type);
+			//			nxt.setSensorMode(sensor, mode);
+			//			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_3);
 			System.out.println(val);
@@ -912,11 +910,11 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		}
 		if(!cmbSensor4.getText().equals("None")){
 			String sensor = Sensor.SENSOR_1.getName();
-			SensorMode mode = SensorMode.getTypeByName(cmbSensorType4.getText());
-			SensorType type = SensorType.getTypeByName(cmbSensor4.getText());
+			//			SensorMode mode = SensorMode.getTypeByName(cmbSensorType4.getText());
+			//			SensorType type = SensorType.getTypeByName(cmbSensor4.getText());
 //			System.out.println(sensor+" "+mode+ " "+type);
-			nxt.setSensorMode(sensor, mode);
-			nxt.setSensorType(sensor, type);
+			//			nxt.setSensorMode(sensor, mode);
+			//			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_4);
 			System.out.println(val);
@@ -957,20 +955,20 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		int i=0;
 		
 
-		SensorType s = SensorType.getTypeByName(sensor);
+		//		SensorType s = SensorType.getTypeByName(sensor);
 		for (int j=0; j<control.getItems().length;j++){
 			
-			System.out.println(s.getName()+ " ");
-			if (control.getItem(j).equals(s.getMode().getName())){
-				System.out.println("YES "+control.getItem(j));
-				control.setText(control.getItem(j));
-				break;
+			//			System.out.println(s.getName()+ " ");
+			//			if (control.getItem(j).equals(s.getMode().getName())){
+			//				System.out.println("YES "+control.getItem(j));
+			//				control.setText(control.getItem(j));
+			//				break;
 			}
 		}
-	}
+	//	}
 	
 	private void pollSelected() {
-		if (poll.getState()){
+		if (poll.getSelection()){
 			pollingThread.start();
 		}
 		else{
