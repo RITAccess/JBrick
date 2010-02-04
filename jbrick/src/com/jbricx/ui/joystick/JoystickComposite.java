@@ -3,6 +3,8 @@ package com.jbricx.ui.joystick;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import nxtDirectControl.NXT.Motor;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -423,4 +425,116 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
+	
+	
+private static Runnable pollController = new Runnable(){
+		
+		@Override
+		public void run() {
+			
+			int motorSpeed = 100;
+			int rotateSpeed = 70;
+			
+			while(true){
+				gpc.poll();
+//				System.out.println("XY Direction: " + gpc.getXYStickDir() + " Button: " + gpc.isButtonPressed(1));
+				//Directions 
+				//middle = 4
+				//up = 1
+				//right = 5
+				//down = 7
+				//left = 3
+				//UL = 0
+				//UR = 2
+				//DL = 6
+				//DR = 8
+				
+				if(gpc.getXYStickDir() == 1){
+					//up
+					nxt.runMotor(Motor.MOTOR_A.getPort(), motorSpeed);
+					nxt.runMotor(Motor.MOTOR_B.getPort(), motorSpeed);
+				}
+				
+				if(gpc.getXYStickDir() == 0){
+					//ul
+					nxt.runMotor(Motor.MOTOR_A.getPort(), motorSpeed);
+					nxt.runMotor(Motor.MOTOR_A.getPort(), rotateSpeed);
+				}
+				
+				if(gpc.getXYStickDir() == 2){
+					//ur
+					nxt.runMotor(Motor.MOTOR_A.getPort(), rotateSpeed);
+					nxt.runMotor(Motor.MOTOR_B.getPort(), motorSpeed);
+				}
+				
+//				if(gpc.getXYStickDir() == 3){
+//					//left
+//					nxt.stopMotor(NXT.motorA);
+//					nxt.stopMotor(NXT.motorB);
+//				}
+//				
+//				if(gpc.getXYStickDir() == 5){
+//					//right
+//					nxt.stopMotor(NXT.motorA);
+//					nxt.stopMotor(NXT.motorB);
+//				}
+				
+				
+				if(gpc.getXYStickDir() == 7){
+					//down
+					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * motorSpeed);
+					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * motorSpeed);
+				}
+				
+				if(gpc.getXYStickDir() == 6){
+					//ll
+					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * motorSpeed);
+					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * rotateSpeed);
+				}
+				
+				if(gpc.getXYStickDir() == 8){
+					//lr
+					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * rotateSpeed);
+					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * motorSpeed);
+				}
+				
+				if(gpc.getXYStickDir() == 4){
+					//idle
+					nxt.stopMotor(Motor.MOTOR_A.getPort());
+					nxt.stopMotor(Motor.MOTOR_B.getPort());
+				}
+				
+				if(gpc.isButtonPressed(1)){
+					nxt.playSound(3000, 200);
+				}
+				
+				if(gpc.isButtonPressed(2)){
+					nxt.playSound(2000, 200);
+				}
+				
+				if(gpc.isButtonPressed(3)){
+					motorSpeed+=10;
+					if (motorSpeed>100){
+						motorSpeed=100;
+					}
+					System.out.println(motorSpeed);
+				}
+				
+				if(gpc.isButtonPressed(4)){
+					motorSpeed-=10;
+					if (motorSpeed<0){
+						motorSpeed=0;
+					}
+					System.out.println(motorSpeed);
+				}
+				
+				
+				
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {}
+			}
+		}
+		
+	};
 }
