@@ -1,7 +1,9 @@
 package com.jbricx.communications;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
@@ -75,7 +77,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 
 	@Override
 	public ExitStatus playTone(int frequency, int duration) {
-		// TODO Auto-generated method stub
+		System.out.println("play tone");
+		nxt.playSound(frequency, duration);
 		return null;
 	}
 

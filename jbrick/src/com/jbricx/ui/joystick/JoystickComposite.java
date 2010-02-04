@@ -3,7 +3,7 @@ package com.jbricx.ui.joystick;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import nxtDirectControl.NXT.Motor;
+import com.jbricx.communications.NXT.*;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -19,7 +19,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTNotFoundException;
+import com.jbricx.communications.UnableToCreateNXTException;
+import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.ui.JBrickButtonUtil;
+
+
 
 public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
@@ -59,8 +64,20 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	 * Auto-generated main method to display this
 	 * org.eclipse.swt.widgets.Composite inside a new Shell.
 	 */
+	
+	static Thread thread;
+	
 	public static void main(String[] args) {
+		connectNXT();
+		connectJoypad();
+		
+		
+		
+		thread = new Thread(pollController);
+		thread.start();
+		
 		showGUI();
+		
 	}
 
 	/**
@@ -74,6 +91,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	 * Auto-generated method to display this org.eclipse.swt.widgets.Composite
 	 * inside a new Shell.
 	 */
+	
 	public static void showGUI() {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(display);
@@ -93,6 +111,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
+		thread.stop();	
 	}
 
 	public JoystickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
@@ -278,10 +297,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					leftMotor_A = new Button(leftMotor, SWT.RADIO | SWT.LEFT);
 					leftMotor_A.setText("A");
 					leftMotor_A.setBounds(12, 22, 30, 24);
+					leftMotor_A.setSelection(true);
 					buttonUtil.setAccessibleString(leftMotor_A, "Left Motor A");
 					leftMotor_A.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_1_ID = Motor.MOTOR_A;
 						}
 					});
 				}
@@ -292,7 +312,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(leftMotor_B, "Left Motor B");
 					leftMotor_B.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_1_ID = Motor.MOTOR_B;
 						}
 					});
 				}
@@ -303,7 +323,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(leftMotor_C, "Left Motor C");
 					leftMotor_C.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_1_ID = Motor.MOTOR_C;
 						}
 					});
 				}
@@ -341,6 +361,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					rightMotor_B = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					rightMotor_B.setText("B");
 					rightMotor_B.setBounds(48, 20, 26, 23);
+					rightMotor_B.setSelection(true);
 					buttonUtil.setAccessibleString(rightMotor_B,
 							"Right Motor B");
 					rightMotor_B.addSelectionListener(new SelectionAdapter() {
@@ -426,6 +447,29 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	
+	private static void connectNXT(){
+		nxt = new WindowsNXTBrick();
+		try {
+			nxt.NXTConnect(ConnectionType.USB);
+		} catch (NXTNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnableToCreateNXTException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	private static void connectJoypad(){
+		gpc = new GamePadController();
+	}
+	
+	
+	static GamePadController gpc;
+	static WindowsNXTBrick nxt;
+	
+	
+	
+	static Motor Motor_1_ID = Motor.MOTOR_A;
+	static Motor Motor_2_ID = Motor.MOTOR_B;
 	
 private static Runnable pollController = new Runnable(){
 		
@@ -433,10 +477,22 @@ private static Runnable pollController = new Runnable(){
 		public void run() {
 			
 			int motorSpeed = 100;
-			int rotateSpeed = 70;
+			int rotateSubtractor = 15;
+			//int rotateSpeed = 70;
+			
+			
 			
 			while(true){
 				gpc.poll();
+				
+				for(int x=1; x<10; x++){
+					if(gpc.isButtonPressed(x)){
+						System.out.println("Button " + x + " is pressed");
+					}
+				}
+				
+				
+				
 //				System.out.println("XY Direction: " + gpc.getXYStickDir() + " Button: " + gpc.isButtonPressed(1));
 				//Directions 
 				//middle = 4
@@ -451,66 +507,56 @@ private static Runnable pollController = new Runnable(){
 				
 				if(gpc.getXYStickDir() == 1){
 					//up
-					nxt.runMotor(Motor.MOTOR_A.getPort(), motorSpeed);
-					nxt.runMotor(Motor.MOTOR_B.getPort(), motorSpeed);
+					nxt.motorOn(Motor_1_ID, motorSpeed);
+					nxt.motorOn(Motor_2_ID, motorSpeed);
 				}
 				
 				if(gpc.getXYStickDir() == 0){
 					//ul
-					nxt.runMotor(Motor.MOTOR_A.getPort(), motorSpeed);
-					nxt.runMotor(Motor.MOTOR_A.getPort(), rotateSpeed);
+					nxt.motorOn(Motor_1_ID, motorSpeed);
+					nxt.motorOn(Motor_1_ID, motorSpeed-rotateSubtractor);
 				}
 				
 				if(gpc.getXYStickDir() == 2){
 					//ur
-					nxt.runMotor(Motor.MOTOR_A.getPort(), rotateSpeed);
-					nxt.runMotor(Motor.MOTOR_B.getPort(), motorSpeed);
+					nxt.motorOn(Motor_1_ID, motorSpeed-rotateSubtractor);
+					nxt.motorOn(Motor_2_ID, motorSpeed);
 				}
-				
-//				if(gpc.getXYStickDir() == 3){
-//					//left
-//					nxt.stopMotor(NXT.motorA);
-//					nxt.stopMotor(NXT.motorB);
-//				}
-//				
-//				if(gpc.getXYStickDir() == 5){
-//					//right
-//					nxt.stopMotor(NXT.motorA);
-//					nxt.stopMotor(NXT.motorB);
-//				}
-				
 				
 				if(gpc.getXYStickDir() == 7){
 					//down
-					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * motorSpeed);
-					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * motorSpeed);
+					nxt.motorOn(Motor_1_ID, -1 * motorSpeed);
+					nxt.motorOn(Motor_2_ID, -1 * motorSpeed);
 				}
 				
 				if(gpc.getXYStickDir() == 6){
 					//ll
-					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * motorSpeed);
-					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * rotateSpeed);
+					nxt.motorOn(Motor_1_ID, -1 * motorSpeed);
+					nxt.motorOn(Motor_2_ID, -1 * motorSpeed-rotateSubtractor);
 				}
 				
 				if(gpc.getXYStickDir() == 8){
 					//lr
-					nxt.runMotor(Motor.MOTOR_A.getPort(), -1 * rotateSpeed);
-					nxt.runMotor(Motor.MOTOR_B.getPort(), -1 * motorSpeed);
+					nxt.motorOn(Motor_1_ID, -1 * motorSpeed-rotateSubtractor);
+					nxt.motorOn(Motor_2_ID, -1 * motorSpeed);
 				}
 				
 				if(gpc.getXYStickDir() == 4){
 					//idle
-					nxt.stopMotor(Motor.MOTOR_A.getPort());
-					nxt.stopMotor(Motor.MOTOR_B.getPort());
+					nxt.motorOff(Motor_1_ID);
+					nxt.motorOff(Motor_2_ID);
 				}
 				
 				if(gpc.isButtonPressed(1)){
-					nxt.playSound(3000, 200);
+					System.out.println("button 1 pressed");
+					nxt.playTone(3000, 200);
 				}
 				
 				if(gpc.isButtonPressed(2)){
-					nxt.playSound(2000, 200);
+					System.out.println("button 2 pressed");
+					nxt.playTone(2000, 200);
 				}
+				
 				
 				if(gpc.isButtonPressed(3)){
 					motorSpeed+=10;
@@ -522,8 +568,8 @@ private static Runnable pollController = new Runnable(){
 				
 				if(gpc.isButtonPressed(4)){
 					motorSpeed-=10;
-					if (motorSpeed<0){
-						motorSpeed=0;
+					if (motorSpeed<50){
+						motorSpeed=50;
 					}
 					System.out.println(motorSpeed);
 				}
