@@ -65,6 +65,7 @@ import com.jbricx.actions.FindBrickAction;
 import com.jbricx.actions.GotoAction;
 import com.jbricx.actions.HelpContentAction;
 import com.jbricx.actions.JoyStickAction;
+import com.jbricx.actions.MethodTemplateAction;
 import com.jbricx.actions.NewAction;
 import com.jbricx.actions.OpenAction;
 import com.jbricx.actions.PasteAction;
@@ -111,6 +112,7 @@ public class MainWindow extends ApplicationWindow implements
 	private JoyStickAction joystickAction = new JoyStickAction();
 	private FindBrickAction findBrickAction = new FindBrickAction();
 	private CompileAction compileAction = new CompileAction();
+	private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 
 	public Table table;
@@ -457,6 +459,7 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(gotoAction);
 		editMenu.add(new Separator());
 		editMenu.add(prefsAction);
+		editMenu.add(methodTemplateAction);
 		
 		compileMenu.add(findBrickAction);
 		toolMenu.add(directControlAction);
