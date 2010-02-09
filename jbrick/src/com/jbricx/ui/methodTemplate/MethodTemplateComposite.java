@@ -69,9 +69,10 @@ public class MethodTemplateComposite extends Composite {
 			while (e.hasMoreElements()) {
 				TreeItem subItem = new TreeItem(item, SWT.NONE);
 				key = (String) e.nextElement();
+				String keyActual = key;
 				key = key.substring(2);
 				subItem.setText(new String[] { key });
-				System.out.println(key + " " + properties.getProperty(key));
+				System.out.println(key + " " + properties.getProperty(keyActual));
 			}
 		}
 
