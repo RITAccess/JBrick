@@ -44,7 +44,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button leftMotor_A;
 	private Group leftMotor;
 	private Button driveSteer;
-	private Scale speedBar;
+	public static Scale speedBar;
 	private Button help;
 	private Group speed;
 	private Button leftRight;
@@ -96,8 +96,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	 * inside a new Shell.
 	 */
 	
+	static Display display;
+	
 	public static void showGUI() {
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		Shell shell = new Shell(display);
 		JoystickComposite inst = new JoystickComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
@@ -139,7 +141,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 					UpLeft.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 0;
 						}
 					});
 				}
@@ -152,7 +154,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
 					Up.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 1;
 						}
 					});
 				}
@@ -164,7 +166,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
 					UpRight.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 2;
 						}
 					});
 				}
@@ -176,7 +178,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(Left, "Left Arrow");
 					Left.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 3;
 						}
 					});
 				}
@@ -187,7 +189,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					centreStop.setBounds(41, 62, 27, 26);
 					buttonUtil.setAccessibleString(centreStop, "Stop");
 					centreStop.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(SelectionEvent evt) {							
+						public void widgetSelected(SelectionEvent evt) {	
+							virtualJoypad = 4;
 						}
 					});
 				}
@@ -199,7 +202,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(right, "Right Arrow");
 					right.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 5;
 						}
 					});
 				}
@@ -211,7 +214,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(downLeft, "Down Left Arrow");
 					downLeft.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 6;
 						}
 					});
 				}
@@ -223,7 +226,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 					buttonUtil.setAccessibleString(down, "Down Arrow");
 					down.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 7;
 						}
 					});
 				}
@@ -236,34 +239,34 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Down Right Arrow");
 					downRight.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							virtualJoypad = 8;
 						}
 					});
 				}
-				{
-					T1 = new Button(Movement, SWT.PUSH | SWT.CENTER);
-					T1.setImage(new Image(null, new FileInputStream(
-							"src/images/T1.png")));
-					T1.setBounds(30, 125, 24, 24);
-					buttonUtil.setAccessibleString(T1, "T1");
-					T1.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(SelectionEvent evt) {
-							
-						}
-					});
-				}
-				{
-					T2 = new Button(Movement, SWT.PUSH | SWT.CENTER);
-					T2.setImage(new Image(null, new FileInputStream(
-							"src/images/T2.png")));
-					T2.setBounds(55, 124, 25, 24);
-					buttonUtil.setAccessibleString(T2, "T2");
-					T2.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(SelectionEvent evt) {
-							
-						}
-					});
-				}
+//				{
+//					T1 = new Button(Movement, SWT.PUSH | SWT.CENTER);
+//					T1.setImage(new Image(null, new FileInputStream(
+//							"src/images/T1.png")));
+//					T1.setBounds(30, 125, 24, 24);
+//					buttonUtil.setAccessibleString(T1, "T1");
+//					T1.addSelectionListener(new SelectionAdapter() {
+//						public void widgetSelected(SelectionEvent evt) {
+//							
+//						}
+//					});
+//				}
+//				{
+//					T2 = new Button(Movement, SWT.PUSH | SWT.CENTER);
+//					T2.setImage(new Image(null, new FileInputStream(
+//							"src/images/T2.png")));
+//					T2.setBounds(55, 124, 25, 24);
+//					buttonUtil.setAccessibleString(T2, "T2");
+//					T2.addSelectionListener(new SelectionAdapter() {
+//						public void widgetSelected(SelectionEvent evt) {
+//							
+//						}
+//					});
+//				}
 			}
 			{
 				driveMode = new Group(this, SWT.NONE);
@@ -292,6 +295,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 						}
 					});
 				}
+				driveSteer.setEnabled(false);
+				leftRight.setSelection(true);
 			}
 			{
 				leftMotor = new Group(this, SWT.NONE);
@@ -340,7 +345,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Left Motor Reversed");
 					leftMotor_Reversed.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							if(leftMotor_Reversed.getSelection()){
+								Motor_1_DIR = -1;
+							}else{
+								Motor_1_DIR = 1;
+							}
 						}
 					});
 				}
@@ -357,7 +366,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Right Motor A");
 					rightMotor_A.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_2_ID = Motor.MOTOR_A;
 						}
 					});
 				}
@@ -370,7 +379,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Right Motor B");
 					rightMotor_B.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_2_ID = Motor.MOTOR_B;
 						}
 					});
 				}
@@ -382,7 +391,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Right Motor C");
 					rightMotor_C.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							Motor_2_ID = Motor.MOTOR_C;
 						}
 					});
 				}
@@ -395,7 +404,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 							"Right Motor Reversed");
 					rightMotor_Reversed.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							if(rightMotor_Reversed.getSelection()){
+								Motor_2_DIR = -1;
+							}else{
+								Motor_2_DIR = 1;
+							}
 						}
 					});
 				}
@@ -405,12 +418,16 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 				speed.setText("Speed");
 				speed.setBounds(83, 266, 115, 59);
 				{
+					
 					speedBar = new Scale(speed, SWT.NONE);
+					speedBar.setMinimum(60);
+					speedBar.setMaximum(100);
 					speedBar.setBounds(12, 15, 85, 33);
 					// buttonUtil.setAccessibleString(speedBar, "Speed Bar");
 					speedBar.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent evt) {
-							
+							System.out.println("Speed adjusted: " + speedBar.getSelection());
+							motorSpeed = speedBar.getSelection();
 						}
 					});
 				}
@@ -463,7 +480,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	}
 	
 	private static void connectJoypad(){
-		gpc = new GamePadController();
+		try{
+			gpc = new GamePadController();
+		}catch(Exception e){
+			gpc = null;
+		}
 	}
 	
 	
@@ -474,26 +495,36 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	static Motor Motor_1_ID = Motor.MOTOR_A;
 	static Motor Motor_2_ID = Motor.MOTOR_B;
+	static int Motor_1_DIR = 1;
+	static int Motor_2_DIR = 1;
+	
+	static int motorSpeed = 60;
+	
+	
+	static int virtualJoypad = 4;
+	static int lastVirtualJoypadValue = 4;
+	static int lastGPCValue = 4;
+	
+	
+	static boolean useGUI = false;
+	
+	
 	
 private static Runnable pollController = new Runnable(){
 		
 		@Override
 		public void run() {
 			
-			int motorSpeed = 100;
+			//int motorSpeed = 100;
 			int rotateSubtractor = 15;
+			
 			//int rotateSpeed = 70;
 			
 			
 			
 			while(true){
-				gpc.poll();
 				
-				for(int x=1; x<10; x++){
-					if(gpc.isButtonPressed(x)){
-						System.out.println("Button " + x + " is pressed");
-					}
-				}
+				
 				
 				
 				
@@ -509,77 +540,126 @@ private static Runnable pollController = new Runnable(){
 				//DL = 6
 				//DR = 8
 				
-				if(gpc.getXYStickDir() == 1){
+				if(gpc != null){
+					if(!gpc.poll()){
+						gpc = null;
+					}else{
+					if(gpc.getXYStickDir() != lastGPCValue){
+						useGUI = false;
+						lastGPCValue = gpc.getXYStickDir();
+					}
+					}
+				}else{
+					useGUI= true;
+				}
+				
+				
+				if(virtualJoypad != lastVirtualJoypadValue){
+					useGUI = true;
+					lastVirtualJoypadValue = virtualJoypad;
+				}
+				
+			
+				
+				
+				int joypadValue;
+				
+				if (useGUI){
+					joypadValue = lastVirtualJoypadValue;
+				}else{
+					joypadValue = lastGPCValue;
+				}
+			
+				
+				
+				
+				if(joypadValue == 1){
 					//up
-					nxt.motorOn(Motor_1_ID, motorSpeed);
-					nxt.motorOn(Motor_2_ID, motorSpeed);
+					nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 0){
+				if(joypadValue == 0){
 					//ul
-					nxt.motorOn(Motor_1_ID, motorSpeed);
-					nxt.motorOn(Motor_1_ID, motorSpeed-rotateSubtractor);
+					nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
+					nxt.motorOn(Motor_1_ID, (motorSpeed-rotateSubtractor) * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 2){
+				if(joypadValue == 2){
 					//ur
-					nxt.motorOn(Motor_1_ID, motorSpeed-rotateSubtractor);
-					nxt.motorOn(Motor_2_ID, motorSpeed);
+					nxt.motorOn(Motor_1_ID, (motorSpeed-rotateSubtractor) * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 7){
+				if(joypadValue == 7){
 					//down
-					nxt.motorOn(Motor_1_ID, -1 * motorSpeed);
-					nxt.motorOn(Motor_2_ID, -1 * motorSpeed);
+					nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, -1 * motorSpeed * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 6){
+				if(joypadValue == 6){
 					//ll
-					nxt.motorOn(Motor_1_ID, -1 * motorSpeed);
-					nxt.motorOn(Motor_2_ID, -1 * motorSpeed-rotateSubtractor);
+					nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, -1 * (motorSpeed-rotateSubtractor) * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 8){
+				if(joypadValue == 8){
 					//lr
-					nxt.motorOn(Motor_1_ID, -1 * motorSpeed-rotateSubtractor);
-					nxt.motorOn(Motor_2_ID, -1 * motorSpeed);
+					nxt.motorOn(Motor_1_ID, -1 * (motorSpeed-rotateSubtractor) * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, -1 * motorSpeed * Motor_2_DIR);
 				}
 				
-				if(gpc.getXYStickDir() == 4){
+				if(joypadValue == 4){
 					//idle
 					nxt.motorOff(Motor_1_ID);
 					nxt.motorOff(Motor_2_ID);
 				}
 				
-				if(gpc.isButtonPressed(1)){
-					System.out.println("button 1 pressed");
-					nxt.playTone(3000, 200);
-				}
-				
-				if(gpc.isButtonPressed(2)){
-					System.out.println("button 2 pressed");
-					nxt.playTone(2000, 200);
-				}
-				
-				
-				if(gpc.isButtonPressed(3)){
-					motorSpeed+=10;
-					if (motorSpeed>100){
-						motorSpeed=100;
+				if(gpc != null){
+					
+					if(gpc.isButtonPressed(1)){
+						System.out.println("button 1 pressed");
+						nxt.playTone(3000, 200);
 					}
-					System.out.println(motorSpeed);
-				}
-				
-				if(gpc.isButtonPressed(4)){
-					motorSpeed-=10;
-					if (motorSpeed<50){
-						motorSpeed=50;
+					
+					if(gpc.isButtonPressed(2)){
+						System.out.println("button 2 pressed");
+						nxt.playTone(2000, 200);
 					}
-					System.out.println(motorSpeed);
+					
+					//Speed up
+					if(gpc.isButtonPressed(4)){
+						motorSpeed+=10;
+						if (motorSpeed>100){
+							motorSpeed=100;
+						}
+						display.syncExec(
+								  new Runnable() {
+								    public void run(){
+								    	speedBar.setSelection(motorSpeed);
+								    }
+								  });
+						System.out.println(motorSpeed);
+					}
+					
+					//Slow Down
+					if(gpc.isButtonPressed(3)){
+						motorSpeed-=10;
+						if (motorSpeed<60){
+							motorSpeed=60;
+						}
+						display.syncExec(
+								  new Runnable() {
+								    public void run(){
+								    	speedBar.setSelection(motorSpeed);
+								    }
+								  });
+						System.out.println(motorSpeed);
+					}
+
 				}
 				
-				
-				
+				//poll every 200ms
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {}

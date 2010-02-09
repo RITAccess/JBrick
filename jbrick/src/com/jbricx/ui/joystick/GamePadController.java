@@ -71,7 +71,8 @@ public class GamePadController
     Controller[] cs = ce.getControllers();
     if (cs.length == 0) {
       System.out.println("No controllers found");
-      System.exit(0);
+      return;
+      //System.exit(0);
     }
     else
       System.out.println("Num. controllers: " + cs.length);
@@ -108,7 +109,8 @@ public class GamePadController
 
     if (i == cs.length) {
       System.out.println("No game pad found");
-      System.exit(0);
+      //System.exit(0);
+      return null;
     }
     else
       System.out.println("Game pad index: " + i);
@@ -126,7 +128,7 @@ public class GamePadController
     comps = controller.getComponents();
     if (comps.length == 0) {
       System.out.println("No Components found");
-      System.exit(0);
+      //System.exit(0);
     }
     else
       System.out.println("Num. Components: " + comps.length);
@@ -240,9 +242,9 @@ public class GamePadController
   // ----------------- polling and getting data ------------------
 
 
-  public void poll()
+  public boolean poll()
   // update the component values in the controller
-  {  controller.poll();  }
+  {  return controller.poll();  }
 
 
   public int getXYStickDir()
