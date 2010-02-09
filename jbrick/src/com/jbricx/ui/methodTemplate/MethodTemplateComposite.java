@@ -6,13 +6,18 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
+
+import com.jbricx.pjo.JBrickEditor;
 
 public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 
@@ -38,9 +43,10 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 	 *            the main window
 	 * @throws IOException
 	 */
+	static Display display = Display.getDefault();
+
 	public static void showGUI() throws IOException {
 
-		Display display = new Display();
 		final Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
 
@@ -58,11 +64,26 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				"Low-level System Calls", "HiTechnic API functions",
 				"Mindsensor API functions" };
 
-		Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		final Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		tree.setHeaderVisible(true);
 		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
 		methodTemplate.setText("Method Templates");
 		methodTemplate.setWidth(100);
+		
+		tree.addListener(SWT.MouseDown, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				// TODO Auto-generated method stub
+				System.out.println("Mouse: " );
+				Point point = new Point(event.x, event.y);
+				TreeItem sub = tree.getItem(point);
+				if (sub != null) {
+					//System.out.println("Mouse down: " + sub.getText());
+					JBrickEditor.getMainWindow().getCurrentTabItem().insertString(sub.getText());
+				}
+			}
+		});
+		
 		for (int i = 0; i < 1; i++) {
 
 			TreeItem item = new TreeItem(tree, SWT.NONE);
