@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -73,23 +75,29 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				Point point = new Point(event.x, event.y);
 				TreeItem sub = tree.getItem(point);
 				if (sub != null) {
-					if ( JBrickEditor.getMainWindow().getCurrentTabItem() != null){
+					if (JBrickEditor.getMainWindow().getCurrentTabItem() != null) {
 						JBrickEditor.getMainWindow().getCurrentTabItem()
-						.insertString(sub.getText());
+								.insertString(sub.getText());
 					}
 				}
 			}
 		});
 
 		TreeItem item = null;
+		Font initialFont = tree.getFont();
+		FontData[] fontData = initialFont.getFontData();
+		for (int i = 0; i < fontData.length; i++) {
+			fontData[i].setHeight(14);
+		}
+		Font newFont = new Font(display, fontData);
+		tree.setFont(newFont);
+
 		while ((key = input.readLine()) != null) {
 
-			if (2 <= key.length() && 
-					key.substring(0, 2).compareTo("- ") == 0
-				||	key.substring(0, 2).compareTo("| ") == 0) { /*
-																				 * Next
-																				 * Tree
-																				 */
+			if (2 <= key.length() && key.substring(0, 2).compareTo("- ") == 0
+					|| key.substring(0, 2).compareTo("| ") == 0) { /*
+																	 * Next Tree
+																	 */
 
 				item = new TreeItem(tree, SWT.NONE);
 				item.setText(new String[] { key });
@@ -97,6 +105,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				if (item != null) {
 					TreeItem subItem = new TreeItem(item, SWT.NONE);
 					subItem.setText(key);
+
 				}
 			}
 		}
@@ -111,6 +120,8 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 			}
 		}
 		shell.close();
+		
+
 	}
 
 }
