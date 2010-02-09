@@ -55,58 +55,44 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		File f = new File("src/com/jbricx/ui/methodTemplate/Programs.txt");
 
 		BufferedReader input = new BufferedReader(new FileReader(f));
-
-		String[] itemHead = new String[] { "Programs", "Debugging",
-				"If statements", "Loops etc...", "Outputs", "Timing",
-				"Sensors", "Sensor types", "Sensor modes", "Sensor misc",
-				"Digital Sensors", "Multitasking", "Sounds", "Drawing",
-				"Buttons", "Misc stuff", "Strings", "File IO", "Messaging",
-				"Low-level System Calls", "HiTechnic API functions",
-				"Mindsensor API functions" };
-
-		final Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		final Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL
+				| SWT.V_SCROLL);
 		tree.setHeaderVisible(true);
 		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
 		methodTemplate.setText("Method Templates");
 		methodTemplate.setWidth(100);
-		
+
 		tree.addListener(SWT.MouseDown, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
+
+
 				Point point = new Point(event.x, event.y);
 				TreeItem sub = tree.getItem(point);
 				if (sub != null) {
-					JBrickEditor.getMainWindow().getCurrentTabItem().insertString(sub.getText());
+
+					JBrickEditor.getMainWindow().getCurrentTabItem()
+							.insertString(sub.getText());
 				}
 			}
 		});
 
-		TreeItem item = null ;
+		TreeItem item = null;
 		while ((key = input.readLine()) != null) {
-			if ( 2 <= key.length() && key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
+
+		if ( 2 <= key.length() && key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
+
 				item = new TreeItem(tree, SWT.NONE);
 				item.setText(new String[] { key });
-			}
-			else{ /* Sub Tree */
-				if (item != null){
+			} else { /* Sub Tree */
+				if (item != null) {
 					TreeItem subItem = new TreeItem(item, SWT.NONE);
 					subItem.setText(key);
 				}
 			}
-			
 		}
 
-/*		for (int i = 0; i < 1; i++) {
-
-			TreeItem item = new TreeItem(tree, SWT.NONE);
-			item.setText(new String[] { itemHead[0] });
-
-			while ((key = input.readLine()) != null) {
-				TreeItem subItem = new TreeItem(item, SWT.NONE);
-				subItem.setText(0, key);
-			}
-		}
-*/		input.close();
+		input.close();
 		shell.pack();
 		shell.open();
 
