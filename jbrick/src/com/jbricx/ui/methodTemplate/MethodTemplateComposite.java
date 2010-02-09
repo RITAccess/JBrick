@@ -41,7 +41,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		String key;
 
 		File f = new File(
-				"C://Priya_personal//java//JBrick//jbrick//src//com//jbricx//ui//methodTemplate//Program.properties");
+				"src/com/jbricx/ui/methodTemplate/Program.properties");
 
 		FileInputStream in = new FileInputStream(f);
 		Properties properties = new Properties();
