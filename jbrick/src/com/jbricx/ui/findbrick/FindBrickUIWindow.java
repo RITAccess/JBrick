@@ -1,5 +1,8 @@
 package com.jbricx.ui.findbrick;
 
+/*
+ * @author Priya Sankaran
+ */
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
