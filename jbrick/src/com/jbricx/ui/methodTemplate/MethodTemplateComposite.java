@@ -86,8 +86,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 
 		TreeItem item = null ;
 		while ((key = input.readLine()) != null) {
-			System.out.println( key );
-			if ( key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
+			if ( 2 <= key.length() && key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
 				item = new TreeItem(tree, SWT.NONE);
 				item.setText(new String[] { key });
 			}
