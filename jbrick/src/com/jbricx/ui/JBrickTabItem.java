@@ -269,7 +269,6 @@ public class JBrickTabItem extends CTabItem {
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-
 	}
 	
 	/**
