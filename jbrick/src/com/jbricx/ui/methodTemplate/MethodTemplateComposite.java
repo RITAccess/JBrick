@@ -60,12 +60,11 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		tree.setHeaderVisible(true);
 		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
 		methodTemplate.setText("Method Templates");
-		methodTemplate.setWidth(100);
+		methodTemplate.setWidth(200);
 
 		tree.addListener(SWT.MouseDown, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-
 
 				Point point = new Point(event.x, event.y);
 				TreeItem sub = tree.getItem(point);
@@ -80,7 +79,10 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		TreeItem item = null;
 		while ((key = input.readLine()) != null) {
 
-		if ( 2 <= key.length() && key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
+			if (2 <= key.length() && key.substring(0, 2).compareTo("- ") == 0) { /*
+																				 * Next
+																				 * Tree
+																				 */
 
 				item = new TreeItem(tree, SWT.NONE);
 				item.setText(new String[] { key });
@@ -101,7 +103,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				display.sleep();
 			}
 		}
-		display.dispose();
+		shell.close();
 	}
 
 }
