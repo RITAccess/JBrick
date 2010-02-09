@@ -1,8 +1,10 @@
 package com.jbricx.actions;
 
+/*
+ * @author Priya Sankaran
+ */
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Display;
 
 import com.jbricx.ui.joystick.JoystickUIWindow;
 
