@@ -83,8 +83,24 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				}
 			}
 		});
-		
-		for (int i = 0; i < 1; i++) {
+
+		TreeItem item = null ;
+		while ((key = input.readLine()) != null) {
+			System.out.println( key );
+			if ( key.substring(0,2).compareTo("- ") == 0){ /* Next Tree */
+				item = new TreeItem(tree, SWT.NONE);
+				item.setText(new String[] { key });
+			}
+			else{ /* Sub Tree */
+				if (item != null){
+					TreeItem subItem = new TreeItem(item, SWT.NONE);
+					subItem.setText(key);
+				}
+			}
+			
+		}
+
+/*		for (int i = 0; i < 1; i++) {
 
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 			item.setText(new String[] { itemHead[0] });
@@ -94,7 +110,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				subItem.setText(0, key);
 			}
 		}
-		input.close();
+*/		input.close();
 		shell.pack();
 		shell.open();
 
