@@ -1,12 +1,16 @@
 package com.jbricx.actions;
 
+import java.io.IOException;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.DirectControl.DirectControlWindow;
 import com.jbricx.ui.joystick.JoystickUIWindow;
 import com.jbricx.ui.methodTemplate.MethodTemplateUIWindow;
+import com.jbricx.ui.methodTemplate.MethodTemplateComposite;
 /**
  * This class shows an About box
  */
@@ -24,8 +28,14 @@ public class MethodTemplateAction extends Action {
    * Shows an about box
    */
   public void run() {
-	  MethodTemplateUIWindow  methodTemplate = new  MethodTemplateUIWindow(); 
-	  methodTemplate.setBlockOnOpen(true);
-	  methodTemplate.open();
+/*	MethodTemplateUIWindow  methodTemplate = new  MethodTemplateUIWindow(); 
+	methodTemplate.setBlockOnOpen(true);
+	methodTemplate.open();*/
+	try {
+		MethodTemplateComposite.showGUI() ;
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 }
