@@ -1,5 +1,7 @@
 package com.jbricx.ui.methodTemplate;
 
+import java.io.IOException;
+
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -16,7 +18,12 @@ public class MethodTemplateUIWindow extends ApplicationWindow {
 
 		parent.setSize(300, 410);
 
-		new MethodTemplateComposite(parent, SWT.NULL);
+		try {
+			MethodTemplateComposite.showGUI();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return parent;
 	}
 
