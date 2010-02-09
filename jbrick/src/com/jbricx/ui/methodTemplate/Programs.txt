@@ -1,0 +1,18 @@
+task "name"()\={\>"body"\<}\=\=
+sub "name"()\={\>"body"\<}\=\=
+void "name"("arguments")\={\>"body"\<}\=\=
+int "name"("arguments")\={\>"body"\=return "value";\<}\=\=
+string "name"("arguments")\={\>"body"\=return "strvalue";\<}\=\=
+int "name";\=
+unsigned int "name";\=
+short "name";\=
+long "name";\=
+unsigned long "name";\=
+bool "name";\=
+char "name";\=
+byte "name";\=
+mutex "name";\=
+string "name";\=
+struct "name" {\>"members"\<};\=\=
+\#define "macro"\=
+\#include "file"\=
