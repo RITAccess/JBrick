@@ -11,8 +11,11 @@ import java.util.HashMap;
  * 
  * @author Spencer Herzberg
  */
+
+
+
 public class NXT {
-		
+	
 	public enum Motor{
 		MOTOR_A ((byte)0x00, "Motor A"),
 		MOTOR_B ((byte)0x01, "Motor B"),
@@ -26,7 +29,18 @@ public class NXT {
 		}
 		public String getName(){return name;}
 		public byte getPort(){return port;}
+		
+		public static Motor getMotorByName(String name){
+			for (Motor m: values()){
+				if (m.getName().equals(name)){
+					return m;
+				}
+			}
+			return null;
+			
+		}
 	}
+	
 	public static final HashMap<String, Motor> MOTORS = new HashMap<String, Motor>();
 	static{
 		for (Motor m : Motor.values()){
@@ -106,6 +120,16 @@ public class NXT {
 		public String getName(){return name;}
 		public byte getType(){return type;}
 		public SensorMode getMode(){return defaultMode;}
+		
+		public static SensorType getTypeByName(String name){
+			for (SensorType s: values()){
+				if (s.getName().equals(name)){
+					return s;
+				}
+			}
+			return null;
+			
+		}
 	}
 	
 	public enum SensorMode{
@@ -129,6 +153,16 @@ public class NXT {
 		}
 		public String getName(){return name;}
 		public byte getMode(){return mode;}
+		
+		public static SensorMode getTypeByName(String name){
+			for (SensorMode m: values()){
+				if (m.getName().equals(name)){
+					return m;
+				}
+			}
+			return null;
+			
+		}
 		
 	}
 	

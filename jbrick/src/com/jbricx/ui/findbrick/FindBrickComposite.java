@@ -245,4 +245,10 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	
+	
 }
