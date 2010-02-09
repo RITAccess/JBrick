@@ -688,8 +688,13 @@ public class MainWindow extends ApplicationWindow implements
 	public JBrickTabItem getCurrentTabItem() {
 		CTabItem currentTabItem;
 		int currentIndex = tabFolder.getSelectionIndex();
-		currentTabItem = tabFolder.getItem(currentIndex);
-		return (JBrickTabItem) currentTabItem;
+		if (0 <= currentIndex){
+			currentTabItem = tabFolder.getItem(currentIndex);
+			return (JBrickTabItem) currentTabItem;
+		}
+		else{
+			return null;
+		}
 	}
 
 	public void setTabFolder(CTabFolder tabFolder) {
