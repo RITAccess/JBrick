@@ -1,16 +1,12 @@
 package com.jbricx.actions;
 
-import java.io.IOException;
-
+/*
+ * @author Priya Sankaran
+ */
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.DirectControl.DirectControlWindow;
-import com.jbricx.ui.joystick.JoystickUIWindow;
 import com.jbricx.ui.methodTemplate.MethodTemplateUIWindow;
-import com.jbricx.ui.methodTemplate.MethodTemplateComposite;
 
 /**
  * This class shows an About box
