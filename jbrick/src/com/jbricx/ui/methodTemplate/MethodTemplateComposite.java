@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-public class MethodTemplateComposite extends Composite {
+public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 
 	public MethodTemplateComposite(Composite parent, int style) {
 		super(parent, style);
@@ -72,7 +72,8 @@ public class MethodTemplateComposite extends Composite {
 				String keyActual = key;
 				key = key.substring(2);
 				subItem.setText(new String[] { key });
-				System.out.println(key + " " + properties.getProperty(keyActual));
+				System.out.println(key + " "
+						+ properties.getProperty(keyActual));
 			}
 		}
 
