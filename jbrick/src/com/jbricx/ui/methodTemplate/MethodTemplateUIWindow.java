@@ -1,9 +1,11 @@
 package com.jbricx.ui.methodTemplate;
 
+/*
+ * @author Priya Sankaran
+ */
 import java.io.IOException;
 
 import org.eclipse.jface.window.ApplicationWindow;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
