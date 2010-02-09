@@ -1,5 +1,9 @@
 package com.jbricx.ui.findbrick;
 
+/*
+ * @author Priya Sankaran
+ */
+
 import java.io.FileInputStream;
 
 import org.eclipse.swt.SWT;
@@ -57,6 +61,7 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 	*/
 	public static void showGUI() {
 		Display display = Display.getDefault();
+		
 		Shell shell = new Shell(display);
 		FindBrickComposite inst = new FindBrickComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
