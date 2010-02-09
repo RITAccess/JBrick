@@ -318,8 +318,8 @@ public class JBrickTabItem extends CTabItem {
 			String translatedString = inputString ;
 			
 			translatedString = translatedString.replace("\\=", "\r\n") ;
-			translatedString = translatedString.replace("\\>", "\t") ;
-			translatedString = translatedString.replace("\\<", "\t") ;
+			translatedString = translatedString.replace("\\>", "\r\n\t") ;
+			translatedString = translatedString.replace("\\<", "\t\r\n") ;
 			viewer.getTextWidget().insert(translatedString) ;
 		}
 		
