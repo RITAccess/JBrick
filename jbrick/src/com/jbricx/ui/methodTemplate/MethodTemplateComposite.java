@@ -73,9 +73,10 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				Point point = new Point(event.x, event.y);
 				TreeItem sub = tree.getItem(point);
 				if (sub != null) {
-
-					JBrickEditor.getMainWindow().getCurrentTabItem()
-							.insertString(sub.getText());
+					if ( JBrickEditor.getMainWindow().getCurrentTabItem() != null){
+						JBrickEditor.getMainWindow().getCurrentTabItem()
+						.insertString(sub.getText());
+					}
 				}
 			}
 		});
@@ -83,7 +84,9 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		TreeItem item = null;
 		while ((key = input.readLine()) != null) {
 
-			if (2 <= key.length() && key.substring(0, 2).compareTo("- ") == 0) { /*
+			if (2 <= key.length() && 
+					key.substring(0, 2).compareTo("- ") == 0
+				||	key.substring(0, 2).compareTo("| ") == 0) { /*
 																				 * Next
 																				 * Tree
 																				 */
