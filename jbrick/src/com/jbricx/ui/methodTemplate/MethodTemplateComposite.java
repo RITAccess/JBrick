@@ -55,7 +55,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 
 		final Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
-
+		shell.setText("Method Template");
 		String key;
 
 		File f = new File("src/com/jbricx/ui/methodTemplate/Programs.txt");
@@ -65,8 +65,7 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				| SWT.V_SCROLL);
 		tree.setHeaderVisible(true);
 		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
-		methodTemplate.setText("Method Templates");
-		methodTemplate.setWidth(200);
+		methodTemplate.setWidth(220);
 
 		tree.addListener(SWT.MouseDown, new Listener() {
 			@Override
