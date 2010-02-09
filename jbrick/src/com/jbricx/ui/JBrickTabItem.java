@@ -313,6 +313,13 @@ public class JBrickTabItem extends CTabItem {
 		
 		
 	}
+	
+	public void insertString(String inputString){
+		if (viewer != null ){
+			viewer.getTextWidget().insert("aaaaa") ;
+		}
+		
+	}
 
 	public void setFont(FontData[] fontData) {
 		// Create the font
