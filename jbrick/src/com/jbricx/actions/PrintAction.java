@@ -44,18 +44,12 @@ public class PrintAction extends Action {
 		SourceViewer viewer = JBrickEditor.getMainWindow().getCurrentTabItem()
 				.getViewer();
 
-		/*PrintDialog printDialog = new PrintDialog(s, SWT.NONE);
-		printDialog.setText("Print");
-		PrinterData printerData = printDialog.open();
-		Printer printer = new Printer(printerData);*/
-
 		StyledTextPrintOptions options = new StyledTextPrintOptions();
-		options.footer = "\t\t<page>";
+
 		options.jobName = "Example";
 		options.printLineBackground = true;
 
-		// viewer.getTextWidget().print(printer);
 		viewer.print(options);
-		// JBrickEditor.getApp().print();
+
 	}
 }
