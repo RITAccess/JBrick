@@ -73,12 +73,9 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		tree.addListener(SWT.MouseDown, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				// TODO Auto-generated method stub
-				System.out.println("Mouse: " );
 				Point point = new Point(event.x, event.y);
 				TreeItem sub = tree.getItem(point);
 				if (sub != null) {
-					//System.out.println("Mouse down: " + sub.getText());
 					JBrickEditor.getMainWindow().getCurrentTabItem().insertString(sub.getText());
 				}
 			}
