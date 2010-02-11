@@ -67,16 +67,16 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
 		methodTemplate.setWidth(220);
 
-		tree.addListener(SWT.MouseDown, new Listener() {
+		tree.addListener(SWT.DefaultSelection, new Listener() {
+			/* DefaultSelection = Select by MouseClick or Enter key */
 			@Override
 			public void handleEvent(Event event) {
-
-				Point point = new Point(event.x, event.y);
-				TreeItem sub = tree.getItem(point);
-				if (sub != null) {
-					if (JBrickEditor.getMainWindow().getCurrentTabItem() != null) {
+				TreeItem sub = (TreeItem) event.item;
+				if (sub != null && sub.getItemCount() == 0 ) { 
+					/* This is the lowest level of the tree */
+					if ( JBrickEditor.getMainWindow().getCurrentTabItem() != null){
 						JBrickEditor.getMainWindow().getCurrentTabItem()
-								.insertString(sub.getText());
+						.insertString(sub.getText());
 					}
 				}
 			}
