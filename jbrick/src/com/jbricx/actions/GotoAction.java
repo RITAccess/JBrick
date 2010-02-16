@@ -17,7 +17,7 @@ public class GotoAction extends Action {
    * FindAction constructor
    */
   public GotoAction() {
-    super("&Goto@Ctrl+F", ImageDescriptor.createFromFile(GotoAction.class,
+    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class,
         "/images/edit-find.png"));
     setToolTipText("Goto");
   }
