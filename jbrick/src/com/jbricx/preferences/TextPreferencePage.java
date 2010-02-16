@@ -1,6 +1,7 @@
 package com.jbricx.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FontFieldEditor;
@@ -17,6 +18,8 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 	private BooleanFieldEditor wrapFieldEditor;
 	private DirectoryFieldEditor workspaceFieldEditor;
 	private BooleanFieldEditor boolrecentfiles;
+	private ColorFieldEditor bgCF ;
+	private ColorFieldEditor fgCF ;
 
 	/**
 	 * TextPreferencePage constructor
@@ -50,5 +53,14 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 				getFieldEditorParent());
 		addField(boolrecentfiles);
 		
+		// Add a background color field
+		bgCF = new ColorFieldEditor("bgColor", "Background Color:",
+	        getFieldEditorParent());
+	    addField(bgCF);
+	    
+	 // Add a foreground color field
+	    fgCF = new ColorFieldEditor("fgColor", "Foreground Color:",
+	        getFieldEditorParent());
+	    addField(fgCF);
 	}
 }

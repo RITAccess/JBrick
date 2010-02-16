@@ -1,12 +1,12 @@
 package com.jbricx.pjo;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
 
-import com.jbricx.communications.BrickCreator;
-import com.jbricx.communications.ExitStatus;
+import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.ColorManager;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickPartitionScanner;
@@ -20,6 +20,8 @@ import com.jbricx.ui.MainWindow;
 public class JBrickEditor {
 	// Set up the name of the partitioner
 	public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
+	
+	public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
 
 	// A reference to the current app
 	private static JBrickEditor APP;
@@ -32,6 +34,20 @@ public class JBrickEditor {
 
 	// The stored preferences
 	private PreferenceStore prefs;
+
+	public void setPrefs(PreferenceStore prefs) {
+		this.prefs = prefs;
+		notifyViewers();
+	}
+	
+	
+	public void notifyViewers(){
+		for(JBrickObservable observer: observerList){
+			observer.update();
+		}
+		
+	}
+	
 
 	// The partition scanner
 	private JBrickPartitionScanner scanner;
@@ -183,6 +199,15 @@ public class JBrickEditor {
 		
 		new JBrickEditor().run();
 		
+		
+	}
+	public static void registerObserver(JBrickObservable observer){
+		observerList.add(observer);
+	}
+	public static void removeObserver(JBrickObservable observer){
+		if(observerList.contains(observer)){
+			observerList.add(observer);
+		}
 		
 	}
 }

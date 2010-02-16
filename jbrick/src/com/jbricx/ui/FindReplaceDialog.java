@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.*;
  * This class displays a find/replace dialog
  */
 public class FindReplaceDialog extends Dialog {
+	
+	
   // The adapter that does the finding/replacing
   private FindReplaceDocumentAdapter frda;
 

@@ -7,14 +7,12 @@ import javax.swing.JOptionPane;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.jface.text.ITextViewerExtension3;
-import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.IUndoManager;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.TextViewerUndoManager;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationBarHoverManager;
@@ -23,26 +21,20 @@ import org.eclipse.jface.text.source.AnnotationPainter;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.IOverviewRuler;
 import org.eclipse.jface.text.source.ISharedTextColors;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -51,14 +43,14 @@ import org.eclipse.swt.widgets.Menu;
 import annotation.AnnotationConfiguration;
 import annotation.AnnotationHover;
 import annotation.AnnotationMarkerAccess;
-import annotation.ErrorAnnotation;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
 import com.jbricx.source.JBrickPartitionScanner;
 
-public class JBrickTabItem extends CTabItem {
+public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 	private CompositeRuler ruler;
 	private LineNumberRulerColumn lnrc;
@@ -150,6 +142,8 @@ public class JBrickTabItem extends CTabItem {
 		// source viewer
 		viewer = new SourceViewer(parent, ruler, fOverviewRuler, true,
 				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		
+		
 		// Configure it and set the document
 		undoManager = new TextViewerUndoManager(100);
 		undoManager.connect(viewer);
@@ -261,6 +255,12 @@ public class JBrickTabItem extends CTabItem {
 		 * }}) ;
 		 */
 
+		//part of the observer pattern to update all registered object after changing preference
+		//page
+		JBrickEditor.registerObserver(this);
+		
+		
+		
 		menuManager = createRightClickMenuManager(viewer.getTextWidget());
 		Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
 		viewer.getTextWidget().setMenu(menu);
@@ -269,6 +269,8 @@ public class JBrickTabItem extends CTabItem {
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
+		
+		
 	}
 	
 	/**
@@ -411,5 +413,22 @@ public class JBrickTabItem extends CTabItem {
 
 		public void dispose() {
 		}
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		PreferenceStore store =  JBrickEditor.getApp().getPreferences();
+		
+		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
+		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
+		
+		Color bgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),bgRBG);
+		Color fgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
+		
+	   viewer.getTextWidget().setBackground(bgColor);
+	   viewer.setTextColor(fgColor);
+		
+		
 	}
 }
