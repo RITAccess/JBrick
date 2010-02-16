@@ -427,7 +427,7 @@ public class MainWindow extends ApplicationWindow implements
 		MenuManager fileMenu = new MenuManager("&File");
 		MenuManager editMenu = new MenuManager("&Edit");
 		MenuManager compileMenu = new MenuManager("&Compile");
-		MenuManager toolMenu = new MenuManager("&Tool");
+		MenuManager toolMenu = new MenuManager("&Tools");
 		MenuManager downloadMenu = new MenuManager("&Download");
 
 		MenuManager helpMenu = new MenuManager("&Help");
@@ -462,10 +462,10 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(methodTemplateAction);
 		
 		compileMenu.add(findBrickAction);
-		toolMenu.add(directControlAction);
-		
 		compileMenu.add(compileAction);
-		compileMenu.add(joystickAction);
+		
+		toolMenu.add(directControlAction);
+		toolMenu.add(joystickAction);
 		
 		helpMenu.add(aboutAction);
 		helpMenu.add(helpContentAction);
@@ -511,6 +511,7 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(aboutAction);
 		
 		tm.add(new Separator());
+		tm.add(directControlAction);
 		tm.add(joystickAction);
 		
 		tm.add(new Separator());

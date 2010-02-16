@@ -72,8 +72,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		public void run() {
 			System.out.println("-");
 			btnGetWidgetSelected(null);
-			Display.getDefault().timerExec(100, this);
-			Display.getDefault().timerExec(100, this);
+			Display.getDefault().timerExec(2000, this);
+			Display.getDefault().timerExec(2000, this);
 	      }
 	    };
 	/**
@@ -130,6 +130,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		try {
 			nxt = new WindowsNXTBrick();
 			nxt.NXTConnect(ConnectionType.USB);
+			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
 			
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
@@ -844,12 +845,12 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			String sensor = Sensor.SENSOR_1.getName();
 			SensorMode mode = SensorMode.getTypeByName(cmbSensorType1.getText());
 			SensorType type = SensorType.getTypeByName(cmbSensor1.getText());
-//			System.out.println(sensor+" "+mode+ " "+type);
+	//		System.out.println(sensor+" "+mode+ " "+type);
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_1);
-			System.out.println(val);
+	//		System.out.println(val);
 			lblValue1.setText(Integer.toString(val));
 		}
 		else{
@@ -859,12 +860,12 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			String sensor = Sensor.SENSOR_2.getName();
 			SensorMode mode = SensorMode.getTypeByName(cmbSensorType2.getText());
 			SensorType type = SensorType.getTypeByName(cmbSensor2.getText());
-//			System.out.println(sensor+" "+mode+ " "+type);
+	//		System.out.println(sensor+" "+mode+ " "+type);
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_2);
-			System.out.println(val);
+	//		System.out.println(val);
 			lblValue2.setText(Integer.toString(val));
 		}
 		else{
@@ -874,27 +875,27 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			String sensor = Sensor.SENSOR_3.getName();
 			SensorMode mode = SensorMode.getTypeByName(cmbSensorType3.getText());
 			SensorType type = SensorType.getTypeByName(cmbSensor3.getText());
-//			System.out.println(sensor+" "+mode+ " "+type);
+	//		System.out.println(sensor+" "+mode+ " "+type);
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_3);
-			System.out.println(val);
+	//		System.out.println(val);
 			lblValue3.setText(Integer.toString(val));
 		}
 		else{
 			lblValue3.setText("");
 		}
 		if(!cmbSensor4.getText().equals("None")){
-			String sensor = Sensor.SENSOR_1.getName();
+			String sensor = Sensor.SENSOR_4.getName();
 			SensorMode mode = SensorMode.getTypeByName(cmbSensorType4.getText());
 			SensorType type = SensorType.getTypeByName(cmbSensor4.getText());
-//			System.out.println(sensor+" "+mode+ " "+type);
+	//		System.out.println(sensor+" "+mode+ " "+type);
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
 			byte val = nxt.getRawSensorValue(Sensor.SENSOR_4);
-			System.out.println(val);
+	//		System.out.println(val);
 			lblValue4.setText(Integer.toString(val));
 		}
 		else{
@@ -953,7 +954,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private void pollSelected() {
 		if (poll.getSelection()){
 			try{
-				Display.getDefault().timerExec(1000, timer);
+				Display.getDefault().timerExec(2000, timer);
 			}
 			catch(Exception e){e.printStackTrace();}
 		}

@@ -421,10 +421,10 @@ public class NXT {
 	
 		fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), response, response.length, status);
 		
-//		for (int i=0;i<15;i++){
-//			System.out.print(response[i]);
-//			System.out.print("\t");
-//		}
+		for (int i=0;i<15;i++){
+			System.out.print(response[i]);
+			System.out.print("\t");
+		}
 //		System.out.println();
 //		System.out.println(response[2]+ " "+response[1]);
 		return response; //number of bytes ready to read
