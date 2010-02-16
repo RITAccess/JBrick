@@ -318,12 +318,38 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	public void insertString(String inputString){
 		if (viewer != null ){
 			String translatedString = inputString ;
-			
 			translatedString = translatedString.replace("\\=", "\r\n") ;
 			translatedString = translatedString.replace("\\>", "\r\n\t") ;
-			translatedString = translatedString.replace("\\<", "\t\r\n") ;
+			translatedString = translatedString.replace("\\<", "\r\n") ;
 			viewer.getTextWidget().insert(translatedString) ;
-		}
+
+/*	Test ///////////////////////////////////////////////////////////////////////////
+ * 			String tabbedString[] ;
+			String replaceString = "" ;
+			String translatedString2 = null ;
+			StringBuilder sb = new StringBuilder();
+			String str[] ;
+			int i,j ;
+			int tabCount = 0 ;
+			tabbedString = translatedString.split("\\>") ;
+			for(i=0; i<tabbedString.length; i++){
+				tabbedString[i] = tabbedString[i].substring(0, tabbedString[i].length()-1) ;
+				System.out.println("String is: "+ tabbedString[i]);
+				// for (j=0; j<tabCount; j++) sb.append("\t") ;
+				
+				if (tabbedString[i].contains("\\<")){
+					tabbedString[i] = tabbedString[i].replace("\\<", "\r\n") ;
+					tabCount -- ;
+				}
+				replaceString = "" ;
+				for (j=0; j<tabCount; j++) replaceString += "\t" ;
+				str = tabbedString[i].split("\r\n") ;
+				for (j=0; j<str.length; j++) str[j] = replaceString + str[j];
+				for (j=0; j<str.length; j++) sb.append(str[j]+"\r\n") ;
+				tabCount ++ ;
+			}
+			viewer.getTextWidget().insert(sb.toString()) ;*/
+			}
 		
 	}
 
@@ -400,6 +426,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		rightMenuBar.add(new com.jbricx.actions.CutAction());
 		rightMenuBar.add(new com.jbricx.actions.CopyAction());
 		rightMenuBar.add(new com.jbricx.actions.PasteAction());
+		rightMenuBar.add(new Separator());
+		rightMenuBar.add(new com.jbricx.actions.SelectAllAction());
 		Menu menu = rightMenuBar.createContextMenu(parent);
 		// Right Click Attach
 		parent.setMenu(menu);
