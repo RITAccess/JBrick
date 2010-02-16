@@ -74,6 +74,7 @@ import com.jbricx.actions.PrintAction;
 import com.jbricx.actions.RedoAction;
 import com.jbricx.actions.SaveAction;
 import com.jbricx.actions.SaveAsAction;
+import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
 import com.jbricx.filters.FolderFilter;
 import com.jbricx.pjo.FileExtensionConstants;
@@ -95,6 +96,7 @@ public class MainWindow extends ApplicationWindow implements
 	private HelpContentAction helpContentAction = new HelpContentAction();
 	private CopyAction copyAction = new CopyAction();
 	private CutAction cutAction = new CutAction();
+	private SelectAllAction selectAllAction = new SelectAllAction();
 	private ExitAction exitAction = new ExitAction();
 	private FindAction findAction = new FindAction();
 	private GotoAction gotoAction = new GotoAction();
@@ -458,6 +460,7 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(findAction);
 		editMenu.add(gotoAction);
 		editMenu.add(new Separator());
+		editMenu.add(selectAllAction);
 		editMenu.add(prefsAction);
 		editMenu.add(methodTemplateAction);
 		
