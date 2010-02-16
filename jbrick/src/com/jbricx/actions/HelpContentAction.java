@@ -10,7 +10,7 @@ import com.jbricx.pjo.JBrickEditor;
 public class HelpContentAction extends Action {
 	
 	public HelpContentAction(){
-		super("&Help Content@Ctrl+A", ImageDescriptor.createFromFile(AboutAction.class,
+		super("&Help Content@F1", ImageDescriptor.createFromFile(AboutAction.class,
 	    "/images/help-browser.png"));
 		setToolTipText("Help Content");
 	}
