@@ -120,6 +120,12 @@ public class JBrickEditor {
 	}
 
 	/**
+	 * Select all of the text in the editor
+	 */
+	public void selectAll() {
+		mainWindow.getCurrentTabItem().getViewer().getTextWidget().selectAll();
+	}
+	/**
 	 * Pastes the clipboard
 	 */
 	public void paste() {
