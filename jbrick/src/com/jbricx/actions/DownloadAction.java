@@ -15,7 +15,7 @@ public class DownloadAction extends Action {
 	   * AboutAction constructor
 	   */
 	  public DownloadAction() {
-	    super("&Download@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class,
+	    super("&Download@Ctrl+Shift+D", ImageDescriptor.createFromFile(AboutAction.class,
 	        "/images/media-playback-start.png"));
 	    setToolTipText("Download");
 	  }
