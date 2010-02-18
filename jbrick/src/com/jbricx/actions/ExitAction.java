@@ -17,7 +17,7 @@ public class ExitAction extends Action {
    */
   public ExitAction() {
 //    super("E&xit@Alt+F4");
-    super("E&xit@Alt+F4", ImageDescriptor.createFromFile(PasteAction.class,
+    super("E&xit@Ctrl+Q", ImageDescriptor.createFromFile(PasteAction.class,
     "/images/system-log-out.png"));
     setToolTipText("Exit");
   }
