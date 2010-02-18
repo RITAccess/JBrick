@@ -129,8 +129,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		
 		try {
 			nxt = new WindowsNXTBrick();
-			//nxt.NXTConnect(ConnectionType.USB);
-			nxt.NXTConnect(ConnectionType.BLUETOOTH);
+			nxt.NXTConnect(ConnectionType.USB);
+			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
 			
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();

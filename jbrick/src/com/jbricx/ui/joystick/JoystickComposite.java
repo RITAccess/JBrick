@@ -72,16 +72,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	static Thread thread;
 	
 	public static void main(String[] args) {
-//		connectNXT();
-//		connectJoypad();
-//		
-//		
-//		
-//		thread = new Thread(pollController);
-//		thread.start();
-		
-//		showGUI();
-		
+		showGUI();		
 	}
 
 	/**
@@ -119,6 +110,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		shell.open();
 		
 		
+		connectNXT();
+		connectJoypad();
+		
+		thread = new Thread(pollController);
+		thread.start();
+		
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
@@ -127,18 +124,29 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		thread.stop();	
 	}
 
+	Shell shell;
+	
 	public JoystickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
-		initGUI();	
+		
+		display = Display.getDefault();
+		shell = new Shell(display);
+		
+		initGUI();
+		
+		//getShell()
+		
+//		while (!shell.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//		thread.stop();	
+		
 	}
 
 	private void initGUI() {
 		
-		connectNXT();
-		connectJoypad();
-		
-		thread = new Thread(pollController);
-		thread.start();
+
 		
 		try {
 			{
@@ -485,8 +493,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private static void connectNXT(){
 		nxt = new WindowsNXTBrick();
 		try {
-			//nxt.NXTConnect(ConnectionType.USB);
-			nxt.NXTConnect(ConnectionType.BLUETOOTH);
+			nxt.NXTConnect(ConnectionType.USB);
+			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {

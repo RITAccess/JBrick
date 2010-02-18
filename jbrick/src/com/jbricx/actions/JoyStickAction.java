@@ -6,6 +6,8 @@ package com.jbricx.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.ui.DirectControl.DirectControlWindow;
+import com.jbricx.ui.joystick.JoystickComposite;
 import com.jbricx.ui.joystick.JoystickUIWindow;
 
 public class JoyStickAction extends Action{
@@ -22,8 +24,11 @@ public class JoyStickAction extends Action{
 	   * Runs the action
 	   */
 	  public void run() {
-		  JoystickUIWindow  joystick = new  JoystickUIWindow(); 
-		  joystick.setBlockOnOpen(true);
-		  joystick.open();
+//		  JoystickUIWindow  joystick = new  JoystickUIWindow(); 
+//		  joystick.setBlockOnOpen(true);
+//		  joystick.open();
+		  
+		  JoystickComposite.showGUI() ;
+		  
 	  }
 }
