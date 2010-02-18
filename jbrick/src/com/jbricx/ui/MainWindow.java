@@ -120,7 +120,7 @@ public class MainWindow extends ApplicationWindow implements
 	public Table table;
 	// The font
 	private Font font;
-	
+
 	public LineNumberChangeRulerColumn lnrc;
 
 	/*
@@ -179,16 +179,15 @@ public class MainWindow extends ApplicationWindow implements
 		long start = System.currentTimeMillis();
 		System.out.println("start ");
 		String workspacePath = getWorkspacePath();
-		if (workspacePath == null) 	workspacePath = setWorkspacePath(parent);
+		if (workspacePath == null)
+			workspacePath = setWorkspacePath(parent);
 		this.treeRootFile = new File(workspacePath);
 		setStatus("Successfully Lauched!");
-		
 
 		// divide the main window
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
 		sashForm.setLayout(new RowLayout());
 
-		
 		final Label l = new Label(parent, SWT.NONE);
 		l.setToolTipText("helllllll oooooo Jaws:");
 		l.setVisible(false);
@@ -233,16 +232,17 @@ public class MainWindow extends ApplicationWindow implements
 		// Create the viewer
 		CompositeRuler ruler = new CompositeRuler(10);
 
-		/*LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
-		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
-				255, 0, 0)));*/
+		/*
+		 * LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
+		 * lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
+		 * 255, 0, 0)));
+		 */
 		lnrc = new LineNumberChangeRulerColumn(new ColorCache());
 		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
 				255, 0, 0)));
-		//lnrc.getLineOfLastMouseButtonActivity();
-		
-		
-		//lnrc.getControl().getAccessible().textSelectionChanged()
+		// lnrc.getLineOfLastMouseButtonActivity();
+
+		// lnrc.getControl().getAccessible().textSelectionChanged()
 		ruler.addDecorator(0, lnrc);
 
 		tabFolder = new CTabFolder(rightPanel, SWT.TOP);
@@ -297,17 +297,17 @@ public class MainWindow extends ApplicationWindow implements
 				}
 			}
 		});
-		
-		/////////////////////////////////////////////////////////////////
-		
-		
+
+		// ///////////////////////////////////////////////////////////////
+
 		// rulers
 		AnnotationModel fAnnotationModel = new AnnotationModel();
 		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
 
 		ColorCache cc = new ColorCache();
 		CompositeRuler fCompositeRuler = new CompositeRuler();
-		OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,	cc);
+		OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,
+				cc);
 		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
 				fAnnotationModel, 16, fAnnotationAccess);
 		fCompositeRuler.setModel(fAnnotationModel);
@@ -315,9 +315,7 @@ public class MainWindow extends ApplicationWindow implements
 
 		// annotation ruler is decorating our composite ruler
 		fCompositeRuler.addDecorator(0, annotationRuler);
-/////////////////////////////////////////////////////////////////
-		
-		
+		// ///////////////////////////////////////////////////////////////
 
 		// ******** bottom part of the right panel **********************
 
@@ -325,63 +323,64 @@ public class MainWindow extends ApplicationWindow implements
 		table.addListener(SWT.DefaultSelection, new Listener() {
 			public void handleEvent(Event e) {
 				IDocument document = getCurrentTabItem().getDocument();
-				/*String txt = getCurrentTabItem().getViewer().getTextWidget().getText();
-				System.out.println("txt"+ txt);
-				getCurrentTabItem().getViewer().setSelectedRange(12, 2);
-				System.out.println("Item Text is:  " + ((TableItem)e.item ).getText());
-			*/
+				/*
+				 * String txt =
+				 * getCurrentTabItem().getViewer().getTextWidget().getText();
+				 * System.out.println("txt"+ txt);
+				 * getCurrentTabItem().getViewer().setSelectedRange(12, 2);
+				 * System.out.println("Item Text is:  " + ((TableItem)e.item
+				 * ).getText());
+				 */
 				try {
-					
-					
-					String errorMessageText =((TableItem)e.item ).getText();
+
+					String errorMessageText = ((TableItem) e.item).getText();
 					System.out.println("Item Text is:  " + errorMessageText);
 					String strLineNumber = errorMessageText.substring(
-							errorMessageText.indexOf("Line:")+5, errorMessageText.indexOf("Error"));
-					
-					
-					int errorLineNumber = Integer.parseInt(strLineNumber.trim()) -1;
-					
-		
+							errorMessageText.indexOf("Line:") + 5,
+							errorMessageText.indexOf("Error"));
+
+					int errorLineNumber = Integer
+							.parseInt(strLineNumber.trim()) - 1;
+
 					int offset = document.getLineOffset(errorLineNumber);
 					int lineLength = document.getLineLength(errorLineNumber);
-					getCurrentTabItem().getViewer().setSelectedRange(offset, lineLength);
-					setStatus(" status bar Line "+strLineNumber);
-					
-					
-					//System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer()) );
-					System.out.println("Info is: "+getCurrentTabItem().getViewer().getTextWidget().getSelection() );
-					
-					
-					/*if(lnrc != null){
-						System.out.println("mouse thing -- "+lnrc.getLineOfLastMouseButtonActivity());
-					}
-					else{
-						System.out.println("it is null");
-					}
-					*/
-					
+					getCurrentTabItem().getViewer().setSelectedRange(offset,
+							lineLength);
+					setStatus(" status bar Line " + strLineNumber);
+
+					// System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
+					// );
+					System.out.println("Info is: "
+							+ getCurrentTabItem().getViewer().getTextWidget()
+									.getSelection());
+
+					/*
+					 * if(lnrc != null){
+					 * System.out.println("mouse thing -- "+lnrc
+					 * .getLineOfLastMouseButtonActivity()); } else{
+					 * System.out.println("it is null"); }
+					 */
+
 					getStatusLineManager().getControl().setFocus();
-					
+
 				} catch (BadLocationException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 
-			l.setFocus();
-			
-		
+				l.setFocus();
+
 			}
-			
+
 		});
 		rightPanel.setWeights(new int[] { 80, 20 });
 		sashForm.setWeights(new int[] { 20, 80 });
 
 		getMenuBarManager().updateAll(true);
-		
-		long end = System.currentTimeMillis(); 
-		start = end-start;
-		System.out.println("it took : "+ start);
+
+		long end = System.currentTimeMillis();
+		start = end - start;
+		System.out.println("it took : " + start);
 		return parent;
 
 	}
@@ -463,13 +462,14 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(selectAllAction);
 		editMenu.add(prefsAction);
 		editMenu.add(methodTemplateAction);
-		
-		compileMenu.add(findBrickAction);
+
 		compileMenu.add(compileAction);
-		
+		compileMenu.add(downloadAction);
+		compileMenu.add(findBrickAction);
+
 		toolMenu.add(directControlAction);
 		toolMenu.add(joystickAction);
-		
+
 		helpMenu.add(aboutAction);
 		helpMenu.add(helpContentAction);
 
@@ -506,17 +506,17 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(prefsAction);
 		tm.add(new Separator());
 		tm.add(compileAction);
-		
+
 		tm.add(new Separator());
 		tm.add(downloadAction);
 
 		tm.add(new Separator());
 		tm.add(aboutAction);
-		
+
 		tm.add(new Separator());
 		tm.add(directControlAction);
 		tm.add(joystickAction);
-		
+
 		tm.add(new Separator());
 		tm.add(findBrickAction);
 		return tm;
@@ -630,7 +630,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	// Going to modify this to request preferences
 	public String setWorkspacePath(Composite parent) {
-		String workspace = null ;
+		String workspace = null;
 		String path;
 		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
 		do {
@@ -642,13 +642,13 @@ public class MainWindow extends ApplicationWindow implements
 		try {
 			ps.save();
 		} catch (IOException e) {
-			System.out.println("Error Saving Preferences: "
-					+ e.getMessage());
+			System.out.println("Error Saving Preferences: " + e.getMessage());
 		}
 		workspace = path;
 		return workspace;
 
 	}
+
 	// Going to modify this to request preferences
 	public String getWorkspacePath() {
 		// Get the preference store
@@ -663,8 +663,7 @@ public class MainWindow extends ApplicationWindow implements
 		boolean exists = file.exists();
 		if (workspace.equals("") || !exists) {
 			return null;
-		}
-		else{
+		} else {
 			return workspace;
 		}
 	}
@@ -692,11 +691,10 @@ public class MainWindow extends ApplicationWindow implements
 	public JBrickTabItem getCurrentTabItem() {
 		CTabItem currentTabItem;
 		int currentIndex = tabFolder.getSelectionIndex();
-		if (0 <= currentIndex){
+		if (0 <= currentIndex) {
 			currentTabItem = tabFolder.getItem(currentIndex);
 			return (JBrickTabItem) currentTabItem;
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
