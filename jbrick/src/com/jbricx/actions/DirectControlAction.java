@@ -15,7 +15,7 @@ public class DirectControlAction extends Action {
    * CopyAction constructor
    */
   public DirectControlAction() {
-    super("&Direct Control", ImageDescriptor.createFromFile(AboutAction.class,
+    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class,
         "/images/direct_control.png"));
     setToolTipText("Direct Control");
   }
