@@ -72,15 +72,15 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	static Thread thread;
 	
 	public static void main(String[] args) {
-		connectNXT();
-		connectJoypad();
+//		connectNXT();
+//		connectJoypad();
+//		
+//		
+//		
+//		thread = new Thread(pollController);
+//		thread.start();
 		
-		
-		
-		thread = new Thread(pollController);
-		thread.start();
-		
-		showGUI();
+//		showGUI();
 		
 	}
 
@@ -99,8 +99,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	static Display display;
 	
 	public static void showGUI() {
+		
+		
+		
 		display = Display.getDefault();
 		Shell shell = new Shell(display);
+		
 		JoystickComposite inst = new JoystickComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
@@ -113,6 +117,9 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			shell.setSize(shellBounds.width, shellBounds.height);
 		}
 		shell.open();
+		
+		
+		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
@@ -122,10 +129,17 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
 	public JoystickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
-		initGUI();
+		initGUI();	
 	}
 
 	private void initGUI() {
+		
+		connectNXT();
+		connectJoypad();
+		
+		thread = new Thread(pollController);
+		thread.start();
+		
 		try {
 			{
 				Movement = new Group(this, SWT.NONE);
@@ -471,7 +485,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private static void connectNXT(){
 		nxt = new WindowsNXTBrick();
 		try {
-			nxt.NXTConnect(ConnectionType.USB);
+			//nxt.NXTConnect(ConnectionType.USB);
+			nxt.NXTConnect(ConnectionType.BLUETOOTH);
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {

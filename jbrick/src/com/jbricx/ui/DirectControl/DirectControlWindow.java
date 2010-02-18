@@ -72,8 +72,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		public void run() {
 			System.out.println("-");
 			btnGetWidgetSelected(null);
-			Display.getDefault().timerExec(2000, this);
-			Display.getDefault().timerExec(2000, this);
+			Display.getDefault().timerExec(500, this);
+			Display.getDefault().timerExec(500, this);
 	      }
 	    };
 	/**
@@ -129,8 +129,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 		
 		try {
 			nxt = new WindowsNXTBrick();
-			nxt.NXTConnect(ConnectionType.USB);
-			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
+			//nxt.NXTConnect(ConnectionType.USB);
+			nxt.NXTConnect(ConnectionType.BLUETOOTH);
 			
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
@@ -954,7 +954,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private void pollSelected() {
 		if (poll.getSelection()){
 			try{
-				Display.getDefault().timerExec(2000, timer);
+				Display.getDefault().timerExec(500, timer);
 			}
 			catch(Exception e){e.printStackTrace();}
 		}
