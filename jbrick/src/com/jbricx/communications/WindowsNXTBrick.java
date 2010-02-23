@@ -55,19 +55,11 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 			command.add("-d");
 //			command.add("C:\\Users\\spencer\\sample.nxc");
 		command.add(filename);
-		
+		System.out.println("Command:"+command.toString());
 		return run(command);
 	}
 
-	@Override
-	public ExitStatus getBatteryLevel() {
-		// TODO Auto-generated method stub
-		List<String> command = new ArrayList<String>();
-		command.add(NEXTTOOL);
-		command.add("/COM=usb");
-		command.add("-listbricks");
-		return run(command);
-	}
+	
 
 	@Override
 	public ExitStatus getRunningProgram() {
@@ -97,6 +89,23 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	@Override
 	public void NXTConnect(ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException {
 		nxt = new NXT(type.getName());
+	}
+	
+	@Override
+	public int getBatteryLevel() {
+		// TODO Auto-generated method stub
+//		List<String> command = new ArrayList<String>();
+//		command.add(NEXTTOOL);
+//		command.add("/COM=usb");
+//		command.add("-listbricks");
+//		return run(command);
+		return nxt.getBattery();
+	}
+	
+	@Override
+	public boolean isConnected(){
+		System.out.println(nxt.isConnected());
+		return nxt.isConnected();
 	}
 
 	@Override

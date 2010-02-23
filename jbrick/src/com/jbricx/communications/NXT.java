@@ -15,6 +15,8 @@ import java.util.HashMap;
 
 
 public class NXT {
+
+	public boolean isConnected = false;
 	
 	public enum Motor{
 		MOTOR_A ((byte)0x00, "Motor A"),
@@ -203,14 +205,14 @@ public class NXT {
         command.put((byte)0x00);
         command.put(filenameBytes);
         command.put((byte)0x00);
-        fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
+        fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), null, 0, status);
         System.out.println(status.getStatus().toString());
     }
     
     public void stopProgram() {
         ByteBuffer command= ByteBuffer.allocate(1);
         command.put((byte)0x01);
-        fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, 1, null, 0, new Status());
+        fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, 1, null, 0, new Status());
     }
 
     private Pointer connect(String name) throws NXTNotFoundException, UnableToCreateNXTException {
@@ -224,6 +226,7 @@ public class NXT {
                 if (FantomUtils.asString(resourceName).contains(name)) {
                     Pointer iNXT= fantom.nFANTOM100_iNXTIterator_getNXT(iNXTIterator, status);
                     if (Status.Statuses.SUCCESS.equals(status.getStatus())) {
+                    	this.isConnected = true;
                         return iNXT;
                     } else {
                         throw new UnableToCreateNXTException(" not able to create connection");
@@ -261,12 +264,36 @@ public class NXT {
 	    command.put((byte)0x0B);//direct command get battery
 	
 	    byte[] response = new byte[4]; //this 4 bytes are vital to get the following readings right
-	
+
 	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), response, response.length, status);
 	    return response[0];
     }
     
-
+    public void checkConnection(){
+    	Status status= new Status();
+	    ByteBuffer command= ByteBuffer.allocate(1);
+	
+	    command.put((byte)0x0B);//direct command get battery
+	
+	    byte[] response = new byte[4]; //this 4 bytes are vital to get the following readings right
+	    
+	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), response, response.length, status);
+	    
+	    boolean result;
+	    if ((int)response[0] == 0){
+	    	result = false;
+	    }
+	    else{
+	    	result = true;
+	    }
+	    System.out.println("Done Checking"+ result);
+	    this.isConnected = result;
+    }
+    
+    public boolean isConnected(){
+    	this.checkConnection();
+    	return this.isConnected;
+    }
     
     public void playSound(int freq, int duration)
     {
@@ -279,16 +306,8 @@ public class NXT {
 	    command.put((byte)duration);
 	    command.put((byte)(duration>>8));
 	    command.put((byte)0x00);
-	
-	    for(int x=0; x<6; x++){
-			System.out.println("Command: " + command.get(x));
-		}
-	    System.out.println(0x03);
-	    System.out.println(freq + " " + (byte)freq);
-	    
-	    
-	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
-	    System.out.println(status.getStatus().toString());
+		    
+	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), null, 0, status);
     }
     
     public void runMotor(byte motorName, int speed)
@@ -317,20 +336,14 @@ public class NXT {
 		command.put((byte)0x00);//Tacholimit = 0>> 40, 0
  	   
  	    
- 	    //for(int x=0;x<20;x++){
+
+		try{
  	    	fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
- 	    //}
- 	    
- 	    System.out.println(status.getStatus().toString());
-    	
-    	
-//    	Motor mtr = new Motor(1, nxtPointer);
-//    	mtr.reset();
-//    	mtr.speedMotor(100, 100);
-    	
-    	//Motor mtr2 = new Motor(0x02, nxtPointer);
-    	//mtr2.reset();
-    	//mtr2.speedMotor(100, 0);
+		}
+		catch(NullPointerException e){
+			this.isConnected = false;
+		}
+
     	
     }
     
@@ -354,8 +367,12 @@ public class NXT {
 		command.put( (byte)0x00);//tacholimit = 0
 		command.put( (byte)0x00);//tacholimit = 0
 		
-		fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
-	
+		try{
+			fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
+		}
+		catch(NullPointerException e){
+			this.isConnected = false;
+		}
 	}
     
     
@@ -367,8 +384,12 @@ public class NXT {
 		command.put((byte)0x0A);//reset
 		command.put((byte)motorName);//port
 		
-		fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
-		System.out.println("reset" + " " + status.code);
+		try{
+			fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
+		}
+		catch(NullPointerException e){
+			this.isConnected = false;
+		}
 	}
 
     
@@ -442,6 +463,30 @@ public class NXT {
 	    }
     }*/
     
+	public static void main(String args[]){
+
+		System.out.println("----");
+		try {
+			NXT nxt = new NXT("USB");
+			System.out.println("----");
+			for (int i=0;i<10;i++){
+				System.out.println("i "+i);
+				System.out.println(nxt.isConnected());
+				
+			}
+			System.out.println("main done");
+			
+		} catch (NXTNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnableToCreateNXTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Totally Done");
+		
+	}
 }
 
 

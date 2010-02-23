@@ -34,7 +34,7 @@ public abstract class AbstractNXTBrick {
 	
 	public abstract ExitStatus compile(String filename);
 	
-	public abstract ExitStatus getBatteryLevel();
+	
 	
 	public abstract ExitStatus playTone(int frequency, int duration);
 	
@@ -52,6 +52,9 @@ public abstract class AbstractNXTBrick {
 	
 	
 	public abstract void NXTConnect(ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException;
+	public abstract boolean isConnected();
+	
+	public abstract int getBatteryLevel();
 	
 	public abstract void motorOn(String motorName, int speed);
 	public abstract void motorOn(Motor motor, int speed);

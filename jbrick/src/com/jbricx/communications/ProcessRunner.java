@@ -90,7 +90,7 @@ public class ProcessRunner {
 			
 		}
 		
-		return new ExitStatus(ExitStatus.ERROR,"If you got this error something terrible happened. Good finding out what happend. Let the force be with you.");
+		return new ExitStatus(ExitStatus.ERROR,"If you got this error something terrible happened. Good luck finding out what happend. Let the force be with you.");
 	}
 	
 	
