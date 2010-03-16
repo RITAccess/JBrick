@@ -12,7 +12,7 @@ public class AboutAction extends Action {
   /**
    * AboutAction constructor
    */
-  public AboutAction() {
+  public AboutAction() { 
     super("&About", ImageDescriptor.createFromFile(AboutAction.class,
         "/images/help-browser.png"));
     setToolTipText("About");
