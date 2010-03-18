@@ -35,6 +35,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -174,6 +176,32 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 						"Line: " + getCursorLocation());
 
 			}
+		});
+		
+		//inserted this as a fix to show the line numbers on moving the mouse
+		// read line numbers using insert+PgDn
+		viewer.getTextWidget().addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				
+
+			}
+
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				JBrickEditor.getMainWindow().setStatus(
+						"Line: " + getCursorLocation());
+
+			}
+
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				JBrickEditor.getMainWindow().setStatus(
+						"Line: " + getCursorLocation());
+
+			}
+
 		});
 
 		// viewer;
