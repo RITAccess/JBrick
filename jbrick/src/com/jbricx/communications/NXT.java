@@ -198,6 +198,12 @@ public class NXT {
     public Pointer getPointer(){
     	return this.nxtPointer;
     }
+    
+    public ExitStatus download(String filename){
+    	System.out.println("lodingdown");
+    	return new ExitStatus(0,"Download failed");
+    }
+    
     public void startProgram(String filename) {
         Status status= new Status();
         byte[] filenameBytes= filename.getBytes();

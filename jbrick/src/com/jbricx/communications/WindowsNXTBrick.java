@@ -47,16 +47,19 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 
 	@Override
 	public ExitStatus downloadFile(String filename) {
-		List<String> command = new ArrayList<String>();
-		command.add(NBC);
-		//command.add("-help");
-//		command.add("-S");//+where);
-//			command.add("usb");
-			command.add("-d");
-//			command.add("C:\\Users\\spencer\\sample.nxc");
-		command.add(filename);
-		System.out.println("Command:"+command.toString());
-		return run(command);
+//		List<String> command = new ArrayList<String>();
+//		command.add(NBC);
+//		//command.add("-help");
+////		command.add("-S");//+where);
+////			command.add("usb");
+//			command.add("-d");
+////			command.add("C:\\Users\\spencer\\sample.nxc");
+//		command.add(filename);
+//		System.out.println("Command:"+command.toString());
+//		return run(command);
+		System.out.println("Downloading...");
+		nxt.download(filename);
+		return new ExitStatus(ExitStatus.ERROR,"Download Failed");
 	}
 
 	
