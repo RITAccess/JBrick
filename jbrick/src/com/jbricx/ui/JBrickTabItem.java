@@ -1,5 +1,9 @@
 package com.jbricx.ui;
 
+/**
+ * Notes : In order to read the status message in the status bar use insert + PgDn
+ */
+
 import java.io.File;
 import java.io.IOException;
 
@@ -84,17 +88,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	// public JBrickTabItem(CTabFolder parent, int style, String fileName) {
 	public JBrickTabItem(CTabFolder parent, int style, File file) {
 		super(parent, style);
-		/*
-		 * if (fileName == null){ setText("New File") ;
-		 * 
-		 * } else{ setText(fileName) ; }
-		 */
 		this.file = file;
-
-		// TODO Auto-generated constructor stub
-		// Create the viewer
-		// Set up the document
-
 		setUpDocument(file);
 
 		ruler = new CompositeRuler(10);
@@ -104,9 +98,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		ruler.addDecorator(0, lnrc);
 
 		// annotation ruler to view annotation
-		
 
-		// //////////////////////////////////////////////////////////////////
 		ERROR_IMAGE = new Image(Display.getDefault(),
 				"src/images/error_ovr.gif");
 
@@ -142,8 +134,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		// source viewer
 		viewer = new SourceViewer(parent, ruler, fOverviewRuler, true,
 				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		
-		
+
 		// Configure it and set the document
 		undoManager = new TextViewerUndoManager(100);
 		undoManager.connect(viewer);
@@ -169,66 +160,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		// this will draw the squigglies under the text
 		viewer.addPainter(ap);
 
-		// ////////////////////////////////////////////////////////////////
-
 		viewer.getTextWidget().addKeyListener(new KeyListener() {
-
-			/*@Override
-			public void keyTraversed(TraverseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				System.out.println("line is: "+ getCursorLocation());
-			*/	/*System.out.println(new SourceViewerConfiguration()
-						.getInformationPresenter(viewer));
-				// System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
-				// );
-				System.out.println("Info is: "
-						+ viewer.getTextWidget().getSelection());
-				// try {
-				StyledText viewerTxtWidget = viewer.getTextWidget();
-				// Point cursorLocation = viewer.getTextWidget().getSelection();
-				
-				
-				try {
-					Point cursorLocation = viewer.getTextWidget().getDisplay()
-					.getCursorLocation();
-					System.out.println("cursorLocation: "+cursorLocation);
-							
-					document.getLineOffset(0);
-					System.out.println("offset is: "+document.getLineOffset(0));
-							
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//ErrorAnnotation errorAnnotation = new ErrorAnnotation(0,
-				//"Learn how to spell \"text!\"");
-				//JBrickEditor.getMainWindow().getCurrentTabItem().fAnnotationModel.addAnnotation(errorAnnotation, new Position(0,document.getLength()));
-				viewer.setSelectedRange(0, document.getLength());
-				
-				
-				/*viewerTxtWidget.setSelectionRange(cursorLocation.x, 12);
-
-				// System.out.println("cursor line is: "+
-				//document.getLineOffset(cursorLocation));
-				int cursorOffset =viewerTxtWidget.getOffsetAtLocation(cursorLocation);
-
-				 try {
-					int cursorLineNumber = document.getLineOfOffset(cursorOffset);
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				// System.out.println("cursor line is: "+ cursorLineNumber);
-				// } catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				// e.printStackTrace();
-				// System.out.println("bad location");
-				// }
-				 * 
-				 */
-
-			//}
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -238,29 +170,19 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				JBrickEditor.getMainWindow().setStatus("Line: "+getCursorLocation());
-				
+				JBrickEditor.getMainWindow().setStatus(
+						"Line: " + getCursorLocation());
+
 			}
 		});
 
 		// viewer;
 
-		/*
-		 * viewer.addSelectionListener(new ISelectionChangedListener() {
-		 * 
-		 * @Override public void selectionChanged(SelectionChangedEvent event) {
-		 * // TODO Auto-generated method stub event.getSelection().toString();
-		 * System.out.println("hello listener");
-		 * 
-		 * }}) ;
-		 */
-
-		//part of the observer pattern to update all registered object after changing preference
-		//page
+		// part of the observer pattern to update all registered object after
+		// changing preference
+		// page
 		JBrickEditor.registerObserver(this);
-		
-		
-		
+
 		menuManager = createRightClickMenuManager(viewer.getTextWidget());
 		Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
 		viewer.getTextWidget().setMenu(menu);
@@ -269,88 +191,52 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-		
-		
+
 	}
-	
+
 	/**
 	 * Returns the offset of the given source viewer's document that corresponds
 	 * to the given widget offset or <code>-1</code> if there is no such offset.
 	 * 
-	 * @param viewer the source viewer
-	 * @param widgetOffset the widget offset
-	 * @return the corresponding offset in the source viewer's document or <code>-1</code>
+	 * @param viewer
+	 *            the source viewer
+	 * @param widgetOffset
+	 *            the widget offset
+	 * @return the corresponding offset in the source viewer's document or
+	 *         <code>-1</code>
 	 * @since 2.1
 	 */
-	/*protected final static int widgetOffset2ModelOffset(ISourceViewer viewer, int widgetOffset) {
-	
-		//if (viewer instanceof ITextViewerExtension5) {
-			System.out.println("offset is: "+ widgetOffset);
-			TextViewer extension= (TextViewer) viewer;
-			
-			
-			return extension.widgetOffset2ModelOffset(widgetOffset);
-		//}
-		//return widgetOffset + viewer.getVisibleRegion().getOffset();
-	}*/
-	
-	public  int getCursorLocation(){
+
+	public int getCursorLocation() {
 		int line = -1;
-		if (viewer != null && document !=null){
-			StyledText styledText= viewer.getTextWidget();
-			//int caret= viewer.widgetOffset2ModelOffset(styledText.getCaretOffset());
-			int caret= styledText.getCaretOffset();
-			//styledText.getCaretLine();
-			IDocument document= viewer.getDocument();
+		if (viewer != null && document != null) {
+			StyledText styledText = viewer.getTextWidget();
+			// int caret=
+			// viewer.widgetOffset2ModelOffset(styledText.getCaretOffset());
+			int caret = styledText.getCaretOffset();
+			// styledText.getCaretLine();
+			IDocument document = viewer.getDocument();
 			try {
-				
-				line= document.getLineOfOffset(caret)+1;
+
+				line = document.getLineOfOffset(caret) + 1;
 			} catch (BadLocationException x) {
-				
+
 			}
 		}
-		
-		return line;
-		
-		
-	}
-	
-	public void insertString(String inputString){
-		if (viewer != null ){
-			String translatedString = inputString ;
-			translatedString = translatedString.replace("\\=", "\r\n") ;
-			translatedString = translatedString.replace("\\>", "\r\n\t") ;
-			translatedString = translatedString.replace("\\<", "\r\n") ;
-			viewer.getTextWidget().insert(translatedString) ;
 
-/*	Test ///////////////////////////////////////////////////////////////////////////
- * 			String tabbedString[] ;
-			String replaceString = "" ;
-			String translatedString2 = null ;
-			StringBuilder sb = new StringBuilder();
-			String str[] ;
-			int i,j ;
-			int tabCount = 0 ;
-			tabbedString = translatedString.split("\\>") ;
-			for(i=0; i<tabbedString.length; i++){
-				tabbedString[i] = tabbedString[i].substring(0, tabbedString[i].length()-1) ;
-				System.out.println("String is: "+ tabbedString[i]);
-				// for (j=0; j<tabCount; j++) sb.append("\t") ;
-				
-				if (tabbedString[i].contains("\\<")){
-					tabbedString[i] = tabbedString[i].replace("\\<", "\r\n") ;
-					tabCount -- ;
-				}
-				replaceString = "" ;
-				for (j=0; j<tabCount; j++) replaceString += "\t" ;
-				str = tabbedString[i].split("\r\n") ;
-				for (j=0; j<str.length; j++) str[j] = replaceString + str[j];
-				for (j=0; j<str.length; j++) sb.append(str[j]+"\r\n") ;
-				tabCount ++ ;
-			}
-			viewer.getTextWidget().insert(sb.toString()) ;*/
-			}
-		
+		return line;
+
+	}
+
+	public void insertString(String inputString) {
+		if (viewer != null) {
+			String translatedString = inputString;
+			translatedString = translatedString.replace("\\=", "\r\n");
+			translatedString = translatedString.replace("\\>", "\r\n\t");
+			translatedString = translatedString.replace("\\<", "\r\n");
+			viewer.getTextWidget().insert(translatedString);
+		}
+
 	}
 
 	public void setFont(FontData[] fontData) {
@@ -446,17 +332,18 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		PreferenceStore store =  JBrickEditor.getApp().getPreferences();
-		
+		PreferenceStore store = JBrickEditor.getApp().getPreferences();
+
 		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
 		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
-		
-		Color bgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),bgRBG);
-		Color fgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
-		
-	   viewer.getTextWidget().setBackground(bgColor);
-	   viewer.setTextColor(fgColor);
-		
-		
+
+		Color bgColor = new Color(JBrickEditor.getMainWindow().getShell()
+				.getDisplay(), bgRBG);
+		Color fgColor = new Color(JBrickEditor.getMainWindow().getShell()
+				.getDisplay(), fgRBG);
+
+		viewer.getTextWidget().setBackground(bgColor);
+		viewer.setTextColor(fgColor);
+
 	}
 }
