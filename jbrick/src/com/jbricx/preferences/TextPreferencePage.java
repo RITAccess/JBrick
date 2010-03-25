@@ -1,13 +1,14 @@
 package com.jbricx.preferences;
 
+import java.awt.Color;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FontFieldEditor;
-
+import org.eclipse.jface.preference.IPreferenceStore;
 import com.jbricx.pjo.FileExtensionConstants;
-
 
 /**
  * This preference page shows preferences for the text
@@ -27,7 +28,19 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 	public TextPreferencePage() {
 		super(GRID);
 	}
+	
+	/**
+	 * Called when user clicks Restore Defaults
+	 */
+	protected void performDefaults() {
+		// Get the preference store
+		IPreferenceStore store = getPreferenceStore();
 
+		// Reset the fields to the defaults
+		store.setDefault("bgColor", Color.white.getRGB());
+		store.setDefault("fgColor", Color.black.getRGB());
+	}
+	
 	/**
 	 * Creates the field editors
 	 */
