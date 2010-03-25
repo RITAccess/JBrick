@@ -38,15 +38,18 @@ public class JBrickEditor {
 	private PreferenceStore prefs;
 
 	public void setPrefs(PreferenceStore prefs) {
-		this.prefs = prefs;
-		notifyViewers();
+		this.prefs = prefs;	
 	}
 	
 	
-	public void notifyViewers(){
+	public static void notifyViewers(){
 		for(JBrickObservable observer: observerList){
 			observer.update();
+<<<<<<< .mine
+		}
+=======
 		}		
+>>>>>>> .r257
 	}
 	
 
