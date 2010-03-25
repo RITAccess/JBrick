@@ -7,16 +7,21 @@ import org.eclipse.jface.text.rules.*;
 import org.eclipse.swt.SWT;
 
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.preferences.JBrickObservable;
 
 
 /**
  * This class scans through a code partition and colors it.
  */
-public class JBrickCodeScanner extends RuleBasedScanner {
+public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObservable {
 	/**
 	 * JBrickCodeScanner constructor
 	 */
 	public JBrickCodeScanner() {
+		initialization() ;
+	}
+	
+	private void initialization(){
 		// Get the color manager
 		ColorManager cm = JBrickEditor.getApp().getColorManager();
 
@@ -80,5 +85,11 @@ public class JBrickCodeScanner extends RuleBasedScanner {
 		IRule[] result = new IRule[rules.size()];
 		rules.toArray(result);
 		setRules(result);
+	}
+
+	@Override
+	public void update() {
+		// Update the syntax highliting after preference update
+		initialization() ;
 	}
 }
