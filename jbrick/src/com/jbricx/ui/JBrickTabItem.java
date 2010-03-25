@@ -178,7 +178,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			}
 		});
-		
+		//added
 		//inserted this as a fix to show the line numbers on moving the mouse
 		// read line numbers using insert+PgDn
 		viewer.getTextWidget().addMouseListener(new MouseListener() {
