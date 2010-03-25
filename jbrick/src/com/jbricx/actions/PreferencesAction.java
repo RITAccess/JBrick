@@ -1,6 +1,8 @@
 package  com.jbricx.actions;
 
 
+import java.io.IOException;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -34,13 +36,19 @@ public class PreferencesAction extends Action {
     PreferenceManager mgr = new PreferenceManager();
     mgr.addToRoot(new PreferenceNode("text", "Text", null,
         TextPreferencePage.class.getName()));
-    mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
-    		EditorPreferencePage.class.getName()));
+//    mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
+//    		EditorPreferencePage.class.getName()));
 
     PreferenceDialog dlg = new PreferenceDialog(JBrickEditor.getMainWindow().getShell(), mgr);
     dlg.setPreferenceStore(JBrickEditor.getApp().getPreferences());
     dlg.open();
     PreferenceStore store= (PreferenceStore) dlg.getPreferenceStore();
+    try {
+		store.save() ;
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     JBrickEditor.getApp().setPrefs(store);
         
   }
