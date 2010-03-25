@@ -51,6 +51,7 @@ import annotation.AnnotationHover;
 import annotation.AnnotationMarkerAccess;
 
 import com.jbricx.model.PersistentDocument;
+import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
@@ -219,6 +220,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
+		update() ;
 
 	}
 
@@ -360,18 +362,24 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		PreferenceStore store = JBrickEditor.getApp().getPreferences();
+		PreferenceStore store =  JBrickEditor.getApp().getPreferences();
+		
+		RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
+		RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
 
-		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
-		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
-
-		Color bgColor = new Color(JBrickEditor.getMainWindow().getShell()
-				.getDisplay(), bgRBG);
-		Color fgColor = new Color(JBrickEditor.getMainWindow().getShell()
-				.getDisplay(), fgRBG);
-
-		viewer.getTextWidget().setBackground(bgColor);
-		viewer.setTextColor(fgColor);
-
+		String fontProp = store.getString(FileExtensionConstants.FONT);
+		if (fontProp.length() > 0) { /* Check if the font is available */
+			FontData[] fd = new FontData[1];
+			fd[0] = new FontData(fontProp);
+			this.setFont(fd);
+		}
+		if (bgRBG != fgRBG){/* Check if the colors are available */
+			Color bgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),bgRBG);
+			// Color fgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
+			viewer.getTextWidget().setBackground(bgColor);
+			// Notes ; fore color will be changed though jbrickcode scanner and colormanager
+			// viewer.setTextColor(fgColor);
+		}
+		viewer.refresh() ;
 	}
 }
