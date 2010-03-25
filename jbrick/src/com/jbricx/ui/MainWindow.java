@@ -408,7 +408,7 @@ public class MainWindow extends ApplicationWindow implements
 	 * 
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		if (FileExtensionConstants.FONT.equals(event.getProperty()))
+		/*if (FileExtensionConstants.FONT.equals(event.getProperty()))
 			this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
 
 		/*
