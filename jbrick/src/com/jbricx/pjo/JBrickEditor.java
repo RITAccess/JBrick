@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.swt.graphics.RGB;
 
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.ColorManager;
@@ -44,8 +46,7 @@ public class JBrickEditor {
 	public void notifyViewers(){
 		for(JBrickObservable observer: observerList){
 			observer.update();
-		}
-		
+		}		
 	}
 	
 
@@ -76,16 +77,20 @@ public class JBrickEditor {
 		APP = this;
 
 		colorManager = new ColorManager();
-		codeScanner = new JBrickCodeScanner();
+		registerObserver(colorManager);
 
-		mainWindow = new MainWindow();
 		prefs = new PreferenceStore("JBrickEditor.properties");
-		prefs.addPropertyChangeListener(mainWindow);
 		try {
 			prefs.load();
 		} catch (IOException e) {
 			// Ignore
 		}
+		notifyViewers() ; 
+
+		codeScanner = new JBrickCodeScanner();
+		registerObserver(codeScanner);
+		mainWindow = new MainWindow();
+		prefs.addPropertyChangeListener(mainWindow);
 	}
 
 	/**
