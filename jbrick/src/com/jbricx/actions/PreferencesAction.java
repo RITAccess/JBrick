@@ -50,6 +50,8 @@ public class PreferencesAction extends Action {
 		e.printStackTrace();
 	}
     JBrickEditor.getApp().setPrefs(store);
+    
+    JBrickEditor.notifyViewers();
         
   }
 }
