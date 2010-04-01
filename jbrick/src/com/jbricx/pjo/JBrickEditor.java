@@ -45,11 +45,8 @@ public class JBrickEditor {
 	public static void notifyViewers(){
 		for(JBrickObservable observer: observerList){
 			observer.update();
-<<<<<<< .mine
+			if (mainWindow != null)	mainWindow.refreshCurrentTabItem() ;
 		}
-=======
-		}		
->>>>>>> .r257
 	}
 	
 
