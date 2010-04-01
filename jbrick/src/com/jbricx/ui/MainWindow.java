@@ -77,6 +77,7 @@ import com.jbricx.actions.SaveAsAction;
 import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
 import com.jbricx.filters.FolderFilter;
+import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
@@ -297,6 +298,7 @@ public class MainWindow extends ApplicationWindow implements
 				}
 			}
 		});
+
 
 		// ///////////////////////////////////////////////////////////////
 
@@ -690,7 +692,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	public JBrickTabItem getCurrentTabItem() {
 		CTabItem currentTabItem;
-		int currentIndex = tabFolder.getSelectionIndex();
+		int currentIndex = getCurrentTabIndex();
 		if (0 <= currentIndex) {
 			currentTabItem = tabFolder.getItem(currentIndex);
 			return (JBrickTabItem) currentTabItem;
@@ -698,7 +700,40 @@ public class MainWindow extends ApplicationWindow implements
 			return null;
 		}
 	}
-
+	public int getCurrentTabIndex() {
+		int currentIndex = tabFolder.getSelectionIndex();
+		if (0 <= currentIndex) {
+			return currentIndex;
+		} else {
+			return -1;
+		}
+	}
+		
+	public void refreshCurrentTabItem() {
+		int selectedIndex = getCurrentTabIndex() ;
+		CTabItem tabItems[] = tabFolder.getItems();		
+		for(CTabItem tbItem : tabItems) {
+			if (tbItem != null) {
+				JBrickTabItem tabItem = (JBrickTabItem)tbItem ; 
+				String currentString = tabItem.getViewer().getTextWidget().getText() ;
+				String currentSaveString = tabItem.getDocument().getFileName() ;			
+				JBrickEditor.removeObserver(tabItem);
+				tabItem.dispose() ;
+				if (currentSaveString != null){
+					openFile(currentSaveString) ;
+				}
+				else{
+					openNewFile() ;
+				}
+				tabItem = getCurrentTabItem() ;
+				tabItem.getViewer().getTextWidget().setText(currentString) ;
+			}
+		}
+		if (0 <= selectedIndex){
+			tabFolder.setSelection(selectedIndex);
+		}
+	}
+	
 	public void setTabFolder(CTabFolder tabFolder) {
 		this.tabFolder = tabFolder;
 	}
