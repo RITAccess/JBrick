@@ -380,6 +380,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			// Notes ; fore color will be changed though jbrickcode scanner and colormanager
 			// viewer.setTextColor(fgColor);
 		}
-		viewer.refresh() ;
+		// viewer.refresh() ;
+		
 	}
 }
