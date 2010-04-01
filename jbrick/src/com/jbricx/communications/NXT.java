@@ -433,7 +433,30 @@ public class NXT {
     public byte getRawSensorValue(String sensorName){
     	return getSensorValues(sensorName)[11];
     }
-    
+    public int getConvertedSensorData(String sensorName, byte sensorMode){
+    	int finalVal;
+    	byte response[] = getSensorValues(sensorName);
+    	
+    	if(sensorMode != (byte)0x20){
+	    	int buf[] = new int[2];
+			buf[0]=unsignedByteToInt(response[9]);
+			buf[1]=unsignedByteToInt(response[10]);
+			finalVal = buf[0] + (buf[1] << 8);
+    	}else{
+    		finalVal = (int)getBoolVal(sensorName);
+    	}
+		return finalVal;
+    }
+    private int getBoolVal(String sensorName){
+    	byte response[] = getSensorValues(sensorName);
+    	int returnVal=0;
+    	if(response[11] == 1){
+    		returnVal=1;
+    	}
+    	return returnVal;
+		
+    	
+    }
 	public byte[] getSensorValues(String sensorName){
 		Sensor s = SENSORS.get(sensorName);
 		//used for the distance
@@ -452,11 +475,22 @@ public class NXT {
 			System.out.print(response[i]);
 			System.out.print("\t");
 		}
-//		System.out.println();
-//		System.out.println(response[2]+ " "+response[1]);
+		int buf[] = new int[2];
+		int finalVal;
+		buf[0]=unsignedByteToInt(response[9]);
+		buf[1]=unsignedByteToInt(response[10]);
+		finalVal = buf[0] + (buf[1] << 8);
+		System.out.println();
+		System.out.println(" buf0: " + buf[0] + "; buf1: " + buf[1] + "; Final Value: " + finalVal);
+		
+		System.out.println();
+		System.out.println(response[2]+ " "+response[1]);
 		return response; //number of bytes ready to read
 	}
-    
+	public int unsignedByteToInt(byte b) {
+	    return (int) b & 0xFF;
+	    }
+
     
 /*    private Pointer directConnect()throws UnableToCreateNXTException {
 	    Status status= new Status();

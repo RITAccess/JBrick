@@ -75,11 +75,15 @@ public abstract class AbstractNXTBrick {
 	public abstract byte[] getSensorValues(String name);
 	public abstract byte[] getSensorValues(Sensor name);
 	
+	//public abstract int getConvertedSensorData(String name, byte mode);
+	public abstract int getConvertedSensorData(Sensor name);
+	
 	public abstract byte getRawSensorValue(String name);
 	public abstract byte getRawSensorValue(Sensor name);
 	
 	public abstract Sensor[] listSensors();
 	public abstract SensorType[] listSensorTypes();
 	public abstract SensorMode[] listSensorModes();
+	
 	
 }

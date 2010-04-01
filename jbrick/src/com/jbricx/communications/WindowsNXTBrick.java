@@ -121,6 +121,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		return nxt.getRawSensorValue(sensor.getName());
 	}
 
+
+	
 	@Override
 	public byte[] getSensorValues(String name) {
 		return nxt.getSensorValues(name);
@@ -204,6 +206,16 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	public void setSensorType(Sensor sensor, SensorType type) {
 		nxt.setSensorType(sensor.getName(), type);
 		
+	}
+
+	
+//	private int getConvertedSensorData(String name, byte mode) {
+//		return nxt.getConvertedSensorData(name);
+//	}
+
+	@Override
+	public int getConvertedSensorData(Sensor name) {
+		return nxt.getConvertedSensorData(name.getName(), name.getMode());
 	}
 
 	

@@ -849,7 +849,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
-			byte val = nxt.getRawSensorValue(Sensor.SENSOR_1);
+			int val = nxt.getConvertedSensorData(Sensor.SENSOR_1);
 	//		System.out.println(val);
 			lblValue1.setText(Integer.toString(val));
 		}
@@ -864,7 +864,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
-			byte val = nxt.getRawSensorValue(Sensor.SENSOR_2);
+			int val = nxt.getConvertedSensorData(Sensor.SENSOR_2);
 	//		System.out.println(val);
 			lblValue2.setText(Integer.toString(val));
 		}
@@ -879,7 +879,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
-			byte val = nxt.getRawSensorValue(Sensor.SENSOR_3);
+			int val = nxt.getConvertedSensorData(Sensor.SENSOR_3);
 	//		System.out.println(val);
 			lblValue3.setText(Integer.toString(val));
 		}
@@ -894,7 +894,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 			nxt.setSensorMode(sensor, mode);
 			nxt.setSensorType(sensor, type);
 			
-			byte val = nxt.getRawSensorValue(Sensor.SENSOR_4);
+			int val = nxt.getConvertedSensorData(Sensor.SENSOR_4);
 	//		System.out.println(val);
 			lblValue4.setText(Integer.toString(val));
 		}
