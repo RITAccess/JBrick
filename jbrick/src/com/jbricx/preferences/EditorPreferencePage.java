@@ -3,6 +3,9 @@ package com.jbricx.preferences;
 
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.FontFieldEditor;
+
+import com.jbricx.pjo.FileExtensionConstants;
 
 
 /**
@@ -10,6 +13,7 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
  */
 public class EditorPreferencePage extends FieldEditorPreferencePage {
 
+	private FontFieldEditor fontFieldEditor;
 	private ColorFieldEditor bgCF ;
 	private ColorFieldEditor fgCF ;
 
@@ -24,6 +28,11 @@ public class EditorPreferencePage extends FieldEditorPreferencePage {
 	 * Creates the field editors
 	 */
 	protected void createFieldEditors() {
+
+		// Add the field for the font
+		fontFieldEditor = new FontFieldEditor(FileExtensionConstants.FONT, "Font:", "editorFont",
+				getFieldEditorParent());
+		addField(fontFieldEditor);
 
 		// Add a background color field
 		bgCF = new ColorFieldEditor("editorBGColor", "Background Color:",
