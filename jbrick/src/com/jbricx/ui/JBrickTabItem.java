@@ -178,29 +178,25 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			}
 		});
-		//added
-		//inserted this as a fix to show the line numbers on moving the mouse
+		// added
+		// inserted this as a fix to show the line numbers on moving the mouse
 		// read line numbers using insert+PgDn
 		viewer.getTextWidget().addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
-				
-
 			}
 
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				JBrickEditor.getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
-
 			}
 
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				JBrickEditor.getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
-
 			}
 
 		});
@@ -220,7 +216,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 		// Menu manager initialize
 		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-		update() ;
+		update();
 
 	}
 
@@ -362,8 +358,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		PreferenceStore store =  JBrickEditor.getApp().getPreferences();
-		
+		PreferenceStore store = JBrickEditor.getApp().getPreferences();
+
 		RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
 		RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
 
@@ -373,14 +369,16 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			fd[0] = new FontData(fontProp);
 			this.setFont(fd);
 		}
-		if (bgRBG != fgRBG){/* Check if the colors are available */
-			Color bgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),bgRBG);
-			// Color fgColor = new Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
+		if (bgRBG != fgRBG) {/* Check if the colors are available */
+			Color bgColor = new Color(JBrickEditor.getMainWindow().getShell()
+					.getDisplay(), bgRBG);
+			// Color fgColor = new
+			// Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
 			viewer.getTextWidget().setBackground(bgColor);
-			// Notes ; fore color will be changed though jbrickcode scanner and colormanager
+			// Notes ; fore color will be changed though jbrickcode scanner and
+			// colormanager
 			// viewer.setTextColor(fgColor);
 		}
-		// viewer.refresh() ;
-		
+		// viewer.refresh() ;	
 	}
 }
