@@ -712,6 +712,8 @@ public class MainWindow extends ApplicationWindow implements
 	public void refreshCurrentTabItem() {
 		int selectedIndex = getCurrentTabIndex() ;
 		CTabItem tabItems[] = tabFolder.getItems();		
+
+		System.out.println("refresh ");
 		for(CTabItem tbItem : tabItems) {
 			if (tbItem != null) {
 				JBrickTabItem tabItem = (JBrickTabItem)tbItem ; 
