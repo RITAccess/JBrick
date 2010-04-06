@@ -39,14 +39,15 @@ public class JBrickEditor {
 
 	public void setPrefs(PreferenceStore prefs) {
 		this.prefs = prefs;	
+		notifyViewers() ;
 	}
 	
 	
 	public static void notifyViewers(){
 		for(JBrickObservable observer: observerList){
 			observer.update();
-			if (mainWindow != null)	mainWindow.refreshCurrentTabItem() ;
 		}
+		if (mainWindow != null)	mainWindow.refreshCurrentTabItem() ;
 	}
 	
 
@@ -217,7 +218,7 @@ public class JBrickEditor {
 	}
 	public static void removeObserver(JBrickObservable observer){
 		if(observerList.contains(observer)){
-			observerList.add(observer);
+			observerList.remove(observer);
 		}
 		
 	}
