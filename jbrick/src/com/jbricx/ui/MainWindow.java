@@ -69,6 +69,7 @@ import com.jbricx.actions.MethodTemplateAction;
 import com.jbricx.actions.NewAction;
 import com.jbricx.actions.OpenAction;
 import com.jbricx.actions.PasteAction;
+import com.jbricx.actions.PianoAction;
 import com.jbricx.actions.PreferencesAction;
 import com.jbricx.actions.PrintAction;
 import com.jbricx.actions.RedoAction;
@@ -113,6 +114,7 @@ public class MainWindow extends ApplicationWindow implements
 	private DownloadAction downloadAction = new DownloadAction();
 	private DirectControlAction directControlAction = new DirectControlAction();
 	private JoyStickAction joystickAction = new JoyStickAction();
+	private PianoAction pianoAction = new PianoAction();
 	private FindBrickAction findBrickAction = new FindBrickAction();
 	private CompileAction compileAction = new CompileAction();
 	private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
@@ -471,6 +473,7 @@ public class MainWindow extends ApplicationWindow implements
 
 		toolMenu.add(directControlAction);
 		toolMenu.add(joystickAction);
+		toolMenu.add(pianoAction);
 
 		helpMenu.add(aboutAction);
 		helpMenu.add(helpContentAction);
