@@ -3,13 +3,16 @@ package com.jbricx.communications;
 import java.util.HashMap;
 
 import com.jbricx.communications.NXT.*;
+import com.jbricx.communications.exceptions.AlreadyConnectedException;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 
 public class NXTManager {
 
 
 	private static HashMap<String,AbstractNXTBrick> nxtstore = new HashMap<String,AbstractNXTBrick>();
-	private static HashMap<String,Boolean> nxtenabled = new HashMap<String,Boolean>();
-	private static HashMap<String,Boolean> nxtconnected = new HashMap<String,Boolean>();
+//	private static HashMap<String,Boolean> nxtenabled = new HashMap<String,Boolean>();
+	private static HashMap<String,Boolean> nxtstatus = new HashMap<String,Boolean>();
 	private static HashMap<String,NXTObserver> nxtobservers = new HashMap<String,NXTObserver>();
 	
 	private static boolean running = false;
@@ -32,16 +35,18 @@ public class NXTManager {
 		}
 	};
 	
-	public static AbstractNXTBrick connect(String name, ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException{
-		AbstractNXTBrick nxt = BrickCreator.createBrick();
+	public static AbstractNXTBrick connect(String name, ConnectionType type) throws AlreadyConnectedException, NXTNotFoundException, UnableToCreateNXTException{
+		if (nxtstore.containsKey(name)){
+			throw new AlreadyConnectedException("NXT Brick '"+name+"' is already connected");
+		}
 		
-		nxt.NXTConnect(ConnectionType.USB);
+		AbstractNXTBrick nxt = BrickCreator.createBrick();
+		nxt.NXTConnect(type);
 		
 //		nxt.playTone(2700, 1000);
 		
 		nxtstore.put(name, nxt);
-		nxtenabled.put(name, true);
-		nxtconnected.put(name, nxt.isConnected());
+		nxtstatus.put(name, nxt.isConnected());
 		
 		if(!connectedRunnable.isAlive()){
 			System.out.println("Starting thread");
@@ -57,7 +62,9 @@ public class NXTManager {
 				System.out.println("Starting thread");
 				connectedRunnable.start();
 			}
-			return nxtstore.get(name);
+			AbstractNXTBrick nxt = nxtstore.get(name);
+			nxtstatus.put(name, nxt.isConnected());
+			return nxt;
 		}
 		else{
 			throw new NXTNotFoundException("No NXT with name: "+name);
@@ -73,20 +80,26 @@ public class NXTManager {
 	private static void checkBricks(){
 		for (String name: nxtstore.keySet()){
 			System.out.println("checking: "+name);
-			if(!nxtstore.get(name).isConnected()){
-				nxtobservers.get(name).nxtDisconnected(name, nxtstore.get(name));
-				nxtconnected.put(name,false);
-				running = false;
+			AbstractNXTBrick nxt = nxtstore.get(name);
+			if(!nxt.isConnected()){
+				System.out.println("checkBricks() disconnected: "+name);
+				//not connected
+				nxtobservers.get(name).nxtDisconnected(name, nxt);
+				nxtstatus.put(name,false);
+//				running = false;
 			}
 			else{
-				if (!nxtconnected.get(name)){
+				//connected
+				if (!nxtstatus.get(name)){
+					System.out.println("Connected! "+name);
 					if(!connectedRunnable.isAlive()){
 						connectedRunnable.start();
 					}
-					nxtconnected.put(name,true);
+					nxtstatus.put(name,true);
 					nxtobservers.get(name).nxtConnected(name, nxtstore.get(name));
 				}
 			}
+			System.out.println("-----------------------");
 		}
 	}
 
@@ -97,7 +110,7 @@ public class NXTManager {
 	
 	public static void main(String args[]){
 		try{
-			String brickName = "one";
+			final String brickName = "myBrick";
 			
 			class Test implements NXTObserver,Runnable{
 				boolean connected = false;
@@ -117,7 +130,7 @@ public class NXTManager {
 					try {
 						AbstractNXTBrick nxt;
 						if(!started){
-							 nxt = NXTManager.connect(name, ConnectionType.USB);
+							 nxt = NXTManager.connect(name, ConnectionType.BLUETOOTH);
 							started=true;
 						}
 						else{
@@ -127,10 +140,10 @@ public class NXTManager {
 						connected = true;
 						System.out.println(nxt.getBatteryLevel());
 						Thread.sleep(2000);
-						System.out.println("Done Sleeping");
+						System.out.println("\tDone Sleeping");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						System.out.println("Couldn't connect");
+						System.out.println("\tCouldn't connect");
 					}
 				}
 
@@ -146,17 +159,17 @@ public class NXTManager {
 						
 						if(!connected){
 							System.out.println("\t--notconnected");
-							go("one");
+							go(brickName);
 						}
 					}
 					
 				}
 			}
 			
-			String name = "one";
+//			String name = "one";
 			Test t = new Test();
-			NXTManager.register(name, t);
-			t.go(name);
+			NXTManager.register(brickName, t);
+			t.go(brickName);
 			(new Thread(t)).start();
 			System.out.println("main done");
 			

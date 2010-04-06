@@ -1,4 +1,6 @@
 package com.jbricx.communications;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.sun.jna.Pointer;
 import java.nio.ByteBuffer;
 //import Fantom;
@@ -292,7 +294,7 @@ public class NXT {
 	    else{
 	    	result = true;
 	    }
-	    System.out.println("Done Checking"+ result);
+	    System.out.println("NXT.checkConnection() Done Checking"+ result);
 	    this.isConnected = result;
     }
     

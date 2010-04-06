@@ -7,6 +7,8 @@ import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.NXT.Sensor;
 import com.jbricx.communications.NXT.SensorMode;
 import com.jbricx.communications.NXT.SensorType;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 
 public abstract class AbstractNXTBrick {
 
