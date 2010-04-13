@@ -38,6 +38,8 @@ public class CustomTree {
 		this.setInput(genNodes());
 
 		Node homenode = nodes.firstElement();
+		//bug fix for multiple window pane open
+		this.clearNodes();
 		File file = new File(homenode.getUrl());
 
 		home = file.getAbsolutePath();
