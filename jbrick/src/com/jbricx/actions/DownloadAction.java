@@ -8,8 +8,8 @@ import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.ExitStatus;
 import com.jbricx.communications.NXT;
-import com.jbricx.communications.NXTNotFoundException;
-import com.jbricx.communications.UnableToCreateNXTException;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.pjo.JBrickEditor;
 
 

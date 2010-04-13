@@ -192,10 +192,10 @@ public class NXT {
         this.nxtPointer= connect(name);
     }
     
-    public NXT() throws NXTNotFoundException, UnableToCreateNXTException {
-        this.name= "dc";
-        this.nxtPointer= directConnect();
-    }
+//    public NXT() throws NXTNotFoundException, UnableToCreateNXTException {
+//        this.name= "dc";
+//        this.nxtPointer= directConnect();
+//    }
     
     public Pointer getPointer(){
     	return this.nxtPointer;
@@ -251,17 +251,17 @@ public class NXT {
     }
     
     
-    private Pointer directConnect()throws UnableToCreateNXTException
-    {
-    	Status status= new Status();
-    	Pointer iNXT = fantom.nFANTOM100_createNXT("BTH::NXT::00:16:53:09:96:B4::3", status, false);
-    	
-    	if (Status.Statuses.SUCCESS.equals(status.getStatus())) {
-    		return iNXT;
-    	} else {
-    		throw new UnableToCreateNXTException( " not able to create connection" );
-    	}
-    }
+//    private Pointer directConnect()throws UnableToCreateNXTException
+//    {
+//    	Status status= new Status();
+//    	Pointer iNXT = fantom.nFANTOM100_createNXT("BTH::NXT::00:16:53:09:96:B4::3", status, false);
+//    	
+//    	if (Status.Statuses.SUCCESS.equals(status.getStatus())) {
+//    		return iNXT;
+//    	} else {
+//    		throw new UnableToCreateNXTException( " not able to create connection" );
+//    	}
+//    }
     
     
     public int getBattery()
@@ -277,7 +277,9 @@ public class NXT {
 	    return response[0];
     }
     
-    public void checkConnection(){
+
+    
+    public boolean isConnected(){
     	Status status= new Status();
 	    ByteBuffer command= ByteBuffer.allocate(1);
 	
@@ -294,13 +296,7 @@ public class NXT {
 	    else{
 	    	result = true;
 	    }
-	    System.out.println("NXT.checkConnection() Done Checking"+ result);
-	    this.isConnected = result;
-    }
-    
-    public boolean isConnected(){
-    	this.checkConnection();
-    	return this.isConnected;
+    	return result;
     }
     
     public void playSound(int freq, int duration)
@@ -351,6 +347,7 @@ public class NXT {
 		catch(NullPointerException e){
 			this.isConnected = false;
 		}
+		
 
     	
     }

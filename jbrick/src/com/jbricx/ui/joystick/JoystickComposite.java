@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import com.jbricx.communications.NXT.*;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,8 +25,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.NXTNotFoundException;
-import com.jbricx.communications.UnableToCreateNXTException;
 import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.ui.JBrickButtonUtil;
 

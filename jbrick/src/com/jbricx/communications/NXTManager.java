@@ -16,7 +16,7 @@ public class NXTManager {
 	private static HashMap<String,NXTObserver> nxtobservers = new HashMap<String,NXTObserver>();
 	
 	private static boolean running = false;
-	private static final int WAITTIME = 5000;
+	private static final int WAITTIME = 500;
 	
 	private static Thread connectedRunnable= new Thread() {
 		
@@ -49,7 +49,7 @@ public class NXTManager {
 		nxtstatus.put(name, nxt.isConnected());
 		
 		if(!connectedRunnable.isAlive()){
-			System.out.println("Starting thread");
+			
 			connectedRunnable.start();
 		}
 		return nxt;
@@ -63,7 +63,7 @@ public class NXTManager {
 				connectedRunnable.start();
 			}
 			AbstractNXTBrick nxt = nxtstore.get(name);
-			nxtstatus.put(name, nxt.isConnected());
+//			nxtstatus.put(name, nxt.isConnected());
 			return nxt;
 		}
 		else{
@@ -81,15 +81,15 @@ public class NXTManager {
 		for (String name: nxtstore.keySet()){
 			System.out.println("checking: "+name);
 			AbstractNXTBrick nxt = nxtstore.get(name);
-			if(!nxt.isConnected()){
+			
+			if(!nxt.isConnected()){//not connected
 				System.out.println("checkBricks() disconnected: "+name);
-				//not connected
+				
 				nxtobservers.get(name).nxtDisconnected(name, nxt);
 				nxtstatus.put(name,false);
 //				running = false;
 			}
-			else{
-				//connected
+			else{//connected
 				if (!nxtstatus.get(name)){
 					System.out.println("Connected! "+name);
 					if(!connectedRunnable.isAlive()){

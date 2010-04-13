@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.*;
 
 import com.jbricx.communications.*;
 import com.jbricx.communications.NXT.*;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
 
 /**
