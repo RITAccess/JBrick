@@ -676,6 +676,17 @@ public class MainWindow extends ApplicationWindow implements
 		}
 	}
 
+	// Going to modify this to request preferences
+	public boolean isAutoCompile() {
+		// Get the preference store
+		PreferenceManager mgr = new PreferenceManager();
+		mgr.addToRoot(new PreferenceNode("text", "Text", null,
+				TextPreferencePage.class.getName()));
+		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		Boolean autoCompile = ps.getBoolean(FileExtensionConstants.AUTOCOMPILE);
+		return autoCompile ;
+	}
+	
 	public void addFolderInNewTab(String path) {
 
 	}
