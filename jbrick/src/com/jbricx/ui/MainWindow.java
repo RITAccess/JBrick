@@ -72,6 +72,7 @@ import com.jbricx.actions.PasteAction;
 import com.jbricx.actions.PianoAction;
 import com.jbricx.actions.PreferencesAction;
 import com.jbricx.actions.PrintAction;
+import com.jbricx.actions.PrintPreviewAction;
 import com.jbricx.actions.RedoAction;
 import com.jbricx.actions.SaveAction;
 import com.jbricx.actions.SaveAsAction;
@@ -107,6 +108,7 @@ public class MainWindow extends ApplicationWindow implements
 	private PasteAction pasteAction = new PasteAction();
 	private PreferencesAction prefsAction = new PreferencesAction();
 	private PrintAction printAction = new PrintAction();
+	private PrintPreviewAction printPreviewAction = new PrintPreviewAction();
 	private RedoAction redoAction = new RedoAction();
 	private SaveAction saveAction = new SaveAction();
 	private SaveAsAction saveAsAction = new SaveAsAction();
@@ -450,6 +452,7 @@ public class MainWindow extends ApplicationWindow implements
 		fileMenu.add(saveAsAction);
 		fileMenu.add(new Separator());
 		fileMenu.add(printAction);
+		fileMenu.add(printPreviewAction);
 		fileMenu.add(new Separator());
 		fileMenu.add(exitAction);
 
@@ -466,7 +469,7 @@ public class MainWindow extends ApplicationWindow implements
 		editMenu.add(selectAllAction);
 		editMenu.add(prefsAction);
 		editMenu.add(methodTemplateAction);
-
+		
 		compileMenu.add(compileAction);
 		compileMenu.add(downloadAction);
 		compileMenu.add(findBrickAction);
