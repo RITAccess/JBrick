@@ -304,15 +304,17 @@ public class NXT {
 	    Status status= new Status();
 	    ByteBuffer command= ByteBuffer.allocate(6);
 	
+	    
+	    
 	    command.put((byte)0x03);//direct command play tone
 	    command.put((byte)freq);
 	    command.put((byte)(freq >>8));
 	    command.put((byte)duration);
 	    command.put((byte)(duration>>8));
 	    command.put((byte)0x00);
-		    
-	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), null, 0, status);
-    }
+	
+	    fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command, command.capacity(), null, 0, status);
+	}
     
     public void runMotor(byte motorName, int speed)
     {

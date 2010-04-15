@@ -524,6 +524,7 @@ public class MainWindow extends ApplicationWindow implements
 		tm.add(new Separator());
 		tm.add(directControlAction);
 		tm.add(joystickAction);
+		tm.add(pianoAction);
 
 		tm.add(new Separator());
 		tm.add(findBrickAction);

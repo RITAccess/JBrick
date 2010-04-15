@@ -540,6 +540,7 @@ private static Runnable pollController = new Runnable(){
 			
 			//int motorSpeed = 100;
 			int rotateSubtractor = 15;
+			int spinSubtractor = 25;
 			
 			//int rotateSpeed = 70;
 			
@@ -605,7 +606,7 @@ private static Runnable pollController = new Runnable(){
 				if(joypadValue == 0){
 					//ul
 					nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
-					nxt.motorOn(Motor_1_ID, (motorSpeed-rotateSubtractor) * Motor_2_DIR);
+					nxt.motorOn(Motor_2_ID, (motorSpeed-rotateSubtractor) * Motor_2_DIR);
 				}
 				
 				if(joypadValue == 2){
@@ -618,6 +619,18 @@ private static Runnable pollController = new Runnable(){
 					//down
 					nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
 					nxt.motorOn(Motor_2_ID, -1 * motorSpeed * Motor_2_DIR);
+				}
+				
+				if(joypadValue == 3){
+					//left
+					nxt.motorOn(Motor_1_ID, 1 * (motorSpeed-spinSubtractor) * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, -1 * (motorSpeed-spinSubtractor) * Motor_2_DIR);
+				}
+				
+				if(joypadValue == 5){
+					//right
+					nxt.motorOn(Motor_1_ID, -1 * (motorSpeed-spinSubtractor) * Motor_1_DIR);
+					nxt.motorOn(Motor_2_ID, 1 * (motorSpeed-spinSubtractor) * Motor_2_DIR);
 				}
 				
 				if(joypadValue == 6){

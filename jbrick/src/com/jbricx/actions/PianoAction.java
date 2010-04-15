@@ -14,11 +14,10 @@ import com.jbricx.ui.piano.PianoComposite;
 public class PianoAction extends Action{
 	/**
 	   * PreferencesAction constructor
-	   */
+	   */ 
 	  public PianoAction() {
-		  super("&Piano@Ctrl+J", ImageDescriptor.createFromFile(PianoAction.class,
-	        "/images/piano_icon.png"));
-      setToolTipText("Piano");
+		  super("&Piano@Ctrl+Shift+P", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"));
+		  setToolTipText("Piano");
 	  }
 
 	  /**
