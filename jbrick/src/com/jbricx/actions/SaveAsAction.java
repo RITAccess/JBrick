@@ -34,6 +34,10 @@ public class SaveAsAction extends Action {
     String fileName = dlg.open();
     if (fileName != null) {
 	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
+	  if (JBrickEditor.getMainWindow().isAutoCompile() == true){
+		  CompileAction compileAction = new CompileAction(); 
+		  compileAction.run() ;
+	  }
     }
   }
 }
