@@ -84,18 +84,18 @@ public class CustomTree {
 		nodes.add(category);
 		new Node("Basic Tutorial", category, "help\\html\\basictutorial.html");
 
-		category = new Node("Concepts", null, "help\\html\\concepts.html");
-		nodes.add(category);
+		//category = new Node("Concepts", null, "help\\html\\concepts.html");
+		//nodes.add(category);
 
-		category = new Node("Tasks", null, "help\\html\\tasks.html");
-		nodes.add(category);
+		//category = new Node("Tasks", null, "help\\html\\tasks.html");
+		//nodes.add(category);
 
 		category = new Node("Reference", null, "help\\html\\reference.html");
 		nodes.add(category);
 
-		category = new Node("Tips and Tricks", null,
-				"help\\html\\tipsandtricks.html");
-		nodes.add(category);
+		//category = new Node("Tips and Tricks", null,
+		//		"help\\html\\tipsandtricks.html");
+		//nodes.add(category);
 
 		category = new Node("Keyboard Shortcuts", null,
 				"help\\html\\keyboardshortcuts.html");
