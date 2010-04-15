@@ -19,6 +19,7 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 	private BooleanFieldEditor wrapFieldEditor;
 	private DirectoryFieldEditor workspaceFieldEditor;
 	private BooleanFieldEditor boolrecentfiles;
+	private BooleanFieldEditor autoCompileEditor;
 	private ColorFieldEditor bgCF ;
 	private ColorFieldEditor fgCF ;
 
@@ -65,6 +66,12 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
 		boolrecentfiles = new BooleanFieldEditor(FileExtensionConstants.BOOLRECENTFILES, "Load Recently Opened Files",
 				getFieldEditorParent());
 		addField(boolrecentfiles);
+		
+		// Add the field for word wrap
+		autoCompileEditor = new BooleanFieldEditor(FileExtensionConstants.AUTOCOMPILE, "Auto Compile",
+				getFieldEditorParent());
+		addField(autoCompileEditor);
+
 		
 		// Add a background color field
 		bgCF = new ColorFieldEditor("bgColor", "Background Color:",
