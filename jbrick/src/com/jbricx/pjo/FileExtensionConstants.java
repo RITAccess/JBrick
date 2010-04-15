@@ -15,6 +15,7 @@ public class FileExtensionConstants {
 	public static final String WRAP = "wrap";
 	public static final String FONT = "font";
 	public static final String WRKSPC = "workspace";
+	public static final String AUTOCOMPILE = "autocompile";
 	
 	//Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
