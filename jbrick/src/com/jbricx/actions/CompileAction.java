@@ -116,9 +116,15 @@ public class CompileAction extends Action {
 
 				//add a new row to the table for each error	
 				TableItem line = new TableItem(tbl, SWT.NONE);
-				line.setText("Line: " + lineNumber + " " + errorTxt);
 				
 				int intLineNumber = Integer.parseInt(lineNumber);
+				if (tab.getDocument().getNumberOfLines() < intLineNumber){
+					intLineNumber = tab.getDocument().getNumberOfLines();
+					lineNumber = String.valueOf(intLineNumber);
+				}
+				line.setText("Line: " + lineNumber + " " + errorTxt);
+				
+				
 				
 				// add an annotation
 				ErrorAnnotation errorAnnotation = new ErrorAnnotation(intLineNumber,

@@ -32,25 +32,19 @@ public class DownloadAction extends Action {
 	   */
 	  public void run() {
 		
-		System.out.println(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+//		System.out.println(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
 		AbstractNXTBrick nxt = BrickCreator.createBrick();
-		try {
-			nxt.NXTConnect(NXT.ConnectionType.USB);
-			ExitStatus e = nxt.downloadFile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
-			
-			if (e.isOk()){
-				MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading was a success!!");
-			}
-			else{
-				MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading failed: \n"+e.getMesage());
-			}
-		} catch (NXTNotFoundException e1) {
-			// TODO Auto-generated catch block
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download","Connecting to NXT Brick failed!");
-		} catch (UnableToCreateNXTException e1) {
-			// TODO Auto-generated catch block
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download","Connecting to NXT Brick failed!");
+		
+//		nxt.NXTConnect(NXT.ConnectionType.USB);
+		ExitStatus e = nxt.downloadFile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+		
+		if (e.isOk()){
+			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading was a success!!");
 		}
+		else{
+			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading failed: \n"+e.getMesage());
+		}
+		
 		
 	  }
 	}
