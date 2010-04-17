@@ -13,7 +13,6 @@ public class ProcessRunner {
 
 	
 	public ExitStatus run(List<String> command){
-		
 		try{
 			Process p;
 			ProcessBuilder pb = new ProcessBuilder(command);
@@ -66,7 +65,7 @@ public class ProcessRunner {
 				}
 				else{
 //					System.out.println("no errors");
-				
+//					System.out.println(nonerror);
 					return new ExitStatus(ExitStatus.OK,nonerror);
 					
 				}

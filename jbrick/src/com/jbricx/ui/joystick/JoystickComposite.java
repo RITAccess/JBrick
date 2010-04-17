@@ -7,10 +7,6 @@ package com.jbricx.ui.joystick;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import com.jbricx.communications.NXT.*;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,7 +21,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.WindowsNXTBrick;
+import com.jbricx.communications.AbstractNXTBrick;
+import com.jbricx.communications.BrickCreator;
+import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
 
 
@@ -491,7 +492,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
 	
 	private static void connectNXT(){
-		nxt = new WindowsNXTBrick();
+		
+		nxt = BrickCreator.createBrick();// new WindowsNXTBrick();
 		try {
 			nxt.NXTConnect(ConnectionType.USB);
 			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
@@ -499,7 +501,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 	
 	private static void connectJoypad(){
@@ -512,12 +514,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	
 	static GamePadController gpc;
-	static WindowsNXTBrick nxt;
+	static AbstractNXTBrick nxt;
 	
 	
 	
 	static Motor Motor_1_ID = Motor.MOTOR_A;
-	static Motor Motor_2_ID = Motor.MOTOR_B;
+	static Motor Motor_2_ID = Motor.MOTOR_C;
 	static int Motor_1_DIR = 1;
 	static int Motor_2_DIR = 1;
 	
@@ -548,10 +550,6 @@ private static Runnable pollController = new Runnable(){
 			
 			while(true){
 				
-				
-				
-				
-				
 //				System.out.println("XY Direction: " + gpc.getXYStickDir() + " Button: " + gpc.isButtonPressed(1));
 				//Directions 
 				//middle = 4
@@ -568,10 +566,10 @@ private static Runnable pollController = new Runnable(){
 					if(!gpc.poll()){
 						gpc = null;
 					}else{
-					if(gpc.getXYStickDir() != lastGPCValue){
-						useGUI = false;
-						lastGPCValue = gpc.getXYStickDir();
-					}
+						if(gpc.getXYStickDir() != lastGPCValue){
+							useGUI = false;
+							lastGPCValue = gpc.getXYStickDir();
+						}
 					}
 				}else{
 					useGUI= true;
@@ -599,6 +597,7 @@ private static Runnable pollController = new Runnable(){
 				
 				if(joypadValue == 1){
 					//up
+					
 					nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
 					nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
 				}

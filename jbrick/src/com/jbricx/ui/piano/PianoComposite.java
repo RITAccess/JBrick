@@ -35,6 +35,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.internal.win32.KEYBDINPUT;
 import org.eclipse.swt.SWT;
 
+import com.jbricx.communications.AbstractNXTBrick;
+import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
@@ -92,7 +94,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private Label transpose_label;
 	
 	private Scale transpose;
-
+	private Shell shell;
 
 	private ArrayList<Label> whiteKeysArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeysArray = new ArrayList<Label>();
@@ -103,7 +105,20 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private static final boolean  USE_BRICK = true;
 	
 	
-	private static WindowsNXTBrick nxt;
+	private static AbstractNXTBrick nxt;
+	
+	private KeyListener pianoKeyListener = new KeyListener() {
+		
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			pianoKeyPressed(arg0.character, false);	
+		}
+		
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			pianoKeyPressed(arg0.character, true);
+		}
+	};
 	
 	/**
 	* Auto-generated main method to display this 
@@ -148,12 +163,13 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	public PianoComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
 		initGUI();
+		
 	}
 
 	private void initGUI() {
 		if (USE_BRICK){
 			try {
-				nxt = new WindowsNXTBrick();
+				nxt = BrickCreator.createBrick();
 				nxt.NXTConnect(ConnectionType.USB);
 				//nxt.NXTConnect(ConnectionType.BLUETOOTH);
 				
@@ -162,6 +178,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			} catch (UnableToCreateNXTException e) {
 				e.printStackTrace();
 			}
+			
 		}
 		
 		try {
@@ -413,18 +430,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			e.printStackTrace();
 		}
 		
-		this.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				pianoKeyPressed(arg0.character, false);	
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				pianoKeyPressed(arg0.character, true);
-			}
-		});
+		this.addKeyListener(pianoKeyListener);
 		
 	}
 	

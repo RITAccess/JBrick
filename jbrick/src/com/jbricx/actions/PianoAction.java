@@ -28,6 +28,7 @@ public class PianoAction extends Action{
 //		  joystick.setBlockOnOpen(true);
 //		  joystick.open();
 		  
+		  
 		  PianoComposite.showGUI() ;
 		  
 	  }

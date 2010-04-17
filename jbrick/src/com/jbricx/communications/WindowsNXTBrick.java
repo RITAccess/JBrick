@@ -33,9 +33,9 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		List<String> command = new ArrayList<String>();
 		command.add(NBC);
 		//command.add("-help");
-		command.add("-S");//+where);
-		command.add("usb");
-		command.add("-d");
+//		command.add("-S");//+where);
+//		command.add("usb");
+//		command.add("-d");
 		command.add(filename);
 		
 		return run(command);
@@ -47,21 +47,45 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 		return null;
 	}
 
+	public boolean oldIsConnected(){
+		List<String> command = new ArrayList<String>();
+		command.add(NEXTTOOL);
+		command.add("/COM=usb");
+		command.add("-battery");
+		ExitStatus e = run(command);
+		System.out.println(e.getMesage());
+		if (e.isOk()){
+			if (e.getMesage().split(" ").length==0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
 	@Override
 	public ExitStatus downloadFile(String filename) {
-//		List<String> command = new ArrayList<String>();
-//		command.add(NBC);
-//		//command.add("-help");
-////		command.add("-S");//+where);
-////			command.add("usb");
-//			command.add("-d");
-////			command.add("C:\\Users\\spencer\\sample.nxc");
-//		command.add(filename);
+		List<String> command = new ArrayList<String>();
+		command.add(NBC);
+		command.add("-S=usb");//+where);
+		command.add("-d");
+		command.add(filename);
 //		System.out.println("Command:"+command.toString());
 //		return run(command);
 		System.out.println("Downloading...");
-		nxt.download(filename);
-		return new ExitStatus(ExitStatus.ERROR,"Download Failed");
+		if( oldIsConnected()){
+			return run(command);
+		}
+		else{
+			return new ExitStatus(ExitStatus.ERROR,"No Brick Connected. Please connect and try again.");
+		}
+		
+//		nxt.download(filename);
+//		return new ExitStatus(ExitStatus.ERROR,"Download Failed");
 	}
 
 	
