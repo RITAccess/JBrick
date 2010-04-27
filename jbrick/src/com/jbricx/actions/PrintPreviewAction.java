@@ -26,7 +26,7 @@ public class PrintPreviewAction extends Action {
 	 * AboutAction constructor
 	 */
 	public PrintPreviewAction() {
-		super("&PrintPreview@", ImageDescriptor.createFromFile(
+		super("&PrintPreview@Ctrl+Shift+P", ImageDescriptor.createFromFile(
 				PrintAction.class, "/images/document-printpreview.png"));
 		setToolTipText("Print Preview");
 	}
