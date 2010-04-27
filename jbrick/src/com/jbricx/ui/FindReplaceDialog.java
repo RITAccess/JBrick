@@ -270,9 +270,8 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		changableComponentList.add(findText);
 
 		// apply changes from the preference page
-		JBrickEditor.registerObserver(this);
-
-		this.update();
+		// JBrickEditor.registerObserver(this);
+		// this.update();
 
 		// Set defaults
 		down.setSelection(true);
