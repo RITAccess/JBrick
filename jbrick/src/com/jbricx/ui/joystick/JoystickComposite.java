@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.BrickCreator;
+import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
@@ -493,10 +494,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	private static void connectNXT(){
 		
-		nxt = BrickCreator.createBrick();// new WindowsNXTBrick();
+		nxt = new WindowsNXTBrick();
 		try {
-			nxt.NXTConnect(ConnectionType.USB);
-			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
+			// nxt.NXTConnect(ConnectionType.USB);
+			nxt.NXTConnect(ConnectionType.BLUETOOTH);
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {
