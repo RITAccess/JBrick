@@ -117,13 +117,15 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		
 		thread = new Thread(pollController);
 		thread.start();
-		
+		Thread thread2 = new Thread(backupBeep);
+		thread2.start();
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		thread.stop();	
+		thread2.stop();
 	}
 
 	Shell shell;
@@ -496,8 +498,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		
 		nxt = new WindowsNXTBrick();
 		try {
-			// nxt.NXTConnect(ConnectionType.USB);
-			nxt.NXTConnect(ConnectionType.BLUETOOTH);
+			 nxt.NXTConnect(ConnectionType.USB);
+			//nxt.NXTConnect(ConnectionType.BLUETOOTH);
 		} catch (NXTNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {
@@ -518,7 +520,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	static AbstractNXTBrick nxt;
 	
 	
-	
+	static int joypadValue;
 	static Motor Motor_1_ID = Motor.MOTOR_A;
 	static Motor Motor_2_ID = Motor.MOTOR_C;
 	static int Motor_1_DIR = 1;
@@ -533,8 +535,30 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	
 	static boolean useGUI = false;
-	
-	
+	 
+
+	private static Runnable backupBeep = new Runnable() {
+		public void run() {
+			boolean playSound = false;
+			int curDir;
+			// Point point = display.getCursorLocation();
+			while (true) {
+				playSound = !playSound;
+				curDir = gpc.getXYStickDir();
+				if (((curDir == 7) || (curDir == 8) || (curDir == 6))
+						&& playSound) {
+					// if (playSound){
+					nxt.playTone(1500, 600);
+					// }
+				}
+
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	};
 	
 private static Runnable pollController = new Runnable(){
 		
@@ -568,7 +592,7 @@ private static Runnable pollController = new Runnable(){
 						gpc = null;
 					}else{
 						if(gpc.getXYStickDir() != lastGPCValue){
-							useGUI = false;
+							
 							lastGPCValue = gpc.getXYStickDir();
 						}
 					}
@@ -585,7 +609,7 @@ private static Runnable pollController = new Runnable(){
 			
 				
 				
-				int joypadValue;
+				
 				
 				if (useGUI){
 					joypadValue = lastVirtualJoypadValue;
