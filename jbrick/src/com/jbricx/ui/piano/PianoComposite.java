@@ -27,6 +27,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
@@ -94,18 +95,22 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private Label transpose_label;
 	
 	private Scale transpose;
-	private Shell shell;
+	private static Shell shell;
+	private static Display display;
 
+	
 	private ArrayList<Label> whiteKeysArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeysArray = new ArrayList<Label>();
 	
 	private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
 	
-	private static final boolean  USE_BRICK = true;
+	private static final boolean  USE_BRICK = false;
 	
 	
 	private static AbstractNXTBrick nxt;
+	
+	private static PianoComposite myPianoComp;
 	
 	private KeyListener pianoKeyListener = new KeyListener() {
 		
@@ -139,8 +144,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	* org.eclipse.swt.widgets.Composite inside a new Shell.
 	*/
 	public static void showGUI() {
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+		display = Display.getDefault();
+		shell = new Shell(display);
 		PianoComposite inst = new PianoComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
@@ -167,6 +172,9 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void initGUI() {
+		
+		myPianoComp = this;
+		
 		if (USE_BRICK){
 			try {
 				nxt = BrickCreator.createBrick();
@@ -194,6 +202,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				helpLData.height = 27;
 				help.setLayoutData(helpLData);
 				help.setText("Help");
+				help.addKeyListener(pianoKeyListener);
 			}
 
 			{
@@ -205,6 +214,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				saveLData.height = 30;
 				save.setLayoutData(saveLData);
 				save.setText("Save");
+				save.addKeyListener(pianoKeyListener);
 			}
 			{
 				play = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -215,6 +225,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				playLData.height = 30;
 				play.setLayoutData(playLData);
 				play.setText("Play");
+				play.addKeyListener(pianoKeyListener);
 			}
 			{
 				copy = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -225,6 +236,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				copyLData.height = 31;
 				copy.setLayoutData(copyLData);
 				copy.setText("Copy");
+				copy.addKeyListener(pianoKeyListener);
 			}
 			{
 				clear = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -235,6 +247,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				clearLData.height = 31;
 				clear.setLayoutData(clearLData);
 				clear.setText("Clear");
+				clear.addKeyListener(pianoKeyListener);
 			}
 			{
 				length = new Group(this, SWT.NONE);
@@ -258,6 +271,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 							noteLengthDiv = 1;
 						}
 					});
+					onebyone.addKeyListener(pianoKeyListener);
 					
 				}
 				{
@@ -270,6 +284,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 							noteLengthDiv = 2;
 						}
 					});
+					onebytwo.addKeyListener(pianoKeyListener);
 				}
 				{
 					onebyfour = new Button(length, SWT.RADIO | SWT.LEFT);
@@ -282,6 +297,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 							noteLengthDiv = 4;
 						}
 					});
+					onebyfour.addKeyListener(pianoKeyListener);
 				}
 				{
 					onebyeight = new Button(length, SWT.RADIO | SWT.LEFT);
@@ -293,6 +309,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 							noteLengthDiv = 8;
 						}
 					});
+					onebyeight.addKeyListener(pianoKeyListener);
 				}
 				{
 					onebysixteen = new Button(length, SWT.RADIO | SWT.LEFT);
@@ -304,6 +321,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 							noteLengthDiv = 16;
 						}
 					});
+					onebysixteen.addKeyListener(pianoKeyListener);
 				}
 			}
 			{
@@ -315,6 +333,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				restLData.height = 80;
 				rest.setLayoutData(restLData);
 				rest.setText("Rest");
+				rest.addKeyListener(pianoKeyListener);
 			}
 			{
 				transpose_label = new Label(this, SWT.NONE);
@@ -326,6 +345,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				transpose_labelLData.top =  new FormAttachment(0, 1000, 200);
 				transpose_label.setLayoutData(transpose_labelLData);
 				transpose_label.setText("Transpose");
+				transpose_label.addKeyListener(pianoKeyListener);
 			}
 			
 			
@@ -351,6 +371,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					public void widgetDefaultSelected(SelectionEvent arg0) {
 					}
 				});
+				transpose.addKeyListener(pianoKeyListener);
 			}
 			
 			
@@ -431,6 +452,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 		}
 		
 		this.addKeyListener(pianoKeyListener);
+		
 		
 	}
 	
