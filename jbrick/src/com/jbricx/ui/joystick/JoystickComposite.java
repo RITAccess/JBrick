@@ -125,7 +125,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 				display.sleep();
 		}
 		thread.stop();	
-		thread2.stop();
+		thread2.stop(); 
 	}
 
 	Shell shell;
