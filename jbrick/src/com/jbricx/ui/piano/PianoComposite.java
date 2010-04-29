@@ -38,9 +38,11 @@ import org.eclipse.swt.SWT;
 
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.BrickCreator;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 
@@ -105,7 +107,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
 	
-	private static final boolean  USE_BRICK = false;
+	private static final boolean  USE_BRICK = true;
 	
 	
 	private static AbstractNXTBrick nxt;
@@ -177,13 +179,28 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 		
 		if (USE_BRICK){
 			try {
-				nxt = BrickCreator.createBrick();
-				nxt.NXTConnect(ConnectionType.USB);
-				//nxt.NXTConnect(ConnectionType.BLUETOOTH);
-				
+				nxt = NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+				nxt.playTone(2000, 300);
+				System.out.println("Joystick: Brick Connected!");
+				nxt.playTone(3000, 300);
+			} catch (AlreadyConnectedException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				System.out.println("Joystick already Connected");
+				try {
+					nxt = NXTManager.getBrick("brick1");
+					nxt.playTone(2000, 300);
+					System.out.println("Joystick: Brick Connected!");
+				} catch (NXTNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("Could not find brick");
+				}
 			} catch (NXTNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (UnableToCreateNXTException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

@@ -133,7 +133,7 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 	
 	@Override
 	public boolean isConnected(){
-		System.out.println(nxt.isConnected());
+//		System.out.println(nxt.isConnected());
 		return nxt.isConnected();
 	}
 

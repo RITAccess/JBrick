@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.*;
 
 import com.jbricx.communications.*;
 import com.jbricx.communications.NXT.*;
+import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
@@ -69,7 +70,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private ArrayList<Button> allButtons = new ArrayList<Button>() ;
 	private ArrayList<Scale> allScale = new ArrayList<Scale>() ;
 
-	private static WindowsNXTBrick nxt;
+	private static AbstractNXTBrick nxt;
 	final Runnable timer = new Runnable() {
 		public void run() {
 			System.out.println("-");
@@ -128,15 +129,30 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void initGUI() {
-		
+		String brickname = "brick2";
 		try {
-			nxt = new WindowsNXTBrick();
-			//nxt.NXTConnect(ConnectionType.USB);
-			nxt.NXTConnect(ConnectionType.BLUETOOTH);
-			
+			nxt = NXTManager.connect(brickname, ConnectionType.BLUETOOTH);
+			nxt.playTone(2000, 300);
+			System.out.println("Joystick: Brick Connected!");
+			nxt.playTone(3000, 300);
+		} catch (AlreadyConnectedException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			System.out.println("Joystick already Connected");
+			try {
+				nxt = NXTManager.getBrick(brickname);
+				nxt.playTone(2000, 300);
+				System.out.println("Joystick: Brick Connected!");
+			} catch (NXTNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				System.out.println("Could not find brick");
+			}
 		} catch (NXTNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnableToCreateNXTException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

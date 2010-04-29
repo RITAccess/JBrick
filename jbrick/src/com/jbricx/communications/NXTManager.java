@@ -26,6 +26,7 @@ public class NXTManager {
 			while(running){
 				try {
 					Thread.sleep(WAITTIME);
+//					System.out.println("Sleep");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -40,8 +41,11 @@ public class NXTManager {
 			throw new AlreadyConnectedException("NXT Brick '"+name+"' is already connected");
 		}
 		
-		AbstractNXTBrick nxt = BrickCreator.createBrick();
+		AbstractNXTBrick nxt = new WindowsNXTBrick();//BrickCreator.createBrick();
+		System.out.println("Manager Connected: "+name+" type: "+type.getName());
+		
 		nxt.NXTConnect(type);
+		nxt.playTone(2000, 200);
 		
 //		nxt.playTone(2700, 1000);
 		
@@ -79,11 +83,11 @@ public class NXTManager {
 	
 	private static void checkBricks(){
 		for (String name: nxtstore.keySet()){
-			System.out.println("checking: "+name);
+//			System.out.println("checking: "+name);
 			AbstractNXTBrick nxt = nxtstore.get(name);
 			
 			if(!nxt.isConnected()){//not connected
-				System.out.println("checkBricks() disconnected: "+name);
+//				System.out.println("checkBricks() disconnected: "+name);
 				
 				nxtobservers.get(name).nxtDisconnected(name, nxt);
 				nxtstatus.put(name,false);
@@ -91,7 +95,7 @@ public class NXTManager {
 			}
 			else{//connected
 				if (!nxtstatus.get(name)){
-					System.out.println("Connected! "+name);
+//					System.out.println("Connected! "+name);
 					if(!connectedRunnable.isAlive()){
 						connectedRunnable.start();
 					}
@@ -99,7 +103,7 @@ public class NXTManager {
 					nxtobservers.get(name).nxtConnected(name, nxtstore.get(name));
 				}
 			}
-			System.out.println("-----------------------");
+//			System.out.println("-----------------------");
 		}
 	}
 

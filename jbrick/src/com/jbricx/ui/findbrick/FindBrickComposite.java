@@ -20,6 +20,11 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTManager;
+import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.exceptions.AlreadyConnectedException;
+import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
 
 @SuppressWarnings("unused")
@@ -231,8 +236,22 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 				buttonUtil.setAccessibleString(ok, "OK");
 
 				ok.addListener(SWT.Selection, new Listener() {
+
+					
 					public void handleEvent(Event event) {
-						System.out.println("OK Button selected");
+						System.out.println("Attempting To Connect");
+						try {
+							NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+						} catch (AlreadyConnectedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (NXTNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (UnableToCreateNXTException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 				});
