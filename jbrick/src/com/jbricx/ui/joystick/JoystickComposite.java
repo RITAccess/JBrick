@@ -494,13 +494,9 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	private static void connectNXT(){
 		
-//		nxt = new WindowsNXTBrick();
-		
-			// nxt.NXTConnect(ConnectionType.USB);
-//			nxt.NXTConnect(ConnectionType.BLUETOOTH);
-		
+		String brickname = "brick2";
 		try {
-			nxt = NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+			nxt = NXTManager.connect(brickname, ConnectionType.BLUETOOTH);
 			nxt.playTone(2000, 300);
 			System.out.println("Joystick: Brick Connected!");
 			nxt.playTone(3000, 300);
@@ -509,7 +505,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			//e.printStackTrace();
 			System.out.println("Joystick already Connected");
 			try {
-				nxt = NXTManager.getBrick("brick1");
+				nxt = NXTManager.getBrick(brickname);
 				nxt.playTone(2000, 300);
 				System.out.println("Joystick: Brick Connected!");
 			} catch (NXTNotFoundException e1) {
