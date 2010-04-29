@@ -117,13 +117,15 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		
 		thread = new Thread(pollController);
 		thread.start();
-		
+		Thread thread2 = new Thread(backupBeep);
+		thread2.start();
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		thread.stop();	
+		thread2.stop();
 	}
 
 	Shell shell;
@@ -496,7 +498,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		
 		String brickname = "brick2";
 		try {
-			nxt = NXTManager.connect(brickname, ConnectionType.BLUETOOTH);
+			nxt = NXTManager.connect(brickname, ConnectionType.USB);
 			nxt.playTone(2000, 300);
 			System.out.println("Joystick: Brick Connected!");
 			nxt.playTone(3000, 300);
@@ -553,7 +555,25 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	
 	static boolean useGUI = false;
 	
-	
+	private static Runnable backupBeep = new Runnable() {
+		public void run() {
+			boolean playSound = false;
+			int curDir;
+			while (true) {
+				playSound = !playSound;
+				curDir = gpc.getXYStickDir();
+				if (((curDir == 7) || (curDir == 8) || (curDir == 6))
+						&& playSound) {
+					nxt.playTone(1500, 600);
+				}
+
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	};
 	
 private static Runnable pollController = new Runnable(){
 		

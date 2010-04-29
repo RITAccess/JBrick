@@ -179,7 +179,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 		
 		if (USE_BRICK){
 			try {
-				nxt = NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+				nxt = NXTManager.connect("brick1", ConnectionType.USB);
 				nxt.playTone(2000, 300);
 				System.out.println("Joystick: Brick Connected!");
 				nxt.playTone(3000, 300);
