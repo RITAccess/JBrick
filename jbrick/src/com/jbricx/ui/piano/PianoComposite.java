@@ -107,7 +107,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
 	
-	private static final boolean  USE_BRICK = true;
+	private static final boolean  USE_BRICK = false;
 	
 	
 	private static AbstractNXTBrick nxt;
@@ -550,10 +550,13 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	
 	
 	protected void pianoKeyPressed(char charIn, boolean isDown){
+		charIn = Character.toLowerCase(charIn);
 		System.out.println("Key pressed: " + charIn);
 		
 		int keyId = -1;
 		boolean whiteKeys = true;
+		
+		
 		
 		switch(charIn){
 			case 'q':
