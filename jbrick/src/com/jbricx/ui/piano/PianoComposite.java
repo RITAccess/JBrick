@@ -107,7 +107,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
 	
-	private static final boolean  USE_BRICK = false;
+	private static final boolean  USE_BRICK = true;
 	
 	
 	private static AbstractNXTBrick nxt;
