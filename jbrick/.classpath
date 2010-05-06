@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="aspectPackage/LogAspect.aj" kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jlib">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jbrick/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.4.0.I20080509-2000.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface_3.4.1.M20080827-2000.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.jface.text_3.4.1.r341_v20080827-1100.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.swt_3.4.1.v3449c.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.text_3.4.0.v20080605-1800.jar"/>
+	<classpathentry kind="lib" path="lib/swt_linux.jar"/>
+	<classpathentry kind="lib" path="lib/swt-debug_linux.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.jobs_3.4.0.v20080512.jar"/>
+	<classpathentry kind="lib" path="lib/BrickTool.exe"/>
+	<classpathentry kind="lib" path="lib/nbc.exe"/>
+	<classpathentry kind="lib" path="lib/NeXTTool.exe"/>
+	<classpathentry kind="lib" path="lib/com.ibm.icu_4.0.1.v20090822.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar"/>
+	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/jinput.jar"/>
+	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
