@@ -1,10 +1,20 @@
 package com.jbricx.ui.findbrick;
 
 /*
+ * @author Michael Goldstein
  * @author Priya Sankaran
+ * 
  */
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -16,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -29,21 +40,26 @@ import com.jbricx.ui.JBrickButtonUtil;
 
 @SuppressWarnings("unused")
 public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
-
+	private FindBrickFileIO FBFIO;
+	private ConnectionType ct;
 	private Group rightMotor;
 	private Group leftMotor;
 	private Button cancel;
-	private Button leJOS;
-	private Button other;
-	private Button pbForth;
-	private Button brickOS;
-	private Button standard;
-	private Button ok;
-	private Button help;
-	private List brickType;
-	private List portList;
+	//private Button leJOS;
+	//private Button other;
+	//private Button pbForth;
+	private Button bluetooth;
+	private Button usb;
+	//private Button ok;
+	private Button connect;
+	private Button save;
+	//private Button cancel;
+	//private List brickType;
+	//private List portList;
+	private Label info;
 	private StyledText searchBrick;
 	private Group driveMode;
+	
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 
 	/**
@@ -65,9 +81,11 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 	* org.eclipse.swt.widgets.Composite inside a new Shell.
 	*/
 	public static void showGUI() {
-		Display display = Display.getDefault();
+		Shell shell;
+		Display display;
+		display = Display.getDefault();
 		
-		Shell shell = new Shell(display);
+		shell = new Shell(display);
 		FindBrickComposite inst = new FindBrickComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
@@ -77,17 +95,18 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 			shell.pack();
 		} else {
 			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
-			shell.setSize(shellBounds.width, shellBounds.height);
+			shell.setSize(shellBounds.width+20, shellBounds.height+20);
 		}
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
-		}
+		}		
 	}
 
 	public FindBrickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
+		FBFIO = new FindBrickFileIO();
 		initGUI();
 	}
 
@@ -95,71 +114,83 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 		try {
 			{
 				driveMode = new Group(this, SWT.NONE);
-				driveMode.setText("Brick Type");
-				driveMode.setBounds(217, 51, 153, 73);
+				driveMode.setText("Information");
+				driveMode.setBounds(19, 35, 356, 80);
 				{
-					brickType = new List(driveMode, SWT.NONE);
-					brickType.setBounds(17, 28, 117, 24);
+					info=new Label(driveMode, SWT.WRAP);
+					info.setBounds(3, 15, 340, 60);
+					
+					info.setText("To connect to the brick, select the communication method and click 'Connect'.  " +
+							"You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
+					buttonUtil.setAccessibleString(info, "To connect to the brick, select the communication method and click 'Connect'.  " +
+							"You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
+					//	brickType = new List(driveMode, SWT.NONE);
+				//	brickType.setBounds(17, 28, 117, 24);
 					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
 
-					brickType.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Selection: " + event.button);
-							System.out.println("Brick Type list selected");
-						}
+				//	brickType.addListener(SWT.Selection, new Listener() {
+					//	public void handleEvent(Event event) {
+					//		System.out.println("Selection: " + event.button);
+					//		System.out.println("Brick Type list selected");
+					//	}
 
-					});
+					//});
 				}
 			}
 			{
-				leftMotor = new Group(this, SWT.NONE);
-				leftMotor.setText("Port");
-				leftMotor.setBounds(25, 51, 159, 74);
+				//leftMotor = new Group(this, SWT.NONE);
+				//leftMotor.setText("Port");
+				//leftMotor.setBounds(25, 51, 159, 74);
 				{
-					portList = new List(leftMotor, SWT.NONE);
-					portList.setBounds(17, 28, 121, 24);
+				//	portList = new List(leftMotor, SWT.NONE);
+				//	portList.setBounds(17, 28, 121, 24);
 					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
 
-					portList.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Portlist selected");
-						}
+				//	portList.addListener(SWT.Selection, new Listener() {
+				//		public void handleEvent(Event event) {
+				//			System.out.println("Portlist selected");
+				//		}
 
-					});
+				//	});
 				}
 			}
 			{
 				rightMotor = new Group(this, SWT.NONE);
-				rightMotor.setText("Firmware");
+				rightMotor.setText("Connection Type");
 				rightMotor.setBounds(19, 145, 356, 74);
 				{
-					standard = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
-					standard.setText("Standard");
-					standard.setBounds(12, 26, 65, 30);
-					buttonUtil.setAccessibleString(standard, "Brick Type List");
-
-					standard.addListener(SWT.Selection, new Listener() {
+					usb = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
+					usb.setText("USB");
+					usb.setBounds(12, 26, 65, 30);
+					buttonUtil.setAccessibleString(usb, "Brick Type List");
+					
+					usb.addListener(SWT.Selection, new Listener() {
 						public void handleEvent(Event event) {
-							System.out.println("Standard radio Button selected");
+							ct=ConnectionType.USB;
+							System.out.println("USB selected");
+
+							
 						}
 
 					});
 				}
 				{
-					brickOS = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
-					brickOS.setText("brickOS");
-					brickOS.setSize(60, 30);
-					brickOS.setBounds(89, 26, 60, 30);
-					buttonUtil.setAccessibleString(brickOS, "BrickOS");
+					bluetooth = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
+					bluetooth.setText("Bluetooth");
+					bluetooth.setSize(60, 30);
+					bluetooth.setBounds(89, 26, 69, 30);
+					buttonUtil.setAccessibleString(bluetooth, "Bluetooth");
 
-					brickOS.addListener(SWT.Selection, new Listener() {
+					bluetooth.addListener(SWT.Selection, new Listener() {
 						public void handleEvent(Event event) {
-							System.out.println("brickOS radio Button selected");
+							ct=ConnectionType.BLUETOOTH;
+							System.out.println("Bluetooth radio Button selected");
+							
 						}
 
 					});
 				}
-				{
+		/*		{
 					pbForth = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					pbForth.setText("pbForth");
 					pbForth.setBounds(162, 26, 60, 30);
@@ -197,65 +228,93 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 						}
 
 					});
-				}
+				} */
 			}
 			{
 				
 			}
 			{
-				cancel = new Button(this, SWT.PUSH | SWT.CENTER);
-				cancel.setText("Cancel");
-				cancel.setBounds(157, 231, 60, 30);
-				buttonUtil.setAccessibleString(cancel, "Cancel");
+				save = new Button(this, SWT.PUSH | SWT.CENTER);
+				save.setText("Save");
+				save.setBounds(157, 231, 60, 30);
+				buttonUtil.setAccessibleString(save, "Save");
 
+				save.addListener(SWT.Selection, new Listener() {
+					public void handleEvent(Event event) {
+						System.out.println("Save Button selected");
+						
+						FBFIO.saveCT(ct);
+					}
+
+				});
+			}
+			{
+				cancel = new Button(this, SWT.PUSH | SWT.CENTER);
+				cancel.setText("Quit");
+				cancel.setSize(60, 30);
+				cancel.setBounds(237, 231, 60, 30);
+				buttonUtil.setAccessibleString(cancel, "Cancel");
+				cancel.setEnabled(false);
 				cancel.addListener(SWT.Selection, new Listener() {
 					public void handleEvent(Event event) {
 						System.out.println("Cancel Button selected");
+						/*
+						 * dispose works when only launching this gui, but does not work whne launching everything else
+						 */
+						
 					}
 
 				});
 			}
 			{
-				help = new Button(this, SWT.PUSH | SWT.CENTER);
-				help.setText("Help");
-				help.setSize(60, 30);
-				help.setBounds(237, 231, 60, 30);
-				buttonUtil.setAccessibleString(help, "Help");
+				connect = new Button(this, SWT.PUSH | SWT.CENTER);
+				connect.setText("Connect");
+				connect.setBounds(74, 231, 60, 30);
+				buttonUtil.setAccessibleString(connect, "Connect");
 
-				help.addListener(SWT.Selection, new Listener() {
-					public void handleEvent(Event event) {
-						System.out.println("Help Button selected");
-					}
-
-				});
-			}
-			{
-				ok = new Button(this, SWT.PUSH | SWT.CENTER);
-				ok.setText("Ok");
-				ok.setBounds(74, 231, 60, 30);
-				buttonUtil.setAccessibleString(ok, "OK");
-
-				ok.addListener(SWT.Selection, new Listener() {
+				connect.addListener(SWT.Selection, new Listener() {
 
 					
 					public void handleEvent(Event event) {
 						System.out.println("Attempting To Connect");
 						try {
-							NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+							//rightMotor.
+							if(bluetooth.getSelection()){
+								System.out.println("BT");
+								NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+								
+							}else{
+								System.out.println("USB");
+								NXTManager.connect("brick1", ConnectionType.USB);
+							}
+							
 						} catch (AlreadyConnectedException e) {
-							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "Already Connected to the brick...");
 							e.printStackTrace();
 						} catch (NXTNotFoundException e) {
-							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "No bricks found...");
 							e.printStackTrace();
 						} catch (UnableToCreateNXTException e) {
-							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "Unable to create NXT...");
 							e.printStackTrace();
 						}
 					}
 
 				});
 			}
+			
+			
+			ct=FindBrickFileIO.getCT();
+			
+			if (ct==ConnectionType.BLUETOOTH){
+				System.out.println("Read BT from file");
+				bluetooth.setSelection(true);
+			}else{
+				System.out.println("Read ~BT from file");
+				usb.setSelection(true);
+			}
+
+
 			FormLayout thisLayout = new FormLayout();
 			
 			this.layout();
@@ -264,10 +323,6 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
 	
 	
 }

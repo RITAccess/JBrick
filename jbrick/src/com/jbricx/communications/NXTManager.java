@@ -6,6 +6,7 @@ import com.jbricx.communications.NXT.*;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.ui.findbrick.FindBrickFileIO;
 
 public class NXTManager {
 
@@ -134,7 +135,7 @@ public class NXTManager {
 					try {
 						AbstractNXTBrick nxt;
 						if(!started){
-							 nxt = NXTManager.connect(name, ConnectionType.BLUETOOTH);
+							 nxt = NXTManager.connect(name, FindBrickFileIO.getCT());
 							started=true;
 						}
 						else{

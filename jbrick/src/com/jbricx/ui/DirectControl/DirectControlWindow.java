@@ -16,6 +16,7 @@ import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
+import com.jbricx.ui.findbrick.FindBrickFileIO;
 
 /**
  * 
@@ -25,7 +26,6 @@ import com.jbricx.ui.JBrickButtonUtil;
 public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
 
-	
 	
 	private static Combo cmbSensor1;
 	private static Combo cmbSensor2;
@@ -131,7 +131,9 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	private void initGUI() {
 		String brickname = "brick2";
 		try {
-			nxt = NXTManager.connect(brickname, ConnectionType.BLUETOOTH);
+			
+			nxt = NXTManager.connect(brickname, FindBrickFileIO.getCT());
+			
 			nxt.playTone(2000, 300);
 			System.out.println("Joystick: Brick Connected!");
 			nxt.playTone(3000, 300);
