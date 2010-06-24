@@ -124,34 +124,11 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 							"You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
 					buttonUtil.setAccessibleString(info, "To connect to the brick, select the communication method and click 'Connect'.  " +
 							"You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
-					//	brickType = new List(driveMode, SWT.NONE);
-				//	brickType.setBounds(17, 28, 117, 24);
-					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
-
-				//	brickType.addListener(SWT.Selection, new Listener() {
-					//	public void handleEvent(Event event) {
-					//		System.out.println("Selection: " + event.button);
-					//		System.out.println("Brick Type list selected");
-					//	}
-
-					//});
+					
 				}
 			}
 			{
-				//leftMotor = new Group(this, SWT.NONE);
-				//leftMotor.setText("Port");
-				//leftMotor.setBounds(25, 51, 159, 74);
 				{
-				//	portList = new List(leftMotor, SWT.NONE);
-				//	portList.setBounds(17, 28, 121, 24);
-					//buttonUtil.setAccessibleString(brickType, "Brick Type List");
-
-				//	portList.addListener(SWT.Selection, new Listener() {
-				//		public void handleEvent(Event event) {
-				//			System.out.println("Portlist selected");
-				//		}
-
-				//	});
 				}
 			}
 			{
@@ -168,8 +145,6 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 						public void handleEvent(Event event) {
 							ct=ConnectionType.USB;
 							System.out.println("USB selected");
-
-							
 						}
 
 					});
@@ -185,50 +160,10 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 						public void handleEvent(Event event) {
 							ct=ConnectionType.BLUETOOTH;
 							System.out.println("Bluetooth radio Button selected");
-							
 						}
 
 					});
 				}
-		/*		{
-					pbForth = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
-					pbForth.setText("pbForth");
-					pbForth.setBounds(162, 26, 60, 30);
-					buttonUtil.setAccessibleString(pbForth, "pbForth");
-
-					pbForth.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("pbForth radio Button selected");
-						}
-
-					});
-				}
-				{
-					leJOS = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
-					leJOS.setText("leJOS");
-					leJOS.setBounds(234, 26, 60, 30);
-					buttonUtil.setAccessibleString(leJOS, "leJOS");
-
-					leJOS.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("leJOS radio Button selected");
-						}
-
-					});
-				}
-				{
-					other = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
-					other.setText("Other");
-					other.setBounds(294, 26, 54, 30);
-					buttonUtil.setAccessibleString(other, "Other");
-
-					other.addListener(SWT.Selection, new Listener() {
-						public void handleEvent(Event event) {
-							System.out.println("Other radio Button selected");
-						}
-
-					});
-				} */
 			}
 			{
 				
@@ -278,7 +213,6 @@ public class FindBrickComposite extends org.eclipse.swt.widgets.Composite {
 					public void handleEvent(Event event) {
 						System.out.println("Attempting To Connect");
 						try {
-							//rightMotor.
 							if(bluetooth.getSelection()){
 								System.out.println("BT");
 								NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
