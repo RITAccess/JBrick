@@ -45,6 +45,7 @@ import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.ui.findbrick.FindBrickFileIO;
 
 
 /**
@@ -179,7 +180,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 		
 		if (USE_BRICK){
 			try {
-				nxt = NXTManager.connect("brick1", ConnectionType.USB);
+				nxt = NXTManager.connect("brick1", FindBrickFileIO.getCT());
 				nxt.playTone(2000, 300);
 				System.out.println("Joystick: Brick Connected!");
 				nxt.playTone(3000, 300);
