@@ -98,7 +98,7 @@ public class WindowsNXTBrick extends AbstractNXTBrick{
 
 	@Override
 	public ExitStatus playTone(int frequency, int duration) {
-		System.out.println("play tone");
+		//System.out.println("play tone");
 		nxt.playSound(frequency, duration);
 		return null;
 	}
