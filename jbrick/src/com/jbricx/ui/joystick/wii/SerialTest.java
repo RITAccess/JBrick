@@ -23,6 +23,7 @@ public class SerialTest implements WiiPacketEvent {
 	// static SerialDriver s;
 	NunchuckConnection NCC;
 	static AbstractNXTBrick nxt;
+	private static final boolean debug=true;
 private static void connectNXT(){
 		
 		String brickname = "brick2";
@@ -156,80 +157,63 @@ static int Motor_2_DIR = 1;
 	@Override
 	public void onNewData(WiiPacket packet) {
 		// TODO Auto-generated method stub
+//		int speed=0;
+//		if(packet.cState){
+//			speed+=100;
+//		}else if(packet.zState){
+//			speed -=100;
+//			
+//		}
+//		nxt.motorOn(Motor.MOTOR_A, speed);
+//		nxt.motorOn(Motor.MOTOR_C, speed);
 		
-		if(packet.cState){
-			nxt.motorOn(Motor.MOTOR_A, 100);
-			nxt.motorOn(Motor.MOTOR_C, 100);
+		int aSpeed=0, cSpeed =0;
+		if(packet.yPos>=10){
+			aSpeed=(int)( 50.0 + (double)(packet.yPos) *0.5);
+			cSpeed=(int)( 50.0 + (double)(packet.yPos) *0.5);
+		}
+		else if (packet.yPos <= -10){
+			aSpeed=((int)( - 50.0 + (double)(packet.yPos) * 0.5));
+			cSpeed=((int)( - 50.0 + (double)(packet.yPos) * 0.5));
+		}
+		int aSpeedDiff;
+		
+		int cSpeedDiff;
+		
+		if(packet.xPos > 10){
+			if(packet.yPos >= 10)
+				cSpeed += (int)( (double)(packet.xPos) * 0.5);
+			else if (packet.yPos <= -10)
+				cSpeed -= (int)( (double)(packet.xPos) * 0.5);
+			else
+				cSpeed=packet.xPos;
+		}else if (packet.xPos <= -10){
+			if (packet.yPos <= -10)
+				aSpeed += (int)( (double)(packet.xPos) * 0.5);
+			else if (packet.yPos >= 10)
+				aSpeed -= (int)( (double)(packet.xPos) * 0.5);
+			else
+				aSpeed=-packet.xPos;
 		}
 		
 		
-//		int aSpeed=(int)( 50.0 + (double)(packet.yPos) *0.5);
-//		int aSpeedDiff;
-//		int cSpeed=(int)( 50.0 + (double)(packet.yPos) *0.5);
-//		int cSpeedDiff;
-//		
-//		if(packet.xPos > 10){
-//			if(packet.yPos>=0)
-//				cSpeed += (int)( (double)(packet.xPos) *0.5);
-//			else 
-//				cSpeed -= (int)( (double)(packet.xPos) *0.5);
-//		}else if (packet.xPos <-10){
-//			if(packet.yPos>=0)
-//				aSpeed += (int)( (double)(packet.xPos) *0.5);
-//			else 
-//				aSpeed -= (int)( (double)(packet.xPos) *0.5);
-//		}
-//		
-//		nxt.motorOn(Motor.MOTOR_A, aSpeed);
-//		nxt.motorOn(Motor.MOTOR_C, cSpeed);
-//		//System.out.println("xPos: " + packet.xPos + "; \t yPos: " + packet.yPos
-//		//		+ "; \tcState: " + packet.cState + ";\t zState: " + packet.zState);
-//		
-//		if(packet.cState==true){
-//			nxt.playTone(1500, 500);
-//		}
-//		else if (packet.zState==true){
-//			nxt.playTone(1200, 500);
-//		}
-//		else{
-//			nxt.playTone(0, 0);
-//		}
+		nxt.motorOn(Motor.MOTOR_A, aSpeed);
+		nxt.motorOn(Motor.MOTOR_C, cSpeed);
+		if(debug)
+			System.out.println("xPos: " + packet.xPos + "; \t yPos: " + packet.yPos
+				+ "; \tcState: " + packet.cState + ";\t zState: " + packet.zState + ";\t MaSpeed: "+aSpeed+";\t McSpeed: " + cSpeed+";");
+		
+		if(packet.cState==true){
+			nxt.playTone(1500, 500);
+		}
+		else if (packet.zState==true){
+			nxt.playTone(1200, 500);
+		}
+		else{
+			nxt.playTone(0, 0);
+		}
 		
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	private static Runnable sendToLego = new Runnable(){
-//
-//		@Override
-//		public void run() {
-//			// TODO Auto-generated method stub
-//			
-//			
-//			while(true){
-//				
-//			
-//				Thread.sleep(100);
-//			
-//			}
-//			
-//			
-//		}
-//		
-//		
-//	};
 	
 	
 	

@@ -82,9 +82,10 @@ public class NunchuckConnection implements Serial_Event {
 				curData[i] = sd.readInt();
 			}
 			if (sd.readInt() == 255) {// end of packet value which we should
-										// recieve
+										// Receive
 				wiiData = new WiiPacket(curData[0], curData[1],
 						(byte) curData[2]);
+				
 				parent.onNewData(wiiData);
 			}// else incomplete packet. throw it out.
 		}
