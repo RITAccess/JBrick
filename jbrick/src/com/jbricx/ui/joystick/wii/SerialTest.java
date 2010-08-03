@@ -176,9 +176,6 @@ static int Motor_2_DIR = 1;
 			aSpeed=((int)( - 50.0 + (double)(packet.yPos) * 0.5));
 			cSpeed=((int)( - 50.0 + (double)(packet.yPos) * 0.5));
 		}
-		int aSpeedDiff;
-		
-		int cSpeedDiff;
 		
 		if(packet.xPos > 10){
 			if(packet.yPos >= 10)
@@ -199,6 +196,7 @@ static int Motor_2_DIR = 1;
 		
 		nxt.motorOn(Motor.MOTOR_A, aSpeed);
 		nxt.motorOn(Motor.MOTOR_C, cSpeed);
+		
 		if(debug)
 			System.out.println("xPos: " + packet.xPos + "; \t yPos: " + packet.yPos
 				+ "; \tcState: " + packet.cState + ";\t zState: " + packet.zState + ";\t MaSpeed: "+aSpeed+";\t McSpeed: " + cSpeed+";");
