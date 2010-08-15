@@ -30,6 +30,7 @@ import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
+import com.jbricx.ui.joystick.wii.WiiMain;
 
 
 
@@ -47,6 +48,10 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button leftMotor_A;
 	private Group leftMotor;
 	private Button driveSteer;
+	private Group controlSelection;
+	private Button xbox;
+	private Button wii;
+	private Button none;
 	public static Scale speedBar;
 	private Button help;
 	private Group speed;
@@ -63,6 +68,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 	private Button UpLeft;
 	private Button UpRight;
 	private Button Up;
+	private static WiiMain wiiMain;
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 	
 	ArrayList<Button> buttonArray = new ArrayList<Button>();
@@ -114,19 +120,17 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 		
 		
 		connectNXT();
-		connectJoypad();
 		
-		thread = new Thread(pollController);
-		thread.start();
-		Thread t2= new Thread(backupBeep);
-		t2.start();
+		//Thread t2= new Thread(backupBeep);
+		//t2.start();
 		
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
 		thread.stop();	
-		t2.stop();
+		
+		//t2.stop();
 	}
 
 	Shell shell;
@@ -298,7 +302,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				driveMode = new Group(this, SWT.NONE);
 				driveMode.setText("Drive Mode");
-				driveMode.setBounds(141, 46, 115, 84);
+				driveMode.setBounds(142, 266, 115, 84); //(142, 266,
 				{
 					leftRight = new Button(driveMode, SWT.RADIO | SWT.LEFT);
 					leftRight.setText("Left-Right");
@@ -324,6 +328,79 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 				}
 				driveSteer.setEnabled(false);
 				leftRight.setSelection(true);
+			}
+			/**
+			 * ADDED BY MDG
+			 */
+			{
+				controlSelection = new Group(this, SWT.NONE);
+				controlSelection.setText("Controller");
+				controlSelection.setBounds(141, 15, 115, 110);
+				{
+					none = new Button(controlSelection, SWT.RADIO | SWT.LEFT);
+					none.setText("None");
+					none.setBounds(12, 21, 73, 30);
+					buttonUtil.setAccessibleString(none,
+							"Disable external controls");
+					none.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							//TODO: add method to kill wii and xbox objects
+							//kill xbox thread
+								wiiMain.killWiiThreads();
+								wiiMain=null;
+								thread=null;							
+						}
+					});
+				}
+				{
+					xbox = new Button(controlSelection, SWT.RADIO | SWT.LEFT);
+					xbox.setText("xBox");
+					xbox.setBounds(12, 44, 73, 30);
+					buttonUtil.setAccessibleString(leftRight,
+							"Left Right Drive Mode");
+					xbox.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							//TODO: start xbox drivers here - NEEDS TESTING
+							connectJoypad();
+							try{
+								wiiMain.killWiiThreads();
+								wiiMain=null;
+								thread=null;
+							}catch(NullPointerException e){
+								//do nothing
+							}
+							
+							thread = new Thread(pollController);
+							thread.start();
+							
+						}
+					});
+				}
+				{
+					
+					wii = new Button(controlSelection, SWT.RADIO | SWT.LEFT);
+					wii.setText("Wii");
+					wii.setBounds(12, 70, 80, 30);
+					buttonUtil.setAccessibleString(wii, "Wii Controller");
+					wii.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent evt) {
+							//TODO: start wii drivers here
+//							try{
+//							thread.destroy();
+							thread=null;
+//							} catch(NullPointerException e){
+//								//do nothing
+//							}
+							if(wiiMain == null){
+								wiiMain = new WiiMain(nxt);
+								thread = new Thread(wiiMain);
+								thread.start();
+							}
+						}
+					});
+				}
+				
+				none.setSelection(true);
 			}
 			{
 				leftMotor = new Group(this, SWT.NONE);
@@ -384,7 +461,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				rightMotor = new Group(this, SWT.NONE);
 				rightMotor.setText("Right Motor");
-				rightMotor.setBounds(142, 176, 115, 74);
+				rightMotor.setBounds(141, 176, 115, 74);//(141, 176,
 				{
 					rightMotor_A = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
 					rightMotor_A.setText("A");
@@ -443,7 +520,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				speed = new Group(this, SWT.NONE);
 				speed.setText("Speed");
-				speed.setBounds(83, 266, 115, 59);
+				speed.setBounds(12, 266, 115, 59);
 				{
 					
 					speedBar = new Scale(speed, SWT.NONE);
@@ -462,7 +539,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				help = new Button(this, SWT.PUSH | SWT.CENTER);
 				help.setText("HELP");
-				help.setBounds(116, 337, 60, 25);
+				help.setBounds(50, 337, 60, 25);
 				buttonUtil.setAccessibleString(help, "Help");
 				help.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {

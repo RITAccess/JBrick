@@ -16,6 +16,8 @@ public class WiiPacket {
 	//private final static int idlePos = 130;
 	//private final static int maxPos = 221;
 	//private final static int minPos = 40;
+	
+	//CHANGE THESE VALUES IF YOU USE A DIFFERENT WII NUNCHUK!
 	private static final byte offsetY=7;
 	private static final byte offsetX=3;
 	

@@ -15,16 +15,21 @@ import com.jbricx.ui.findbrick.FindBrickFileIO;
 /**
  * @author Mike Goldstein
  */
-public class SerialTest implements WiiPacketEvent {
-
+public class WiiMain implements WiiPacketEvent, Runnable {
+	NunchuckConnection NCC;
+	static AbstractNXTBrick nxt;
+	boolean running = true;
+	private static final boolean debug=true;
+public WiiMain(AbstractNXTBrick x){
+	nxt=x;
+	running = true;
+}
 	/**
 	 * @param args
 	 */
 	// static SerialDriver s;
-	NunchuckConnection NCC;
-	static AbstractNXTBrick nxt;
-	private static final boolean debug=true;
-private static void connectNXT(){
+
+/*private static void connectNXT(){
 		
 		String brickname = "brick2";
 		try {
@@ -51,10 +56,8 @@ private static void connectNXT(){
 		} catch (UnableToCreateNXTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		
-	}
+		}	
+	}*/
 static Motor Motor_1_ID = Motor.MOTOR_A;
 static Motor Motor_2_ID = Motor.MOTOR_C;
 static int Motor_1_DIR = 1;
@@ -64,84 +67,36 @@ static int Motor_2_DIR = 1;
 
 	static short getUnsignedByte(byte b) {
 		return (short) ((short) (b) & 0x00FF);
-
 	}
-	public static void main(String[] args) {
-		/* test for getUnsignedByte();
-		byte b = (byte) 0xFF;
-		System.out.println("b as a byte: " + b + "; b as a uByte: "+ getUnsignedByte(b));
-		*/
-		// TODO Auto-generated method stub
-		//new Thread(sendToLego).start();
-		connectNXT();
-		new SerialTest().run2();
+//	public static void main(String[] args) {
+//		/* test for getUnsignedByte();
+//		byte b = (byte) 0xFF;
+//		System.out.println("b as a byte: " + b + "; b as a uByte: "+ getUnsignedByte(b));
+//		*/
+//		// TODO Auto-generated method stub
+//		//new Thread(sendToLego).start();
+//		connectNXT();
+//		new WiiMain().run2();
+//		
+//
+//		
+//	}
+		public void killWiiThreads(){
+			running=false;
+		}
+/**
+ * This method will sent 0xac to the arduino once every 100ms to request updated data
+ *It also starts the connection object...
+ * 
+ */
+	@Override
+	public void run(){
 		
-
-		//while (true) {
-			// System.out.println(s.readint());
-			//try {
-		//		Thread.sleep(5000);
-		//	} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-		//		e.printStackTrace();
-		//	}
-	//		try {
-				//request data from nunchuck
-	//			//System.out.println("Sending ac");
-	//			s.write((byte) 0xAC);
-				
-				//wait until data gets here
-				//while(!s.availableBool()){
-					//System.out.println(s.available()+ "; ");
-					//try {
-					//	Thread.sleep(100);
-					//} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-					//	e.printStackTrace();
-					//}
-			//	}
-			//	byte[] bb = s.getCurrent();
-				//System.out.println("First Byte: " + getUnsignedByte(bb[0]) + 
-							//	   "Second Byte: " + getUnsignedByte(bb[1]) +
-							//	   "Third Byte: " + getUnsignedByte(bb[2]));
-	//		} catch (IOException e1) {
-				// TODO Auto-generated catch block
-	//			e1.printStackTrace();
-	//		} catch (NotConnectedException e1) {
-				// TODO Auto-generated catch block
-	//			e1.printStackTrace();
-	//		}
-	//		try {
-	//			Thread.sleep(50);
-	//		} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//	}
-	}
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//test to get serial data from the driver
-	public void run2() {
+		System.out.println("Nunchuck RUn Command started");
 		NCC = new NunchuckConnection(this);
 
-		while (true) {
+		while (running) {
+			
 			NCC.sendByte((byte) 0xAC);
 			try {
 				Thread.sleep(100);
@@ -150,22 +105,19 @@ static int Motor_2_DIR = 1;
 				e.printStackTrace();
 			}
 		}
+		NCC.killSerial();
+		NCC=null;
 
-	}
+	};
 
-	// this method should be called when we get a new packet
+	/** this method will be called by a lower layer
+	*    when we get a new packet
+	*    It translates the data in the packet to values the brick expects
+	*    After the data is transformed, it sends it off to the brick
+	**/
 	@Override
 	public void onNewData(WiiPacket packet) {
 		// TODO Auto-generated method stub
-//		int speed=0;
-//		if(packet.cState){
-//			speed+=100;
-//		}else if(packet.zState){
-//			speed -=100;
-//			
-//		}
-//		nxt.motorOn(Motor.MOTOR_A, speed);
-//		nxt.motorOn(Motor.MOTOR_C, speed);
 		
 		int aSpeed=0, cSpeed =0;
 		if(packet.yPos>=10){

@@ -46,6 +46,10 @@ public class SerialDriver implements SerialPortEventListener {
 		sInit(com,rate);
 		
 	}
+	//closes the port 
+	public void killSerial(){
+		port.close();
+	}
 	private void sInit(String com, int rate){
 		this.com = com;
 		this.rate = rate;
@@ -55,6 +59,8 @@ public class SerialDriver implements SerialPortEventListener {
 		buffer = new LinkedList<Byte>();
 		try {
 			port = null;
+			//get a list of com ports from the dll, then check which ones are serial
+			//if the predefined com-port is on the list then we can connect to it
 			Enumeration portList = CommPortIdentifier.getPortIdentifiers();
 			while (portList.hasMoreElements()) {
 				CommPortIdentifier portId = (CommPortIdentifier) portList
@@ -71,16 +77,9 @@ public class SerialDriver implements SerialPortEventListener {
 				}
 			}
 		} catch (PortInUseException e) {
-			// throw new SerialException("Serial port '" + iname +
-			// "' already in use.  Try quiting any programs that may be using it.");
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// throw new SerialException("Error opening serial port '" + iname +
-			// "'.", e);
-			// //errorMessage("<init>", e);
-			// //exception = e;
-			// //e.printStackTrace();
 		}
 
 		if (port == null)
@@ -90,7 +89,14 @@ public class SerialDriver implements SerialPortEventListener {
 			connected = true;
 		}
 	}
-
+/**
+ * collect to the port in question and add listeners to this object
+ * @param portId
+ * @throws PortInUseException
+ * @throws IOException
+ * @throws UnsupportedCommOperationException
+ * @throws TooManyListenersException
+ */
 	private void portConnect(CommPortIdentifier portId)
 			throws PortInUseException, IOException,
 			UnsupportedCommOperationException, TooManyListenersException {
@@ -106,7 +112,11 @@ public class SerialDriver implements SerialPortEventListener {
 		port.notifyOnDataAvailable(true);
 		numTimesInPortConnect++;
 	}
-
+/**
+ * reconnect thread - if you disconnect the arduino from the PC while its connected it
+ * should wait in this thread until it finds our arduino...then it will reconnect
+ * and continue
+ */
 	private Runnable reconnect = new Runnable() {
 		public void run() {
 			System.out.println("in reconnect");
@@ -157,10 +167,18 @@ public class SerialDriver implements SerialPortEventListener {
 
 		}
 	};
-
+/**
+ * this is the method the dll will call when there is a serial event - synchronized because
+ * it will call this method every single time a byte is recieved, 
+ * and it cannot run through the code fast enough - was causing problems with out it
+ */
 	@Override
 	synchronized public void serialEvent(SerialPortEvent serialEvent) {
 		boolean error = false;
+		//this is just checking if the objects still exist - the serial driver is crap
+		//if calling this method returns an error, do not proceed
+		//kill the port and enter the reconnect routine
+		//the driver spams this method if you unplug the car without this try/catch
 		try {
 			inStr.available();
 		} catch (IOException e) {
@@ -170,23 +188,24 @@ public class SerialDriver implements SerialPortEventListener {
 			thread.start();
 			port.close();
 			System.out.println("AFTER CLOSE");
-			// port=null;
-			// port = null;
-
-			// port.
 		}
+		//is error==false dead code???
 		if (error == false) {
+			//since the only type of event set to call this method is data_av
+			//this might not be needed
 			if (serialEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 				if(debug){
 					System.out.println("");
 					System.out.print("SerialPort DataEvent");
 				}
+				//read in all the values and save them to the byte buffer
 				try {
 					int av = inStr.available();
 					if(debug)
 						System.out.print("Num AV: " + av + "; ");
 					while (av > 0) {
-						synchronized (buffer) {
+						//do not want to be writing to this while something else is reading
+						synchronized (buffer) { 
 							byte b = (byte) inStr.read();
 							if(debug)
 								System.out.print("; Val: " + ((int)b&0x000000ff));
@@ -194,7 +213,7 @@ public class SerialDriver implements SerialPortEventListener {
 							av = inStr.available();
 						}
 					}
-					//if listener is enabled and we've gotten 4 packets...
+					//if listener is enabled and we've gotten 5+ bytes in the buffer...
 					if(se!=null && buffer.size()>4){
 						//call serial listener
 						se.serialListener();
@@ -209,11 +228,17 @@ public class SerialDriver implements SerialPortEventListener {
 		}
 
 	}
-
+	/**
+	 * 
+	 * @return number of bytes waiting
+	 */
 	public int available() {
 		return buffer.size();
 	}
-
+	/**
+	 * bool version of above - true if it isnt empty
+	 * @return
+	 */
 	public boolean availableBool() {
 		boolean temp = false;
 		if (buffer.size() > 0) {
@@ -221,7 +246,10 @@ public class SerialDriver implements SerialPortEventListener {
 		}
 		return temp;
 	}
-
+/**
+ * return an integer value of whatever is in the front of the byte buffer
+ * @return
+ */
 	public int readInt() {
 		// if (bufferIndex == bufferLast) return -1;
 		// int outgoing=0;
@@ -236,14 +264,19 @@ public class SerialDriver implements SerialPortEventListener {
 
 	/**
 	 * Returns the next byte in the buffer as a char. Returns -1, or 0xffff, if
-	 * nothing is there.
+	 * nothing is there.  (might be dead code)
 	 */
 	public char readChar() {
 		if (availableBool())
 			return (char) ((byte) readInt());
 		return (char) (-1);
 	}
-
+	/**
+	 * write a byte to the outgoing buffer if we are connected
+	 * @param b
+	 * @throws IOException
+	 * @throws NotConnectedException
+	 */
 	public void write(byte b) throws IOException, NotConnectedException {
 		if (connected) {
 			byte[] bb = new byte[1];

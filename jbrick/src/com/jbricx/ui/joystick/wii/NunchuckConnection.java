@@ -13,7 +13,7 @@ public class NunchuckConnection implements Serial_Event {
 	private boolean validData;
 	private SerialDriver sd;
 	private WiiPacketEvent parent;
-
+	
 	public NunchuckConnection(WiiPacketEvent wpe) {
 		sd = new SerialDriver(this, "COM14", 115200);
 		curData = new int[3];
@@ -32,39 +32,45 @@ public class NunchuckConnection implements Serial_Event {
 			e.printStackTrace();
 		}
 	}
+	public void killSerial(){
+		sd.killSerial();
+	}
+///**
+// * monitor the serial connection for incoming packets
+// * when we receive a packet, make a WiiPacket out of it and ship it to the parent
+// * 
+// */
+//	private Runnable translateData = new Runnable() {
+//		@Override
+//		public void run() {
+//			while (true) {
+//				if (sd.available() > 4) { //hopefully a complete packet is ready for processing
+//					while (sd.readInt() != 1) { // 1 marks the start of a new packet
+//						if (sd.available() == 0) { //stuck in a while loop here - add an exit condition
+//							break;
+//						}
+//					}
+//					validData=false;
+//					//read in the three values
+//					for(int i=0; i<3; i++){
+//						curData[i]=sd.readInt();
+//					}
+//					if(sd.readInt()==255){//end of packet value which we should recieve
+//						wiiData= new WiiPacket(curData[0],curData[1],(byte)curData[2]);
+//						parent.onNewData(wiiData);
+//					}//else incomplete packet.  throw it out.
+//						
+//				}
+//				// parent.onNewData(curData);
+//			}
+//
+//		}
+//
+//	};
 /**
- * monitor the serial connection for incoming packets
- * when we receive a packet, make a WiiPacket out of it and ship it to the parent
+ * this is called when we have 5+ bytes in the buffer by the serial driver through the interface
  * 
  */
-	private Runnable translateData = new Runnable() {
-		@Override
-		public void run() {
-			while (true) {
-				if (sd.available() > 4) { //hopefully a complete packet is ready for processing
-					while (sd.readInt() != 1) { // 1 marks the start of a new packet
-						if (sd.available() == 0) { //stuck in a while loop here - add an exit condition
-							break;
-						}
-					}
-					validData=false;
-					//read in the three values
-					for(int i=0; i<3; i++){
-						curData[i]=sd.readInt();
-					}
-					if(sd.readInt()==255){//end of packet value which we should recieve
-						wiiData= new WiiPacket(curData[0],curData[1],(byte)curData[2]);
-						parent.onNewData(wiiData);
-					}//else incomplete packet.  throw it out.
-						
-				}
-				// parent.onNewData(curData);
-			}
-
-		}
-
-	};
-
 	@Override
 	public void serialListener() {
 		// TODO Auto-generated method stub
@@ -77,10 +83,11 @@ public class NunchuckConnection implements Serial_Event {
 				}
 			}
 			validData = false;
-			// read in the three values
+			// read in the three values (x, y, and button states
 			for (int i = 0; i < 3; i++) {
 				curData[i] = sd.readInt();
 			}
+			//final byte should be 0xFF, if not, do not return the information to the highest layer
 			if (sd.readInt() == 255) {// end of packet value which we should
 										// Receive
 				wiiData = new WiiPacket(curData[0], curData[1],
