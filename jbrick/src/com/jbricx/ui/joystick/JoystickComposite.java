@@ -346,9 +346,13 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 						public void widgetSelected(SelectionEvent evt) {
 							//TODO: add method to kill wii and xbox objects
 							//kill xbox thread
+								try{
 								wiiMain.killWiiThreads();
 								wiiMain=null;
-								thread=null;							
+								thread=null;	
+								} catch(NullPointerException e){
+									
+								}
 						}
 					});
 				}
