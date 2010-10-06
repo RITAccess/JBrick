@@ -23,7 +23,7 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 	
 	private void initialization(){
 		// Get the color manager
-		ColorManager cm = JBrickEditor.getApp().getColorManager();
+		ColorManager cm = JBrickEditor.getInstance().getColorManager();
 
 		// Create the tokens for keywords, strings, and other (everything else)
 		IToken keyword = new Token(

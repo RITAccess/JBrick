@@ -67,15 +67,15 @@ public class JBrickEditor {
 	 * 
 	 * @return JBrickEditor
 	 */
-	public static JBrickEditor getApp() {
+	public static JBrickEditor getInstance() {
 		return APP;
 	}
 
 	/**
 	 * JBrickEditor constructor
 	 */
-	public JBrickEditor() {
-		APP = this;
+	private JBrickEditor() {
+	  APP = this;
 
 		colorManager = new ColorManager();
 		registerObserver(colorManager);
@@ -156,7 +156,7 @@ public class JBrickEditor {
 	 * 
 	 * @return MainWindow
 	 */
-	public static MainWindow getMainWindow() {
+	public MainWindow getMainWindow() {
 		return mainWindow;
 	}
 

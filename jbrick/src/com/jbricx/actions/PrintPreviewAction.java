@@ -39,9 +39,9 @@ public class PrintPreviewAction extends Action {
         final JEditorPane ep = new JEditorPane();
         final JFrame f = new JFrame("Print Preview");
         ep.setEditable(false);
-        ep.setText(JBrickEditor.getMainWindow().getCurrentTabItem().getViewer().getTextWidget().getText());
+        ep.setText(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getViewer().getTextWidget().getText());
 
-        PreferenceStore store =  JBrickEditor.getApp().getPreferences();
+        PreferenceStore store =  JBrickEditor.getInstance().getPreferences();
         String fontProp = store.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) { /* Check if the font is available */
 			FontData[] fd = new FontData[1];

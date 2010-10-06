@@ -25,6 +25,6 @@ public class CutAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getApp().cut();
+    JBrickEditor.getInstance().cut();
   }
 }

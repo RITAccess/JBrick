@@ -25,6 +25,6 @@ public class SelectAllAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getApp().selectAll();
+    JBrickEditor.getInstance().selectAll();
   }
 }

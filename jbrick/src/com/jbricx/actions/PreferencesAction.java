@@ -39,8 +39,8 @@ public class PreferencesAction extends Action {
 //    mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
 //    		EditorPreferencePage.class.getName()));
 
-    PreferenceDialog dlg = new PreferenceDialog(JBrickEditor.getMainWindow().getShell(), mgr);
-    dlg.setPreferenceStore(JBrickEditor.getApp().getPreferences());
+    PreferenceDialog dlg = new PreferenceDialog(JBrickEditor.getInstance().getMainWindow().getShell(), mgr);
+    dlg.setPreferenceStore(JBrickEditor.getInstance().getPreferences());
     dlg.open();
     PreferenceStore store= (PreferenceStore) dlg.getPreferenceStore();
     try {
@@ -49,6 +49,6 @@ public class PreferencesAction extends Action {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-    JBrickEditor.getApp().setPrefs(store);
+    JBrickEditor.getInstance().setPrefs(store);
   }
 }

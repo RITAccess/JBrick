@@ -36,13 +36,13 @@ public class DownloadAction extends Action {
 		AbstractNXTBrick nxt = BrickCreator.createBrick();
 		
 //		nxt.NXTConnect(NXT.ConnectionType.USB);
-		ExitStatus e = nxt.downloadFile(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
+		ExitStatus e = nxt.downloadFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument().getFileName());
 		
 		if (e.isOk()){
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading was a success!!");
+			MessageDialog.openInformation(JBrickEditor.getInstance().getMainWindow().getShell(), "Download", "Downloading was a success!!");
 		}
 		else{
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Download", "Downloading failed: \n"+e.getMesage());
+			MessageDialog.openInformation(JBrickEditor.getInstance().getMainWindow().getShell(), "Download", "Downloading failed: \n"+e.getMesage());
 		}
 		
 		

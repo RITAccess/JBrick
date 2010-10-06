@@ -62,7 +62,7 @@ public class ColorManager implements JBrickObservable{
   @Override
   public void update() {
 	  // Update from preference
-	  PreferenceStore store =  JBrickEditor.getApp().getPreferences();
+	  PreferenceStore store =  JBrickEditor.getInstance().getPreferences();
 	  RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
 	  setDefaultColor(fgRBG) ;	
   }

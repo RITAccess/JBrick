@@ -25,6 +25,6 @@ public class UndoAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getMainWindow().getCurrentTabItem().getUndoManager().undo();
+    JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getUndoManager().undo();
   }
 }

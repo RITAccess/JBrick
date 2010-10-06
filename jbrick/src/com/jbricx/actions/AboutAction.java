@@ -22,7 +22,7 @@ public class AboutAction extends Action {
    * Shows an about box
    */
   public void run() {
-    MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(),
+    MessageDialog.openInformation(JBrickEditor.getInstance().getMainWindow().getShell(),
         "About", "JBrick Editor--a NXC source code editor");
   }
 }

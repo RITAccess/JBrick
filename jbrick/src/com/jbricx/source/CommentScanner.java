@@ -17,7 +17,7 @@ public class CommentScanner extends RuleBasedScanner {
    */
   public CommentScanner() {
     // Get the color manager
-    ColorManager colorManager = JBrickEditor.getApp().getColorManager();
+    ColorManager colorManager = JBrickEditor.getInstance().getColorManager();
 
     // Create the tokens
     IToken other = new Token(new TextAttribute(colorManager

@@ -32,7 +32,7 @@ public class JBrickEditorSourceViewerConfiguration extends
     reconciler.setRepairer(dr, JBrickPartitionScanner.COMMENT);
 
     // Create the damager/repairer for default
-    dr = new DefaultDamagerRepairer(JBrickEditor.getApp().getCodeScanner());
+    dr = new DefaultDamagerRepairer(JBrickEditor.getInstance().getCodeScanner());
     reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
     reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 

@@ -27,14 +27,14 @@ public class SaveAsAction extends Action {
    * Saves the file
    */
   public void run() {
-    SafeSaveDialog dlg = new SafeSaveDialog(JBrickEditor.getApp().getMainWindow()
+    SafeSaveDialog dlg = new SafeSaveDialog(JBrickEditor.getInstance().getMainWindow()
         .getShell());
     dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
     dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
     String fileName = dlg.open();
     if (fileName != null) {
-	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
-	  if (JBrickEditor.getMainWindow().isAutoCompile() == true){
+	  ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem()) ;
+	  if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true){
 		  CompileAction compileAction = new CompileAction(); 
 		  compileAction.run() ;
 	  }

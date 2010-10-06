@@ -25,6 +25,6 @@ public class PasteAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getApp().paste();
+    JBrickEditor.getInstance().paste();
   }
 }

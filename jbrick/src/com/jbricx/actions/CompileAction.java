@@ -59,23 +59,23 @@ public class CompileAction extends Action {
 	 * Shows an about box
 	 */
 	public void run() {
-		PersistentDocument currDoc = JBrickEditor.getMainWindow().getCurrentTabItem().getDocument();
+		PersistentDocument currDoc = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument();
 		if (currDoc.getFileName() == null) { /* Save before compiling */
-			MessageBox box = new MessageBox(JBrickEditor.getApp().getMainWindow().getShell(), SWT.OK);
+			MessageBox box = new MessageBox(JBrickEditor.getInstance().getMainWindow().getShell(), SWT.OK);
 			box.setText("Compile");
 			box.setMessage("Before compiling, you need to save the code to file");
 			int ret = box.open();
 			if (ret == SWT.OK) {
-				ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem());
+				ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem());
 			}
 			File file = new File(currDoc.getFileName());
-			JBrickEditor.getMainWindow().getCurrentTabItem().setText(file.getName());
+			JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().setText(file.getName());
 		}
 
 		if (currDoc.isDirty()) {
 			try {
 				currDoc.save();
-				JBrickEditor.getMainWindow().setStatus("Saving File . . .");
+				JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -83,14 +83,14 @@ public class CompileAction extends Action {
 		}
 
 		//get the debugging table from the main window
-		Table tbl = JBrickEditor.getMainWindow().table;
+		Table tbl = JBrickEditor.getInstance().getMainWindow().table;
 		tbl.removeAll();
 		ExitStatus e = BrickCreator.createBrick().compile(currDoc.getFileName());
 		
-		JBrickTabItem tab = JBrickEditor.getMainWindow().getCurrentTabItem();	
+		JBrickTabItem tab = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem();	
 		tab.fAnnotationModel.removeAllAnnotations();
 		if (e.isOk()) {
-			MessageDialog.openInformation(JBrickEditor.getApp().getMainWindow().getShell(), "Compile", "Compile was a success!");
+			MessageDialog.openInformation(JBrickEditor.getInstance().getMainWindow().getShell(), "Compile", "Compile was a success!");
 		} else {
 			String msg = e.getMesage();
 			//get the debugging table from the main window

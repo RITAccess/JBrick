@@ -25,6 +25,6 @@ public class CopyAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getApp().copy();
+    JBrickEditor.getInstance().copy();
   }
 }

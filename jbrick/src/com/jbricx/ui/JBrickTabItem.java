@@ -173,7 +173,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				JBrickEditor.getMainWindow().setStatus(
+				JBrickEditor.getInstance().getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
 
 			}
@@ -189,13 +189,13 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				JBrickEditor.getMainWindow().setStatus(
+				JBrickEditor.getInstance().getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
 			}
 
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				JBrickEditor.getMainWindow().setStatus(
+				JBrickEditor.getInstance().getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
 			}
 
@@ -358,7 +358,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		PreferenceStore store = JBrickEditor.getApp().getPreferences();
+		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
 
 		RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
 		RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
@@ -370,7 +370,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			this.setFont(fd);
 		}
 		if (bgRBG != fgRBG) {/* Check if the colors are available */
-			Color bgColor = new Color(JBrickEditor.getMainWindow().getShell()
+			Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
 					.getDisplay(), bgRBG);
 			// Color fgColor = new
 			// Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
@@ -381,4 +381,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		}
 		// viewer.refresh() ;	
 	}
+
+  public String getFilename() {
+    return this.file.getAbsolutePath();
+  }
+
 }

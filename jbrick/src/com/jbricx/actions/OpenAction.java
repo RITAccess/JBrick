@@ -28,13 +28,13 @@ public class OpenAction extends Action {
    */
   public void run() {
     // Use the file dialog
-    FileDialog dlg = new FileDialog(JBrickEditor.getApp().getMainWindow()
+    FileDialog dlg = new FileDialog(JBrickEditor.getInstance().getMainWindow()
         .getShell(), SWT.OPEN);
     dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
     dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
     String fileName = dlg.open();
     if (fileName != null) {
-      JBrickEditor.getMainWindow().openFile(fileName);
+      JBrickEditor.getInstance().getMainWindow().openFile(fileName);
     }
   }
 }

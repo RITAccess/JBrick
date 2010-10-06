@@ -27,8 +27,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
@@ -79,7 +79,6 @@ import com.jbricx.actions.SaveAsAction;
 import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
 import com.jbricx.filters.FolderFilter;
-import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
@@ -136,7 +135,7 @@ public class MainWindow extends ApplicationWindow implements
 
 	File treeRootFile;
 
-	CTabFolder tabFolder;
+	JBrickTabFolder tabFolder;
 
 	/* ArrayList<SourceViewer> viewersList; */
 	/**
@@ -214,16 +213,14 @@ public class MainWindow extends ApplicationWindow implements
 				File file = (File) selection.getFirstElement();
 
 				if (!file.isDirectory()) {
-					JBrickTabItem tabItem = new JBrickTabItem(tabFolder,
-							SWT.CLOSE, file);
-					tabFolder.setSelection(tabItem);
+					getTabFolder().open(file.getAbsolutePath());
 				}
 			}
 		});
 
 		// /////////////////////// right panel //////////////////
 		// parent panel containing both the editing area and debugging area
-		SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
+		final SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
 
 		// Composite rightPanel = new Composite(sashForm, SWT.NONE);
 		GridLayout fLayout = new GridLayout();
@@ -250,10 +247,8 @@ public class MainWindow extends ApplicationWindow implements
 		// lnrc.getControl().getAccessible().textSelectionChanged()
 		ruler.addDecorator(0, lnrc);
 
-		tabFolder = new CTabFolder(rightPanel, SWT.TOP);
-		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		tabFolder.setMinimizeVisible(true);
-		tabFolder.setMaximizeVisible(true);
+		tabFolder = new JBrickTabFolder(rightPanel, SWT.TOP);
+//		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		tabFolder.setSimple(false);
 		tabFolder.setUnselectedImageVisible(false);
 		tabFolder.setUnselectedCloseVisible(false);
@@ -292,17 +287,6 @@ public class MainWindow extends ApplicationWindow implements
 					null);
 			tabFolder.setSelection(tabItem);
 		}
-
-		// Add close event for tab close
-		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-			public void close(CTabFolderEvent event) {
-				if (checkOverwrite()) {
-				} else {
-					event.doit = false;
-				}
-			}
-		});
-
 
 		// ///////////////////////////////////////////////////////////////
 
@@ -380,6 +364,24 @@ public class MainWindow extends ApplicationWindow implements
 
 		});
 		rightPanel.setWeights(new int[] { 80, 20 });
+		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+		  @Override
+		  public void minimize(CTabFolderEvent event) {
+		    tabFolder.setMinimized(true);
+		    rightPanel.setWeights(new int[] { 5, 95 });
+		  }
+		  @Override
+		  public void maximize(CTabFolderEvent event) {
+		    tabFolder.setMaximized(true);
+		    rightPanel.setWeights(new int[] { 99, 1 });
+		  }
+		  @Override
+		  public void restore(CTabFolderEvent event) {
+		    tabFolder.setMinimized(false);
+		    tabFolder.setMaximized(false);
+		    rightPanel.setWeights(new int[] { 80, 20 });
+		  }
+    });
 		sashForm.setWeights(new int[] { 20, 80 });
 
 		getMenuBarManager().updateAll(true);
@@ -398,7 +400,7 @@ public class MainWindow extends ApplicationWindow implements
 	}
 
 	protected void loadPreferences(JBrickTabItem tabItem) {
-		IPreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		IPreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 
 		String fontProp = ps.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) {
@@ -580,7 +582,7 @@ public class MainWindow extends ApplicationWindow implements
 	 */
 	public boolean close() {
 		boolean close = false;
-		if (checkOverwrite()) {
+		if (getTabFolder().checkOverwrite()) {
 			close = super.close();
 			if (close) {
 				if (font != null)
@@ -595,7 +597,7 @@ public class MainWindow extends ApplicationWindow implements
 				PreferenceManager mgr = new PreferenceManager();
 				mgr.addToRoot(new PreferenceNode("text", "Text", null,
 						TextPreferencePage.class.getName()));
-				PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+				PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 				ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles);
 				try {
 					ps.save();
@@ -622,7 +624,7 @@ public class MainWindow extends ApplicationWindow implements
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
-		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 		Boolean loadrecent = ps
 				.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
 
@@ -641,7 +643,7 @@ public class MainWindow extends ApplicationWindow implements
 	public String setWorkspacePath(Composite parent) {
 		String workspace = null;
 		String path;
-		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 		do {
 			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
 			dialog.setText("Workspace Selection");
@@ -664,7 +666,7 @@ public class MainWindow extends ApplicationWindow implements
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
-		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 		String workspace = ps.getString(FileExtensionConstants.WRKSPC);
 
 		// Check if directory exists
@@ -683,7 +685,7 @@ public class MainWindow extends ApplicationWindow implements
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
-		PreferenceStore ps = JBrickEditor.getApp().getPreferences();
+		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
 		Boolean autoCompile = ps.getBoolean(FileExtensionConstants.AUTOCOMPILE);
 		return autoCompile ;
 	}
@@ -692,39 +694,23 @@ public class MainWindow extends ApplicationWindow implements
 
 	}
 
-	public void openFile(String fileName) {
-		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
-				new File(fileName));
-		tabFolder.setSelection(newTabItem);
+	public void openFile(String filename) {
+	  getTabFolder().open(filename);
 	}
 
 	public void openNewFile() {
-		System.out.println("opening new file");
-		JBrickTabItem newTabItem = new JBrickTabItem(tabFolder, SWT.CLOSE, null);
-		tabFolder.setSelection(newTabItem);
+		getTabFolder().openNewFile();
 	}
 
-	public CTabFolder getTabFolder() {
+	public JBrickTabFolder getTabFolder() {
 		return tabFolder;
 	}
 
 	public JBrickTabItem getCurrentTabItem() {
-		CTabItem currentTabItem;
-		int currentIndex = getCurrentTabIndex();
-		if (0 <= currentIndex) {
-			currentTabItem = tabFolder.getItem(currentIndex);
-			return (JBrickTabItem) currentTabItem;
-		} else {
-			return null;
-		}
+		return getTabFolder().getSelection();
 	}
 	public int getCurrentTabIndex() {
-		int currentIndex = tabFolder.getSelectionIndex();
-		if (0 <= currentIndex) {
-			return currentIndex;
-		} else {
-			return -1;
-		}
+		return getTabFolder().getSelectionIndex();
 	}
 		
 	public void refreshCurrentTabItem() {
@@ -754,28 +740,8 @@ public class MainWindow extends ApplicationWindow implements
 		}
 	}
 	
-	public void setTabFolder(CTabFolder tabFolder) {
+	public void setTabFolder(JBrickTabFolder tabFolder) {
 		this.tabFolder = tabFolder;
-	}
-
-	/**
-	 * Checks the current file for unsaved changes. If it has unsaved changes,
-	 * confirms that user wants to overwrite
-	 * 
-	 * @return boolean
-	 */
-	public boolean checkOverwrite() {
-		boolean proceed = true;
-
-		for (CTabItem tab : tabFolder.getItems()) {
-			JBrickTabItem tabItem = (JBrickTabItem) tab;
-			if (tabItem.getDocument().isDirty()) {
-				proceed = MessageDialog
-						.openConfirm(this.getShell(), "Are you sure?",
-								"You have unsaved changes--are you sure you want to lose them?");
-			}
-		}
-		return proceed;
 	}
 
 }

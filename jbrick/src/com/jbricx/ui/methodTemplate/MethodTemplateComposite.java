@@ -74,8 +74,8 @@ public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
 				TreeItem sub = (TreeItem) event.item;
 				if (sub != null && sub.getItemCount() == 0 ) { 
 					/* This is the lowest level of the tree */
-					if ( JBrickEditor.getMainWindow().getCurrentTabItem() != null){
-						JBrickEditor.getMainWindow().getCurrentTabItem()
+					if ( JBrickEditor.getInstance().getMainWindow().getCurrentTabItem() != null){
+						JBrickEditor.getInstance().getMainWindow().getCurrentTabItem()
 						.insertString(sub.getText());
 					}
 				}

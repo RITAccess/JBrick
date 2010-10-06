@@ -26,9 +26,9 @@ public class GotoAction extends Action {
    * Runs the action
    */
   public void run() {
-    GotoDialog dlg = new GotoDialog(JBrickEditor.getApp()
-        .getMainWindow().getShell(), JBrickEditor.getMainWindow().getCurrentTabItem().getDocument(),
-        JBrickEditor.getApp().getMainWindow().getCurrentTabItem().getViewer());
+    GotoDialog dlg = new GotoDialog(JBrickEditor.getInstance()
+        .getMainWindow().getShell(), JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument(),
+        JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getViewer());
     dlg.open();
   }
 }

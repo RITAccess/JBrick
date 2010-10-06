@@ -304,16 +304,16 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		PreferenceStore store = JBrickEditor.getApp().getPreferences();
+		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
 
 		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
 		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
 
 		Font font = new Font(display, PreferenceConverter.getFontData(store,
 				"font"));
-		Color bgColor = new Color(JBrickEditor.getMainWindow().getShell()
+		Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
 				.getDisplay(), bgRBG);
-		Color fgColor = new Color(JBrickEditor.getMainWindow().getShell()
+		Color fgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
 				.getDisplay(), fgRBG);
 
 		for (Control control : changableComponentList) {

@@ -26,6 +26,6 @@ public class ExitAction extends Action {
    * Exits the application
    */
   public void run() {
-    JBrickEditor.getApp().getMainWindow().close();
+    JBrickEditor.getInstance().getMainWindow().close();
   }
 }

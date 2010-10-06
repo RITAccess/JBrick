@@ -25,6 +25,6 @@ public class RedoAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getMainWindow().getCurrentTabItem().getUndoManager().redo();
+    JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getUndoManager().redo();
   }
 }

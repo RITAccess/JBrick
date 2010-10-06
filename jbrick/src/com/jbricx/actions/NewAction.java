@@ -25,6 +25,6 @@ public class NewAction extends Action {
    * Creates a new file
    */
   public void run() {
-    JBrickEditor.getMainWindow().openNewFile();
+    JBrickEditor.getInstance().getMainWindow().openNewFile();
   }
 }

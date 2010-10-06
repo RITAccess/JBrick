@@ -33,10 +33,10 @@ public class SaveAction extends Action {
    * Saves the file
    */
   public void run() {
-	  JBrickEditor.getMainWindow().setStatus("Saving File . . .");
-	  ActionControlClass.saveFile(JBrickEditor.getMainWindow().getCurrentTabItem()) ;
-	  JBrickEditor.getMainWindow().setStatus("Saving File . . .");
-	  if (JBrickEditor.getMainWindow().isAutoCompile() == true){
+	  JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
+	  ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem()) ;
+	  JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
+	  if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true){
 		  CompileAction compileAction = new CompileAction(); 
 		  compileAction.run() ;
 	  }

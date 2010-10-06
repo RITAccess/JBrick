@@ -40,8 +40,8 @@ public class PrintAction extends Action {
 	 * Prints the document
 	 */
 	public void run() {
-		Shell s = JBrickEditor.getMainWindow().getShell();
-		SourceViewer viewer = JBrickEditor.getMainWindow().getCurrentTabItem()
+		Shell s = JBrickEditor.getInstance().getMainWindow().getShell();
+		SourceViewer viewer = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem()
 				.getViewer();
 
 		StyledTextPrintOptions options = new StyledTextPrintOptions();
