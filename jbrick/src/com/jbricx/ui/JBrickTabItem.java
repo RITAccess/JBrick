@@ -383,6 +383,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	}
 
   public String getFilename() {
+    if (file == null) {
+      return null;
+    }
     return this.file.getAbsolutePath();
   }
 
