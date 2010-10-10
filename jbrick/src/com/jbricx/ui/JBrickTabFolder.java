@@ -97,6 +97,12 @@ public class JBrickTabFolder extends CTabFolder implements TabFolder {
         return proceed;
     }
 
+    /**
+     * Performs check on a tab item's on close event if its document has any unsaved changes
+     * 
+     * @param tabItem the JBrickTabItem which is clicked for close
+     * @return true if user confirms to proceed without closing else false
+     */
     private boolean askCloseWithoutSaving(JBrickTabItem tabItem) {
         boolean proceed = true;
         if (tabItem.getDocument().isDirty()) {
