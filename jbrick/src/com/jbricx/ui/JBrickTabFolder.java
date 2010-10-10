@@ -39,8 +39,8 @@ public class JBrickTabFolder extends CTabFolder implements TabFolder {
                 boolean proceed = true;
                 // check if the doc is unsaved
                 if (item.getDocument().isDirty()) {
-                    proceed = MessageDialog.openConfirm(null, "Are you sure?",
-                            "You have unsaved changes--are you sure you want to lose them?");
+                    proceed = MessageDialog.openConfirm(null, "Are you sure you want to close without saving?",
+                            "You have unsaved files in the document. Are you sure you want to proceed without saving them?");
                 }
                 if (proceed) {
                     JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
