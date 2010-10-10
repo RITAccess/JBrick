@@ -35,16 +35,10 @@ public class JBrickTabFolder extends CTabFolder implements TabFolder {
 
             @Override
             public void close(CTabFolderEvent event) {
-                JBrickTabItem item = (JBrickTabItem) event.item;
-                boolean proceed = true;
-                // check if the doc is unsaved
-                if (item.getDocument().isDirty()) {
-                    proceed = MessageDialog.openConfirm(null, "Are you sure you want to close without saving?",
-                            "You have unsaved files in the document. Are you sure you want to proceed without saving them?");
-                }
-                if (proceed) {
+                JBrickTabItem tabItem = (JBrickTabItem) event.item;
+                if (askCloseWithoutSaving(tabItem)) {
                     JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
-                    filenamesList.remove(item.getFilename());
+                    filenamesList.remove(tabItem.getFilename());
                 } else {
                     event.doit = false;
                 }
@@ -99,10 +93,16 @@ public class JBrickTabFolder extends CTabFolder implements TabFolder {
 
         for (CTabItem tab : getItems()) {
             JBrickTabItem tabItem = (JBrickTabItem) tab;
-            if (tabItem.getDocument().isDirty()) {
-                proceed = MessageDialog.openConfirm(this.getShell(), "Are you sure?",
-                        "You have unsaved changes--are you sure you want to lose them?");
-            }
+            proceed = askCloseWithoutSaving(tabItem);
+        }
+        return proceed;
+    }
+
+    private boolean askCloseWithoutSaving(JBrickTabItem tabItem) {
+        boolean proceed = true;
+        if (tabItem.getDocument().isDirty()) {
+            proceed = MessageDialog.openConfirm(null, "Close without saving!",
+                    "You have unsaved file(s) in the document. Are you sure you want to proceed without saving them?");
         }
         return proceed;
     }
