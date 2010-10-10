@@ -22,82 +22,88 @@ import com.jbricx.pjo.JBrickEditor;
  * @author byktol
  */
 public class JBrickTabFolder extends CTabFolder implements TabFolder {
-  private final List<String> filenamesList;
 
-  public JBrickTabFolder(final Composite parent, final int style) {
-    super(parent, style);
-    filenamesList = new ArrayList<String>();
+    private final List<String> filenamesList;
 
-    setMinimizeVisible(true);
-    setMaximizeVisible(true);
-    addCTabFolder2Listener(new CTabFolder2Adapter() {
-      @Override
-      public void close(CTabFolderEvent event) {
-        if (checkOverwrite()) {
-          JBrickTabItem item = (JBrickTabItem) event.item;
-          JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
-          filenamesList.remove(item.getFilename());
+    public JBrickTabFolder(final Composite parent, final int style) {
+        super(parent, style);
+        filenamesList = new ArrayList<String>();
+
+        setMinimizeVisible(true);
+        setMaximizeVisible(true);
+        addCTabFolder2Listener(new CTabFolder2Adapter() {
+
+            @Override
+            public void close(CTabFolderEvent event) {
+                JBrickTabItem item = (JBrickTabItem) event.item;
+                boolean proceed = true;
+                // check if the doc is unsaved
+                if (item.getDocument().isDirty()) {
+                    proceed = MessageDialog.openConfirm(null, "Are you sure?",
+                            "You have unsaved changes--are you sure you want to lose them?");
+                }
+                if (proceed) {
+                    JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
+                    filenamesList.remove(item.getFilename());
+                } else {
+                    event.doit = false;
+                }
+            }
+        });
+    }
+
+    public boolean contains(final String filename) {
+        return filenamesList.contains(filename);
+    }
+
+    @Override
+    public boolean open(String filename) {
+        if (filenamesList.contains(filename)) {
+            return false;
         } else {
-          event.doit = false;
+            filenamesList.add(filename);
+            JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE,
+                    new File(filename));
+            this.setSelection(newTabItem);
         }
-      }
-
-    });
-  }
-
-  public boolean contains(final String filename) {
-    return filenamesList.contains(filename);
-  }
-
-  @Override
-  public boolean open(String filename) {
-    if (filenamesList.contains(filename)) {
-      return false;
-    } else {
-      filenamesList.add(filename);
-      JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE,
-          new File(filename));
-      this.setSelection(newTabItem);     
+        return true;
     }
-    return true;
-  }
 
-  @Override
-  public boolean openNewFile() {
-    System.out.println("opening new file");
-    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
-    this.setSelection(newTabItem);
+    @Override
+    public boolean openNewFile() {
+        System.out.println("opening new file");
+        JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
+        this.setSelection(newTabItem);
 
-    return true;
-  }
-
-  @Override
-  public JBrickTabItem getSelection() {
-    return (JBrickTabItem) super.getSelection();
-  }
-
-  @Override
-  public JBrickTabItem getItem(int index) {
-    return (JBrickTabItem) super.getItem(index);
-  }
-
-  /**
-   * Checks the current file for unsaved changes. If it has unsaved changes,
-   * confirms that user wants to overwrite
-   * 
-   * @return boolean
-   */
-  public boolean checkOverwrite() {
-    boolean proceed = true;
-
-    for (CTabItem tab : getItems()) {
-      JBrickTabItem tabItem = (JBrickTabItem) tab;
-      if (tabItem.getDocument().isDirty()) {
-        proceed = MessageDialog
-            .openConfirm(this.getShell(), "Are you sure?",
-                "You have unsaved changes--are you sure you want to lose them?");
-      }
+        return true;
     }
-    return proceed;
-  }
+
+    @Override
+    public JBrickTabItem getSelection() {
+        return (JBrickTabItem) super.getSelection();
+    }
+
+    @Override
+    public JBrickTabItem getItem(int index) {
+        return (JBrickTabItem) super.getItem(index);
+    }
+
+    /**
+     * Checks the current file for unsaved changes. If it has unsaved changes,
+     * confirms that user wants to overwrite
+     *
+     * @return boolean
+     */
+    public boolean checkOverwrite() {
+        boolean proceed = true;
+
+        for (CTabItem tab : getItems()) {
+            JBrickTabItem tabItem = (JBrickTabItem) tab;
+            if (tabItem.getDocument().isDirty()) {
+                proceed = MessageDialog.openConfirm(this.getShell(), "Are you sure?",
+                        "You have unsaved changes--are you sure you want to lose them?");
+            }
+        }
+        return proceed;
+    }
 }
