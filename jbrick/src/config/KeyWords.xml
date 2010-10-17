@@ -47,4 +47,13 @@
 	<word>loop</word>
 	<word>void</word>
 	
+	
+	<word>^</word>
+	<word>=</word>
+	<word>+</word>
+	<word>==</word>
+	<word>++</word>
+	<word>|=</word>
+	<word>>=</word>
+	
 </keyWords>
