@@ -16,12 +16,28 @@ import com.jbricx.preferences.JBrickObservable;
  */
 public class ColorManager implements JBrickObservable{
   public static final RGB BACKGROUND = new RGB(255, 255, 255);
+  //public static final RGB COMMENT = new RGB(0, 128, 0);
+  
+  //color para los comentarios
   public static final RGB COMMENT = new RGB(0, 128, 0);
-  public static final RGB KEYWORD = new RGB(0, 128, 128);
+  //public static final RGB COMMENT = new RGB(0, 128, 0);
+  //public static final RGB KEYWORD = new RGB(0, 128, 128);
+
+
+  //palabras claves, int, void
+  //public static final RGB KEYWORD = new RGB(0, 128, 128);
+  public static final RGB KEYWORD = new RGB(0, 0, 255);
+  //public static final RGB KEYWORD = new RGB(0, 255, 0);
   public static final RGB NUMBER = new RGB(255, 0, 255);
-  public static final RGB STRING = new RGB(255, 0, 0);
+  //public static final RGB STRING = new RGB(255, 0, 0);
+  public static final RGB STRING = new RGB(255, 255, 0);
   // public static final RGB DEFAULT = new RGB(0, 0, 0);
-  public static RGB DEFAULT = new RGB(129, 129, 0);
+  //public static RGB DEFAULT = new RGB(129, 129, 0);
+  public static RGB DEFAULT = new RGB(255, 255, 0);
+  
+  public static final RGB OPERATOR = new RGB(255, 140, 0);
+  
+
 
   // Map to store created colors, with the corresponding RGB as key
   private Map<RGB, Color> colors = new HashMap<RGB, Color>();
