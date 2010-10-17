@@ -10,12 +10,13 @@ public class Editor_Edit {
 	
 	public void displayEditor(Shell OwnerShell)  {
 		// create the window
+		System.out.println("displayEditor--------");
 		final Shell thisshell = new Shell(OwnerShell);
 
 		thisshell.setLayout(new BorderLayout());
 		// set the application title
 		// TODO: Get OpenFile Name 
-
+		
 		Text editorTxt = new Text(thisshell, SWT.WRAP 
 									| SWT.MULTI 
 									| SWT.BORDER
