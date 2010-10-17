@@ -22,35 +22,26 @@ import com.jbricx.ui.MainWindow;
 public class JBrickEditor {
 	// Set up the name of the partitioner
 	public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
-	
 	public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
-
 	// A reference to the current app
 	private static JBrickEditor APP;
-
 /*	// The current document
 	private PersistentDocument document;
 */
 	// The main window
 	private static MainWindow mainWindow;
-
 	// The stored preferences
 	private PreferenceStore prefs;
-
 	public void setPrefs(PreferenceStore prefs) {
 		this.prefs = prefs;	
 		notifyViewers() ;
 	}
-	
-	
 	public static void notifyViewers(){
 		for(JBrickObservable observer: observerList){
 			observer.update();
 		}
 		if (mainWindow != null)	mainWindow.refreshCurrentTabItem() ;
 	}
-	
-
 	// The partition scanner
 	private JBrickPartitionScanner scanner;
 
@@ -59,8 +50,6 @@ public class JBrickEditor {
 
 	// The color manager
 	private ColorManager colorManager;
-
-	
 
 	/**
 	 * Returns the application instance
@@ -98,6 +87,7 @@ public class JBrickEditor {
 	 * Runs the application
 	 */
 	public void run() {
+		System.out.println("JbrickEditor:Run");
 		mainWindow.run();
 
 		// Dispose the colors
