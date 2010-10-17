@@ -13,6 +13,7 @@ public class CodeViewerConfiguration extends SourceViewerConfiguration {
 	private ColorCache manager;
 
 	public CodeViewerConfiguration(ColorCache manager) {
+		System.out.println("CodeViewerConfiguration");	
 		this.manager = manager;
 	}
 
