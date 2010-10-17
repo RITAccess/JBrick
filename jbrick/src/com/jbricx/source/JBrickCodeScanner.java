@@ -32,13 +32,20 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD));
 		
 		IToken specialKeyword = new Token(
-				new TextAttribute(
-						cm.getColor(ColorManager.KEYWORD), 
-						cm.getColor(ColorManager.BACKGROUND), SWT.BOLD|SWT.ITALIC));
+							new TextAttribute(
+									cm.getColor(ColorManager.KEYWORD), 
+									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD|SWT.ITALIC));
+		
+		
+		IToken numericOperator = new Token(
+							new TextAttribute(
+									cm.getColor(ColorManager.OPERATOR), 
+									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD));
+		
 		
 		IToken other = new Token(new TextAttribute(cm.getColor(ColorManager.DEFAULT)));
 		IToken string = new Token(new TextAttribute(cm.getColor(ColorManager.STRING)));
-		
+		//comments
 		IToken javadoc = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
 	    IToken multilineComment = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
 	    IToken singleLineComment = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
@@ -71,17 +78,26 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 
 		// Add rule for keywords, and add the words to the rule
 		WordRule wordRule = new WordRule(new JBrickWordDetector(), other);
+		
+		System.out.println("SyntaxKeyWords.getKeyWords().size():" + SyntaxKeyWords.getKeyWords().size());
 		for (int i = 0; i<SyntaxKeyWords.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxKeyWords.getKeyWords().get(i), keyword);
 		}
 		
+		System.out.println("SyntaxConstants.getKeyWords().size():" + SyntaxConstants.getKeyWords().size());
 		for (int i = 0; i<SyntaxConstants.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxConstants.getKeyWords().get(i), specialKeyword);
 		}
+		
+		System.out.println("SyntaxOperators.getKeyWords().size():" + SyntaxOperators.getKeyWords().size());
+		for (int i = 0; i<SyntaxOperators.getKeyWords().size(); i++){
+			wordRule.addWord(SyntaxOperators.getKeyWords().get(i), numericOperator);
+		}//it has to exist in the syntaxOperators.getKeyWords
+		
+		
 		rules.add(wordRule);
+		System.out.println("rules.size" + rules.size());
 		
-		
-
 		IRule[] result = new IRule[rules.size()];
 		rules.toArray(result);
 		setRules(result);
