@@ -18,6 +18,7 @@ public class NewAction extends Action {
   public NewAction() {
     super("&New@Ctrl+N", ImageDescriptor.createFromFile(NewAction.class,
         "/images/document-new.png"));
+    System.out.print("nuevo------***-----1");
     setToolTipText("New");
   }
 
@@ -25,6 +26,7 @@ public class NewAction extends Action {
    * Creates a new file
    */
   public void run() {
+	  System.out.print("nuevo archivo - 2 ");
     JBrickEditor.getInstance().getMainWindow().openNewFile();
   }
 }
