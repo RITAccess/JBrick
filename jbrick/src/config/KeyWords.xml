@@ -34,6 +34,17 @@
 	<word>task</word>
 	<word>true</word>
 	<word>until</word>
+	<word>while</word>
+	
+	 
+	<word>uint8_t</word>
+	<word>char</word>
+	<word>boolean</word>
+	<word>byte</word>
+	<word>static</word>
+	<word>#include</word>
+	<word>#define</word>
+	<word>loop</word>
 	<word>void</word>
-	<word>while</word>	
+	
 </keyWords>
