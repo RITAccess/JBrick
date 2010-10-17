@@ -67,7 +67,6 @@ public class JBrickTabFolder extends CTabFolder implements TabFolder {
         System.out.println("opening new file");
         JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
         this.setSelection(newTabItem);
-
         return true;
     }
 

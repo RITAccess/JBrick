@@ -76,6 +76,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	public static String ERROR_TYPE = "error.type";
 	public static Image ERROR_IMAGE;
 	public static final RGB ERROR_RGB = new RGB(255, 0, 0);
+	//amarillo
+	public static final RGB ERROR_RGB2 = new RGB(255, 255, 0);
 
 	// annotation model
 	public AnnotationModel fAnnotationModel = new AnnotationModel();
@@ -93,11 +95,14 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		super(parent, style);
 		this.file = file;
 		setUpDocument(file);
+		
 
 		ruler = new CompositeRuler(10);
 		lnrc = new LineNumberRulerColumn();
-		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
-				255, 0, 0)));
+		//lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
+		
+		System.out.println("number line color");
+		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
 		ruler.addDecorator(0, lnrc);
 
 		// annotation ruler to view annotation
@@ -157,8 +162,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 		// to paint the annotations
 		AnnotationPainter ap = new AnnotationPainter(viewer, fAnnotationAccess);
 		ap.addAnnotationType(ERROR_TYPE);
-		ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(),
-				ERROR_RGB));
+		//ap.addAnnotationType(ERROR_RGB2);
+		//ap.setAnnotationTypeColor(ERROR_RGB2, new Color(Display.getDefault(),ERROR_RGB2));
+		ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(),ERROR_RGB));
 
 		// this will draw the squigglies under the text
 		viewer.addPainter(ap);
@@ -167,12 +173,14 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
+				System.out.println("keyPressed");
 				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
+				System.out.println("keyReleased");
 				JBrickEditor.getInstance().getMainWindow().setStatus(
 						"Line: " + getCursorLocation());
 
@@ -234,6 +242,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	 */
 
 	public int getCursorLocation() {
+		System.out.println("getLocation.......");
 		int line = -1;
 		if (viewer != null && document != null) {
 			StyledText styledText = viewer.getTextWidget();
@@ -255,6 +264,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	}
 
 	public void insertString(String inputString) {
+		System.out.print("registrando data: insertString");
 		if (viewer != null) {
 			String translatedString = inputString;
 			translatedString = translatedString.replace("\\=", "\r\n");
@@ -266,6 +276,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	}
 
 	public void setFont(FontData[] fontData) {
+		System.out.print("setFont");
 		// Create the font
 		Font temp = new Font(this.getDisplay(), fontData);
 
@@ -302,10 +313,12 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 	}
 
 	protected void setUpDocument(File file) {
+		System.out.println("setUpDocument");
 		try {
 			// Create the document
 			document = new PersistentDocument();
 			if (file != null) {
+				System.out.println("file is not empty");
 				setText(file.getName());
 				document.setFileName(file.getPath());
 				document.open();
@@ -318,12 +331,10 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			// Create the partitioner
 			IDocumentPartitioner partitioner;
-			partitioner = new FastPartitioner(scanner,
-					JBrickPartitionScanner.TYPES);
+			partitioner = new FastPartitioner(scanner,JBrickPartitionScanner.TYPES);
 
 			// Connect the partitioner and document
-			document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING,
-					partitioner);
+			document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING,partitioner);
 			partitioner.connect(document);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), ":)", 1);
@@ -357,6 +368,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 	@Override
 	public void update() {
+		System.out.println("Update");
 		// TODO Auto-generated method stub
 		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
 
@@ -370,8 +382,11 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			this.setFont(fd);
 		}
 		if (bgRBG != fgRBG) {/* Check if the colors are available */
+			
+			
 			Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
 					.getDisplay(), bgRBG);
+			
 			// Color fgColor = new
 			// Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
 			viewer.getTextWidget().setBackground(bgColor);

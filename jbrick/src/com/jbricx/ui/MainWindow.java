@@ -250,13 +250,20 @@ public class MainWindow extends ApplicationWindow implements
         tabFolder.setUnselectedCloseVisible(false);
         Color titleForeColor = parent.getShell().getDisplay().getSystemColor(
                 SWT.COLOR_TITLE_FOREGROUND);
+        
         Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
-                SWT.COLOR_TITLE_BACKGROUND);
+        	SWT.COLOR_TITLE_BACKGROUND);
+        
+        //Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
+        //        SWT.COLOR_TITLE_FOREGROUND);
+        
+        
         Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(
                 SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
         tabFolder.setSelectionForeground(titleForeColor);
         tabFolder.setSelectionBackground(new Color[]{titleBackColor1,
                     titleBackColor2}, new int[]{100}, true);
+        
         // TODO: change tabs names and content
         // tab1
         // JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
