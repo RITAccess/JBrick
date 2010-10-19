@@ -32,15 +32,13 @@ public class SaveAsAction extends Action {
         dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
         String fileName = dlg.open();
 
-        if (fileName != null) {
-            JBrickTabItem tabItem = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem();
-            tabItem.setText(fileName);
-            ActionControlClass.saveFile(tabItem);
+        JBrickTabItem tabItem = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem();
+        tabItem.getDocument().setFileName(fileName);
+        ActionControlClass.saveFile(tabItem);
 
-            if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true) {
-                CompileAction compileAction = new CompileAction();
-                compileAction.run();
-            }
+        if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true) {
+            CompileAction compileAction = new CompileAction();
+            compileAction.run();
         }
     }
 }
