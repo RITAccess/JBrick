@@ -7,7 +7,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.*;
+//import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.swt.SWT;
+
+import org.eclipse.swt.widgets.ScrollBar;
+//import org.eclipse.jface.
+//import org.eclipse.swt.widgets.Label;
+
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -17,6 +23,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
+import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
 
@@ -32,12 +39,15 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 
 	// The associated viewer
 	private ITextViewer viewer;
+	private ScrollBar scroll; 
 
 	// The find and replace buttons
 	private Button doFind;
 	private Button doReplace;
 	private Button doReplaceFind;
 	Display display;
+	private PersistentDocument document;
+	
 
 	/**
 	 * FindReplaceDialog constructor
@@ -52,6 +62,10 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	public FindReplaceDialog(Shell shell, IDocument document, ITextViewer viewer) {
 		super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
 		frda = new FindReplaceDocumentAdapter(document);
+		this.document = (PersistentDocument)document;
+		
+		//document= new PersistentDocument();
+		//document;
 		this.viewer = viewer;
 	}
 
@@ -59,6 +73,8 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	 * Opens the dialog box
 	 */
 	public void open() {
+		System.out.println("Find/Replace");
+		
 		Shell shell = new Shell(getParent(), getStyle());
 		shell.setText("Find/Replace");
 		createContents(shell);
@@ -87,49 +103,75 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	 *            whether find string is a regular expression
 	 */
 	protected void doFind(String find, boolean forward, boolean matchCase,
-			boolean wholeWord, boolean regexp) {
+		boolean wholeWord, boolean regexp) {
+		
+		System.out.println("FindReplaceDialog:doFind()" + find);
+		
 		// You can't mix whole word and regexp
-		if (wholeWord && regexp) {
-			showError("You can't search on both Whole Words and Regular Expressions");
-		} else {
+		if (wholeWord && regexp){
+				showError("You can't search on both Whole Words and Regular Expressions");
+		}else{
 			IRegion region = null;
 			try {
 				// Get the current offset
+				System.out.println("try");
 				int offset = viewer.getTextWidget().getCaretOffset();
-
-				// If something is currently selected, and they're searching
-				// backwards,
-				// move offset to beginning of selection. Otherwise, repeated
-				// backwards
-				// finds will only find the same text
+				
+					// If something is currently selected, and they're searching
+					// backwards,
+					// move offset to beginning of selection. Otherwise, repeated
+					// backwards
+					// finds will only find the same text
 				if (!forward) {
-					Point pt = viewer.getSelectedRange();
-					if (pt.x != pt.y) {
-						offset = pt.x - 1;
-					}
+					System.out.println("different from forward");
+						Point pt = viewer.getSelectedRange();
+						if (pt.x != pt.y) {
+							offset = pt.x - 1;
+						}
 				}
-
 				// Make sure we're in the document
 				if (offset >= frda.length())
 					offset = frda.length() - 1;
 				if (offset < 0)
 					offset = 0;
-
 				// Perform the find
-				region = frda.find(offset, find, forward, matchCase, wholeWord,
-						regexp);
-
+				region = frda.find(offset, find, forward, matchCase, wholeWord, regexp);
 				// Update the viewer with found selection
-				if (region != null) {
-					viewer.setSelectedRange(region.getOffset(), region
-							.getLength());
-				}
 
+				int valorMedio = 0;
+				
+				if (region != null) {
+					viewer.setSelectedRange(region.getOffset(), region.getLength());
+					
+					System.out.println("amount:" + frda.length());
+					valorMedio = frda.length()/2;
+					System.out.println("valorMedio" + valorMedio);
+					//it is more than the half
+					
+					if(region.getOffset() <= valorMedio){
+						//viewer.setVisibleRegion(0, valorMedio);
+						int ln = document.getLineOfOffset(region.getOffset());
+						viewer.setTopIndex(ln);
+					}
+					if(region.getOffset() > valorMedio){
+						//viewer.setVisibleRegion(valorMedio, valorMedio);
+						int ln = document.getLineOfOffset(region.getOffset());
+						viewer.setTopIndex(ln);
+					}
+					System.out.println("Lo encontro");
+				}
+				//else{
+				    //mostrara todo el scope
+					//System.out.println("whole scope");		
+					//viewer.setVisibleRegion(0, frda.length());
+				//}
+				
 				// If find succeeded, enable Replace buttons.
 				// Otherwise, disable Replace buttons.
 				// We know find succeeded if region is not null
 				enableReplaceButtons(region != null);
-			} catch (BadLocationException e) {
+				
+			} catch (BadLocationException e){
 				// Ignore
 			} catch (PatternSyntaxException e) {
 				// Show the error to the user
@@ -221,6 +263,7 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		doReplaceFind.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		doReplaceFind.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
+				System.out.println("it found selection");
 				doReplace(replaceText.getText());
 				doFind(findText.getText(), down.getSelection(), match
 						.getSelection(), wholeWord.getSelection(), regexp
@@ -328,7 +371,6 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		System.out.println("fgColor is: " + fgColor);
 
 		viewer.getTextWidget().setBackground(bgColor);
-
 		viewer.setTextColor(fgColor);
 		viewer.getTextWidget().setForeground(fgColor);
 	}
