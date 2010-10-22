@@ -15,7 +15,7 @@ public class SaveAction extends Action {
      * SaveAction constructor
      */
     public SaveAction() {
-        super("&Save@Ctrl+s", ImageDescriptor.createFromFile(SaveAction.class,
+        super("&Save@Ctrl+S", ImageDescriptor.createFromFile(SaveAction.class,
                 "/images/document-save.png"));
 
         setToolTipText("Save");

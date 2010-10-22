@@ -6,9 +6,6 @@ package com.jbricx.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.ui.DirectControl.DirectControlWindow;
-import com.jbricx.ui.joystick.JoystickComposite;
-import com.jbricx.ui.joystick.JoystickUIWindow;
 import com.jbricx.ui.piano.PianoComposite;
 
 public class PianoAction extends Action{
@@ -16,7 +13,7 @@ public class PianoAction extends Action{
 	   * PreferencesAction constructor
 	   */ 
 	  public PianoAction() {
-		  super("&Piano@Ctrl+Shift+P", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"));
+		  super("&Piano@Ctrl+P", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"));
 		  setToolTipText("Piano");
 	  }
 

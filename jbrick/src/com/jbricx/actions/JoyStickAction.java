@@ -6,16 +6,14 @@ package com.jbricx.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.ui.DirectControl.DirectControlWindow;
 import com.jbricx.ui.joystick.JoystickComposite;
-import com.jbricx.ui.joystick.JoystickUIWindow;
 
 public class JoyStickAction extends Action{
 	/**
 	   * PreferencesAction constructor
 	   */
 	  public JoyStickAction() {
-		  super("&JoyStick@Ctrl+J", ImageDescriptor.createFromFile(JoyStickAction.class,
+		  super("&JoyStick@Ctrl+Shift+D", ImageDescriptor.createFromFile(JoyStickAction.class,
 	        "/images/joystick_icon.png"));
       setToolTipText("Joystick");
 	  }
