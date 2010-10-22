@@ -197,14 +197,14 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				JBrickEditor.getInstance().getMainWindow().setStatus(
-						"Line: " + getCursorLocation());
+				System.out.println("MouseDown");
+				JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
 			}
 
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				JBrickEditor.getInstance().getMainWindow().setStatus(
-						"Line: " + getCursorLocation());
+				System.out.println("MouseUp");
+				JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
 			}
 
 		});
@@ -252,7 +252,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
 			// styledText.getCaretLine();
 			IDocument document = viewer.getDocument();
 			try {
-
 				line = document.getLineOfOffset(caret) + 1;
 			} catch (BadLocationException x) {
 
