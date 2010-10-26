@@ -12,7 +12,7 @@ public class FindBrickAction extends Action {
    * AboutAction constructor
    */
   public FindBrickAction() {
-    super("&FindBrick@Ctrl+Alt+D", ImageDescriptor.createFromFile(FindBrickAction.class,
+    super("&FindBrick@Ctrl+B", ImageDescriptor.createFromFile(FindBrickAction.class,
         "/images/findBrick.png"));
     setToolTipText("Find Brick");
   }

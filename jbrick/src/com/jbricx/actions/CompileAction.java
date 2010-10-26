@@ -83,7 +83,7 @@ public class CompileAction extends Action {
 		}
 
 		//get the debugging table from the main window
-		Table tbl = JBrickEditor.getInstance().getMainWindow().table;
+		Table tbl = (Table) JBrickEditor.getInstance().getMainWindow().getTable();
 		tbl.removeAll();
 		ExitStatus e = BrickCreator.createBrick().compile(currDoc.getFileName());
 		

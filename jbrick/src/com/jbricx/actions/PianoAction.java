@@ -13,7 +13,7 @@ public class PianoAction extends Action{
 	   * PreferencesAction constructor
 	   */ 
 	  public PianoAction() {
-		  super("&Piano@Ctrl+P", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"));
+		  super("&Piano@Ctrl+Alt+D", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"));
 		  setToolTipText("Piano");
 	  }
 
