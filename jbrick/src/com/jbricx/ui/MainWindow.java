@@ -2,42 +2,30 @@ package com.jbricx.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-
-import org.eclipse.jface.text.source.AnnotationModel;
-import org.eclipse.jface.text.source.AnnotationRulerColumn;
-import org.eclipse.jface.text.source.CompositeRuler;
-import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.LineNumberChangeRulerColumn;
-import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -46,11 +34,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-
-import annotation.AnnotationMarkerAccess;
-import annotation.ColorCache;
 
 import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
@@ -77,12 +60,9 @@ import com.jbricx.actions.SaveAction;
 import com.jbricx.actions.SaveAsAction;
 import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
-import com.jbricx.filters.FolderFilter;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
-import com.jbricx.treeProviders.FileTreeContentProvider;
-import com.jbricx.treeProviders.FileTreeLabelProvider;
 
 /**
  * This class provides the main window of JBrickEditor
@@ -120,10 +100,8 @@ public class MainWindow extends ApplicationWindow implements
     private CompileAction compileAction = new CompileAction();
     private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
     SourceViewerConfiguration configuration = new SourceViewerConfiguration();
-    public Table table;
     // The font
     private Font font;
-    public LineNumberChangeRulerColumn lnrc;
 
     /*
      * // The undo manager private IUndoManager undoManager;
@@ -131,7 +109,8 @@ public class MainWindow extends ApplicationWindow implements
     // Right Click Menu
     private MenuManager menuManager;
     File treeRootFile;
-    JBrickTabFolder tabFolder;
+    JBrickEditorTabFolder tabFolder;
+    private StatusTabItem statusTabItem;
 
     /* ArrayList<SourceViewer> viewersList; */
     /**
@@ -175,9 +154,8 @@ public class MainWindow extends ApplicationWindow implements
      *            the main window
      * @return Control
      */
-    protected Control createContents(Composite parent) {
-        long start = System.currentTimeMillis();
-        System.out.println("start ");
+    protected Control createContents(final Composite parent) {
+
         String workspacePath = getWorkspacePath();
         if (workspacePath == null) {
             workspacePath = setWorkspacePath(parent);
@@ -185,217 +163,116 @@ public class MainWindow extends ApplicationWindow implements
         this.treeRootFile = new File(workspacePath);
         setStatus("Successfully Lauched!");
 
-        // divide the main window
-        SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-        sashForm.setLayout(new RowLayout());
-
+        // Someday we'll know what these three lines are for.
         final Label l = new Label(parent, SWT.NONE);
         l.setToolTipText("helllllll oooooo Jaws:");
         l.setVisible(false);
-        // //////// Left panel ////////////////
-        // Create the tree viewer to display the file tree
-        // Composite treePanel = new Composite(sashForm, SWT.BOTTOM);
-        final TreeViewer tv = new TreeViewer(sashForm, SWT.LEFT);
-        tv.getTree().setLayoutData(new GridData(GridData.BEGINNING));
-        tv.setContentProvider(new FileTreeContentProvider(workspacePath));
-        tv.setLabelProvider(new FileTreeLabelProvider());
-        tv.addFilter(new FolderFilter());
 
-        tv.setInput("root"); // pass a non-null that will be ignored
+        /* Divide the main window in three sections: Explorer, Editor and Status.
+         * The first SashForm contains the Explorer and the second SashForm.
+         * The second SashForm contains the Editor and the Status.
+         */
 
-        tv.getTree().addListener(SWT.DefaultSelection, new Listener() {
+        // Create the first SashForm to hold the Explorer and second SashForm.
+        final SashForm sashForm1 = new SashForm(parent, SWT.HORIZONTAL);
+        sashForm1.setLayout(new FillLayout());
 
-            public void handleEvent(Event e) {
-                IStructuredSelection selection = (IStructuredSelection) tv.getSelection();
-                File file = (File) selection.getFirstElement();
+        // Create the tree viewer to display the file tree.
+        final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
+        final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
+        explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
-                if (!file.isDirectory()) {
-                    getTabFolder().open(file.getAbsolutePath());
-                }
+          public void handleEvent(Event e) {
+            IStructuredSelection selection = (IStructuredSelection) explorer.getSelection();
+            File file = (File) selection.getFirstElement();
+
+            if (!file.isDirectory()) {
+              getTabFolder().open(file.getAbsolutePath());
             }
+          }
         });
 
-        // /////////////////////// right panel //////////////////
-        // parent panel containing both the editing area and debugging area
-        final SashForm rightPanel = new SashForm(sashForm, SWT.VERTICAL);
+        // Create the second SashForm to hold the editor and status.
+        final SashForm sashForm2 = new SashForm(sashForm1, SWT.VERTICAL);
+        sashForm1.setLayout(new FillLayout());
 
-        // Composite rightPanel = new Composite(sashForm, SWT.NONE);
-        GridLayout fLayout = new GridLayout();
+        // Create the panel for the editor (JBrickEditorTabFolder)
+        tabFolder = new JBrickEditorTabFolder(sashForm2, SWT.PUSH);
 
-        /*
-         * GridLayout gridLayout = new GridLayout(); gridLayout.numColumns = 1;
-         */
-        rightPanel.setLayout(fLayout);
+        // Create the status panel.
+        // TODO: Resolve code tangling. This is kept just to avoid breaking something.
+        final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
+        statusTabFolder.setMaximizeVisible(true);
+        statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL) {
 
-        // ******** top part of the right panel **********************
-        // Create the viewer
-        CompositeRuler ruler = new CompositeRuler(10);
+          @Override
+          protected IDocument getDocument() {
+            return tabFolder.getSelection().getDocument();
+          };
 
-        /*
-         * LineNumberRulerColumn lnrc = new LineNumberRulerColumn();
-         * lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
-         * 255, 0, 0)));
-         */
-        lnrc = new LineNumberChangeRulerColumn(new ColorCache());
-        lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(
-                255, 0, 0)));
-        // lnrc.getLineOfLastMouseButtonActivity();
+          @Override
+          protected void setSelectedRange(int offset, int lineLength) {
+            tabFolder.getSelection().getViewer().setSelectedRange(offset, lineLength);
+          }
 
-        // lnrc.getControl().getAccessible().textSelectionChanged()
-        ruler.addDecorator(0, lnrc);
+          @Override
+          protected StatusLineManager getStatusLineManager() {
+            return MainWindow.this.getStatusLineManager();
+          };
+        };
 
-        tabFolder = new JBrickTabFolder(rightPanel, SWT.TOP);
-//		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        tabFolder.setSimple(false);
-        tabFolder.setUnselectedImageVisible(false);
-        tabFolder.setUnselectedCloseVisible(false);
-        Color titleForeColor = parent.getShell().getDisplay().getSystemColor(
-                SWT.COLOR_TITLE_FOREGROUND);
-        
-        Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
-        	SWT.COLOR_TITLE_BACKGROUND);
-        
-        //Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
-        //        SWT.COLOR_TITLE_FOREGROUND);
-        
-        
-        Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(
-                SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
-        tabFolder.setSelectionForeground(titleForeColor);
-        tabFolder.setSelectionBackground(new Color[]{titleBackColor1,
-                    titleBackColor2}, new int[]{100}, true);
-        
-        // TODO: change tabs names and content
-        // tab1
-        // JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
-        // null);
-        // tabFolder.setSelection(tabItem);
-
-        ArrayList<String> recentfiles = getRecentFiles(parent);
-        System.out.println(recentfiles);
-
-        boolean openedfile = false;
-
-        for (String file : recentfiles) {
-            File f = new File(file);
-            boolean exists = f.exists();
-            if (exists) {
-                openFile(file);
-                openedfile = true;
-            }
-
-        }
-
-        if (!openedfile) {
-            JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
-                    null);
-            tabFolder.setSelection(tabItem);
-        }
-
-        // ///////////////////////////////////////////////////////////////
-
-        // rulers
-        AnnotationModel fAnnotationModel = new AnnotationModel();
-        IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
-
-        ColorCache cc = new ColorCache();
-        CompositeRuler fCompositeRuler = new CompositeRuler();
-        OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,
-                cc);
-        AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
-                fAnnotationModel, 16, fAnnotationAccess);
-        fCompositeRuler.setModel(fAnnotationModel);
-        fOverviewRuler.setModel(fAnnotationModel);
-
-        // annotation ruler is decorating our composite ruler
-        fCompositeRuler.addDecorator(0, annotationRuler);
-        // ///////////////////////////////////////////////////////////////
-
-        // ******** bottom part of the right panel **********************
-
-        table = new Table(rightPanel, SWT.BORDER);
-        table.addListener(SWT.DefaultSelection, new Listener() {
-
-            public void handleEvent(Event e) {
-                IDocument document = getCurrentTabItem().getDocument();
-                /*
-                 * String txt =
-                 * getCurrentTabItem().getViewer().getTextWidget().getText();
-                 * System.out.println("txt"+ txt);
-                 * getCurrentTabItem().getViewer().setSelectedRange(12, 2);
-                 * System.out.println("Item Text is:  " + ((TableItem)e.item
-                 * ).getText());
-                 */
-                try {
-
-                    String errorMessageText = ((TableItem) e.item).getText();
-                    System.out.println("Item Text is:  " + errorMessageText);
-                    String strLineNumber = errorMessageText.substring(
-                            errorMessageText.indexOf("Line:") + 5,
-                            errorMessageText.indexOf("Error"));
-
-                    int errorLineNumber = Integer.parseInt(strLineNumber.trim()) - 1;
-
-                    int offset = document.getLineOffset(errorLineNumber);
-                    int lineLength = document.getLineLength(errorLineNumber);
-                    getCurrentTabItem().getViewer().setSelectedRange(offset,
-                            lineLength);
-                    setStatus(" status bar Line " + strLineNumber);
-
-                    // System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
-                    // );
-                    System.out.println("Info is: "
-                            + getCurrentTabItem().getViewer().getTextWidget().getSelection());
-
-                    /*
-                     * if(lnrc != null){
-                     * System.out.println("mouse thing -- "+lnrc
-                     * .getLineOfLastMouseButtonActivity()); } else{
-                     * System.out.println("it is null"); }
-                     */
-
-                    getStatusLineManager().getControl().setFocus();
-
-                } catch (BadLocationException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
-                l.setFocus();
-
-            }
-        });
-        rightPanel.setWeights(new int[]{80, 20});
+        // Add the listener the Editor Panel
         tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+          @Override
+          public void restore(CTabFolderEvent event) {
+            tabFolder.setMaximized(false);
+            tabFolder.setMinimized(false);
+            sashForm2.setMaximizedControl(null);
+            sashForm1.setMaximizedControl(null);
+          }
+    
+          @Override
+          public void maximize(CTabFolderEvent event) {
+            tabFolder.setMaximized(true);
+            sashForm2.setMaximizedControl(tabFolder);
+            sashForm1.setMaximizedControl(sashForm2);
+          }
 
-            @Override
-            public void minimize(CTabFolderEvent event) {
-                tabFolder.setMinimized(true);
-                rightPanel.setWeights(new int[]{5, 95});
-            }
-
-            @Override
-            public void maximize(CTabFolderEvent event) {
-                tabFolder.setMaximized(true);
-                rightPanel.setWeights(new int[]{99, 1});
-            }
-
-            @Override
-            public void restore(CTabFolderEvent event) {
-                tabFolder.setMinimized(false);
-                tabFolder.setMaximized(false);
-                rightPanel.setWeights(new int[]{80, 20});
-            }
+          @Override
+          public void minimize(CTabFolderEvent event) {
+            tabFolder.setMinimized(true);
+            statusTabFolder.setMaximized(true);
+            sashForm2.setMaximizedControl(statusTabFolder);
+          }
         });
-        sashForm.setWeights(new int[]{20, 80});
+
+        // Add the listener for the Status Panel
+        statusTabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+          @Override
+          public void restore(CTabFolderEvent event) {
+            statusTabFolder.setMaximized(false);
+            statusTabFolder.setMinimized(false);
+            tabFolder.setMinimized(false);
+            sashForm2.setMaximizedControl(null);
+            sashForm1.setMaximizedControl(null);
+          }
+          
+          @Override
+          public void maximize(CTabFolderEvent event) {
+            statusTabFolder.setMaximized(true);
+            sashForm2.setMaximizedControl(statusTabFolder);
+            sashForm1.setMaximizedControl(sashForm2);
+          }
+        });
+
+        // Set the different weights for both panels. This affect their0 size.
+        sashForm1.setWeights(new int[]{20, 80});
+        sashForm2.setWeights(new int[]{80, 20});
 
         getMenuBarManager().updateAll(true);
+        l.setFocus();
 
-        long end = System.currentTimeMillis();
-        start = end - start;
-        System.out.println("it took : " + start);
         return parent;
-
     }
 
     public void TabItemClosed(CTabFolderEvent event) {
@@ -623,24 +500,6 @@ public class MainWindow extends ApplicationWindow implements
         this.treeRootFile = treeRootFile;
     }
 
-    public ArrayList<String> getRecentFiles(Composite parent) {
-        // Get the preference store
-        PreferenceManager mgr = new PreferenceManager();
-        mgr.addToRoot(new PreferenceNode("text", "Text", null,
-                TextPreferencePage.class.getName()));
-        PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
-        Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
-
-        ArrayList<String> recentfiles = new ArrayList<String>();
-        if (loadrecent) {
-            for (String s : ps.getString(FileExtensionConstants.RECENTFILES).split(";")) {
-                recentfiles.add(s);
-            }
-        }
-
-        return recentfiles;
-    }
-
     // Going to modify this to request preferences
     public String setWorkspacePath(Composite parent) {
         String workspace = null;
@@ -703,7 +562,7 @@ public class MainWindow extends ApplicationWindow implements
         getTabFolder().openNewFile();
     }
 
-    public JBrickTabFolder getTabFolder() {
+    public JBrickEditorTabFolder getTabFolder() {
         return tabFolder;
     }
 
@@ -741,7 +600,11 @@ public class MainWindow extends ApplicationWindow implements
         }
     }
 
-    public void setTabFolder(JBrickTabFolder tabFolder) {
+    public void setTabFolder(JBrickEditorTabFolder tabFolder) {
         this.tabFolder = tabFolder;
+    }
+
+    public Composite getTable() {
+      return statusTabItem.getTable();
     }
 }
