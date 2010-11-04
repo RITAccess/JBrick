@@ -20,6 +20,7 @@ import com.jbricx.treeProviders.FileTreeLabelProvider;
 public class FileExplorerTabItem extends CTabItem {
 
   final TreeViewer tv;
+  public static String workspacepath_2 = "";
 
   /**
    * @param parent
@@ -27,7 +28,7 @@ public class FileExplorerTabItem extends CTabItem {
    */
   public FileExplorerTabItem(CTabFolder parent, int style, String workspacePath) {
     super(parent, style);
-
+    workspacepath_2 = workspacePath;
     setText("Explorer");
     tv = new TreeViewer(parent);
     setControl(tv.getControl());
@@ -49,5 +50,7 @@ public class FileExplorerTabItem extends CTabItem {
   }
 
   public void refreshView() {
-  }
+	  System.out.println("refresh view");	
+	  tv.setContentProvider(new FileTreeContentProvider(workspacepath_2));
+ }
 }
