@@ -104,6 +104,8 @@ public class MainWindow extends ApplicationWindow implements
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
 	private Font font;
+	public static FileExplorerTabItem explorer_1 = null; 
+	 
 
 	/*
 	 * // The undo manager private IUndoManager undoManager;
@@ -182,6 +184,8 @@ public class MainWindow extends ApplicationWindow implements
 		// Create the tree viewer to display the file tree.
 		final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
 		final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
+		explorer_1 = explorer;
+		
 		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
 			public void handleEvent(Event e) {
@@ -205,14 +209,13 @@ public class MainWindow extends ApplicationWindow implements
 		// TODO: Resolve code tangling. This is kept just to avoid breaking something.
 		final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
 		statusTabFolder.setMaximizeVisible(true);
+		System.out.println("cargando el contenido del explorador");
+		
 		statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL) {
-
 			@Override
 			protected IDocument getDocument() {
 				return tabFolder.getSelection().getDocument();
-			}
-
-			;
+			};
 
 			@Override
 			protected void setSelectedRange(int offset, int lineLength) {
@@ -594,30 +597,64 @@ public class MainWindow extends ApplicationWindow implements
 		return getTabFolder().getSelectionIndex();
 	}
 
-	public void refreshCurrentTabItem() {
+	public void refreshCurrentTabItem(){
 		int selectedIndex = getCurrentTabIndex();
 		CTabItem tabItems[] = tabFolder.getItems();
-
-		System.out.println("refresh ");
+		
+		int valor = tabItems.length;
+		String valor2 =String.valueOf(valor);
+		System.out.println("refresh refreshCurrentTabItem = " + valor2);
+		
 		for (CTabItem tbItem : tabItems) {
+			System.out.println(":tabItems:");
 			if (tbItem != null) {
+				System.out.println("tbItem != null");
 				JBrickTabItem tabItem = (JBrickTabItem) tbItem;
 				String currentString = tabItem.getViewer().getTextWidget().getText();
 				String currentSaveString = tabItem.getDocument().getFileName();
 				JBrickEditor.removeObserver(tabItem);
 				tabItem.dispose();
+				System.out.println("tbItem.dispose...");
 				if (currentSaveString != null) {
 					openFile(currentSaveString);
+					System.out.println("openFile");
+					
 				} else {
 					openNewFile();
+					System.out.println("openNewFile");
 				}
 				tabItem = getCurrentTabItem();
 				tabItem.getViewer().getTextWidget().setText(currentString);
+				
+				
 			}
 		}
-		if (0 <= selectedIndex) {
+		if (0 <= selectedIndex){
 			tabFolder.setSelection(selectedIndex);
 		}
+		
+		
+		
+		
+		
+		
+		/*final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
+		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
+
+			public void handleEvent(Event e) {
+				IStructuredSelection selection = (IStructuredSelection) explorer.getSelection();
+				File file = (File) selection.getFirstElement();
+
+				if (!file.isDirectory()) {
+					getTabFolder().open(file.getAbsolutePath());
+				}
+			}
+		});*/
+	}
+	
+	public void refresh_2() {
+		System.out.println("refresh_2");
+		explorer_1.refreshView();
 	}
 
 	public void setTabFolder(JBrickEditorTabFolder tabFolder) {
