@@ -66,7 +66,7 @@ public class CompileAction extends Action {
 			box.setMessage("Before compiling, you need to save the code to file");
 			int ret = box.open();
 			if (ret == SWT.OK) {
-				ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem());
+				ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
 			}
 			File file = new File(currDoc.getFileName());
 			JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().setText(file.getName());

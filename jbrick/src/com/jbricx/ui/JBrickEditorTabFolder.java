@@ -38,197 +38,223 @@ import com.jbricx.preferences.TextPreferencePage;
  */
 public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
-  public LineNumberChangeRulerColumn lnrc;
-  private final List<String> filenamesList;
+	public LineNumberChangeRulerColumn lnrc;
+	private final List<String> filenamesList;
 
-  public JBrickEditorTabFolder(final Composite parent, final int style) {
-    super(parent, style);
-    filenamesList = new ArrayList<String>();
+	public JBrickEditorTabFolder(final Composite parent, final int style) {
+		super(parent, style);
+		filenamesList = new ArrayList<String>();
 
-    setMinimizeVisible(true);
-    setMaximizeVisible(true);
-    addCTabFolder2Listener(new CTabFolder2Adapter() {
+		setMinimizeVisible(true);
+		setMaximizeVisible(true);
+		addCTabFolder2Listener(new CTabFolder2Adapter() {
 
-      @Override
-      public void close(CTabFolderEvent event) {
-        JBrickTabItem tabItem = (JBrickTabItem) event.item;
-        if (askCloseWithoutSaving(tabItem)) {
-          JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
-          filenamesList.remove(tabItem.getFilename());
-        } else {
-          event.doit = false;
-        }
-      }
-    });
+			@Override
+			public void close(CTabFolderEvent event) {
+				JBrickTabItem tabItem = (JBrickTabItem) event.item;
+				if (askCloseWithoutSaving(tabItem)) {
+					JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
+					
+					try {
+						File file = new File(tabItem.getFilename());
+						filenamesList.remove(file.getName());						
+					} catch (NullPointerException ne) {
+						// the file has not been saved yet so ignore
+					}
+				} else {
+					event.doit = false;
+				}
+			}
+		});
 
-    /* Construction time */
-    long start = System.currentTimeMillis();
-    System.out.println("start ");
+		/* Construction time */
+		long start = System.currentTimeMillis();
+		System.out.println("start ");
 
-    // Composite rightPanel = new Composite(sashForm, SWT.NONE);
-    
+		// Composite rightPanel = new Composite(sashForm, SWT.NONE);
 
-    /*
-     * GridLayout gridLayout = new GridLayout(); gridLayout.numColumns = 1;
-     */
 
-    // ******** top part of the right panel **********************
-    // Create the viewer
-    CompositeRuler ruler = new CompositeRuler(10);
+		/*
+		 * GridLayout gridLayout = new GridLayout(); gridLayout.numColumns = 1;
+		 */
 
-    /*
-     * LineNumberRulerColumn lnrc = new LineNumberRulerColumn(); lnrc.setForeground(new
-     * Color(parent.getShell().getDisplay(), new RGB( 255, 0, 0)));
-     */
-    lnrc = new LineNumberChangeRulerColumn(new ColorCache());
-    lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
-    // lnrc.getLineOfLastMouseButtonActivity();
+		// ******** top part of the right panel **********************
+		// Create the viewer
+		CompositeRuler ruler = new CompositeRuler(10);
 
-    // lnrc.getControl().getAccessible().textSelectionChanged()
-    ruler.addDecorator(0, lnrc);
+		/*
+		 * LineNumberRulerColumn lnrc = new LineNumberRulerColumn(); lnrc.setForeground(new
+		 * Color(parent.getShell().getDisplay(), new RGB( 255, 0, 0)));
+		 */
+		lnrc = new LineNumberChangeRulerColumn(new ColorCache());
+		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
+		// lnrc.getLineOfLastMouseButtonActivity();
 
-    // tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-    setSimple(false);
-    setUnselectedImageVisible(false);
-    setUnselectedCloseVisible(false);
-    Color titleForeColor = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
+		// lnrc.getControl().getAccessible().textSelectionChanged()
+		ruler.addDecorator(0, lnrc);
 
-    Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
+		// tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		setSimple(false);
+		setUnselectedImageVisible(false);
+		setUnselectedCloseVisible(false);
+		Color titleForeColor = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_FOREGROUND);
 
-    // Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
-    // SWT.COLOR_TITLE_FOREGROUND);
+		Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND);
 
-    Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
-    setSelectionForeground(titleForeColor);
-    setSelectionBackground(new Color[] { titleBackColor1, titleBackColor2 }, new int[] { 100 }, true);
+		// Color titleBackColor1 = parent.getShell().getDisplay().getSystemColor(
+		// SWT.COLOR_TITLE_FOREGROUND);
 
-    // TODO: change tabs names and content, not byktol's
-    // tab1
-    // JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
-    // null);
-    // tabFolder.setSelection(tabItem);
+		Color titleBackColor2 = parent.getShell().getDisplay().getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
+		setSelectionForeground(titleForeColor);
+		setSelectionBackground(new Color[]{titleBackColor1, titleBackColor2}, new int[]{100}, true);
 
-    ArrayList<String> recentfiles = getRecentFiles(parent);
-    System.out.println(recentfiles);
+		// TODO: change tabs names and content, not byktol's
+		// tab1
+		// JBrickTabItem tabItem = new JBrickTabItem(tabFolder, SWT.CLOSE,
+		// null);
+		// tabFolder.setSelection(tabItem);
 
-    boolean openedfile = false;
+		ArrayList<String> recentfiles = getRecentFiles(parent);
+		System.out.println(recentfiles);
 
-    for (String file : recentfiles) {
-      File f = new File(file);
-      boolean exists = f.exists();
-      if (exists) {
-        open(file);
-        openedfile = true;
-      }
+		boolean openedfile = false;
 
-    }
+		for (String file : recentfiles) {
+			File f = new File(file);
+			boolean exists = f.exists();
+			if (exists) {
+				open(file);
+				openedfile = true;
+			}
 
-    if (!openedfile) {
-      JBrickTabItem tabItem = new JBrickTabItem(this, SWT.CLOSE, null);
-      setSelection(tabItem);
-    }
+		}
 
-    // ///////////////////////////////////////////////////////////////
+		if (!openedfile) {
+			JBrickTabItem tabItem = new JBrickTabItem(this, SWT.CLOSE, null);
+			setSelection(tabItem);
+		}
 
-    // rulers
-    AnnotationModel fAnnotationModel = new AnnotationModel();
-    IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
+		// ///////////////////////////////////////////////////////////////
 
-    ColorCache cc = new ColorCache();
-    CompositeRuler fCompositeRuler = new CompositeRuler();
-    OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12, cc);
-    AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(fAnnotationModel, 16, fAnnotationAccess);
-    fCompositeRuler.setModel(fAnnotationModel);
-    fOverviewRuler.setModel(fAnnotationModel);
+		// rulers
+		AnnotationModel fAnnotationModel = new AnnotationModel();
+		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
 
-    // annotation ruler is decorating our composite ruler
-    fCompositeRuler.addDecorator(0, annotationRuler);
-    // ///////////////////////////////////////////////////////////////
+		ColorCache cc = new ColorCache();
+		CompositeRuler fCompositeRuler = new CompositeRuler();
+		OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12, cc);
+		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(fAnnotationModel, 16, fAnnotationAccess);
+		fCompositeRuler.setModel(fAnnotationModel);
+		fOverviewRuler.setModel(fAnnotationModel);
 
-    long end = System.currentTimeMillis();
-    start = end - start;
-    System.out.println("it took : " + start);
-  }
+		// annotation ruler is decorating our composite ruler
+		fCompositeRuler.addDecorator(0, annotationRuler);
+		// ///////////////////////////////////////////////////////////////
 
-  public boolean contains(final String filename) {
-    return filenamesList.contains(filename);
-  }
+		long end = System.currentTimeMillis();
+		start = end - start;
+		System.out.println("it took : " + start);
+	}
 
-  @Override
-  public boolean open(String filename) {
-    if (filenamesList.contains(filename)) {
-      return false;
-    } else {
-      filenamesList.add(filename);
-      JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filename));
-      this.setSelection(newTabItem);
-    }
-    return true;
-  }
+	public boolean contains(final String filename) {
+		return filenamesList.contains(filename);
+	}
 
-  @Override
-  public boolean openNewFile() {
-    System.out.println("opening new file");
-    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
-    this.setSelection(newTabItem);
-    return true;
-  }
+	@Override
+	public boolean open(String filepath) {
+		File file = new File(filepath);
+		String filename = file.getName();
 
-  @Override
-  public JBrickTabItem getSelection() {
-    return (JBrickTabItem) super.getSelection();
-  }
+		boolean isAlreadyOpen = false;
 
-  @Override
-  public JBrickTabItem getItem(int index) {
-    return (JBrickTabItem) super.getItem(index);
-  }
+		// check if the file exists in the list of opened file
+		for (int i = 0; i < filenamesList.size(); i++) {
+			if (filename.equals(filenamesList.get(i))) {
+				// so the file is already opened in one of the tab
+				JBrickTabItem tabItem = getItem(i);
+				this.setSelection(tabItem);
 
-  /**
-   * Checks the current file for unsaved changes. If it has unsaved changes, confirms that user wants to overwrite
-   * 
-   * @return boolean
-   */
-  public boolean checkOverwrite() {
-    boolean proceed = true;
+				isAlreadyOpen = true;
+				break;
+			}
+		}
+		if (!isAlreadyOpen) {
+			JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath));
+			this.setSelection(newTabItem);
+			System.out.println("adding: " + filename);
+			filenamesList.add(filename);
+		}
+		return true;
+	}
 
-    for (CTabItem tab : getItems()) {
-      JBrickTabItem tabItem = (JBrickTabItem) tab;
-      proceed = askCloseWithoutSaving(tabItem);
-    }
-    return proceed;
-  }
+	@Override
+	public boolean openNewFile() {
+		JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
+		this.setSelection(newTabItem);
+		return true;
+	}
 
-  /**
-   * Performs check on a tab item's on close event if its document has any unsaved changes
-   * 
-   * @param tabItem
-   *          the JBrickTabItem which is clicked for close
-   * @return true if user confirms to proceed without closing else false
-   */
-  private boolean askCloseWithoutSaving(JBrickTabItem tabItem) {
-    boolean proceed = true;
-    if (tabItem.getDocument().isDirty()) {
-      proceed = MessageDialog.openConfirm(null, "Close without saving!",
-          "You have unsaved file(s) in the document. Are you sure you want to proceed without saving them?");
-    }
-    return proceed;
-  }
+	public void save(String filename) {
+		if (!filenamesList.contains(filename)) {
+			filenamesList.add(filename);
+		}
+	}
 
-  public ArrayList<String> getRecentFiles(Composite parent) {
-    // Get the preference store
-    PreferenceManager mgr = new PreferenceManager();
-    mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
-    PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
-    Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
+	@Override
+	public JBrickTabItem getSelection() {
+		return (JBrickTabItem) super.getSelection();
+	}
 
-    ArrayList<String> recentfiles = new ArrayList<String>();
-    if (loadrecent) {
-      for (String s : ps.getString(FileExtensionConstants.RECENTFILES).split(";")) {
-        recentfiles.add(s);
-      }
-    }
+	@Override
+	public JBrickTabItem getItem(int index) {
+		return (JBrickTabItem) super.getItem(index);
+	}
 
-    return recentfiles;
-  }
+	/**
+	 * Checks the current file for unsaved changes. If it has unsaved changes, confirms that user wants to overwrite
+	 *
+	 * @return boolean
+	 */
+	public boolean checkOverwrite() {
+		boolean proceed = true;
+
+		for (CTabItem tab : getItems()) {
+			JBrickTabItem tabItem = (JBrickTabItem) tab;
+			proceed = askCloseWithoutSaving(tabItem);
+		}
+		return proceed;
+	}
+
+	/**
+	 * Performs check on a tab item's on close event if its document has any unsaved changes
+	 *
+	 * @param tabItem
+	 *          the JBrickTabItem which is clicked for close
+	 * @return true if user confirms to proceed without closing else false
+	 */
+	private boolean askCloseWithoutSaving(JBrickTabItem tabItem) {
+		boolean proceed = true;
+		if (tabItem.getDocument().isDirty()) {
+			proceed = MessageDialog.openConfirm(null, "Close without saving!",
+					"You have unsaved file(s) in the document. Are you sure you want to proceed without saving them?");
+		}
+		return proceed;
+	}
+
+	public ArrayList<String> getRecentFiles(Composite parent) {
+		// Get the preference store
+		PreferenceManager mgr = new PreferenceManager();
+		mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
+		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+		Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
+
+		ArrayList<String> recentfiles = new ArrayList<String>();
+		if (loadrecent) {
+			for (String s : ps.getString(FileExtensionConstants.RECENTFILES).split(";")) {
+				recentfiles.add(s);
+			}
+		}
+
+		return recentfiles;
+	}
 }

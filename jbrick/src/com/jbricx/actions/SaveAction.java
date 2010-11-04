@@ -27,7 +27,7 @@ public class SaveAction extends Action {
      */
     public void run() {
         JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
-        ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem());
+        ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
 
         if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true) {
             CompileAction compileAction = new CompileAction();

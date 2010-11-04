@@ -11,29 +11,30 @@ import java.io.File;
 
 public class ActionControlClass {
 
-    public static void saveFile(JBrickTabItem tabItem) {
-        String fileLocation = tabItem.getDocument().getFileName();
+	public static void saveFile(JBrickTabItem tabItem, boolean isSaveAs) {
+		String fileLocation = tabItem.getDocument().getFileName();
 
-        if (fileLocation == null) { // new file has been opened
-            SafeSaveDialog dlg = new SafeSaveDialog(tabItem.getParent().getShell());
-            dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-            dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
+		if (isSaveAs || fileLocation == null) {
+			SafeSaveDialog dlg = new SafeSaveDialog(tabItem.getParent().getShell());
+			fileLocation = dlg.open();
+		}
 
-            fileLocation = dlg.open();
-        }
-        try {
-            String filename = new File(fileLocation).getName(); // just the name of the file
+		try {
+			String filename = new File(fileLocation).getName(); // just the name of the file
 
-            tabItem.getDocument().setFileName(fileLocation);
-            tabItem.getDocument().save();
-            tabItem.setText(filename);// to show the filename in the tab
-        } catch (IOException e) {
-            showError(tabItem.getParent().getShell(), "Can't save file " + fileLocation + "; " + e.getMessage());
-        }
-        //}
-    }
+			tabItem.getDocument().setFileName(fileLocation);
+			tabItem.getDocument().save();
+			tabItem.setText(filename);// to show the filename in the tab
 
-    public static void showError(Shell shell, String msg) {
-        MessageDialog.openError(shell, "Error", msg);
-    }
+			JBrickEditor.getInstance().getMainWindow().saveFile(filename);
+		} catch (IOException e) {
+			showError(tabItem.getParent().getShell(), "Can't save file " + fileLocation + "; " + e.getMessage());
+		} catch (NullPointerException ne) {
+			// user has opted to cancel the save dialog
+		}
+	}
+
+	public static void showError(Shell shell, String msg) {
+		MessageDialog.openError(shell, "Error", msg);
+	}
 }

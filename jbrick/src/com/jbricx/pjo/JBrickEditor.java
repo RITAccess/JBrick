@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.graphics.RGB;
 
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.ColorManager;
@@ -15,39 +13,41 @@ import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.JBrickTabItem;
 import com.jbricx.ui.MainWindow;
 
-
 /**
  * This class demonstrates TextViewer and Document.
  */
 public class JBrickEditor {
 	// Set up the name of the partitioner
+
 	public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
 	public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
 	// A reference to the current app
 	private static JBrickEditor APP;
-/*	// The current document
+	/*	// The current document
 	private PersistentDocument document;
-*/
+	 */
 	// The main window
 	private static MainWindow mainWindow;
 	// The stored preferences
 	private PreferenceStore prefs;
+
 	public void setPrefs(PreferenceStore prefs) {
-		this.prefs = prefs;	
-		notifyViewers() ;
+		this.prefs = prefs;
+		notifyViewers();
 	}
-	public static void notifyViewers(){
-		for(JBrickObservable observer: observerList){
+
+	public static void notifyViewers() {
+		for (JBrickObservable observer : observerList) {
 			observer.update();
 		}
-		if (mainWindow != null)	mainWindow.refreshCurrentTabItem() ;
+		if (mainWindow != null) {
+			mainWindow.refreshCurrentTabItem();
+		}
 	}
 	// The partition scanner
 	private JBrickPartitionScanner scanner;
-
 	// The code scanner
 	private JBrickCodeScanner codeScanner;
-
 	// The color manager
 	private ColorManager colorManager;
 
@@ -64,7 +64,7 @@ public class JBrickEditor {
 	 * JBrickEditor constructor
 	 */
 	private JBrickEditor() {
-	  APP = this;
+		APP = this;
 
 		colorManager = new ColorManager();
 		registerObserver(colorManager);
@@ -75,7 +75,7 @@ public class JBrickEditor {
 		} catch (IOException e) {
 			// Ignore
 		}
-		notifyViewers() ; 
+		notifyViewers();
 
 		codeScanner = new JBrickCodeScanner();
 		registerObserver(codeScanner);
@@ -91,9 +91,11 @@ public class JBrickEditor {
 		mainWindow.run();
 
 		// Dispose the colors
-		if (colorManager != null)
+		if (colorManager != null) {
 			colorManager.dispose();
+		}
 	}
+
 	/**
 	 * Prints the document
 	 */
@@ -121,6 +123,7 @@ public class JBrickEditor {
 	public void selectAll() {
 		mainWindow.getCurrentTabItem().getViewer().getTextWidget().selectAll();
 	}
+
 	/**
 	 * Pastes the clipboard
 	 */
@@ -141,6 +144,7 @@ public class JBrickEditor {
 	public void redo(JBrickTabItem tabItem) {
 		tabItem.getUndoManager().redo();
 	}
+
 	/**
 	 * Gets the main window
 	 * 
@@ -150,7 +154,6 @@ public class JBrickEditor {
 		return mainWindow;
 	}
 
-	
 	/**
 	 * Gets the preferences
 	 * 
@@ -196,21 +199,16 @@ public class JBrickEditor {
 	 */
 	public static void main(String[] args) {
 		//ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
-		
-		//System.out.println(e);
-		
 		new JBrickEditor().run();
-		
-		
 	}
-	public static void registerObserver(JBrickObservable observer){
+
+	public static void registerObserver(JBrickObservable observer) {
 		observerList.add(observer);
 	}
-	public static void removeObserver(JBrickObservable observer){
-		if(observerList.contains(observer)){
+
+	public static void removeObserver(JBrickObservable observer) {
+		if (observerList.contains(observer)) {
 			observerList.remove(observer);
 		}
-		
 	}
 }
- 
