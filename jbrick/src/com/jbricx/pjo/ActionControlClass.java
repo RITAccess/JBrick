@@ -25,8 +25,12 @@ public class ActionControlClass {
 			tabItem.getDocument().setFileName(fileLocation);
 			tabItem.getDocument().save();
 			tabItem.setText(filename);// to show the filename in the tab
-
+			
 			JBrickEditor.getInstance().getMainWindow().saveFile(filename);
+			System.out.println("saving ...");
+			JBrickEditor.getInstance().getMainWindow().refresh_2();
+			System.out.println("refresh the folder");
+			
 		} catch (IOException e) {
 			showError(tabItem.getParent().getShell(), "Can't save file " + fileLocation + "; " + e.getMessage());
 		} catch (NullPointerException ne) {
