@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -35,33 +34,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.actions.AboutAction;
-import com.jbricx.actions.CompileAction;
-import com.jbricx.actions.CopyAction;
-import com.jbricx.actions.CutAction;
-import com.jbricx.actions.DirectControlAction;
-import com.jbricx.actions.DownloadAction;
-import com.jbricx.actions.ExitAction;
-import com.jbricx.actions.FindAction;
-import com.jbricx.actions.FindBrickAction;
-import com.jbricx.actions.GotoAction;
-import com.jbricx.actions.HelpContentAction;
-import com.jbricx.actions.JoyStickAction;
-import com.jbricx.actions.MethodTemplateAction;
-import com.jbricx.actions.NewAction;
-import com.jbricx.actions.OpenAction;
-import com.jbricx.actions.PasteAction;
-import com.jbricx.actions.PianoAction;
-import com.jbricx.actions.PreferencesAction;
-import com.jbricx.actions.PrintAction;
-import com.jbricx.actions.PrintPreviewAction;
-import com.jbricx.actions.RedoAction;
-import com.jbricx.actions.SaveAction;
-import com.jbricx.actions.SaveAsAction;
-import com.jbricx.actions.SelectAllAction;
-import com.jbricx.actions.UndoAction;
-import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.WindowsNXTBrick;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
@@ -75,32 +47,6 @@ public class MainWindow extends ApplicationWindow implements
 	 * // The viewer private SourceViewer viewer;
 	 */
 	// The actions
-
-	private AboutAction aboutAction = new AboutAction();
-	private HelpContentAction helpContentAction = new HelpContentAction();
-	private CopyAction copyAction = new CopyAction();
-	private CutAction cutAction = new CutAction();
-	private SelectAllAction selectAllAction = new SelectAllAction();
-	private ExitAction exitAction = new ExitAction();
-	private FindAction findAction = new FindAction();
-	private GotoAction gotoAction = new GotoAction();
-	private NewAction newAction = new NewAction();
-	private OpenAction openAction = new OpenAction();
-	private PasteAction pasteAction = new PasteAction();
-	private PreferencesAction prefsAction = new PreferencesAction();
-	private PrintAction printAction = new PrintAction();
-	private PrintPreviewAction printPreviewAction = new PrintPreviewAction();
-	private RedoAction redoAction = new RedoAction();
-	private SaveAction saveAction = new SaveAction();
-	private SaveAsAction saveAsAction = new SaveAsAction();
-	private UndoAction undoAction = new UndoAction();
-	private DownloadAction downloadAction = new DownloadAction();
-	private DirectControlAction directControlAction = new DirectControlAction();
-	private JoyStickAction joystickAction = new JoyStickAction();
-	private PianoAction pianoAction = new PianoAction();
-	private FindBrickAction findBrickAction = new FindBrickAction();
-	private CompileAction compileAction = new CompileAction();
-	private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
 	private Font font;
@@ -112,8 +58,9 @@ public class MainWindow extends ApplicationWindow implements
 	 */
 	// Right Click Menu
 	private MenuManager menuManager;
-	File treeRootFile;
-	JBrickEditorTabFolder tabFolder;
+	private MenuAndToolBarManagerDelegate menuAndToolbarManagerDelegate;
+	private File treeRootFile;
+	private JBrickEditorTabFolder tabFolder;
 	private StatusTabItem statusTabItem;
 
 	/* ArrayList<SourceViewer> viewersList; */
@@ -122,6 +69,7 @@ public class MainWindow extends ApplicationWindow implements
 	 */
 	public MainWindow() {
 		super(null);
+		menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate();
 		addMenuBar();
 		addToolBar(SWT.FLAT);
 		addStatusLine();
@@ -326,58 +274,7 @@ public class MainWindow extends ApplicationWindow implements
 	 * @return MenuManager
 	 */
 	protected MenuManager createMenuManager() {
-		MenuManager mm = new MenuManager();
-		MenuManager fileMenu = new MenuManager("&File");
-		MenuManager editMenu = new MenuManager("&Edit");
-		MenuManager compileMenu = new MenuManager("&Compile");
-		MenuManager toolMenu = new MenuManager("&Tools");
-		MenuManager downloadMenu = new MenuManager("&Download");
-
-		MenuManager helpMenu = new MenuManager("&Help");
-
-		mm.add(fileMenu);
-		mm.add(editMenu);
-		mm.add(compileMenu);
-		mm.add(toolMenu);
-		mm.add(helpMenu);
-		mm.add(downloadMenu);
-
-		fileMenu.add(newAction);
-		fileMenu.add(openAction);
-		fileMenu.add(saveAction);
-		fileMenu.add(saveAsAction);
-		fileMenu.add(new Separator());
-		fileMenu.add(printAction);
-		fileMenu.add(printPreviewAction);
-		fileMenu.add(new Separator());
-		fileMenu.add(exitAction);
-
-		editMenu.add(undoAction);
-		editMenu.add(redoAction);
-		editMenu.add(new Separator());
-		editMenu.add(cutAction);
-		editMenu.add(copyAction);
-		editMenu.add(pasteAction);
-		editMenu.add(new Separator());
-		editMenu.add(findAction);
-		editMenu.add(gotoAction);
-		editMenu.add(new Separator());
-		editMenu.add(selectAllAction);
-		editMenu.add(prefsAction);
-		editMenu.add(methodTemplateAction);
-
-		compileMenu.add(compileAction);
-		compileMenu.add(downloadAction);
-		compileMenu.add(findBrickAction);
-
-		toolMenu.add(directControlAction);
-		toolMenu.add(joystickAction);
-		toolMenu.add(pianoAction);
-
-		helpMenu.add(aboutAction);
-		helpMenu.add(helpContentAction);
-
-		return mm;
+		return menuAndToolbarManagerDelegate.createMenuManager();
 	}
 
 	/**
@@ -387,50 +284,8 @@ public class MainWindow extends ApplicationWindow implements
 	 *            the style for the toolbar
 	 * @return ToolBarManager
 	 */
-	protected ToolBarManager createToolBarManager(int style) {
-		ToolBarManager tm = new ToolBarManager(style);
-
-		// Add all the actions
-		tm.add(newAction);
-		tm.add(openAction);
-		tm.add(saveAction);
-		tm.add(saveAsAction);
-		tm.add(new Separator());
-		tm.add(printAction);
-		tm.add(new Separator());
-		tm.add(undoAction);
-		tm.add(redoAction);
-		tm.add(new Separator());
-		tm.add(cutAction);
-		tm.add(copyAction);
-		tm.add(pasteAction);
-		tm.add(new Separator());
-		tm.add(findAction);
-		tm.add(new Separator());
-		tm.add(prefsAction);
-		tm.add(new Separator());
-		tm.add(compileAction);
-
-		tm.add(new Separator());
-		tm.add(downloadAction);
-
-		tm.add(new Separator());
-		tm.add(aboutAction);
-
-		AbstractNXTBrick nxt = new WindowsNXTBrick();
-		if (!nxt.isConnected()) {
-			tm.add(new Separator());
-			//directControlAction.setEnabled(false);
-			tm.add(directControlAction);
-			joystickAction.setEnabled(false);
-			tm.add(joystickAction);
-			pianoAction.setEnabled(false);
-			tm.add(pianoAction);
-
-		}
-		tm.add(new Separator());
-		tm.add(findBrickAction);
-		return tm;
+	protected ToolBarManager createToolBarManager(final int style) {
+		return menuAndToolbarManagerDelegate.createToolBarManager(style);
 	}
 
 	/**
