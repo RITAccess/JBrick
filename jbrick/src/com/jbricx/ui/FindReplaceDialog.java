@@ -47,8 +47,8 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	private Button doReplaceFind;
 	Display display;
 	private PersistentDocument document;
-	
-
+	public static int f = -1;
+	ArrayList listValue = new ArrayList();
 	/**
 	 * FindReplaceDialog constructor
 	 * 
@@ -63,9 +63,6 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
 		frda = new FindReplaceDocumentAdapter(document);
 		this.document = (PersistentDocument)document;
-		
-		//document= new PersistentDocument();
-		//document;
 		this.viewer = viewer;
 	}
 
@@ -103,10 +100,13 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	 *            whether find string is a regular expression
 	 */
 	protected void doFind(String find, boolean forward, boolean matchCase,
-		boolean wholeWord, boolean regexp) {
+		boolean wholeWord, boolean regexp, boolean wrap) {
+		int x = 0;
+		int y = 0;
+		int z = 0;
+		
 		
 		System.out.println("FindReplaceDialog:doFind()" + find);
-		
 		// You can't mix whole word and regexp
 		if (wholeWord && regexp){
 				showError("You can't search on both Whole Words and Regular Expressions");
@@ -116,7 +116,6 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 				// Get the current offset
 				System.out.println("try");
 				int offset = viewer.getTextWidget().getCaretOffset();
-				
 					// If something is currently selected, and they're searching
 					// backwards,
 					// move offset to beginning of selection. Otherwise, repeated
@@ -137,39 +136,93 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 				// Perform the find
 				region = frda.find(offset, find, forward, matchCase, wholeWord, regexp);
 				// Update the viewer with found selection
-
 				int valorMedio = 0;
 				
 				if (region != null) {
+					f = f+1;
+					System.out.println("f es  ====> " + f);
 					viewer.setSelectedRange(region.getOffset(), region.getLength());
-					
+					x = region.getOffset();
+					y = region.getLength();
+					z = frda.length();
 					System.out.println("amount:" + frda.length());
-					valorMedio = frda.length()/2;
-					System.out.println("valorMedio" + valorMedio);
-					//it is more than the half
-					
-					if(region.getOffset() <= valorMedio){
-						//viewer.setVisibleRegion(0, valorMedio);
-						int ln = document.getLineOfOffset(region.getOffset());
-						viewer.setTopIndex(ln);
+						valorMedio = frda.length()/2;
+						System.out.println("valorMedio" + valorMedio);
+						//it is more than the half
+						System.out.println("6");					
+						System.out.println("region.Offset = "+region.getOffset());
+						System.out.println("region.Length = "+region.getLength());
+						
+						if(region.getOffset() <= valorMedio){
+							//viewer.setVisibleRegion(0, valorMedio);
+							int ln = document.getLineOfOffset(region.getOffset());
+							viewer.setTopIndex(ln);
+							System.out.println("Ln1a ====>"+ln);
+							System.out.println("7");
+						}
+						if(region.getOffset() > valorMedio){
+							//viewer.setVisibleRegion(valorMedio, valorMedio);
+							int ln = document.getLineOfOffset(region.getOffset());
+							viewer.setTopIndex(ln);
+							System.out.println("Ln1b ====>"+ln);
+							System.out.println("8");
+						}
+						int g = region.getOffset();
+						System.out.println("lista cantidad"+listValue.size());
+						listValue.add(f, new Integer(g));
+						System.out.println("Lo encontro");
+				}else{
+					if(wrap){
+								x = ((Integer)listValue.get(0)).intValue();
+								System.out.println("Valor de X ===> " + x);
+								System.out.println("**********Wrap**********");
+								
+								/*
+								offset = viewer.getTextWidget().getCaretOffset();
+								if(!forward){
+									Point pt = viewer.getSelectedRange();
+										if (pt.x != pt.y){
+												offset = pt.x - 1;
+										}
+								}
+								if (offset >= z)
+										offset = z - 1;
+								if (offset < 0)
+										offset = 0;
+								
+								region = frda.find(offset, find, forward, matchCase, wholeWord, regexp);
+								valorMedio = 0;
+								*/
+								
+								
+								viewer.setSelectedRange(x,y);
+								valorMedio = z/2;
+								if(x <= valorMedio){
+										System.out.println("x<=valorMedio");
+										int ln = document.getLineOfOffset(x);
+										System.out.println("Ln1 ====>"+ln);
+										viewer.setTopIndex(ln);
+								}
+								if(x > valorMedio){
+										System.out.println("x>valorMedio");
+										int ln = document.getLineOfOffset(x);
+										System.out.println("Ln2 ====>"+ln);
+										viewer.setTopIndex(ln);
+								}
+								System.out.println("Lo encontro de nuevo");
+							}
 					}
-					if(region.getOffset() > valorMedio){
-						//viewer.setVisibleRegion(valorMedio, valorMedio);
-						int ln = document.getLineOfOffset(region.getOffset());
-						viewer.setTopIndex(ln);
-					}
-					System.out.println("Lo encontro");
-				}
-				//else{
+					System.out.println("9");
+					//else{
 				    //mostrara todo el scope
 					//System.out.println("whole scope");		
 					//viewer.setVisibleRegion(0, frda.length());
-				//}
-				
-				// If find succeeded, enable Replace buttons.
-				// Otherwise, disable Replace buttons.
-				// We know find succeeded if region is not null
+					//}				
+			// If find succeeded, enable Replace buttons.
+			// Otherwise, disable Replace buttons.
+			// We know find succeeded if region is not null
 				enableReplaceButtons(region != null);
+				System.out.println("10");
 				
 			} catch (BadLocationException e){
 				// Ignore
@@ -206,7 +259,6 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		Composite text = new Composite(shell, SWT.NONE);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.setLayout(new GridLayout(3, true));
-
 		changableComponentList.add(text);
 
 		new Label(text, SWT.LEFT).setText("&Find:");
@@ -220,7 +272,7 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
 		replaceText.setLayoutData(data);
-
+		
 		// Add the match case checkbox
 		final Button match = new Button(text, SWT.CHECK);
 		match.setText("&Match Case");
@@ -239,6 +291,9 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 
 		final Button up = new Button(text, SWT.RADIO);
 		up.setText("&Up");
+		//wrap....
+		final Button wrap = new Button(text, SWT.CHECK);
+		wrap.setText("Wrap the &Search");
 
 		// Add the buttons
 		Composite buttons = new Composite(shell, SWT.NONE);
@@ -267,7 +322,7 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 				doReplace(replaceText.getText());
 				doFind(findText.getText(), down.getSelection(), match
 						.getSelection(), wholeWord.getSelection(), regexp
-						.getSelection());
+						.getSelection(),wrap.getSelection());
 			}
 		});
 
@@ -293,7 +348,7 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 			public void widgetSelected(SelectionEvent event) {
 				doFind(findText.getText(), down.getSelection(), match
 						.getSelection(), wholeWord.getSelection(), regexp
-						.getSelection());
+						.getSelection(), wrap.getSelection());
 			}
 		});
 
