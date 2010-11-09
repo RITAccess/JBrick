@@ -3,7 +3,6 @@ package com.jbricx.ui;
 /**
  * Notes : In order to read the status message in the status bar use insert + PgDn
  */
-
 import java.io.File;
 import java.io.IOException;
 
@@ -59,348 +58,340 @@ import com.jbricx.source.JBrickPartitionScanner;
 
 public class JBrickTabItem extends CTabItem implements JBrickObservable {
 
-	private CompositeRuler ruler;
-	private LineNumberRulerColumn lnrc;
-	// The partition scanner
-	private JBrickPartitionScanner scanner;
-	// Right Click Menu
-	private MenuManager menuManager;
-	// The undo manager
-	private IUndoManager undoManager;
-	// The viewer
-	private SourceViewer viewer;
-	// The current document
-	private PersistentDocument document;
+    private CompositeRuler ruler;
+    private LineNumberRulerColumn lnrc;
+    // The partition scanner
+    private JBrickPartitionScanner scanner;
+    // Right Click Menu
+    private MenuManager menuManager;
+    // The undo manager
+    private IUndoManager undoManager;
+    // The viewer
+    private SourceViewer viewer;
+    // The current document
+    private PersistentDocument document;
+    // error identifiers, images and colors
+    public static String ERROR_TYPE = "error.type";
+    public static Image ERROR_IMAGE;
+    public static final RGB ERROR_RGB = new RGB(255, 0, 0);
+    //amarillo
+    public static final RGB ERROR_RGB2 = new RGB(255, 255, 0);
+    // annotation model
+    public AnnotationModel fAnnotationModel = new AnnotationModel();
+    File file;
 
-	// error identifiers, images and colors
-	public static String ERROR_TYPE = "error.type";
-	public static Image ERROR_IMAGE;
-	public static final RGB ERROR_RGB = new RGB(255, 0, 0);
-	//amarillo
-	public static final RGB ERROR_RGB2 = new RGB(255, 255, 0);
+    /**
+     *
+     * @param parent
+     * @param style
+     * @param fileName
+     */
+    // public JBrickTabItem(CTabFolder parent, int style, String fileName) {
+    public JBrickTabItem(CTabFolder parent, int style, File file) {
+        super(parent, style);
+        this.file = file;
+        setUpDocument(file);
 
-	// annotation model
-	public AnnotationModel fAnnotationModel = new AnnotationModel();
 
-	File file;
+        ruler = new CompositeRuler(10);
+        lnrc = new LineNumberRulerColumn();
+        //lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
 
-	/**
-	 * 
-	 * @param parent
-	 * @param style
-	 * @param fileName
-	 */
-	// public JBrickTabItem(CTabFolder parent, int style, String fileName) {
-	public JBrickTabItem(CTabFolder parent, int style, File file) {
-		super(parent, style);
-		this.file = file;
-		setUpDocument(file);
-		
+        //System.out.println("number line color");
+        lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
+        ruler.addDecorator(0, lnrc);
 
-		ruler = new CompositeRuler(10);
-		lnrc = new LineNumberRulerColumn();
-		//lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
-		
-		System.out.println("number line color");
-		lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
-		ruler.addDecorator(0, lnrc);
+        // annotation ruler to view annotation
 
-		// annotation ruler to view annotation
+        ERROR_IMAGE = new Image(Display.getDefault(),
+                "src/images/error_ovr.gif");
 
-		ERROR_IMAGE = new Image(Display.getDefault(),
-				"src/images/error_ovr.gif");
+        IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
 
-		IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
+        ColorCache cc = new ColorCache();
 
-		ColorCache cc = new ColorCache();
+        // rulers
+        CompositeRuler fCompositeRuler = new CompositeRuler();
+        OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,
+                cc);
+        AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
+                fAnnotationModel, 16, fAnnotationAccess);
 
-		// rulers
-		CompositeRuler fCompositeRuler = new CompositeRuler();
-		OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12,
-				cc);
-		AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
-				fAnnotationModel, 16, fAnnotationAccess);
+        fCompositeRuler.setModel(fAnnotationModel);
+        fOverviewRuler.setModel(fAnnotationModel);
 
-		fCompositeRuler.setModel(fAnnotationModel);
-		fOverviewRuler.setModel(fAnnotationModel);
+        // annotation ruler is decorating the composite ruler
+        fCompositeRuler.addDecorator(0, annotationRuler);
 
-		// annotation ruler is decorating the composite ruler
-		fCompositeRuler.addDecorator(0, annotationRuler);
+        // add what types are show on the different rulers
+        annotationRuler.addAnnotationType(ERROR_TYPE);
+        fOverviewRuler.addAnnotationType(ERROR_TYPE);
+        fOverviewRuler.addHeaderAnnotationType(ERROR_TYPE);
 
-		// add what types are show on the different rulers
-		annotationRuler.addAnnotationType(ERROR_TYPE);
-		fOverviewRuler.addAnnotationType(ERROR_TYPE);
-		fOverviewRuler.addHeaderAnnotationType(ERROR_TYPE);
+        // set what layer this type is on
+        fOverviewRuler.setAnnotationTypeLayer(ERROR_TYPE, 3);
 
-		// set what layer this type is on
-		fOverviewRuler.setAnnotationTypeLayer(ERROR_TYPE, 3);
+        // set what color is used on the overview ruler for the type
+        fOverviewRuler.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(), ERROR_RGB));
 
-		// set what color is used on the overview ruler for the type
-		fOverviewRuler.setAnnotationTypeColor(ERROR_TYPE, new Color(Display
-				.getDefault(), ERROR_RGB));
+        // source viewer
+        viewer = new SourceViewer(parent, ruler, fOverviewRuler, true,
+                SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		// source viewer
-		viewer = new SourceViewer(parent, ruler, fOverviewRuler, true,
-				SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+        // Configure it and set the document
+        undoManager = new TextViewerUndoManager(100);
+        undoManager.connect(viewer);
 
-		// Configure it and set the document
-		undoManager = new TextViewerUndoManager(100);
-		undoManager.connect(viewer);
+        fAnnotationModel.connect(document);
+        viewer.setDocument(document, fAnnotationModel);
 
-		fAnnotationModel.connect(document);
-		viewer.setDocument(document, fAnnotationModel);
+        setControl(viewer.getControl());
+        viewer.configure(new JBrickEditorSourceViewerConfiguration());
 
-		setControl(viewer.getControl());
-		viewer.configure(new JBrickEditorSourceViewerConfiguration());
+        // hover manager that shows text when we hover
+        AnnotationBarHoverManager fAnnotationHoverManager = new AnnotationBarHoverManager(
+                fCompositeRuler, viewer, new AnnotationHover(),
+                new AnnotationConfiguration());
+        fAnnotationHoverManager.install(annotationRuler.getControl());
 
-		// hover manager that shows text when we hover
-		AnnotationBarHoverManager fAnnotationHoverManager = new AnnotationBarHoverManager(
-				fCompositeRuler, viewer, new AnnotationHover(),
-				new AnnotationConfiguration());
-		fAnnotationHoverManager.install(annotationRuler.getControl());
+        // to paint the annotations
+        AnnotationPainter ap = new AnnotationPainter(viewer, fAnnotationAccess);
+        ap.addAnnotationType(ERROR_TYPE);
+        //ap.addAnnotationType(ERROR_RGB2);
+        //ap.setAnnotationTypeColor(ERROR_RGB2, new Color(Display.getDefault(),ERROR_RGB2));
+        ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(), ERROR_RGB));
 
-		// to paint the annotations
-		AnnotationPainter ap = new AnnotationPainter(viewer, fAnnotationAccess);
-		ap.addAnnotationType(ERROR_TYPE);
-		//ap.addAnnotationType(ERROR_RGB2);
-		//ap.setAnnotationTypeColor(ERROR_RGB2, new Color(Display.getDefault(),ERROR_RGB2));
-		ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(),ERROR_RGB));
+        // this will draw the squigglies under the text
+        viewer.addPainter(ap);
 
-		// this will draw the squigglies under the text
-		viewer.addPainter(ap);
+        viewer.getTextWidget().addKeyListener(new KeyListener() {
 
-		viewer.getTextWidget().addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+                //System.out.println("keyPressed");
+                // TODO Auto-generated method stub
+            }
 
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				System.out.println("keyPressed");
-				// TODO Auto-generated method stub
-			}
+            @Override
+            public void keyReleased(KeyEvent arg0) {
+                // TODO Auto-generated method stub
+                //System.out.println("keyReleased");
+                JBrickEditor.getInstance().getMainWindow().setStatus(
+                        "Line: " + getCursorLocation());
 
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				System.out.println("keyReleased");
-				JBrickEditor.getInstance().getMainWindow().setStatus(
-						"Line: " + getCursorLocation());
+            }
+        });
+        // added
+        // inserted this as a fix to show the line numbers on moving the mouse
+        // read line numbers using insert+PgDn
+        viewer.getTextWidget().addMouseListener(new MouseListener() {
 
-			}
-		});
-		// added
-		// inserted this as a fix to show the line numbers on moving the mouse
-		// read line numbers using insert+PgDn
-		viewer.getTextWidget().addMouseListener(new MouseListener() {
+            @Override
+            public void mouseDoubleClick(MouseEvent arg0) {
+            }
 
-			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
-			}
+            @Override
+            public void mouseDown(MouseEvent arg0) {
+                //System.out.println("MouseDown");
+                JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
+            }
 
-			@Override
-			public void mouseDown(MouseEvent arg0) {
-				System.out.println("MouseDown");
-				JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
-			}
+            @Override
+            public void mouseUp(MouseEvent arg0) {
+                //System.out.println("MouseUp");
+                JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
+            }
+        });
 
-			@Override
-			public void mouseUp(MouseEvent arg0) {
-				System.out.println("MouseUp");
-				JBrickEditor.getInstance().getMainWindow().setStatus("Line: " + getCursorLocation());
-			}
+        // viewer;
 
-		});
+        // part of the observer pattern to update all registered object after
+        // changing preference
+        // page
+        JBrickEditor.registerObserver(this);
 
-		// viewer;
+        menuManager = createRightClickMenuManager(viewer.getTextWidget());
+        Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
+        viewer.getTextWidget().setMenu(menu);
 
-		// part of the observer pattern to update all registered object after
-		// changing preference
-		// page
-		JBrickEditor.registerObserver(this);
+        // viewer.GAP_SIZE = 1 ;
 
-		menuManager = createRightClickMenuManager(viewer.getTextWidget());
-		Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
-		viewer.getTextWidget().setMenu(menu);
+        // Menu manager initialize
+        menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
+        update();
 
-		// viewer.GAP_SIZE = 1 ;
-
-		// Menu manager initialize
-		menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-		update();
-
-	}
-
-	/**
-	 * Returns the offset of the given source viewer's document that corresponds
-	 * to the given widget offset or <code>-1</code> if there is no such offset.
-	 * 
-	 * @param viewer
-	 *            the source viewer
-	 * @param widgetOffset
-	 *            the widget offset
-	 * @return the corresponding offset in the source viewer's document or
-	 *         <code>-1</code>
-	 * @since 2.1
-	 */
-
-	public int getCursorLocation() {
-		System.out.println("getLocation.......");
-		int line = -1;
-		if (viewer != null && document != null) {
-			StyledText styledText = viewer.getTextWidget();
-			// int caret=
-			// viewer.widgetOffset2ModelOffset(styledText.getCaretOffset());
-			int caret = styledText.getCaretOffset();
-			// styledText.getCaretLine();
-			IDocument document = viewer.getDocument();
-			try {
-				line = document.getLineOfOffset(caret) + 1;
-			} catch (BadLocationException x) {
-
-			}
-		}
-
-		return line;
-
-	}
-
-	public void insertString(String inputString) {
-		System.out.print("registrando data: insertString");
-		if (viewer != null) {
-			String translatedString = inputString;
-			translatedString = translatedString.replace("\\=", "\r\n");
-			translatedString = translatedString.replace("\\>", "\r\n\t");
-			translatedString = translatedString.replace("\\<", "\r\n");
-			viewer.getTextWidget().insert(translatedString);
-		}
-
-	}
-
-	public void setFont(FontData[] fontData) {
-		System.out.print("setFont");
-		// Create the font
-		Font temp = new Font(this.getDisplay(), fontData);
-
-		// If creation succeeded, dispose the old font
-		/*
-		 * if (font != null) font.dispose();
-		 */
-		// Use the new font
-		this.getViewer().getTextWidget().setFont(temp);
-	}
-
-	public IUndoManager getUndoManager() {
-		return undoManager;
-	}
-
-	public void setWrap(boolean wrap) {
-		viewer.getTextWidget().setWordWrap(wrap);
-	}
-
-	public void setViewer(SourceViewer viewer) {
-		this.viewer = viewer;
-	}
-
-	public SourceViewer getViewer() {
-		return viewer;
-	}
-
-	public void setDocument(PersistentDocument document) {
-		this.document = document;
-	}
-
-	public PersistentDocument getDocument() {
-		return document;
-	}
-
-	protected void setUpDocument(File file) {
-		System.out.println("setUpDocument");
-		try {
-			// Create the document
-			document = new PersistentDocument();
-			if (file != null) {
-				System.out.println("file is not empty");
-				setText(file.getName());
-				document.setFileName(file.getPath());
-				document.open();
-			} else {
-				setText("New File");
-			}
-
-			// Create the partition scanner
-			scanner = new JBrickPartitionScanner();
-
-			// Create the partitioner
-			IDocumentPartitioner partitioner;
-			partitioner = new FastPartitioner(scanner,JBrickPartitionScanner.TYPES);
-
-			// Connect the partitioner and document
-			document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING,partitioner);
-			partitioner.connect(document);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), ":)", 1);
-		}
-	}
-
-	protected MenuManager createRightClickMenuManager(Composite parent) {
-		MenuManager rightMenuBar = new MenuManager();
-		rightMenuBar.add(new com.jbricx.actions.UndoAction());
-		rightMenuBar.add(new com.jbricx.actions.RedoAction());
-		rightMenuBar.add(new Separator());
-		rightMenuBar.add(new com.jbricx.actions.CutAction());
-		rightMenuBar.add(new com.jbricx.actions.CopyAction());
-		rightMenuBar.add(new com.jbricx.actions.PasteAction());
-		rightMenuBar.add(new Separator());
-		rightMenuBar.add(new com.jbricx.actions.SelectAllAction());
-		Menu menu = rightMenuBar.createContextMenu(parent);
-		// Right Click Attach
-		parent.setMenu(menu);
-		return rightMenuBar;
-	}
-
-	class ColorCache implements ISharedTextColors {
-		public Color getColor(RGB rgb) {
-			return new Color(Display.getDefault(), rgb);
-		}
-
-		public void dispose() {
-		}
-	}
-
-	@Override
-	public void update() {
-		System.out.println("Update");
-		// TODO Auto-generated method stub
-		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
-
-		RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
-		RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
-
-		String fontProp = store.getString(FileExtensionConstants.FONT);
-		if (fontProp.length() > 0) { /* Check if the font is available */
-			FontData[] fd = new FontData[1];
-			fd[0] = new FontData(fontProp);
-			this.setFont(fd);
-		}
-		if (bgRBG != fgRBG) {/* Check if the colors are available */
-			
-			
-			Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
-					.getDisplay(), bgRBG);
-			
-			// Color fgColor = new
-			// Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
-			viewer.getTextWidget().setBackground(bgColor);
-			// Notes ; fore color will be changed though jbrickcode scanner and
-			// colormanager
-			// viewer.setTextColor(fgColor);
-		}
-		// viewer.refresh() ;	
-	}
-
-  public String getFilename() {
-    if (file == null) {
-      return null;
     }
-    return this.file.getAbsolutePath();
-  }
 
+    /**
+     * Returns the offset of the given source viewer's document that corresponds
+     * to the given widget offset or <code>-1</code> if there is no such offset.
+     *
+     * @param viewer
+     *            the source viewer
+     * @param widgetOffset
+     *            the widget offset
+     * @return the corresponding offset in the source viewer's document or
+     *         <code>-1</code>
+     * @since 2.1
+     */
+    public int getCursorLocation() {
+        //System.out.println("getLocation.......");
+        int line = -1;
+        if (viewer != null && document != null) {
+            StyledText styledText = viewer.getTextWidget();
+            // int caret=
+            // viewer.widgetOffset2ModelOffset(styledText.getCaretOffset());
+            int caret = styledText.getCaretOffset();
+            // styledText.getCaretLine();
+            IDocument document = viewer.getDocument();
+            try {
+                line = document.getLineOfOffset(caret) + 1;
+            } catch (BadLocationException x) {
+            }
+        }
+
+        return line;
+
+    }
+
+    public void insertString(String inputString) {
+        //System.out.print("registrando data: insertString");
+        if (viewer != null) {
+            String translatedString = inputString;
+            translatedString = translatedString.replace("\\=", "\r\n");
+            translatedString = translatedString.replace("\\>", "\r\n\t");
+            translatedString = translatedString.replace("\\<", "\r\n");
+            viewer.getTextWidget().insert(translatedString);
+        }
+
+    }
+
+    public void setFont(FontData[] fontData) {
+        //System.out.print("setFont");
+        // Create the font
+        Font temp = new Font(this.getDisplay(), fontData);
+
+        // If creation succeeded, dispose the old font
+		/*
+         * if (font != null) font.dispose();
+         */
+        // Use the new font
+        this.getViewer().getTextWidget().setFont(temp);
+    }
+
+    public IUndoManager getUndoManager() {
+        return undoManager;
+    }
+
+    public void setWrap(boolean wrap) {
+        viewer.getTextWidget().setWordWrap(wrap);
+    }
+
+    public void setViewer(SourceViewer viewer) {
+        this.viewer = viewer;
+    }
+
+    public SourceViewer getViewer() {
+        return viewer;
+    }
+
+    public void setDocument(PersistentDocument document) {
+        this.document = document;
+    }
+
+    public PersistentDocument getDocument() {
+        return document;
+    }
+
+    protected void setUpDocument(File file) {
+        //System.out.println("setUpDocument");
+        try {
+            // Create the document
+            document = new PersistentDocument();
+            if (file != null) {
+                //System.out.println("file is not empty");
+                setText(file.getName());
+                document.setFileName(file.getPath());
+                document.open();
+            } else {
+                setText("New File");
+            }
+
+            // Create the partition scanner
+            scanner = new JBrickPartitionScanner();
+
+            // Create the partitioner
+            IDocumentPartitioner partitioner;
+            partitioner = new FastPartitioner(scanner, JBrickPartitionScanner.TYPES);
+
+            // Connect the partitioner and document
+            document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING, partitioner);
+            partitioner.connect(document);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), ":)", 1);
+        }
+    }
+
+    protected MenuManager createRightClickMenuManager(Composite parent) {
+        MenuManager rightMenuBar = new MenuManager();
+        rightMenuBar.add(new com.jbricx.actions.UndoAction());
+        rightMenuBar.add(new com.jbricx.actions.RedoAction());
+        rightMenuBar.add(new Separator());
+        rightMenuBar.add(new com.jbricx.actions.CutAction());
+        rightMenuBar.add(new com.jbricx.actions.CopyAction());
+        rightMenuBar.add(new com.jbricx.actions.PasteAction());
+        rightMenuBar.add(new Separator());
+        rightMenuBar.add(new com.jbricx.actions.SelectAllAction());
+        Menu menu = rightMenuBar.createContextMenu(parent);
+        // Right Click Attach
+        parent.setMenu(menu);
+        return rightMenuBar;
+    }
+
+    class ColorCache implements ISharedTextColors {
+
+        public Color getColor(RGB rgb) {
+            return new Color(Display.getDefault(), rgb);
+        }
+
+        public void dispose() {
+        }
+    }
+
+    @Override
+    public void update() {
+        //System.out.println("Update");
+        // TODO Auto-generated method stub
+        PreferenceStore store = JBrickEditor.getInstance().getPreferences();
+
+        RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
+        RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
+
+        String fontProp = store.getString(FileExtensionConstants.FONT);
+        if (fontProp.length() > 0) { /* Check if the font is available */
+            FontData[] fd = new FontData[1];
+            fd[0] = new FontData(fontProp);
+            this.setFont(fd);
+        }
+        if (bgRBG != fgRBG) {/* Check if the colors are available */
+
+
+            Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell().getDisplay(), bgRBG);
+
+            // Color fgColor = new
+            // Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
+            viewer.getTextWidget().setBackground(bgColor);
+            // Notes ; fore color will be changed though jbrickcode scanner and
+            // colormanager
+            // viewer.setTextColor(fgColor);
+        }
+        // viewer.refresh() ;
+    }
+
+    public String getFilename() {
+        if (file == null) {
+            return null;
+        }
+        return this.file.getAbsolutePath();
+    }
 }

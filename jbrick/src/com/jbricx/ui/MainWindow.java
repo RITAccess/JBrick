@@ -50,8 +50,8 @@ public class MainWindow extends ApplicationWindow implements
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
 	private Font font;
-	public static FileExplorerTabItem explorer_1 = null; 
-	 
+	public static FileExplorerTabItem explorer_1 = null;
+
 
 	/*
 	 * // The undo manager private IUndoManager undoManager;
@@ -133,7 +133,7 @@ public class MainWindow extends ApplicationWindow implements
 		final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
 		final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
 		explorer_1 = explorer;
-		
+
 		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
 			public void handleEvent(Event e) {
@@ -158,7 +158,7 @@ public class MainWindow extends ApplicationWindow implements
 		final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
 		statusTabFolder.setMaximizeVisible(true);
 		System.out.println("cargando el contenido del explorador");
-		
+
 		statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL) {
 			@Override
 			protected IDocument getDocument() {
@@ -359,7 +359,7 @@ public class MainWindow extends ApplicationWindow implements
 					System.out.println("Error Saving Preferences: "
 							+ e.getMessage());
 				}
-				System.out.println(recentfiles);
+				//System.out.println(recentfiles);
 			}
 		}
 		return close;
@@ -437,7 +437,7 @@ public class MainWindow extends ApplicationWindow implements
 	}
 
 	public void saveFile(String filename) {
-		getTabFolder().save(filename);
+		//getTabFolder().save(filename);
 	}
 
 	public JBrickEditorTabFolder getTabFolder() {
@@ -455,11 +455,11 @@ public class MainWindow extends ApplicationWindow implements
 	public void refreshCurrentTabItem(){
 		int selectedIndex = getCurrentTabIndex();
 		CTabItem tabItems[] = tabFolder.getItems();
-		
+
 		int valor = tabItems.length;
 		String valor2 =String.valueOf(valor);
 		System.out.println("refresh refreshCurrentTabItem = " + valor2);
-		
+
 		for (CTabItem tbItem : tabItems) {
 			System.out.println(":tabItems:");
 			if (tbItem != null) {
@@ -473,26 +473,26 @@ public class MainWindow extends ApplicationWindow implements
 				if (currentSaveString != null) {
 					openFile(currentSaveString);
 					System.out.println("openFile");
-					
+
 				} else {
 					openNewFile();
 					System.out.println("openNewFile");
 				}
 				tabItem = getCurrentTabItem();
 				tabItem.getViewer().getTextWidget().setText(currentString);
-				
-				
+
+
 			}
 		}
 		if (0 <= selectedIndex){
 			tabFolder.setSelection(selectedIndex);
 		}
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		/*final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
 		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
@@ -506,7 +506,7 @@ public class MainWindow extends ApplicationWindow implements
 			}
 		});*/
 	}
-	
+
 	public void refresh_2() {
 		System.out.println("refresh_2");
 		explorer_1.refreshView();

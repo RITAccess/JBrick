@@ -3,10 +3,10 @@ package com.jbricx.ui;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import java.io.File;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -14,115 +14,147 @@ import org.eclipse.swt.widgets.Shell;
  * file already exists, the user is asked to confirm before overwriting.
  */
 public class SafeSaveDialog {
-	// The wrapped FileDialog
+    // The wrapped FileDialog
 
-	private FileDialog dlg;
+    private FileDialog dlg;
+    private Shell mainShell;
 
-	/**
-	 * SafeSaveDialog constructor
-	 *
-	 * @param shell the parent shell
-	 */
-	public SafeSaveDialog(Shell shell) {
-		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
-		String workspacePath = store.getString(FileExtensionConstants.WRKSPC);
+    /**
+     * SafeSaveDialog constructor
+     *
+     * @param shell the parent shell
+     */
+    public SafeSaveDialog(Shell shell) {
+        PreferenceStore store = JBrickEditor.getInstance().getPreferences();
+        String workspacePath = store.getString(FileExtensionConstants.WRKSPC);
 
-		dlg = new FileDialog(shell, SWT.SAVE);
-		dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-		dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-		dlg.setFilterPath(workspacePath);
-	}
+        mainShell = shell;
 
-	public String open() {
-		// We store the selected file name in fileName
-		String fileName = null;
+        dlg = new FileDialog(shell, SWT.SAVE);
+        dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
+        dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
+        dlg.setFilterPath(workspacePath);
+    }
 
-		// The user has finished when one of the
-		// following happens:
-		// 1) The user dismisses the dialog by pressing Cancel
-		// 2) The selected file name does not exist
-		// 3) The user agrees to overwrite existing file
-		boolean done = false;
+    public String open() {
+        // We store the selected file name in fileName
+        String fileName = null;
 
-		while (!done) {
-			// Open the File Dialog
-			fileName = dlg.open();
-			if (fileName == null) {
-				// User has cancelled, so quit and return
-				done = true;
-			} else {
-				// User has selected a file; see if it already exists
-				File file = new File(fileName);
-				if (file.exists()) {
-					// The file already exists; asks for confirmation
-					MessageBox mb = new MessageBox(dlg.getParent(), SWT.ICON_WARNING
-							| SWT.YES | SWT.NO);
+        /* The user has finished when one of the following happens:
+         * The user may provide a new file name or an existing filename
+         * In case user selects an existing file:
+         * case 1: the selected is also open in editor
+         * consequence: do not allow to overwrite such file (else we will end
+         *              up with two files with same file path in the editor
+         * case 2: the selected file is not open in editor
+         * consequence: ask the user for confirmation on over writing
+         *
+         */
+        boolean done = false;
 
-					// We really should read this string from a
-					// resource bundle
-					mb.setMessage(fileName + " already exists. Do you want to replace it?");
+        while (!done) {
+            // Open the File Dialog
+            fileName = dlg.open();
+            if (fileName == null) {
+                // User has cancelled, so quit and return
+                done = true;
+            } else {
+                // User has selected a file; see if it already exists
+                File file = new File(fileName);
+                JBrickEditorTabFolder tabfolder = JBrickEditor.getInstance().getMainWindow().getTabFolder();
+                JBrickTabItem tabItem = null;
 
-					// If they click Yes, we're done and we drop out. If
-					// they click No, we redisplay the File Dialog
-					done = mb.open() == SWT.YES;
-				} else {
-					// File does not exist, so drop out
-					done = true;
-				}
-			}
-		}
-		return fileName;
-	}
+                if (file.exists()) {
+                    // do not allow the user to specify the an existing file
 
-	public String getFileName() {
-		return dlg.getFileName();
-	}
+                    boolean isAlreadyOpen = false;
+                    int tabCount = tabfolder.getItems().length;
 
-	public String[] getFileNames() {
-		return dlg.getFileNames();
-	}
+                    for (int i = 0; i < tabCount; i++) {
+                        tabItem = tabfolder.getItem(i);
 
-	public String[] getFilterExtensions() {
-		return dlg.getFilterExtensions();
-	}
+                        // check if the file exists in the list of opened file
+                        if (fileName.equals(tabItem.getFilename())) {
+                            tabfolder.setSelection(tabItem);
+                            isAlreadyOpen = true;
 
-	public String[] getFilterNames() {
-		return dlg.getFilterNames();
-	}
+                            break;
+                        }
+                    }
 
-	public String getFilterPath() {
-		return dlg.getFilterPath();
-	}
+                    if (isAlreadyOpen) {
+                        //JBrickTabItem newTabItem = new JBrickTabItem(tabfolder, SWT.CLOSE, new File(fileName));
+                        tabfolder.setSelection(tabItem);
+                        MessageDialog.openWarning(mainShell, fileName + " is already in editor!",
+                                "The file you have selected is already in the editor. Please specify a different name!");
+                        fileName = null;
+                    } else { // The file already exists; ask for overwrite confirmation
+                        // TODO: We really should read this string from a resource bundle
+                        boolean overwrite = MessageDialog.openQuestion(mainShell, "Confirm over write", fileName + " already exists. Do you want to replace it?");
 
-	public void setFileName(String string) {
-		dlg.setFileName(string);
-	}
+                        if (!overwrite) {
+                            fileName = null;
+                        }
+                        done = true;
+                    }
+                } else {
+                    // File does not exist, so drop out
+                    done = true;
+                }
+            }
+        }
+        return fileName;
+    }
 
-	public void setFilterExtensions(String[] extensions) {
-		dlg.setFilterExtensions(extensions);
-	}
+    public String getFileName() {
+        return dlg.getFileName();
+    }
 
-	public void setFilterNames(String[] names) {
-		dlg.setFilterNames(names);
-	}
+    public String[] getFileNames() {
+        return dlg.getFileNames();
+    }
 
-	public void setFilterPath(String string) {
-		dlg.setFilterPath(string);
-	}
+    public String[] getFilterExtensions() {
+        return dlg.getFilterExtensions();
+    }
 
-	public Shell getParent() {
-		return dlg.getParent();
-	}
+    public String[] getFilterNames() {
+        return dlg.getFilterNames();
+    }
 
-	public int getStyle() {
-		return dlg.getStyle();
-	}
+    public String getFilterPath() {
+        return dlg.getFilterPath();
+    }
 
-	public String getText() {
-		return dlg.getText();
-	}
+    public void setFileName(String string) {
+        dlg.setFileName(string);
+    }
 
-	public void setText(String string) {
-		dlg.setText(string);
-	}
+    public void setFilterExtensions(String[] extensions) {
+        dlg.setFilterExtensions(extensions);
+    }
+
+    public void setFilterNames(String[] names) {
+        dlg.setFilterNames(names);
+    }
+
+    public void setFilterPath(String string) {
+        dlg.setFilterPath(string);
+    }
+
+    public Shell getParent() {
+        return dlg.getParent();
+    }
+
+    public int getStyle() {
+        return dlg.getStyle();
+    }
+
+    public String getText() {
+        return dlg.getText();
+    }
+
+    public void setText(String string) {
+        dlg.setText(string);
+    }
 }

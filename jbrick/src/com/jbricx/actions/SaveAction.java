@@ -5,6 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.MainWindow;
 
 /**
  * This action class responds to requests to save a file
@@ -25,11 +26,13 @@ public class SaveAction extends Action {
     /**
      * Saves the file
      */
+    @Override
     public void run() {
-        JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
+        MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
+        mainWindow.setStatus("Saving File . . .");
         ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
 
-        if (JBrickEditor.getInstance().getMainWindow().isAutoCompile() == true) {
+        if (mainWindow.isAutoCompile() == true) {
             CompileAction compileAction = new CompileAction();
             compileAction.run();
         }
