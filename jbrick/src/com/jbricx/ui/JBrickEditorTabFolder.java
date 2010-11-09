@@ -170,7 +170,6 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
             if (filepath.equals(tabItem.getFilename())) {
                 // so the file is already opened in one of the tab
                 this.setSelection(tabItem);
-
                 isAlreadyOpen = true;
                 break;
             }

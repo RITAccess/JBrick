@@ -2,7 +2,6 @@ package com.jbricx.ui.piano;
 
 //import java.awt.Color;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.eclipse.swt.layout.FillLayout;
@@ -27,40 +26,34 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.internal.win32.KEYBDINPUT;
 import org.eclipse.swt.SWT;
 
 import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.NXTManager;
-import com.jbricx.communications.WindowsNXTBrick;
-import com.jbricx.communications.NXT.ConnectionType;
-import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
 
-
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
+ * This code was edited or generated using CloudGarden's Jigloo
+ * SWT/Swing GUI Builder, which is free for non-commercial
+ * use. If Jigloo is being used commercially (ie, by a corporation,
+ * company or business for any purpose whatever) then you
+ * should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details.
+ * Use of Jigloo implies acceptance of these licensing terms.
+ * A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+ * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+ * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 public class PianoComposite extends org.eclipse.swt.widgets.Composite {
+
 	private Label label1;
 	private Label label11;
 	private Button onebysixteen;
@@ -96,56 +89,47 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	private Group length;
 	private Button rest;
 	private Label transpose_label;
-	
 	private Scale transpose;
 	private static Shell shell;
 	private static Display display;
-
-	
 	private ArrayList<Label> whiteKeysArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeysArray = new ArrayList<Label>();
-	
 	private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
 	private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
-	
-	private static final boolean  USE_BRICK = true;
-	
-	
+	private static final boolean USE_BRICK = true;
 	private static AbstractNXTBrick nxt;
-	
 	private static PianoComposite myPianoComp;
-	
 	private KeyListener pianoKeyListener = new KeyListener() {
-		
+
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			pianoKeyPressed(arg0.character, false);	
+			pianoKeyPressed(arg0.character, false);
 		}
-		
+
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			pianoKeyPressed(arg0.character, true);
 		}
 	};
-	
+
 	/**
-	* Auto-generated main method to display this 
-	* org.eclipse.swt.widgets.Composite inside a new Shell.
-	*/
+	 * Auto-generated main method to display this
+	 * org.eclipse.swt.widgets.Composite inside a new Shell.
+	 */
 	public static void main(String[] args) {
 		showGUI();
 	}
-	
+
 	/**
-	* Overriding checkSubclass allows this class to extend org.eclipse.swt.widgets.Composite
-	*/	
+	 * Overriding checkSubclass allows this class to extend org.eclipse.swt.widgets.Composite
+	 */
 	protected void checkSubclass() {
 	}
-	
+
 	/**
-	* Auto-generated method to display this 
-	* org.eclipse.swt.widgets.Composite inside a new Shell.
-	*/
+	 * Auto-generated method to display this
+	 * org.eclipse.swt.widgets.Composite inside a new Shell.
+	 */
 	public static void showGUI() {
 		display = Display.getDefault();
 		shell = new Shell(display);
@@ -153,32 +137,33 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
 		shell.layout();
-		if(size.x == 0 && size.y == 0) {
+		if (size.x == 0 && size.y == 0) {
 			inst.pack();
 			shell.pack();
 		} else {
 			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
-			shell.setSize(shellBounds.width+10, shellBounds.height+10);
+			shell.setSize(shellBounds.width + 10, shellBounds.height + 10);
 		}
-		
+
 		shell.open();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
 	}
 
 	public PianoComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
 		initGUI();
-		
+
 	}
 
 	private void initGUI() {
-		
+
 		myPianoComp = this;
-		
-		if (USE_BRICK){
+
+		if (USE_BRICK) {
 			try {
 				nxt = NXTManager.connect("brick1", FindBrickFileIO.getCT());
 				nxt.playTone(2000, 300);
@@ -199,23 +184,23 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				}
 			} catch (NXTNotFoundException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			} catch (UnableToCreateNXTException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
-			
+
 		}
-		
+
 		try {
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
-		
+
 			{
 				help = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData helpLData = new FormData();
-				helpLData.left =  new FormAttachment(0, 1000, 580);
-				helpLData.top =  new FormAttachment(0, 1000, 384);
+				helpLData.left = new FormAttachment(0, 1000, 580);
+				helpLData.top = new FormAttachment(0, 1000, 384);
 				helpLData.width = 100;
 				helpLData.height = 27;
 				help.setLayoutData(helpLData);
@@ -226,8 +211,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				save = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData saveLData = new FormData();
-				saveLData.left =  new FormAttachment(0, 1000, 580);
-				saveLData.top =  new FormAttachment(0, 1000, 332);
+				saveLData.left = new FormAttachment(0, 1000, 580);
+				saveLData.top = new FormAttachment(0, 1000, 332);
 				saveLData.width = 100;
 				saveLData.height = 30;
 				save.setLayoutData(saveLData);
@@ -237,8 +222,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				play = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData playLData = new FormData();
-				playLData.left =  new FormAttachment(0, 1000, 450);
-				playLData.top =  new FormAttachment(0, 1000, 332);
+				playLData.left = new FormAttachment(0, 1000, 450);
+				playLData.top = new FormAttachment(0, 1000, 332);
 				playLData.width = 107;
 				playLData.height = 30;
 				play.setLayoutData(playLData);
@@ -248,8 +233,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				copy = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData copyLData = new FormData();
-				copyLData.left =  new FormAttachment(0, 1000, 580);
-				copyLData.top =  new FormAttachment(0, 1000, 280);
+				copyLData.left = new FormAttachment(0, 1000, 580);
+				copyLData.top = new FormAttachment(0, 1000, 280);
 				copyLData.width = 100;
 				copyLData.height = 31;
 				copy.setLayoutData(copyLData);
@@ -259,8 +244,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				clear = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData clearLData = new FormData();
-				clearLData.left =  new FormAttachment(0, 1000, 450);
-				clearLData.top =  new FormAttachment(0, 1000, 280);
+				clearLData.left = new FormAttachment(0, 1000, 450);
+				clearLData.top = new FormAttachment(0, 1000, 280);
 				clearLData.width = 107;
 				clearLData.height = 31;
 				clear.setLayoutData(clearLData);
@@ -273,8 +258,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				lengthLayout.makeColumnsEqualWidth = true;
 				length.setLayout(lengthLayout);
 				FormData lengthLData = new FormData();
-				lengthLData.left =  new FormAttachment(0, 1000, 124);
-				lengthLData.top =  new FormAttachment(0, 1000, 270);
+				lengthLData.left = new FormAttachment(0, 1000, 124);
+				lengthLData.top = new FormAttachment(0, 1000, 270);
 				lengthLData.width = 80;
 				lengthLData.height = 110;
 				length.setLayoutData(lengthLData);
@@ -285,12 +270,13 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					onebyone.setLayoutData(onebyoneLData);
 					onebyone.setText("1/1");
 					onebyone.addSelectionListener(new SelectionAdapter() {
+
 						public void widgetSelected(SelectionEvent evt) {
 							noteLengthDiv = 1;
 						}
 					});
 					onebyone.addKeyListener(pianoKeyListener);
-					
+
 				}
 				{
 					onebytwo = new Button(length, SWT.RADIO | SWT.LEFT);
@@ -298,6 +284,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					onebytwo.setLayoutData(onebytwoLData);
 					onebytwo.setText("1/2");
 					onebytwo.addSelectionListener(new SelectionAdapter() {
+
 						public void widgetSelected(SelectionEvent evt) {
 							noteLengthDiv = 2;
 						}
@@ -311,6 +298,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					onebyfour.setText("1/4");
 					onebyfour.setSelection(true);
 					onebyfour.addSelectionListener(new SelectionAdapter() {
+
 						public void widgetSelected(SelectionEvent evt) {
 							noteLengthDiv = 4;
 						}
@@ -323,6 +311,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					onebyeight.setLayoutData(onebytwoLData);
 					onebyeight.setText("1/8");
 					onebyeight.addSelectionListener(new SelectionAdapter() {
+
 						public void widgetSelected(SelectionEvent evt) {
 							noteLengthDiv = 8;
 						}
@@ -335,6 +324,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 					onebysixteen.setLayoutData(onebysixteenLData);
 					onebysixteen.setText("1/16");
 					onebysixteen.addSelectionListener(new SelectionAdapter() {
+
 						public void widgetSelected(SelectionEvent evt) {
 							noteLengthDiv = 16;
 						}
@@ -345,8 +335,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			{
 				rest = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData restLData = new FormData();
-				restLData.left =  new FormAttachment(0, 1000, 32);
-				restLData.top =  new FormAttachment(0, 1000, 276);
+				restLData.left = new FormAttachment(0, 1000, 32);
+				restLData.top = new FormAttachment(0, 1000, 276);
 				restLData.width = 50;
 				restLData.height = 80;
 				rest.setLayoutData(restLData);
@@ -359,19 +349,19 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				transpose_labelLData.width = 98;
 				transpose_labelLData.height = 22;
 				//transpose_labelLData.right =  new FormAttachment(1000, 1000, -580);
-				transpose_labelLData.left =  new FormAttachment(0, 1000, 32);
-				transpose_labelLData.top =  new FormAttachment(0, 1000, 200);
+				transpose_labelLData.left = new FormAttachment(0, 1000, 32);
+				transpose_labelLData.top = new FormAttachment(0, 1000, 200);
 				transpose_label.setLayoutData(transpose_labelLData);
 				transpose_label.setText("Transpose");
 				transpose_label.addKeyListener(pianoKeyListener);
 			}
-			
-			
-			
+
+
+
 			{
 				FormData transposeLData = new FormData();
-				transposeLData.left =  new FormAttachment(0, 1000, 32);
-				transposeLData.top =  new FormAttachment(0, 1000, 225);
+				transposeLData.left = new FormAttachment(0, 1000, 32);
+				transposeLData.top = new FormAttachment(0, 1000, 225);
 				transposeLData.width = 652;
 				transposeLData.height = 34;
 				transpose = new Scale(this, SWT.NONE);
@@ -381,44 +371,50 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				transpose.setSelection(3);
 				transpose.setLayoutData(transposeLData);
 				transpose.addSelectionListener(new SelectionListener() {
+
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
 						transposeMult = transpose.getSelection();
 					}
+
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
 					}
 				});
 				transpose.addKeyListener(pianoKeyListener);
 			}
-			
-			
-			
-			
-			
+
+
+
+
+
 			Label myLabel;
 			int leftValue = 64;
-			
-			for(int x=0;x<13;x++){
-				if(x==3||x==6||x==10){
+
+			for (int x = 0; x < 13; x++) {
+				if (x == 3 || x == 6 || x == 10) {
 					blackKeysArray.add(x, null);
-				}else{
+				} else {
 					myLabel = new Label(this, SWT.NONE);
 					myLabel.setText("label1");
 					final int keyId = x;
 					FormData label1LData = new FormData();
-					label1LData.left =  new FormAttachment(0, 1000, leftValue);
-					label1LData.top =  new FormAttachment(0, 1000, 41);
+					label1LData.left = new FormAttachment(0, 1000, leftValue);
+					label1LData.top = new FormAttachment(0, 1000, 41);
 					label1LData.width = 28;
 					label1LData.height = 94;
 					myLabel.setLayoutData(label1LData);
-					myLabel.addMouseListener(new MouseListener(){
+					myLabel.addMouseListener(new MouseListener() {
+
 						@Override
-						public void mouseDoubleClick(MouseEvent arg0) {}
+						public void mouseDoubleClick(MouseEvent arg0) {
+						}
+
 						@Override
 						public void mouseUp(MouseEvent arg0) {
 							pianoClicked(false, keyId, false);
 						}
+
 						@Override
 						public void mouseDown(MouseEvent arg0) {
 							pianoClicked(false, keyId, true);
@@ -429,26 +425,30 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				}
 				leftValue += 46;
 			}
-			
+
 			leftValue = 32;
-			for(int x=0;x<14;x++){
-				
+			for (int x = 0; x < 14; x++) {
+
 				myLabel = new Label(this, SWT.NONE);
 				myLabel.setText("label1");
-				final int keyId = x; 
+				final int keyId = x;
 				FormData label1LData = new FormData();
-				label1LData.left =  new FormAttachment(0, 1000, leftValue);
-				label1LData.top =  new FormAttachment(0, 1000, 41);
+				label1LData.left = new FormAttachment(0, 1000, leftValue);
+				label1LData.top = new FormAttachment(0, 1000, 41);
 				label1LData.width = 47;
 				label1LData.height = 138;
 				myLabel.setLayoutData(label1LData);
-				myLabel.addMouseListener(new MouseListener(){
+				myLabel.addMouseListener(new MouseListener() {
+
 					@Override
-					public void mouseDoubleClick(MouseEvent arg0) {}
+					public void mouseDoubleClick(MouseEvent arg0) {
+					}
+
 					@Override
 					public void mouseUp(MouseEvent arg0) {
 						pianoClicked(true, keyId, false);
 					}
+
 					@Override
 					public void mouseDown(MouseEvent arg0) {
 						pianoClicked(true, keyId, true);
@@ -458,108 +458,132 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 				whiteKeysArray.add(x, myLabel);
 				leftValue += 46;
 			}
-			
-			
+
+
 			this.layout();
 			pack();
-			
+
 			buildKeyLabels();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.addKeyListener(pianoKeyListener);
-		
-		
+
+
 	}
-	
 	int noteLengthDiv = 4;
 	int transposeMult = 3;
 	int toneDuration = 1000;
-	
-	protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown){
-		
-		if(isDown){
-			
+
+	protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
+
+		if (isDown) {
+
 			double toneFreq = 0;
 			boolean toneDouble = false;
 			int toneId = keyId;
-			
-			if(whiteKeys){
+
+			if (whiteKeys) {
 				System.out.println("White Key: " + keyId);
-				if(toneId > 6){
+				if (toneId > 6) {
 					toneId -= 7;
 					toneDouble = true;
 				}
-				switch(toneId){
+				switch (toneId) {
 					//F
-					case 0: toneFreq = 43.65;break;
+					case 0:
+						toneFreq = 43.65;
+						break;
 					//G
-					case 1: toneFreq = 48.99;break;
+					case 1:
+						toneFreq = 48.99;
+						break;
 					//A
-					case 2: toneFreq = 55;break;
+					case 2:
+						toneFreq = 55;
+						break;
 					//B
-					case 3: toneFreq = 61.74;break;
+					case 3:
+						toneFreq = 61.74;
+						break;
 					//C
-					case 4: toneFreq = 65.41;break;
+					case 4:
+						toneFreq = 65.41;
+						break;
 					//D
-					case 5: toneFreq = 73.42;break;
+					case 5:
+						toneFreq = 73.42;
+						break;
 					//E
-					case 6: toneFreq = 82.41;break;
+					case 6:
+						toneFreq = 82.41;
+						break;
 				}
-			}else{
+			} else {
 				System.out.println("Black Key: " + keyId);
-				if(toneId > 6){
+				if (toneId > 6) {
 					toneId -= 7;
 					toneDouble = true;
 				}
-				switch(toneId){
+				switch (toneId) {
 					//F#
-					case 0: toneFreq = 46.25;break;
+					case 0:
+						toneFreq = 46.25;
+						break;
 					//G#
-					case 1: toneFreq = 51.91;break;
+					case 1:
+						toneFreq = 51.91;
+						break;
 					//A#
-					case 2: toneFreq = 58.27;break;
+					case 2:
+						toneFreq = 58.27;
+						break;
 					//C#
-					case 4: toneFreq = 69.30;break;
+					case 4:
+						toneFreq = 69.30;
+						break;
 					//D#
-					case 5: toneFreq = 77.78;break;
-					
-					default: toneFreq = 0; 
+					case 5:
+						toneFreq = 77.78;
+						break;
+
+					default:
+						toneFreq = 0;
 				}
 			}
-			
-			if(toneDouble){
-				toneFreq = toneFreq*2;
+
+			if (toneDouble) {
+				toneFreq = toneFreq * 2;
 			}
-			
-			toneFreq *= transposeMult*2; 
-			
-			int toneToPlay = (int)Math.round(toneFreq);
-			
+
+			toneFreq *= transposeMult * 2;
+
+			int toneToPlay = (int) Math.round(toneFreq);
+
 			System.out.println("Playing Tone: " + toneToPlay);
-			
-			if(USE_BRICK)
-				nxt.playTone(toneToPlay, (int)Math.round(toneDuration/noteLengthDiv));
-			
+
+			if (USE_BRICK) {
+				nxt.playTone(toneToPlay, (int) Math.round(toneDuration / noteLengthDiv));
+			}
+
 			highlightKey(whiteKeys, keyId);
-		}else{
+		} else {
 			unHighlightKey(whiteKeys, keyId);
 		}
 	}
-	
-	
-	protected void pianoKeyPressed(char charIn, boolean isDown){
+
+	protected void pianoKeyPressed(char charIn, boolean isDown) {
 		charIn = Character.toLowerCase(charIn);
 		System.out.println("Key pressed: " + charIn);
-		
+
 		int keyId = -1;
 		boolean whiteKeys = true;
-		
-		
-		
-		switch(charIn){
+
+
+
+		switch (charIn) {
 			case 'q':
 				keyId = 0;
 				break;
@@ -596,177 +620,197 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			case ']':
 				keyId = 11;
 				break;
-				
-				
-			case '2':	
+
+
+			case '2':
 				keyId = 0;
 				whiteKeys = false;
 				break;
-			case '3':	
+			case '3':
 				keyId = 1;
 				whiteKeys = false;
 				break;
-			case '4':	
+			case '4':
 				keyId = 2;
 				whiteKeys = false;
 				break;
-			case '6':	
+			case '6':
 				keyId = 4;
 				whiteKeys = false;
 				break;
-			case '7':	
+			case '7':
 				keyId = 5;
 				whiteKeys = false;
 				break;
-			case '9':	
+			case '9':
 				keyId = 7;
 				whiteKeys = false;
 				break;
-			case '0':	
+			case '0':
 				keyId = 8;
 				whiteKeys = false;
 				break;
-			case '-':	
+			case '-':
 				keyId = 9;
 				whiteKeys = false;
 				break;
-			
-				
+
+
 		}
-		
-		if(keyId>-1){
+
+		if (keyId > -1) {
 			pianoClicked(whiteKeys, keyId, isDown);
 		}
-		
+
 	}
-	
-	protected void unHighlightKey(boolean whiteKeys, int keyId){
-		if(whiteKeys){
+
+	protected void unHighlightKey(boolean whiteKeys, int keyId) {
+		if (whiteKeys) {
 			whiteKeyLabelArray.get(keyId).moveBelow(whiteKeysArray.get(keyId));
-		}else{
+		} else {
 			blackKeyLabelsArray.get(keyId).moveBelow(blackKeysArray.get(keyId));
 		}
-			
+
 		this.layout();
 		pack();
 	}
-	
-	
-	protected void highlightKey(boolean whiteKeys, int keyId){
+
+	protected void highlightKey(boolean whiteKeys, int keyId) {
 
 		cleanKeys();
-		
-		if(whiteKeys){
+
+		if (whiteKeys) {
 			whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
-		}else{
+		} else {
 			blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
 		}
 		this.layout();
 		pack();
 	}
-	
-	private void buildKeyLabels(){
-		
-		for(int x=0; x<whiteKeysArray.size(); x++){
+
+	private void buildKeyLabels() {
+
+		for (int x = 0; x < whiteKeysArray.size(); x++) {
 			FormData label1LData = new FormData();
-			
-			label1LData.left =  new FormAttachment(0, 1000, whiteKeysArray.get(x).getLocation().x+15);
-			label1LData.top =  new FormAttachment(0, 1000, 140);
-			
+
+			label1LData.left = new FormAttachment(0, 1000, whiteKeysArray.get(x).getLocation().x + 15);
+			label1LData.top = new FormAttachment(0, 1000, 140);
+
 			Label myLabel = new Label(this, SWT.None);
 			myLabel.setLayoutData(label1LData);
-		
+
 			myLabel.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 			FontData[] fD = myLabel.getFont().getFontData();
 			fD[0].setHeight(18);
-			myLabel.setFont( new Font(Display.getCurrent(),fD[0]));
+			myLabel.setFont(new Font(Display.getCurrent(), fD[0]));
 			myLabel.setText(getKeyName(true, x));
 			whiteKeyLabelArray.add(x, myLabel);
 		}
-		
-		for(int x=0; x<blackKeysArray.size(); x++){
-			if(x==3||x==6||x==10){
+
+		for (int x = 0; x < blackKeysArray.size(); x++) {
+			if (x == 3 || x == 6 || x == 10) {
 				blackKeyLabelsArray.add(x, null);
-			}else{
+			} else {
 				FormData label1LData = new FormData();
-				
-				label1LData.left =  new FormAttachment(0, 1000, blackKeysArray.get(x).getLocation().x+1);
-				label1LData.top =  new FormAttachment(0, 1000, 100);
-				
+
+				label1LData.left = new FormAttachment(0, 1000, blackKeysArray.get(x).getLocation().x + 1);
+				label1LData.top = new FormAttachment(0, 1000, 100);
+
 				Label myLabel = new Label(this, SWT.None);
 				myLabel.setLayoutData(label1LData);
-			
+
 				myLabel.setBackground(new Color(Display.getCurrent(), 0, 0, 0));
 				myLabel.setForeground(new Color(Display.getCurrent(), 255, 255, 255));
-				
+
 				FontData[] fD = myLabel.getFont().getFontData();
 				fD[0].setHeight(16);
-				myLabel.setFont( new Font(Display.getCurrent(),fD[0]));
+				myLabel.setFont(new Font(Display.getCurrent(), fD[0]));
 				myLabel.setText(getKeyName(false, x));
 				blackKeyLabelsArray.add(x, myLabel);
 			}
 		}
-		
-		
+
+
 	}
-	
-	private String getKeyName(boolean whiteKeys, int keyId){
+
+	private String getKeyName(boolean whiteKeys, int keyId) {
 		String ret = "";
 		int toneId = keyId;
-			if(whiteKeys){
-				if(toneId > 6){
-					toneId -= 7;
-				}
-				switch(toneId){
-					//F
-					case 0: ret = "F"; break;
-					//G
-					case 1: ret = "G"; break;
-					//A
-					case 2: ret = "A"; break;
-					//B
-					case 3: ret = "B"; break;
-					//C
-					case 4: ret = "C"; break;
-					//D
-					case 5: ret = "D"; break;
-					//E
-					case 6: ret = "E"; break;
-				}
-			}else{
-				if(toneId > 6){
-					toneId -= 7;
-				}
-				switch(toneId){
-					//F#
-					case 0: ret = "F#"; break;
-					//G#
-					case 1: ret = "G#"; break;
-					//A#
-					case 2: ret = "A#"; break;
-					//C#
-					case 4: ret = "C#"; break;
-					//D#
-					case 5: ret = "D#"; break;
-				}
-		
+		if (whiteKeys) {
+			if (toneId > 6) {
+				toneId -= 7;
 			}
+			switch (toneId) {
+				//F
+				case 0:
+					ret = "F";
+					break;
+				//G
+				case 1:
+					ret = "G";
+					break;
+				//A
+				case 2:
+					ret = "A";
+					break;
+				//B
+				case 3:
+					ret = "B";
+					break;
+				//C
+				case 4:
+					ret = "C";
+					break;
+				//D
+				case 5:
+					ret = "D";
+					break;
+				//E
+				case 6:
+					ret = "E";
+					break;
+			}
+		} else {
+			if (toneId > 6) {
+				toneId -= 7;
+			}
+			switch (toneId) {
+				//F#
+				case 0:
+					ret = "F#";
+					break;
+				//G#
+				case 1:
+					ret = "G#";
+					break;
+				//A#
+				case 2:
+					ret = "A#";
+					break;
+				//C#
+				case 4:
+					ret = "C#";
+					break;
+				//D#
+				case 5:
+					ret = "D#";
+					break;
+			}
+
+		}
 		return ret;
 	}
-	
-	private void cleanKeys(){
-		for(int x=0; x<whiteKeysArray.size(); x++){
+
+	private void cleanKeys() {
+		for (int x = 0; x < whiteKeysArray.size(); x++) {
 			whiteKeyLabelArray.get(x).moveBelow(whiteKeysArray.get(x));
 		}
-		for(int x=0; x<blackKeysArray.size(); x++){
-			if(x==3||x==6||x==10){
-			}else{
+		for (int x = 0; x < blackKeysArray.size(); x++) {
+			if (x == 3 || x == 6 || x == 10) {
+			} else {
 				blackKeyLabelsArray.get(x).moveBelow(blackKeysArray.get(x));
 			}
 		}
-		
+
 	}
-	
-	
-	
 }

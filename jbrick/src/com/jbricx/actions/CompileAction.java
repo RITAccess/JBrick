@@ -19,6 +19,7 @@ import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.ui.JBrickTabItem;
+import com.jbricx.ui.MainWindow;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -40,26 +41,26 @@ public class CompileAction extends Action {
      * Shows an about box
      */
     public void run() {
-        PersistentDocument currDoc = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument();
-        if (currDoc.getFileName() == null) { /* Save before compiling */
-            MessageBox box = new MessageBox(JBrickEditor.getInstance().getMainWindow().getShell(), SWT.OK);
+        MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
+        JBrickTabItem curTabItem = mainWindow.getCurrentTabItem();
+        PersistentDocument currDoc = curTabItem.getDocument();
+
+        if (currDoc.getFileName() == null) { /* A new file so save before compiling */
+            MessageBox box = new MessageBox(mainWindow.getShell(), SWT.OK);
             box.setText("Compile");
             box.setMessage("Before compiling, you need to save the code to file");
-            int ret = box.open();
-            if (ret == SWT.OK) {
-                ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
-            }
-            File file = new File(currDoc.getFileName());
-            JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().setText(file.getName());
-        }
 
-        if (currDoc.isDirty()) {
+            if (box.open() == SWT.OK) {
+                ActionControlClass.saveFile(curTabItem, false);
+            }
+        } else if (currDoc.isDirty()) {
             try {
                 currDoc.save();
-                JBrickEditor.getInstance().getMainWindow().setStatus("Saving File . . .");
-            } catch (IOException e1) {
+                mainWindow.setStatus("Saving File . . .");
+            } catch (IOException e) {
+                mainWindow.setStatus("There was error while saving File . . .");
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                //e1.printStackTrace();
             }
         }
 
