@@ -44,14 +44,14 @@ public class CompileAction extends Action {
         MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
         JBrickTabItem curTabItem = mainWindow.getCurrentTabItem();
         PersistentDocument currDoc = curTabItem.getDocument();
-
+        
         if (currDoc.getFileName() == null) { /* A new file so save before compiling */
             MessageBox box = new MessageBox(mainWindow.getShell(), SWT.OK);
             box.setText("Compile");
             box.setMessage("Before compiling, you need to save the code to file");
 
             if (box.open() == SWT.OK) {
-                ActionControlClass.saveFile(curTabItem, false);
+                ActionControlClass.saveFile(curTabItem, false);                
             }
         } else if (currDoc.isDirty()) {
             try {

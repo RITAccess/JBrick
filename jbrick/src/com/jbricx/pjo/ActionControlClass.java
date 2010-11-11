@@ -16,7 +16,7 @@ public class ActionControlClass {
         String fileLocation = tabItem.getDocument().getFileName();
         MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
         Shell mainShell = tabItem.getParent().getShell();
-        
+
         boolean isNewFile = false;
         String filename = null;
 
@@ -27,7 +27,8 @@ public class ActionControlClass {
         }
 
         try {
-            filename = new File(fileLocation).getName(); // get just name of the file
+            File file = new File(fileLocation);
+            filename = file.getName(); // get just name of the file
             /*
              * trigger save only if changes have been made to editor or SaveAs
              * is perfomed or is a newly opened file
@@ -36,6 +37,7 @@ public class ActionControlClass {
                 tabItem.getDocument().setFileName(fileLocation);
                 tabItem.getDocument().save();
                 tabItem.setText(filename);// to show the filename in the tab
+                tabItem.setFile(file);
 
                 mainWindow.setStatus(filename + " save complete.");
                 //JBrickEditor.getInstance().getMainWindow().refresh_ 2();

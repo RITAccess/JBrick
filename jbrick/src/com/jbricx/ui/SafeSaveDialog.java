@@ -3,6 +3,7 @@ package com.jbricx.ui;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import java.io.File;
+import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
@@ -61,35 +62,19 @@ public class SafeSaveDialog {
             } else {
                 // User has selected a file; see if it already exists
                 File file = new File(fileName);
+
                 JBrickEditorTabFolder tabfolder = JBrickEditor.getInstance().getMainWindow().getTabFolder();
-                JBrickTabItem tabItem = null;
 
                 if (file.exists()) {
-                    // do not allow the user to specify the an existing file
+                    // do not allow the user to specify the an existing file if already open in editor
 
-                    boolean isAlreadyOpen = false;
-                    int tabCount = tabfolder.getItems().length;
-
-                    for (int i = 0; i < tabCount; i++) {
-                        tabItem = tabfolder.getItem(i);
-
-                        // check if the file exists in the list of opened file
-                        if (fileName.equals(tabItem.getFilename())) {
-                            tabfolder.setSelection(tabItem);
-                            isAlreadyOpen = true;
-
-                            break;
-                        }
-                    }
-
-                    if (isAlreadyOpen) {
-                        //JBrickTabItem newTabItem = new JBrickTabItem(tabfolder, SWT.CLOSE, new File(fileName));
-                        tabfolder.setSelection(tabItem);
+                    int tabIndex = tabfolder.contains(fileName);
+                    if (tabIndex != -1) { // check if the file is already open
+                        //tabfolder.setSelection(tabItem);
                         MessageDialog.openWarning(mainShell, fileName + " is already in editor!",
                                 "The file you have selected is already in the editor. Please specify a different name!");
                         fileName = null;
-                    } else { // The file already exists; ask for overwrite confirmation
-                        // TODO: We really should read this string from a resource bundle
+                    } else {
                         boolean overwrite = MessageDialog.openQuestion(mainShell, "Confirm over write", fileName + " already exists. Do you want to replace it?");
 
                         if (!overwrite) {
@@ -98,9 +83,10 @@ public class SafeSaveDialog {
                         done = true;
                     }
                 } else {
-                    // File does not exist, so drop out
                     done = true;
                 }
+                tabfolder.saveFile(fileName);
+                //tabfolder.
             }
         }
         return fileName;

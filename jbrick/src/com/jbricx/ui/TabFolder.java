@@ -30,4 +30,6 @@ public interface TabFolder {
     CTabItem[] getItems();
 
     int getSelectionIndex();
+
+    void saveFile(String filePath);
 }

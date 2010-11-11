@@ -31,6 +31,7 @@ import annotation.ColorCache;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
+import java.util.List;
 
 /**
  * @author byktol
@@ -38,40 +39,41 @@ import com.jbricx.preferences.TextPreferencePage;
 public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
     public LineNumberChangeRulerColumn lnrc;
-    //private final List<String> filenamesList;
+    private final List<String> filenamesList;
     private int newFileCount;
 
     public JBrickEditorTabFolder(final Composite parent, final int style) {
         super(parent, style);
-        //filenamesList = new ArrayList<String>();
+        filenamesList = new ArrayList<String>();
         newFileCount = 0;
 
         setMinimizeVisible(true);
         setMaximizeVisible(true);
+
         addCTabFolder2Listener(new CTabFolder2Adapter() {
 
             @Override
             public void close(CTabFolderEvent event) {
                 JBrickTabItem tabItem = (JBrickTabItem) event.item;
+
                 if (askCloseWithoutSaving(tabItem)) {
                     JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
 
                     try {
                         File file = new File(tabItem.getFilename());
-                        //filenamesList.remove(file.getName());
+                        filenamesList.remove(tabItem.getFilename());
                     } catch (NullPointerException ne) {
                         // the file has not been saved yet so ignore
                     }
                 } else {
                     event.doit = false;
                 }
+                filenamesList.remove(tabItem.getFilename());
             }
         });
 
         /* Construction time */
         long start = System.currentTimeMillis();
-        System.out.println("start ");
-
         // Composite rightPanel = new Composite(sashForm, SWT.NONE);
 
 
@@ -155,28 +157,20 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
         System.out.println("it took : " + start);
     }
 
-//    public boolean contains(final String filename) {
-//        return filenamesList.contains(filename);
-//    }
+    public int contains(final String filename) {
+        return filenamesList.indexOf(filename);
+    }
+
     @Override
     public boolean open(String filepath) {
-        JBrickTabItem tabItem;
-        boolean isAlreadyOpen = false;
-        int tabCount = this.getItems().length;
-
-        // check if the file exists in the list of opened file
-        for (int i = 0; i < tabCount; i++) {
-            tabItem = this.getItem(i);
-            if (filepath.equals(tabItem.getFilename())) {
-                // so the file is already opened in one of the tab
-                this.setSelection(tabItem);
-                isAlreadyOpen = true;
-                break;
-            }
-        }
-        if (!isAlreadyOpen) {
+        int tabIndex = this.contains(filepath);
+        if (tabIndex == -1) {
+            // this file does not exist in the editor so create one
             JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath));
+            filenamesList.add(filepath);
             this.setSelection(newTabItem);
+        } else {
+            this.setSelection(this.getItem(tabIndex));
         }
         return true;
     }
@@ -250,5 +244,16 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
             }
         }
         return recentfiles;
+    }
+
+    public void saveFile(String filePath) {
+
+        filenamesList.add(filePath);
+    }
+
+    public final void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter) {
+        //TODO: UnsupportedOperationException
+        //throw new UnsupportedOperationException("Not supported yet.");
+        super.addCTabFolder2Listener(cTabFolder2Adapter);
     }
 }

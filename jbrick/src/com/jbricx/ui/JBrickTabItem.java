@@ -89,7 +89,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
     // public JBrickTabItem(CTabFolder parent, int style, String fileName) {
     public JBrickTabItem(CTabFolder parent, int style, File file) {
         super(parent, style);
-        this.file = file;
+        setFile(file);
         setUpDocument(file);
 
 
@@ -393,5 +393,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
             return null;
         }
         return this.file.getAbsolutePath();
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 }
