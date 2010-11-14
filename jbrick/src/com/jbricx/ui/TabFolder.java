@@ -13,6 +13,8 @@ public interface TabFolder {
 
     boolean open(final String filename);
 
+    void closeFile(String filename);
+
     boolean openNewFile();
 
     boolean checkOverwrite();
