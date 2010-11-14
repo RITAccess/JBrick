@@ -32,6 +32,7 @@ import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  * @author byktol
@@ -60,7 +61,6 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
                     JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
 
                     try {
-                        File file = new File(tabItem.getFilename());
                         filenamesList.remove(tabItem.getFilename());
                     } catch (NullPointerException ne) {
                         // the file has not been saved yet so ignore
@@ -163,12 +163,20 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
     @Override
     public boolean open(String filepath) {
-        int tabIndex = this.contains(filepath);
+        int tabIndex = getTabIndexByFilepath(filepath);
+
         if (tabIndex == -1) {
-            // this file does not exist in the editor so create one
-            JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath));
-            filenamesList.add(filepath);
-            this.setSelection(newTabItem);
+            File file = new File(filepath);
+            if (file.exists()) {
+                // this file does not exist in the editor so create one
+                JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath));
+
+                filenamesList.add(filepath);
+                this.setSelection(newTabItem);
+            } else {
+                JOptionPane.showMessageDialog(null, "The file you have specified does not exits!",
+                        "File Not Found!", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
             this.setSelection(this.getItem(tabIndex));
         }
@@ -179,10 +187,14 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     public boolean openNewFile() {
         // counter for the number of times a new file is opened
         newFileCount++;
+        String fileName = "New File " + newFileCount;
 
         JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
-        newTabItem.setText("New File " + newFileCount);
+        newTabItem.setText(fileName);
         setSelection(newTabItem);
+
+        //filenamesList.add(fileName); // also add to the file list
+
         return true;
     }
 
@@ -247,13 +259,32 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     }
 
     public void saveFile(String filePath) {
-
         filenamesList.add(filePath);
+    }
+
+    public void closeFile(String filePath) {
+        filenamesList.remove(filePath);
     }
 
     public final void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter) {
         //TODO: UnsupportedOperationException
         //throw new UnsupportedOperationException("Not supported yet.");
         super.addCTabFolder2Listener(cTabFolder2Adapter);
+    }
+
+    public int getTabIndexByFilepath(String filePath) {
+        int index = -1;
+        int count = getItems().length;
+        for (int i = 0; i < count; i++) {
+            try {
+                if (getItem(i).getFilename().equals(filePath)) {
+                    index = i;
+                    break;
+                }
+            } catch (NullPointerException ne) {
+                // in case a new tab is opened no filename is open so.. let the loop conitnue
+            }
+        }
+        return index;
     }
 }

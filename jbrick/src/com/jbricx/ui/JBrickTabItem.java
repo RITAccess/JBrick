@@ -328,7 +328,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
             document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING, partitioner);
             partitioner.connect(document);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), ":)", 1);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "File Not Found!", 1);
         }
     }
 

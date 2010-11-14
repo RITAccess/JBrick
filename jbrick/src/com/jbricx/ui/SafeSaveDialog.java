@@ -64,7 +64,7 @@ public class SafeSaveDialog {
                 File file = new File(fileName);
 
                 JBrickEditorTabFolder tabfolder = JBrickEditor.getInstance().getMainWindow().getTabFolder();
-
+                
                 if (file.exists()) {
                     // do not allow the user to specify the an existing file if already open in editor
 
@@ -85,6 +85,7 @@ public class SafeSaveDialog {
                 } else {
                     done = true;
                 }
+                
                 tabfolder.saveFile(fileName);
                 //tabfolder.
             }

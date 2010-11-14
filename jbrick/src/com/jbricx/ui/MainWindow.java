@@ -140,7 +140,7 @@ public class MainWindow extends ApplicationWindow implements
 				IStructuredSelection selection = (IStructuredSelection) explorer.getSelection();
 				File file = (File) selection.getFirstElement();
 
-				if (!file.isDirectory()) {
+				if (!file.isDirectory()) {                    
 					getTabFolder().open(file.getAbsolutePath());
 				}
 			}

@@ -25,7 +25,6 @@ public class ActionControlClass {
             fileLocation = dlg.open();
             isNewFile = true;
         }
-
         try {
             File file = new File(fileLocation);
             filename = file.getName(); // get just name of the file
@@ -34,13 +33,21 @@ public class ActionControlClass {
              * is perfomed or is a newly opened file
              */
             if (isSaveAs || tabItem.getDocument().isDirty() || isNewFile) {
+                if (isSaveAs) { // remove the currently selected file from the list
+                    try {
+                        String currFilePath = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getFilename();
+                        JBrickEditor.getInstance().getMainWindow().getTabFolder().closeFile(currFilePath);
+                    } catch (NullPointerException ne) {
+                    }
+                }
                 tabItem.getDocument().setFileName(fileLocation);
                 tabItem.getDocument().save();
                 tabItem.setText(filename);// to show the filename in the tab
+
                 tabItem.setFile(file);
 
                 mainWindow.setStatus(filename + " save complete.");
-                //JBrickEditor.getInstance().getMainWindow().refresh_ 2();
+                JBrickEditor.getInstance().getMainWindow().refresh_2();
             } else {
                 mainWindow.setStatus("No changes have been made to the file.");
             }
