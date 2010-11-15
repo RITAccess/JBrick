@@ -42,6 +42,7 @@ import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
 import com.jbricx.ui.tabs.MainTabFolderAdapter;
+import com.jbricx.ui.tabs.StatusTabItem;
 import com.jbricx.ui.tabs.TabFolder;
 import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
 

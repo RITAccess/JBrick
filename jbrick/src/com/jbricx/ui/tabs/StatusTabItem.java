@@ -1,4 +1,4 @@
-package com.jbricx.ui;
+package com.jbricx.ui.tabs;
 
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.text.BadLocationException;
