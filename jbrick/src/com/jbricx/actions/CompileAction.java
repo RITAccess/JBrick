@@ -18,8 +18,9 @@ import com.jbricx.communications.ExitStatus;
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.JBrickTabItem;
 import com.jbricx.ui.MainWindow;
+import com.jbricx.ui.tabs.JBrickTabItem;
+
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 

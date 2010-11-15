@@ -3,9 +3,11 @@
  */
 package com.jbricx.ui;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.swt.SWT;
 
 import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
@@ -40,7 +42,7 @@ import com.jbricx.actions.UndoAction;
  * We can decouple this a little more by creating individual Manager classes, each one implementing the same set of
  * attributes we're using here. I'm not doing it right now just to avoid the copy+paste.
  * 
- * 
+ * @see MainWindow
  * @see MenuManager
  * @see ToolBarManager
  * @see JBrickMenuManager
@@ -203,4 +205,5 @@ public class MenuAndToolBarManagerDelegate {
       add(findBrickAction);
     }
   }
+
 }

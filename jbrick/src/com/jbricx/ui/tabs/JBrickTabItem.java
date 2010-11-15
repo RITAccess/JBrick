@@ -1,4 +1,4 @@
-package com.jbricx.ui;
+package com.jbricx.ui.tabs;
 
 /**
  * Notes : In order to read the status message in the status bar use insert + PgDn

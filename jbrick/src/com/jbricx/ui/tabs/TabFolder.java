@@ -1,10 +1,11 @@
 /**
  * 
  */
-package com.jbricx.ui;
+package com.jbricx.ui.tabs;
 
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabItem;
+
 
 /**
  * @author byktol

@@ -5,9 +5,10 @@ import java.io.IOException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.ui.JBrickTabItem;
 import com.jbricx.ui.MainWindow;
 import com.jbricx.ui.SafeSaveDialog;
+import com.jbricx.ui.tabs.JBrickTabItem;
+
 import java.io.File;
 
 public class ActionControlClass {
@@ -47,7 +48,7 @@ public class ActionControlClass {
                 tabItem.setFile(file);
 
                 mainWindow.setStatus(filename + " save complete.");
-                JBrickEditor.getInstance().getMainWindow().refresh_2();
+                JBrickEditor.getInstance().getMainWindow().refreshExplorerContent();
             } else {
                 mainWindow.setStatus("No changes have been made to the file.");
             }

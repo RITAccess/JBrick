@@ -3,15 +3,19 @@ package com.jbricx.pjo;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.ToolBar;
 
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.ColorManager;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickPartitionScanner;
-import com.jbricx.ui.JBrickTabItem;
 import com.jbricx.ui.MainWindow;
+import com.jbricx.ui.tabs.JBrickTabItem;
 
 /**
  * This class demonstrates TextViewer and Document.

@@ -1,10 +1,13 @@
 /**
  * 
  */
-package com.jbricx.ui;
+package com.jbricx.ui.tabs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -31,8 +34,6 @@ import annotation.ColorCache;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
-import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  * @author byktol

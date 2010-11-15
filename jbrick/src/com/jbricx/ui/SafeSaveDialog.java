@@ -2,6 +2,8 @@ package com.jbricx.ui;
 
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.tabs.JBrickEditorTabFolder;
+
 import java.io.File;
 import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -63,8 +65,8 @@ public class SafeSaveDialog {
                 // User has selected a file; see if it already exists
                 File file = new File(fileName);
 
-                JBrickEditorTabFolder tabfolder = JBrickEditor.getInstance().getMainWindow().getTabFolder();
-                
+                JBrickEditorTabFolder tabfolder = (JBrickEditorTabFolder) JBrickEditor.getInstance().getMainWindow().getTabFolder();
+
                 if (file.exists()) {
                     // do not allow the user to specify the an existing file if already open in editor
 

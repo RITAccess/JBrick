@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jbricx.ui;
+package com.jbricx.ui.tabs;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;

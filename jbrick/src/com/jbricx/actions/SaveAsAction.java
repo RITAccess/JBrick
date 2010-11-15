@@ -5,7 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.JBrickTabItem;
+import com.jbricx.ui.tabs.JBrickTabItem;
 
 /**
  * This action class responds to requests to save a file as . . .

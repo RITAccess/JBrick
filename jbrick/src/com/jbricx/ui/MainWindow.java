@@ -3,6 +3,7 @@ package com.jbricx.ui;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.jface.action.CoolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -37,33 +38,27 @@ import org.eclipse.swt.widgets.Shell;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.ui.tabs.FileExplorerTabItem;
+import com.jbricx.ui.tabs.JBrickEditorTabFolder;
+import com.jbricx.ui.tabs.JBrickTabItem;
+import com.jbricx.ui.tabs.MainTabFolderAdapter;
+import com.jbricx.ui.tabs.TabFolder;
+import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
 
 /**
  * This class provides the main window of JBrickEditor
  */
-public class MainWindow extends ApplicationWindow implements
-		IPropertyChangeListener {
-	/*
-	 * // The viewer private SourceViewer viewer;
-	 */
-	// The actions
+public class MainWindow extends ApplicationWindow implements IPropertyChangeListener {
+
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
 	private Font font;
-	public static FileExplorerTabItem explorer_1 = null;
-
-
-	/*
-	 * // The undo manager private IUndoManager undoManager;
-	 */
-	// Right Click Menu
-	private MenuManager menuManager;
 	private MenuAndToolBarManagerDelegate menuAndToolbarManagerDelegate;
 	private File treeRootFile;
-	private JBrickEditorTabFolder tabFolder;
+	private TabFolder tabFolder;
 	private StatusTabItem statusTabItem;
+  private FileExplorerTabItem explorer;
 
-	/* ArrayList<SourceViewer> viewersList; */
 	/**
 	 * MainWindow constructor
 	 */
@@ -71,7 +66,7 @@ public class MainWindow extends ApplicationWindow implements
 		super(null);
 		menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate();
 		addMenuBar();
-		addToolBar(SWT.FLAT);
+		addCoolBar(SWT.NONE);
 		addStatusLine();
 
 		/* viewersList = new ArrayList<SourceViewer>(); */
@@ -94,6 +89,7 @@ public class MainWindow extends ApplicationWindow implements
 	 * @param shell
 	 *            the shell
 	 */
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText("JBrick Editor");
@@ -106,6 +102,7 @@ public class MainWindow extends ApplicationWindow implements
 	 *            the main window
 	 * @return Control
 	 */
+	@Override
 	protected Control createContents(final Composite parent) {
 
 		String workspacePath = getWorkspacePath();
@@ -131,8 +128,7 @@ public class MainWindow extends ApplicationWindow implements
 
 		// Create the tree viewer to display the file tree.
 		final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
-		final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
-		explorer_1 = explorer;
+		explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
 
 		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
@@ -154,10 +150,9 @@ public class MainWindow extends ApplicationWindow implements
 		tabFolder = new JBrickEditorTabFolder(sashForm2, SWT.PUSH);
 
 		// Create the status panel.
-		// TODO: Resolve code tangling. This is kept just to avoid breaking something.
+		// TODO: Resolve code tangling. This is kept just to avoid breaking something, and I don't like it.
 		final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
 		statusTabFolder.setMaximizeVisible(true);
-		System.out.println("cargando el contenido del explorador");
 
 		statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL) {
 			@Override
@@ -174,64 +169,32 @@ public class MainWindow extends ApplicationWindow implements
 			protected StatusLineManager getStatusLineManager() {
 				return MainWindow.this.getStatusLineManager();
 			}
-
-			;
 		};
 
-		// Add the listener the Editor Panel
-		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-
-			@Override
-			public void restore(CTabFolderEvent event) {
-				tabFolder.setMaximized(false);
-				tabFolder.setMinimized(false);
-				sashForm2.setMaximizedControl(null);
-				sashForm1.setMaximizedControl(null);
-			}
-
-			@Override
-			public void maximize(CTabFolderEvent event) {
-				tabFolder.setMaximized(true);
-				sashForm2.setMaximizedControl(tabFolder);
-				sashForm1.setMaximizedControl(sashForm2);
-			}
-
-			@Override
-			public void minimize(CTabFolderEvent event) {
-				tabFolder.setMinimized(true);
-				statusTabFolder.setMaximized(true);
-				sashForm2.setMaximizedControl(statusTabFolder);
-			}
-		});
+		// Add listeners the Editor Panel. The order matters, be careful.
+    final CTabFolder2Adapter toolbarizerAdapter =
+      new ToolBarizeEditTabFolderAdapter((CTabFolder) tabFolder, getCoolBarManager(), sashForm2);
+		new MainTabFolderAdapter((CTabFolder) tabFolder, sashForm2);
 
 		// Add the listener for the Status Panel
 		statusTabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
-
-			@Override
-			public void restore(CTabFolderEvent event) {
-				statusTabFolder.setMaximized(false);
-				statusTabFolder.setMinimized(false);
-				tabFolder.setMinimized(false);
-				sashForm2.setMaximizedControl(null);
-				sashForm1.setMaximizedControl(null);
-			}
-
-			@Override
-			public void maximize(CTabFolderEvent event) {
-				statusTabFolder.setMaximized(true);
-				sashForm2.setMaximizedControl(statusTabFolder);
-				sashForm1.setMaximizedControl(sashForm2);
-			}
+		  @Override
+		  public void restore(CTabFolderEvent event) {
+		    toolbarizerAdapter.restore(event);
+		  }
 		});
+		new MainTabFolderAdapter((CTabFolder) statusTabFolder, sashForm2);
+		
 
-		// Set the different weights for both panels. This affect their0 size.
+		// Set the different weights for both panels. This affect their size.
+		// TODO : find a way to eliminate this. Automatic is always better!
 		sashForm1.setWeights(new int[]{20, 80});
 		sashForm2.setWeights(new int[]{80, 20});
 
 		getMenuBarManager().updateAll(true);
 		l.setFocus();
 
-		return parent;
+		return sashForm1; // return the created Composite.
 	}
 
 	public void TabItemClosed(CTabFolderEvent event) {
@@ -273,6 +236,7 @@ public class MainWindow extends ApplicationWindow implements
 	 *
 	 * @return MenuManager
 	 */
+	@Override
 	protected MenuManager createMenuManager() {
 		return menuAndToolbarManagerDelegate.createMenuManager();
 	}
@@ -280,58 +244,26 @@ public class MainWindow extends ApplicationWindow implements
 	/**
 	 * Creates the toolbar
 	 *
-	 * @param style
-	 *            the style for the toolbar
+	 * @param style the style for the toolbar
 	 * @return ToolBarManager
 	 */
+	@Override
 	protected ToolBarManager createToolBarManager(final int style) {
 		return menuAndToolbarManagerDelegate.createToolBarManager(style);
 	}
 
-	/**
-	 * Gets the text viewer
-	 *
-	 * @return ITextViewer
-	 */
-	/*
-	 * public ITextViewer getViewer() { return viewer; }
-	 */
-	/**
-	 * Sets the font
-	 *
-	 * @param fontData
-	 */
-	/*
-	 * public void setFont(FontData[] fontData, JBrickTabItem tabItem) { //
-	 * Create the font Font temp = new Font(getShell().getDisplay(), fontData);
-	 *
-	 * // If creation succeeded, dispose the old font if (font != null)
-	 * font.dispose();
-	 *
-	 * // Use the new font font = temp;
-	 * tabItem.getViewer().getTextWidget().setFont(font); }
-	 */
-	/**
-	 * Turns on/off word wrap
-	 *
-	 * @param wrap
-	 *            true to wrap
-	 */
-	/*
-	 * public void setWrap(boolean wrap) {
-	 * viewer.getTextWidget().setWordWrap(wrap); }
-	 */
-	/**
-	 * Gets the undo manager
-	 *
-	 * @return IUndoManager
-	 */
-	/*
-	 * public IUndoManager getUndoManager() { return undoManager; }
-	 */
+	@Override
+	protected CoolBarManager createCoolBarManager(int style) {
+	  CoolBarManager coolBarManager = new CoolBarManager(style);
+	  coolBarManager.add(this.createToolBarManager(SWT.FLAT));
+
+    return coolBarManager;
+	}
+
 	/**
 	 * Closes the main window
 	 */
+	@Override
 	public boolean close() {
 		boolean close = false;
 		if (getTabFolder().checkOverwrite()) {
@@ -440,7 +372,7 @@ public class MainWindow extends ApplicationWindow implements
 		//getTabFolder().save(filename);
 	}
 
-	public JBrickEditorTabFolder getTabFolder() {
+	public TabFolder getTabFolder() {
 		return tabFolder;
 	}
 
@@ -452,7 +384,8 @@ public class MainWindow extends ApplicationWindow implements
 		return getTabFolder().getSelectionIndex();
 	}
 
-	public void refreshCurrentTabItem(){
+	// TODO : check and delete. What's the purpose of this?
+	public void refreshCurrentTabItem() {
 		int selectedIndex = getCurrentTabIndex();
 		CTabItem tabItems[] = tabFolder.getItems();
 
@@ -481,35 +414,15 @@ public class MainWindow extends ApplicationWindow implements
 				tabItem = getCurrentTabItem();
 				tabItem.getViewer().getTextWidget().setText(currentString);
 
-
 			}
 		}
 		if (0 <= selectedIndex){
 			tabFolder.setSelection(selectedIndex);
 		}
-
-
-
-
-
-
-		/*final FileExplorerTabItem explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
-		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
-
-			public void handleEvent(Event e) {
-				IStructuredSelection selection = (IStructuredSelection) explorer.getSelection();
-				File file = (File) selection.getFirstElement();
-
-				if (!file.isDirectory()) {
-					getTabFolder().open(file.getAbsolutePath());
-				}
-			}
-		});*/
 	}
 
-	public void refresh_2() {
-		System.out.println("refresh_2");
-		explorer_1.refreshView();
+	public void refreshExplorerContent() {
+		explorer.refreshView();
 	}
 
 	public void setTabFolder(JBrickEditorTabFolder tabFolder) {
