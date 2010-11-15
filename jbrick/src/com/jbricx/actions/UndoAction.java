@@ -16,8 +16,8 @@ public class UndoAction extends Action {
    * UndoAction constructor
    */
   public UndoAction() {
-    super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class,
-        "/images/edit-undo.png"));
+	super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class,"/images/edit-undo.png"));
+    System.out.println("UndoAction");
     setToolTipText("Undo");
   }
 
@@ -25,6 +25,7 @@ public class UndoAction extends Action {
    * Runs the action
    */
   public void run() {
+	System.out.println("run");
     JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getUndoManager().undo();
   }
 }
