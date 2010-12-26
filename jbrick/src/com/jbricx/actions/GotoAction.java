@@ -1,24 +1,19 @@
 package com.jbricx.actions;
 
-
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.FindReplaceDialog;
 import com.jbricx.ui.GotoDialog;
-
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action searches text
  */
-public class GotoAction extends Action {
+public class GotoAction extends AbstractAction {
   /**
    * FindAction constructor
    */
-  public GotoAction() {
-    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class,
-        "/images/edit-find.png"));
+  public GotoAction(final JBrickManager manager) {
+    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class, "/images/edit-find.png"), manager);
     setToolTipText("Goto");
   }
 
@@ -26,9 +21,8 @@ public class GotoAction extends Action {
    * Runs the action
    */
   public void run() {
-    GotoDialog dlg = new GotoDialog(JBrickEditor.getInstance()
-        .getMainWindow().getShell(), JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument(),
-        JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getViewer());
+    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager().getCurrentTabItem().getDocument(),
+        getManager().getCurrentTabItem().getViewer());
     dlg.open();
   }
 }

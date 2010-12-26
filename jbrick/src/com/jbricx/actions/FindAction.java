@@ -1,22 +1,19 @@
 package com.jbricx.actions;
 
-
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.ui.FindReplaceDialog;
-
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action searches text
  */
-public class FindAction extends Action {
+public class FindAction extends AbstractAction {
   /**
    * FindAction constructor
    */
-  public FindAction() {
-    super("&Find@Ctrl+F", ImageDescriptor.createFromFile(FindAction.class,"/images/edit-find.png"));
+  public FindAction(final JBrickManager manager) {
+    super("&Find@Ctrl+F", ImageDescriptor.createFromFile(FindAction.class,"/images/edit-find.png"), manager);
     setToolTipText("Find");
     System.out.print("FindAction:Function()");
   }
@@ -26,9 +23,8 @@ public class FindAction extends Action {
    */
   public void run() {
 	  	System.out.print("FindAction:run()");
-	  	FindReplaceDialog dlg = new FindReplaceDialog(JBrickEditor.getInstance()
-        .getMainWindow().getShell(), JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getDocument(),
-        JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getViewer());
+	  	FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(), getManager().getCurrentTabItem().getDocument(),
+        getManager().getCurrentTabItemSourceViewer());
 	  	dlg.open();
   }
 }

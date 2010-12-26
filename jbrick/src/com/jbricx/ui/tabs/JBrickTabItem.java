@@ -169,12 +169,10 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
             @Override
             public void keyPressed(KeyEvent arg0) {
                 //System.out.println("keyPressed");
-                // TODO Auto-generated method stub
             }
 
             @Override
             public void keyReleased(KeyEvent arg0) {
-                // TODO Auto-generated method stub
                 //System.out.println("keyReleased");
                 JBrickEditor.getInstance().getMainWindow().setStatus(
                         "Line: " + getCursorLocation());
@@ -210,14 +208,14 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
         // page
         JBrickEditor.registerObserver(this);
 
-        menuManager = createRightClickMenuManager(viewer.getTextWidget());
-        Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
-        viewer.getTextWidget().setMenu(menu);
+//        menuManager = createRightClickMenuManager(viewer.getTextWidget());
+//        Menu menu = menuManager.createContextMenu(viewer.getTextWidget());
+//        viewer.getTextWidget().setMenu(menu);
 
         // viewer.GAP_SIZE = 1 ;
 
         // Menu manager initialize
-        menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
+//        menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
         update();
 
     }
@@ -332,21 +330,22 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
         }
     }
 
-    protected MenuManager createRightClickMenuManager(Composite parent) {
-        MenuManager rightMenuBar = new MenuManager();
-        rightMenuBar.add(new com.jbricx.actions.UndoAction());
-        rightMenuBar.add(new com.jbricx.actions.RedoAction());
-        rightMenuBar.add(new Separator());
-        rightMenuBar.add(new com.jbricx.actions.CutAction());
-        rightMenuBar.add(new com.jbricx.actions.CopyAction());
-        rightMenuBar.add(new com.jbricx.actions.PasteAction());
-        rightMenuBar.add(new Separator());
-        rightMenuBar.add(new com.jbricx.actions.SelectAllAction());
-        Menu menu = rightMenuBar.createContextMenu(parent);
-        // Right Click Attach
-        parent.setMenu(menu);
-        return rightMenuBar;
-    }
+    //TODO: uncomment? Somehow.
+//    protected MenuManager createRightClickMenuManager(Composite parent) {
+//        MenuManager rightMenuBar = new MenuManager();
+//        rightMenuBar.add(new com.jbricx.actions.UndoAction());
+//        rightMenuBar.add(new com.jbricx.actions.RedoAction());
+//        rightMenuBar.add(new Separator());
+//        rightMenuBar.add(new com.jbricx.actions.CutAction());
+//        rightMenuBar.add(new com.jbricx.actions.CopyAction());
+//        rightMenuBar.add(new com.jbricx.actions.PasteAction());
+//        rightMenuBar.add(new Separator());
+//        rightMenuBar.add(new com.jbricx.actions.SelectAllAction());
+//        Menu menu = rightMenuBar.createContextMenu(parent);
+//        // Right Click Attach
+//        parent.setMenu(menu);
+//        return rightMenuBar;
+//    }
 
     class ColorCache implements ISharedTextColors {
 
@@ -361,7 +360,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
     @Override
     public void update() {
         //System.out.println("Update");
-        // TODO Auto-generated method stub
         PreferenceStore store = JBrickEditor.getInstance().getPreferences();
 
         RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");

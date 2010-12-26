@@ -1,9 +1,7 @@
 package  com.jbricx.actions;
 
-
 import java.io.IOException;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
@@ -11,21 +9,21 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.preferences.EditorPreferencePage;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.ui.JBrickManager;
 
-
+//TODO: Remove the dependency with JBrickEditor.
 /**
  * This action displays the preferences dialog
  */
-public class PreferencesAction extends Action {
+public class PreferencesAction extends AbstractAction {
+
   /**
    * PreferencesAction constructor
    */
-  public PreferencesAction() {
-//    super("P&references...@Ctrl+R");
+  public PreferencesAction(final JBrickManager manager) {
     super("P&references...@Ctrl+R", ImageDescriptor.createFromFile(PasteAction.class,
-    "/images/preferences-desktop.png"));
+    "/images/preferences-desktop.png"), manager);
     setToolTipText("Preferences");
   }
 
@@ -39,7 +37,7 @@ public class PreferencesAction extends Action {
 //    mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
 //    		EditorPreferencePage.class.getName()));
 
-    PreferenceDialog dlg = new PreferenceDialog(JBrickEditor.getInstance().getMainWindow().getShell(), mgr);
+    PreferenceDialog dlg = new PreferenceDialog(getManager().getShell(), mgr);
     dlg.setPreferenceStore(JBrickEditor.getInstance().getPreferences());
     dlg.open();
     PreferenceStore store= (PreferenceStore) dlg.getPreferenceStore();
@@ -51,4 +49,5 @@ public class PreferencesAction extends Action {
 	}
     JBrickEditor.getInstance().setPrefs(store);
   }
+
 }

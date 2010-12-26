@@ -1,23 +1,19 @@
 package com.jbricx.actions;
 
-
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
-
-
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action redoes the last action
  */
-public class RedoAction extends Action {
+public class RedoAction extends AbstractAction {
+
   /**
    * RedoAction constructor
    */
-  public RedoAction() {
-    super("&Redo@Ctrl+Y", ImageDescriptor.createFromFile(RedoAction.class,
-        "/images/edit-redo.png"));
+  public RedoAction(final JBrickManager manager) {
+    super("&Redo@Ctrl+Y", ImageDescriptor.createFromFile(RedoAction.class, "/images/edit-redo.png"), manager);
     setToolTipText("Redo");
   }
 
@@ -25,6 +21,6 @@ public class RedoAction extends Action {
    * Runs the action
    */
   public void run() {
-    JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getUndoManager().redo();
+    getManager().redo();
   }
 }

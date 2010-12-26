@@ -1,40 +1,37 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.MainWindow;
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action class responds to requests to save a file
  */
-public class SaveAction extends Action {
+public class SaveAction extends AbstractAction {
 
-    /**
-     * SaveAction constructor
-     */
-    public SaveAction() {
-        super("&Save@Ctrl+S", ImageDescriptor.createFromFile(SaveAction.class,
-                "/images/document-save.png"));
+  /**
+   * SaveAction constructor
+   */
+  public SaveAction(final JBrickManager manager) {
+    super("&Save@Ctrl+S", ImageDescriptor.createFromFile(SaveAction.class, "/images/document-save.png"), manager);
 
-        setToolTipText("Save");
-        //setAccelerator(SWT.CTRL + 's');
+    setToolTipText("Save");
+    // setAccelerator(SWT.CTRL + 's');
+  }
+
+  /**
+   * Saves the file
+   */
+  @Override
+  public void run() {
+    getManager().setStatus("Saving File . . .");
+    ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
+
+    if (getManager().isAutoCompile()) {
+      CompileAction compileAction = new CompileAction(getManager());
+      compileAction.run();
     }
-
-    /**
-     * Saves the file
-     */
-    @Override
-    public void run() {
-        MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
-        mainWindow.setStatus("Saving File . . .");
-        ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
-
-        if (mainWindow.isAutoCompile() == true) {
-            CompileAction compileAction = new CompileAction();
-            compileAction.run();
-        }
-    }
+  }
 }

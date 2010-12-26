@@ -12,6 +12,7 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -49,7 +50,7 @@ import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
 /**
  * This class provides the main window of JBrickEditor
  */
-public class MainWindow extends ApplicationWindow implements IPropertyChangeListener {
+public class MainWindow extends ApplicationWindow implements IPropertyChangeListener, JBrickManager {
 
 	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
@@ -65,7 +66,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	 */
 	public MainWindow() {
 		super(null);
-		menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate();
+		menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate(this);
 		addMenuBar();
 		addCoolBar(SWT.NONE);
 		addStatusLine();
@@ -433,4 +434,19 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	public Composite getTable() {
 		return statusTabItem.getTable();
 	}
+
+  @Override
+  public SourceViewer getCurrentTabItemSourceViewer() {
+    return getCurrentTabItem().getViewer();
+  }
+
+  @Override
+  public void undo() {
+    getCurrentTabItem().getUndoManager().undo();
+  }
+
+  @Override
+  public void redo() {
+    getCurrentTabItem().getUndoManager().redo();
+  }
 }

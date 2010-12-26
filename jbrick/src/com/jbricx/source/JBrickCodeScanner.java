@@ -79,17 +79,17 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 		// Add rule for keywords, and add the words to the rule
 		WordRule wordRule = new WordRule(new JBrickWordDetector(), other);
 		
-		System.out.println("SyntaxKeyWords.getKeyWords().size():" + SyntaxKeyWords.getKeyWords().size());
+//		System.out.println("SyntaxKeyWords.getKeyWords().size():" + SyntaxKeyWords.getKeyWords().size());
 		for (int i = 0; i<SyntaxKeyWords.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxKeyWords.getKeyWords().get(i), keyword);
 		}
 		
-		System.out.println("SyntaxConstants.getKeyWords().size():" + SyntaxConstants.getKeyWords().size());
+//		System.out.println("SyntaxConstants.getKeyWords().size():" + SyntaxConstants.getKeyWords().size());
 		for (int i = 0; i<SyntaxConstants.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxConstants.getKeyWords().get(i), specialKeyword);
 		}
 		
-		System.out.println("SyntaxOperators.getKeyWords().size():" + SyntaxOperators.getKeyWords().size());
+//		System.out.println("SyntaxOperators.getKeyWords().size():" + SyntaxOperators.getKeyWords().size());
 		for (int i = 0; i<SyntaxOperators.getKeyWords().size(); i++){
 			wordRule.addWord(SyntaxOperators.getKeyWords().get(i), numericOperator);
 		}//it has to exist in the syntaxOperators.getKeyWords

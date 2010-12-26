@@ -1,20 +1,20 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.JBrickManager;
+
 /**
  * This class shows an About box
  */
-public class AboutAction extends Action {
+public class AboutAction extends AbstractAction {
+
   /**
    * AboutAction constructor
    */
-  public AboutAction() {
-    super("&About", ImageDescriptor.createFromFile(AboutAction.class,
-        "/images/help-browser.png"));
+  public AboutAction(final JBrickManager manager) {
+    super("&About", ImageDescriptor.createFromFile(AboutAction.class, "/images/help-browser.png"), manager);
     setToolTipText("About");
   }
 
@@ -22,7 +22,6 @@ public class AboutAction extends Action {
    * Shows an about box
    */
   public void run() {
-    MessageDialog.openInformation(JBrickEditor.getInstance().getMainWindow().getShell(),
-        "About", "JBrick Editor--a NXC source code editor");
+    MessageDialog.openInformation(getManager().getShell(), "About", "JBrick Editor--a NXC source code editor");
   }
 }

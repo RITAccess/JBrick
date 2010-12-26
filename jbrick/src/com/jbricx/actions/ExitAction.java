@@ -1,24 +1,18 @@
 package com.jbricx.actions;
 
-
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
-
-
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action class exits the application
  */
-public class ExitAction extends Action {
+public class ExitAction extends AbstractAction {
   /**
    * ExitAction constructor
    */
-  public ExitAction() {
-//    super("E&xit@Alt+F4");
-    super("E&xit@Ctrl+Q", ImageDescriptor.createFromFile(PasteAction.class,
-    "/images/system-log-out.png"));
+  public ExitAction(final JBrickManager manager) {
+    super("E&xit@Ctrl+Q", ImageDescriptor.createFromFile(PasteAction.class, "/images/system-log-out.png"), manager);
     setToolTipText("Exit");
   }
 
@@ -26,6 +20,6 @@ public class ExitAction extends Action {
    * Exits the application
    */
   public void run() {
-    JBrickEditor.getInstance().getMainWindow().close();
+    getManager().close();
   }
 }

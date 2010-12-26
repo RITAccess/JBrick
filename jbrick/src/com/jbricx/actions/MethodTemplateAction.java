@@ -1,14 +1,13 @@
 package com.jbricx.actions;
 
-/*
- * @author Priya Sankaran
- */
 import org.eclipse.jface.action.Action;
 
 import com.jbricx.ui.methodTemplate.MethodTemplateUIWindow;
 
 /**
- * This class shows an About box
+ * This class shows the Method Template dialog box
+ * 
+ * @author Priya Sankaran
  */
 public class MethodTemplateAction extends Action {
 	/**

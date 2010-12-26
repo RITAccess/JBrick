@@ -1,23 +1,19 @@
 package com.jbricx.actions;
 
-
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
-
-
+import com.jbricx.ui.JBrickManager;
 
 /**
  * This action undoes the last action
  */
-public class UndoAction extends Action {
+public class UndoAction extends AbstractAction {
+
   /**
    * UndoAction constructor
    */
-  public UndoAction() {
-	super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class,"/images/edit-undo.png"));
-    System.out.println("UndoAction");
+  public UndoAction(final JBrickManager manager) {
+    super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class, "/images/edit-undo.png"), manager);
     setToolTipText("Undo");
   }
 
@@ -25,7 +21,6 @@ public class UndoAction extends Action {
    * Runs the action
    */
   public void run() {
-	System.out.println("run");
-    JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getUndoManager().undo();
+    getManager().undo();
   }
 }

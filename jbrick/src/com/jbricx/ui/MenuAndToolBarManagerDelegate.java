@@ -51,31 +51,49 @@ import com.jbricx.actions.UndoAction;
  */
 public class MenuAndToolBarManagerDelegate {
 
-  private AboutAction aboutAction = new AboutAction();
+  private AboutAction aboutAction;
   private HelpContentAction helpContentAction = new HelpContentAction();
   private CopyAction copyAction = new CopyAction();
   private CutAction cutAction = new CutAction();
   private SelectAllAction selectAllAction = new SelectAllAction();
-  private ExitAction exitAction = new ExitAction();
-  private FindAction findAction = new FindAction();
-  private GotoAction gotoAction = new GotoAction();
-  private NewAction newAction = new NewAction();
-  private OpenAction openAction = new OpenAction();
+  private ExitAction exitAction;
+  private FindAction findAction;
+  private GotoAction gotoAction;
+  private NewAction newAction;
+  private OpenAction openAction;
   private PasteAction pasteAction = new PasteAction();
-  private PreferencesAction prefsAction = new PreferencesAction();
-  private PrintAction printAction = new PrintAction();
-  private PrintPreviewAction printPreviewAction = new PrintPreviewAction();
-  private RedoAction redoAction = new RedoAction();
-  private SaveAction saveAction = new SaveAction();
-  private SaveAsAction saveAsAction = new SaveAsAction();
-  private UndoAction undoAction = new UndoAction();
-  private DownloadAction downloadAction = new DownloadAction();
+  private PreferencesAction prefsAction;
+  private PrintAction printAction;
+  private PrintPreviewAction printPreviewAction;
+  private RedoAction redoAction;
+  private SaveAction saveAction;
+  private SaveAsAction saveAsAction;
+  private UndoAction undoAction;
+  private DownloadAction downloadAction;
   private DirectControlAction directControlAction = new DirectControlAction();
   private JoyStickAction joystickAction = new JoyStickAction();
   private PianoAction pianoAction = new PianoAction();
   private FindBrickAction findBrickAction = new FindBrickAction();
-  private CompileAction compileAction = new CompileAction();
+  private CompileAction compileAction;
   private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
+
+  public MenuAndToolBarManagerDelegate(final JBrickManager manager) {
+    aboutAction = new AboutAction(manager);
+    exitAction = new ExitAction(manager);
+    findAction = new FindAction(manager);
+    gotoAction = new GotoAction(manager);
+    newAction = new NewAction(manager);
+    openAction = new OpenAction(manager);
+    prefsAction = new PreferencesAction(manager);
+    printAction = new PrintAction(manager);
+    printPreviewAction = new PrintPreviewAction(manager);
+    redoAction = new RedoAction(manager);
+    saveAction = new SaveAction(manager);
+    saveAsAction = new SaveAsAction(manager);
+    undoAction = new UndoAction(manager);
+    downloadAction = new DownloadAction(manager);
+    compileAction = new CompileAction(manager);
+  }
 
   /**
    * Creates a {@link MenuManager} based on the {@link Action}s attributes.

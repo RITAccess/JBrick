@@ -1,12 +1,12 @@
-package  com.jbricx.actions;
-
+package com.jbricx.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.DirectControl.DirectControlWindow;;
 
-//test
+import com.jbricx.ui.DirectControl.DirectControlWindow;
+
+;
+
 /**
  * This action opens the joystick window
  */
@@ -15,8 +15,7 @@ public class DirectControlAction extends Action {
    * CopyAction constructor
    */
   public DirectControlAction() {
-    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class,
-        "/images/direct_control.png"));
+    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class, "/images/direct_control.png"));
     setToolTipText("Direct Control");
   }
 
@@ -24,6 +23,6 @@ public class DirectControlAction extends Action {
    * Runs the action
    */
   public void run() {
-	DirectControlWindow.showGUI() ;
+    DirectControlWindow.showGUI();
   }
 }
