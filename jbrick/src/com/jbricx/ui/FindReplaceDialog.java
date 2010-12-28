@@ -33,12 +33,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.model.PersistentDocument;
-import com.jbricx.preferences.JBrickObservable;
+import com.jbricx.preferences.JBrickObserver;
 
 /**
  * This class displays a find/replace dialog
  */
-public class FindReplaceDialog extends Dialog implements JBrickObservable {
+public class FindReplaceDialog extends Dialog implements JBrickObserver {
 
 	// The adapter that does the finding/replacing
 	private FindReplaceDocumentAdapter frda;

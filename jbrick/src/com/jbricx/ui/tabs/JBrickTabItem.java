@@ -52,12 +52,12 @@ import annotation.AnnotationMarkerAccess;
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.preferences.JBrickObservable;
+import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
 import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.JBrickStatusUpdater;
 
-public class JBrickTabItem extends CTabItem implements JBrickObservable {
+public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   private CompositeRuler ruler;
   private LineNumberRulerColumn lnrc;
@@ -362,7 +362,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
     }
     if (bgRBG != fgRBG) {/* Check if the colors are available */
 
-      Color bgColor = new Color(getParent().getDisplay(), bgRBG);
+      Color bgColor = new Color(getDisplay(), bgRBG);
 
       // Color fgColor = new
       // Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);

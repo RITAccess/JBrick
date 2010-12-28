@@ -2,6 +2,6 @@ package com.jbricx.preferences;
 
 import org.eclipse.jface.preference.PreferenceStore;
 
-public interface JBrickObservable {
+public interface JBrickObserver {
   void update(PreferenceStore store);
 }

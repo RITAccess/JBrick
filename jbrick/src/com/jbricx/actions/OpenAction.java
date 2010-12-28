@@ -38,7 +38,7 @@ public class OpenAction extends AbstractAction {
     String fileName = dlg.open();
 
     if (fileName != null) {
-      getManager().openFile(fileName);
+      getManager().getTabFolder().open(fileName);
     }
   }
 }

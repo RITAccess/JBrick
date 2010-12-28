@@ -21,6 +21,6 @@ public class NewAction extends AbstractAction {
    * Creates a new file
    */
   public void run() {
-    getManager().openNewFile();
+    getManager().getTabFolder().openNewFile();
   }
 }

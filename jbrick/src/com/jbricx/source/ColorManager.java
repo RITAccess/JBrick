@@ -10,13 +10,13 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.jbricx.preferences.JBrickObservable;
+import com.jbricx.preferences.JBrickObserver;
 
 /**
  * This class manages the colors. It uses a lazy initialization approach, only
  * creating the actual color if it's requested.
  */
-public class ColorManager implements JBrickObservable{
+public class ColorManager implements JBrickObserver {
   public static final RGB BACKGROUND = new RGB(255, 255, 255);
   //public static final RGB COMMENT = new RGB(0, 128, 0);
   
@@ -35,7 +35,7 @@ public class ColorManager implements JBrickObservable{
   public static final RGB STRING = new RGB(255, 255, 0);
   // public static final RGB DEFAULT = new RGB(0, 0, 0);
   //public static RGB DEFAULT = new RGB(129, 129, 0);
-  public static RGB DEFAULT = new RGB(255, 255, 0);
+  public static RGB DEFAULT = new RGB(0, 0, 0);
   
   public static final RGB OPERATOR = new RGB(255, 140, 0);
   

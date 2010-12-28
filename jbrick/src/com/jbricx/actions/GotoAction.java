@@ -22,7 +22,7 @@ public class GotoAction extends AbstractAction {
    */
   public void run() {
     GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager().getCurrentTabItem().getDocument(),
-        getManager().getCurrentTabItemSourceViewer());
+        getManager().getTabFolder().getSourceViewer());
     dlg.open();
   }
 }

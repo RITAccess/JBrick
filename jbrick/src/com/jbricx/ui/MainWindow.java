@@ -13,8 +13,6 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -38,11 +36,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.preferences.JBrickObservable;
+import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
-import com.jbricx.source.ColorManager;
-import com.jbricx.source.JBrickCodeScanner;
-import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -56,7 +51,6 @@ import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
  */
 public class MainWindow extends ApplicationWindow implements IPropertyChangeListener, JBrickManager {
 
-	SourceViewerConfiguration configuration = new SourceViewerConfiguration();
 	// The font
 	private Font font;
 	private MenuAndToolBarManagerDelegate menuAndToolbarManagerDelegate;
@@ -64,16 +58,9 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	private TabFolder tabFolder;
 	private StatusTabItem statusTabItem;
   private FileExplorerTabItem explorer;
-  public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
-
+  public static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
   // The stored preferences
   private PreferenceStore prefs;
-  // The partition scanner
-  private JBrickPartitionScanner scanner;
-  // The code scanner
-  private JBrickCodeScanner codeScanner;
-  // The color manager
-  private ColorManager colorManager;
 
 	/**
 	 * MainWindow constructor
@@ -85,35 +72,22 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		addCoolBar(SWT.NONE);
 		addStatusLine();
 
-		/* */
 		prefs = new PreferenceStore("JBrickEditor.properties");
     try {
       prefs.load();
     } catch (IOException e) {
       // Ignore
     }
-    colorManager = new ColorManager();
-    codeScanner = new JBrickCodeScanner(colorManager);
-
-    registerObserver(colorManager);
-    registerObserver(codeScanner);
     prefs.addPropertyChangeListener(this);
 	}
-
-	public MainWindow(PreferenceStore prefs) {
-    this();
-
-  }
 
   /**
 	 * Runs the application
 	 */
 	public void run() {
-
 		setBlockOnOpen(true);
 		open();
 		Display.getCurrent().dispose();
-
 	}
 
 	/**
@@ -128,11 +102,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		shell.setText("JBrick Editor");
 	}
 
-  public void registerObserver(final JBrickObservable observer) {
+  public void registerObserver(final JBrickObserver observer) {
     observerList.add(observer);
   }
 
-  public void removeObserver(final JBrickObservable observer) {
+  public void removeObserver(final JBrickObserver observer) {
     if (observerList.contains(observer)) {
       observerList.remove(observer);
     }
@@ -261,8 +235,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
 	/**
 	 * Updates the view with the preferences
-	 *
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		/*if (FileExtensionConstants.FONT.equals(event.getProperty()))
 		this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
@@ -285,17 +259,17 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		return menuAndToolbarManagerDelegate.createMenuManager();
 	}
 
+	@Override
+	protected ToolBarManager createToolBarManager(final int style) {
+		return menuAndToolbarManagerDelegate.createToolBarManager(style);
+	}
+
 	/**
 	 * Creates the toolbar
 	 *
 	 * @param style the style for the toolbar
 	 * @return ToolBarManager
 	 */
-	@Override
-	protected ToolBarManager createToolBarManager(final int style) {
-		return menuAndToolbarManagerDelegate.createToolBarManager(style);
-	}
-
 	@Override
 	protected CoolBarManager createCoolBarManager(int style) {
 	  CoolBarManager coolBarManager = new CoolBarManager(style);
@@ -367,7 +341,6 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		}
 		workspace = path;
 		return workspace;
-
 	}
 
 	// Going to modify this to request preferences
@@ -389,6 +362,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		}
 	}
 
+  @Override
+  public String getWorkPath() {
+    return prefs.getString(FileExtensionConstants.WRKSPC);
+  }
+
 	// Going to modify this to request preferences
 	public boolean isAutoCompile() {
 		// Get the preference store
@@ -400,23 +378,6 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		return autoCompile;
 	}
 
-	public void addFolderInNewTab(String path) {
-	}
-
-	public void openFile(String filename) {
-		//getTabFolder().setFocus();
-		getTabFolder().open(filename);
-	}
-
-	public void openNewFile() {
-		getTabFolder().openNewFile();
-		registerObserver(getCurrentTabItem());
-	}
-
-	public void saveFile(String filename) {
-		//getTabFolder().save(filename);
-	}
-
 	public TabFolder getTabFolder() {
 		return tabFolder;
 	}
@@ -425,7 +386,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		return getTabFolder().getSelection();
 	}
 
-	public int getCurrentTabIndex() {
+	protected int getCurrentTabIndex() {
 		return getTabFolder().getSelectionIndex();
 	}
 
@@ -449,11 +410,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 				tabItem.dispose();
 				System.out.println("tbItem.dispose...");
 				if (currentSaveString != null) {
-					openFile(currentSaveString);
+					getTabFolder().open(currentSaveString);
 					System.out.println("openFile");
 
 				} else {
-					openNewFile();
+				  getTabFolder().openNewFile();
 					System.out.println("openNewFile");
 				}
 				tabItem = getCurrentTabItem();
@@ -478,51 +439,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		return statusTabItem.getTable();
 	}
 
-  @Override
-  public SourceViewer getCurrentTabItemSourceViewer() {
-    return getCurrentTabItem().getViewer();
-  }
-
-  @Override
-  public void undo() {
-    getCurrentTabItem().getUndoManager().undo();
-  }
-
-  @Override
-  public void redo() {
-    getCurrentTabItem().getUndoManager().redo();
-  }
-
-  /**
-   * Cuts the selection to the clipboard
-   */
-  public void cut() {
-    getCurrentTabItem().getViewer().getTextWidget().cut();
-  }
-
-  /**
-   * Copies the selection to the clipboard
-   */
-  public void copy() {
-    getCurrentTabItem().getViewer().getTextWidget().copy();
-  }
-
-  /**
-   * Select all of the text in the editor
-   */
-  public void selectAll() {
-    getCurrentTabItem().getViewer().getTextWidget().selectAll();
-  }
-
-  /**
-   * Pastes the clipboard
-   */
-  public void paste() {
-    getCurrentTabItem().getViewer().getTextWidget().paste();
-  }
-
   public void notifyViewers() {
-    for (JBrickObservable observer : observerList) {
+    for (JBrickObserver observer : observerList) {
       observer.update(prefs);
     }
     refreshCurrentTabItem();
@@ -531,24 +449,10 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   public PreferenceStore getPreferences() {
     return prefs;
   }
-
+  
   @Override
-  protected void finalize() throws Throwable {
-    if (colorManager != null) {
-      colorManager.dispose();
-      colorManager = null;
-    }
-
-    super.finalize();
-  }
-
-  @Override
-  public String getWorkPath() {
-    return prefs.getString(FileExtensionConstants.WRKSPC);
-  }
-
-  @Override
-  public ColorManager getColorManager() {
-    return colorManager;
+  public void setPreferences(PreferenceStore store) {
+    this.prefs = store;
+    notifyViewers();
   }
 }

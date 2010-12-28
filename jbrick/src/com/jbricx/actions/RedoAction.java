@@ -21,6 +21,6 @@ public class RedoAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().redo();
+    getManager().getTabFolder().redo();
   }
 }

@@ -3,6 +3,7 @@
  */
 package com.jbricx.ui.tabs;
 
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabItem;
 
@@ -22,6 +23,8 @@ public interface TabFolder {
 
     JBrickTabItem getSelection();
 
+    SourceViewer getSourceViewer();
+
     void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter);
 
     void setMaximized(boolean b);
@@ -39,4 +42,16 @@ public interface TabFolder {
     void insertText(String text);
 
     int contains(String fileName);
+
+    void undo();
+    
+    void redo();
+    
+    void cut();
+    
+    void copy();
+    
+    void paste();
+    
+    void selectAll();
 }

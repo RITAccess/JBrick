@@ -21,6 +21,6 @@ public class SelectAllAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().selectAll();
+    getManager().getTabFolder().selectAll();
   }
 }

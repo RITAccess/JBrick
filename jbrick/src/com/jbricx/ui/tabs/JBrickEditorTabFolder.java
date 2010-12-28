@@ -13,13 +13,14 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
+import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineNumberChangeRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
+import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -39,7 +40,6 @@ import com.jbricx.source.CommentScanner;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
 import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.JBrickStatusUpdater;
 
 /**
  * @author byktol
@@ -49,18 +49,20 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public LineNumberChangeRulerColumn lnrc;
   private final List<String> filenamesList;
   private int newFileCount;
-  private JBrickStatusUpdater statusUpdater;
+  private JBrickManager statusUpdater;
   private JBrickEditorSourceViewerConfiguration sourceViewerConfiguration;
+  // The color manager
+  private ColorManager colorManager;
 
-  public JBrickEditorTabFolder(final Composite parent, final JBrickStatusUpdater statusUpdater, final PreferenceStore ps, final int style) {
+  public JBrickEditorTabFolder(final Composite parent, final JBrickManager statusUpdater, final PreferenceStore ps, final int style) {
     super(parent, style);
     this.statusUpdater = statusUpdater;
     filenamesList = new ArrayList<String>();
     newFileCount = 0;
 
-    ColorManager cm = ((JBrickManager) statusUpdater).getColorManager();
-    RuleBasedScanner codeScanner = new JBrickCodeScanner(cm);
-    RuleBasedScanner commentScanner = new CommentScanner(cm);
+    colorManager = new ColorManager();
+    JBrickCodeScanner codeScanner = new JBrickCodeScanner(colorManager);
+    CommentScanner commentScanner = new CommentScanner(colorManager);
     sourceViewerConfiguration = new JBrickEditorSourceViewerConfiguration(codeScanner, commentScanner);
 
     setMinimizeVisible(true);
@@ -209,6 +211,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
     // filenamesList.add(fileName); // also add to the file list
 
+    statusUpdater.registerObserver(newTabItem);
     return true;
   }
 
@@ -303,5 +306,52 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public void insertText(final String text) {
     //TODO: throw exception or verify or something.
     getSelection().insertString(text);
+  }
+
+  @Override
+  public void undo() {
+    getSelection().getUndoManager().undo();
+  }
+
+  @Override
+  public void redo() {
+    getSelection().getUndoManager().redo();
+  }
+
+  /**
+   * Cuts the selection to the clipboard
+   */
+  @Override
+  public void cut() {
+    getSelection().getViewer().getTextWidget().cut();
+  }
+
+  /**
+   * Copies the selection to the clipboard
+   */
+  @Override
+  public void copy() {
+    getSelection().getViewer().getTextWidget().copy();
+  }
+  
+  /**
+   * Pastes the clipboard
+   */
+  @Override
+  public void paste() {
+    getSelection().getViewer().getTextWidget().paste();
+  }
+
+  /**
+   * Select all of the text in the editor
+   */
+  @Override
+  public void selectAll() {
+    getSelection().getViewer().getTextWidget().selectAll();
+  }
+
+  @Override
+  public SourceViewer getSourceViewer() {
+    return getSelection().getViewer();
   }
 }

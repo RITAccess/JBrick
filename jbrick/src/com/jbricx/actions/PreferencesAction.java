@@ -46,7 +46,7 @@ public class PreferencesAction extends AbstractAction {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-//    JBrickEditor.getInstance().setPrefs(store);
+    getManager().setPreferences(store);
   }
 
 }

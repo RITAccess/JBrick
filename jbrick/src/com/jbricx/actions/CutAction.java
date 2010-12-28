@@ -21,6 +21,6 @@ public class CutAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().cut();
+    getManager().getTabFolder().cut();
   }
 }

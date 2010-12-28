@@ -21,6 +21,6 @@ public class CopyAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().copy();
+    getManager().getTabFolder().copy();
   }
 }

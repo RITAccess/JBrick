@@ -36,7 +36,7 @@ public class PrintPreviewAction extends AbstractAction {
     final JEditorPane ep = new JEditorPane();
     final JFrame f = new JFrame("Print Preview");
     ep.setEditable(false);
-    ep.setText(getManager().getCurrentTabItemSourceViewer().getTextWidget().getText());
+    ep.setText(getManager().getTabFolder().getSourceViewer().getTextWidget().getText());
 
     PreferenceStore store = getManager().getPreferences();
     String fontProp = store.getString(FileExtensionConstants.FONT);

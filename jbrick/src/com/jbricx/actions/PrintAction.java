@@ -24,7 +24,7 @@ public class PrintAction extends AbstractAction {
 	 * Prints the document
 	 */
 	public void run() {
-		SourceViewer viewer = getManager().getCurrentTabItemSourceViewer();
+		SourceViewer viewer = getManager().getTabFolder().getSourceViewer();
 
 		StyledTextPrintOptions options = new StyledTextPrintOptions();
 

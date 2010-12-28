@@ -20,6 +20,6 @@ public class PasteAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().paste();
+    getManager().getTabFolder().paste();
   }
 }

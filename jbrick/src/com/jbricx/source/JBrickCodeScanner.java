@@ -16,12 +16,12 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
 
-import com.jbricx.preferences.JBrickObservable;
+import com.jbricx.preferences.JBrickObserver;
 
 /**
  * This class scans through a code partition and colors it.
  */
-public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObservable {
+public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserver {
 
   private ColorManager cm;
 	/**

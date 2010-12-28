@@ -21,6 +21,6 @@ public class UndoAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    getManager().undo();
+    getManager().getTabFolder().undo();
   }
 }

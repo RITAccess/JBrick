@@ -24,7 +24,7 @@ public class FindAction extends AbstractAction {
   public void run() {
 	  	System.out.print("FindAction:run()");
 	  	FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(), getManager().getCurrentTabItem().getDocument(),
-        getManager().getCurrentTabItemSourceViewer());
+        getManager().getTabFolder().getSourceViewer());
 	  	dlg.open();
   }
 }
