@@ -75,7 +75,7 @@ public class MenuAndToolBarManagerDelegate {
   private PianoAction pianoAction = new PianoAction();
   private FindBrickAction findBrickAction = new FindBrickAction();
   private CompileAction compileAction;
-  private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
+  private MethodTemplateAction methodTemplateAction;
 
   public MenuAndToolBarManagerDelegate(final JBrickManager manager) {
     copyAction = new CopyAction(manager);
@@ -97,6 +97,7 @@ public class MenuAndToolBarManagerDelegate {
     undoAction = new UndoAction(manager);
     downloadAction = new DownloadAction(manager);
     compileAction = new CompileAction(manager);
+    methodTemplateAction = new MethodTemplateAction(manager);
   }
 
   /**

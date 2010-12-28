@@ -1,12 +1,9 @@
 package com.jbricx.source;
 
-
 import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.*;
-
-import com.jbricx.pjo.JBrickEditor;
-
-
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.RuleBasedScanner;
+import org.eclipse.jface.text.rules.Token;
 
 /**
  * This class scans comment partitions
@@ -15,12 +12,10 @@ public class CommentScanner extends RuleBasedScanner {
   /**
    * CommentScanner constructor
    */
-  public CommentScanner() {
-    // Get the color manager
-    ColorManager colorManager = JBrickEditor.getInstance().getColorManager();
+  public CommentScanner(final ColorManager cm) {
 
     // Create the tokens
-    IToken other = new Token(new TextAttribute(colorManager
+    IToken other = new Token(new TextAttribute(cm
         .getColor(ColorManager.COMMENT)));
 
     // Use "other" for default

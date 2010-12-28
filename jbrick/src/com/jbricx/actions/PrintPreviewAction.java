@@ -11,11 +11,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.FontData;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.printpreview.PrintPreview;
 import com.jbricx.ui.JBrickManager;
 
-//TODO: Remove the dependency with the JBrickEditor class.
 /**
  * This class shows an About box
  */
@@ -40,7 +38,7 @@ public class PrintPreviewAction extends AbstractAction {
     ep.setEditable(false);
     ep.setText(getManager().getCurrentTabItemSourceViewer().getTextWidget().getText());
 
-    PreferenceStore store = JBrickEditor.getInstance().getPreferences();
+    PreferenceStore store = getManager().getPreferences();
     String fontProp = store.getString(FileExtensionConstants.FONT);
     if (fontProp.length() > 0) { /* Check if the font is available */
       FontData[] fd = new FontData[1];

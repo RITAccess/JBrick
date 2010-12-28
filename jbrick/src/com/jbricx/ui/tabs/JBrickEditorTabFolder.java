@@ -13,6 +13,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
@@ -32,8 +33,13 @@ import annotation.AnnotationMarkerAccess;
 import annotation.ColorCache;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.source.ColorManager;
+import com.jbricx.source.CommentScanner;
+import com.jbricx.source.JBrickCodeScanner;
+import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
+import com.jbricx.ui.JBrickManager;
+import com.jbricx.ui.JBrickStatusUpdater;
 
 /**
  * @author byktol
@@ -43,11 +49,19 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public LineNumberChangeRulerColumn lnrc;
   private final List<String> filenamesList;
   private int newFileCount;
+  private JBrickStatusUpdater statusUpdater;
+  private JBrickEditorSourceViewerConfiguration sourceViewerConfiguration;
 
-  public JBrickEditorTabFolder(final Composite parent, final int style) {
+  public JBrickEditorTabFolder(final Composite parent, final JBrickStatusUpdater statusUpdater, final PreferenceStore ps, final int style) {
     super(parent, style);
+    this.statusUpdater = statusUpdater;
     filenamesList = new ArrayList<String>();
     newFileCount = 0;
+
+    ColorManager cm = ((JBrickManager) statusUpdater).getColorManager();
+    RuleBasedScanner codeScanner = new JBrickCodeScanner(cm);
+    RuleBasedScanner commentScanner = new CommentScanner(cm);
+    sourceViewerConfiguration = new JBrickEditorSourceViewerConfiguration(codeScanner, commentScanner);
 
     setMinimizeVisible(true);
     setMaximizeVisible(true);
@@ -59,7 +73,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
         JBrickTabItem tabItem = (JBrickTabItem) event.item;
 
         if (askCloseWithoutSaving(tabItem)) {
-          JBrickEditor.getInstance().getMainWindow().setStatus("Closed");
+          statusUpdater.setStatus("Closed");
 
           try {
             filenamesList.remove(tabItem.getFilename());
@@ -117,7 +131,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     // null);
     // tabFolder.setSelection(tabItem);
 
-    ArrayList<String> recentfiles = getRecentFiles(parent);
+    ArrayList<String> recentfiles = getRecentFiles(ps);
 
     boolean openedfile = false;
 
@@ -169,7 +183,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
       File file = new File(filepath);
       if (file.exists()) {
         // this file does not exist in the editor so create one
-        JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath));
+        JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath), statusUpdater, sourceViewerConfiguration);
 
         filenamesList.add(filepath);
         this.setSelection(newTabItem);
@@ -189,7 +203,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     newFileCount++;
     String fileName = "New File " + newFileCount;
 
-    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null);
+    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null, statusUpdater, sourceViewerConfiguration);
     newTabItem.setText(fileName);
     setSelection(newTabItem);
 
@@ -240,11 +254,10 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     return proceed;
   }
 
-  public ArrayList<String> getRecentFiles(Composite parent) {
+  public ArrayList<String> getRecentFiles(PreferenceStore ps) {
     // Get the preference store
     PreferenceManager mgr = new PreferenceManager();
     mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
-    PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
     Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
 
     ArrayList<String> recentfiles = new ArrayList<String>();
@@ -284,5 +297,11 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
       }
     }
     return index;
+  }
+
+  @Override
+  public void insertText(final String text) {
+    //TODO: throw exception or verify or something.
+    getSelection().insertString(text);
   }
 }

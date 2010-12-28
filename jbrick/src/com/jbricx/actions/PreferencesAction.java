@@ -8,7 +8,6 @@ import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.ui.JBrickManager;
 
@@ -38,16 +37,16 @@ public class PreferencesAction extends AbstractAction {
 //    		EditorPreferencePage.class.getName()));
 
     PreferenceDialog dlg = new PreferenceDialog(getManager().getShell(), mgr);
-    dlg.setPreferenceStore(JBrickEditor.getInstance().getPreferences());
+    dlg.setPreferenceStore(getManager().getPreferences());
     dlg.open();
-    PreferenceStore store= (PreferenceStore) dlg.getPreferenceStore();
+    PreferenceStore store = (PreferenceStore) dlg.getPreferenceStore();
     try {
 		store.save() ;
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-    JBrickEditor.getInstance().setPrefs(store);
+//    JBrickEditor.getInstance().setPrefs(store);
   }
 
 }

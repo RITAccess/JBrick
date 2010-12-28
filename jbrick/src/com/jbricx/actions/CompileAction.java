@@ -46,7 +46,7 @@ public class CompileAction extends AbstractAction {
       box.setMessage("Before compiling, you need to save the code to file");
 
       if (box.open() == SWT.OK) {
-        ActionControlClass.saveFile(curTabItem, false);
+        ActionControlClass.saveFile(curTabItem, false, getManager(), getManager().getWorkPath());
       }
     } else if (currDoc.isDirty()) {
       try {

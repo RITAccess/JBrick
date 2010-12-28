@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
-import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.JBrickStatusUpdater;
 
 /** This {@link CTabItem} is used to present a status panel for compilation error messages.
  * These messages are 'clickable' and move the text cursor to the line in the opened file containing the error.
@@ -20,12 +20,14 @@ import com.jbricx.pjo.JBrickEditor;
  */
 public class StatusTabItem extends CTabItem {
   private Table table;
+  private JBrickStatusUpdater statusUpdater;
 
-  public StatusTabItem(CTabFolder parent, int style) {
+  public StatusTabItem(CTabFolder parent, int style, final JBrickStatusUpdater statusUpdater) {
     super(parent, style);
 
     setText("Status");
     table = new Table(parent, SWT.BORDER);
+    this.statusUpdater = statusUpdater;
     setControl(table);
     parent.setSelection(this);
 
@@ -54,7 +56,7 @@ public class StatusTabItem extends CTabItem {
                 int offset = document.getLineOffset(errorLineNumber);
                 int lineLength = document.getLineLength(errorLineNumber);
                 setSelectedRange(offset, lineLength);
-                JBrickEditor.getInstance().getMainWindow().setStatus(" status bar Line " + strLineNumber);
+                statusUpdater.setStatus(" status bar Line " + strLineNumber);
 
                 // System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
                 // );

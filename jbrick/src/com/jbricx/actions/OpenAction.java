@@ -6,10 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.ui.JBrickManager;
 
-//TODO: Remove dependency with the JBrickEditor class.
 /**
  * This action class responds to requests open a file
  */
@@ -28,7 +26,7 @@ public class OpenAction extends AbstractAction {
    */
   public void run() {
     // lets set the path of the dialog to the workspace
-    PreferenceStore store = JBrickEditor.getInstance().getPreferences();
+    PreferenceStore store = getManager().getPreferences();
     String workspacePath = store.getString(FileExtensionConstants.WRKSPC);
 
     // Use the file dialog

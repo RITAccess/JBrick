@@ -6,25 +6,33 @@ import java.util.regex.PatternSyntaxException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.text.*;
-//import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.FindReplaceDocumentAdapter;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.swt.SWT;
-
-import org.eclipse.swt.widgets.ScrollBar;
-//import org.eclipse.jface.
-//import org.eclipse.swt.widgets.Label;
-
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.model.PersistentDocument;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
 
 /**
@@ -400,19 +408,14 @@ public class FindReplaceDialog extends Dialog implements JBrickObservable {
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		PreferenceStore store = JBrickEditor.getInstance().getPreferences();
+	public void update(final PreferenceStore store) {
 
 		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
 		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
 
-		Font font = new Font(display, PreferenceConverter.getFontData(store,
-				"font"));
-		Color bgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
-				.getDisplay(), bgRBG);
-		Color fgColor = new Color(JBrickEditor.getInstance().getMainWindow().getShell()
-				.getDisplay(), fgRBG);
+		Font font = new Font(display, PreferenceConverter.getFontData(store, "font"));
+		Color bgColor = new Color(getParent().getDisplay(), bgRBG);
+		Color fgColor = new Color(getParent().getDisplay(), fgRBG);
 
 		for (Control control : changableComponentList) {
 			if (!control.isDisposed()) {

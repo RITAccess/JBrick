@@ -26,7 +26,7 @@ public class SaveAction extends AbstractAction {
   @Override
   public void run() {
     getManager().setStatus("Saving File . . .");
-    ActionControlClass.saveFile(getManager().getCurrentTabItem(), false);
+    ActionControlClass.saveFile(getManager().getCurrentTabItem(), false, getManager(), getManager().getWorkPath());
 
     if (getManager().isAutoCompile()) {
       CompileAction compileAction = new CompileAction(getManager());

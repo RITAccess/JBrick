@@ -3,16 +3,19 @@
  */
 package com.jbricx.ui;
 
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.source.ColorManager;
 import com.jbricx.ui.tabs.JBrickTabItem;
+import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * @author byktol
  */
-public interface JBrickManager {
+public interface JBrickManager extends JBrickStatusUpdater {
 
   SourceViewer getCurrentTabItemSourceViewer();
 
@@ -25,8 +28,6 @@ public interface JBrickManager {
   //TODO: Remove, Rename, Refactor.
   // It's been kept to not break anything, but makes no sense.
   boolean isAutoCompile();
-
-  void setStatus(String string);
 
   void openFile(String fileName);
 
@@ -48,4 +49,14 @@ public interface JBrickManager {
   void copy();
   void paste();
   void selectAll();
+
+  TabFolder getTabFolder();
+
+  void refreshExplorerContent();
+
+  String getWorkPath();
+
+  PreferenceStore getPreferences();
+
+  ColorManager getColorManager();
 }

@@ -1,9 +1,5 @@
 package com.jbricx.ui.methodTemplate;
 
-/*
- * @author Priya Sankaran
- * Yuji Fujiki
- */
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,9 +8,7 @@ import java.io.IOException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -23,104 +17,103 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.tabs.TabFolder;
 
-public class MethodTemplateComposite extends org.eclipse.swt.widgets.Composite {
+/**
+ * @author Priya Sankaran
+ * @author Yuji Fujiki
+ * @author byktol
+ */
+public class MethodTemplateComposite {
 
-	public MethodTemplateComposite(Composite parent, int style) {
-		super(parent, style);
-	}
+  private static TabFolder tabFolder;
+  private static MethodTemplateComposite instance = new MethodTemplateComposite();
+  private static Display display = Display.getDefault();
 
-	public static void main(String[] args) throws IOException {
-		showGUI();
-	}
+  private MethodTemplateComposite() { }
 
-	/**
-	 * Overriding checkSubclass allows this class to extend
-	 * org.eclipse.swt.widgets.Composite
-	 */
-	protected void checkSubclass() {
-	}
+  public static MethodTemplateComposite getInstance(final TabFolder tabFolder) {
+    MethodTemplateComposite.tabFolder = tabFolder;
 
-	/**
-	 * Creates the main window's contents
-	 * 
-	 * @param shell
-	 *            the main window
-	 * @throws IOException
-	 */
-	static Display display = Display.getDefault();
+    return instance;
+  }
 
-	public static void showGUI() throws IOException {
+  /**
+   * Overriding checkSubclass allows this class to extend org.eclipse.swt.widgets.Composite
+   */
+  protected void checkSubclass() {
+  }
 
-		final Shell shell = new Shell(display);
-		shell.setLayout(new FillLayout());
-		shell.setText("Method Template");
-		String key;
+  /**
+   * Creates the main window's contents
+   * 
+   * @param shell
+   *          the main window
+   * @throws IOException
+   */
+  public void showGUI() throws IOException {
 
-		File f = new File("src/com/jbricx/ui/methodTemplate/Programs.txt");
+    final Shell shell = new Shell(display);
+    shell.setLayout(new FillLayout());
+    shell.setText("Method Template");
+    String key;
 
-		BufferedReader input = new BufferedReader(new FileReader(f));
-		final Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL
-				| SWT.V_SCROLL);
-		tree.setHeaderVisible(true);
-		TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
-		methodTemplate.setWidth(220);
+    File f = new File("src/com/jbricx/ui/methodTemplate/Programs.txt");
 
-		tree.addListener(SWT.DefaultSelection, new Listener() {
-			/* DefaultSelection = Select by MouseClick or Enter key */
-			@Override
-			public void handleEvent(Event event) {
-				TreeItem sub = (TreeItem) event.item;
-				if (sub != null && sub.getItemCount() == 0 ) { 
-					/* This is the lowest level of the tree */
-					if ( JBrickEditor.getInstance().getMainWindow().getCurrentTabItem() != null){
-						JBrickEditor.getInstance().getMainWindow().getCurrentTabItem()
-						.insertString(sub.getText());
-					}
-				}
-			}
-		});
+    BufferedReader input = new BufferedReader(new FileReader(f));
+    final Tree tree = new Tree(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+    tree.setHeaderVisible(true);
+    TreeColumn methodTemplate = new TreeColumn(tree, SWT.LEFT);
+    methodTemplate.setWidth(220);
 
-		TreeItem item = null;
-		Font initialFont = tree.getFont();
-		FontData[] fontData = initialFont.getFontData();
-		for (int i = 0; i < fontData.length; i++) {
-			fontData[i].setHeight(14);
-		}
-		Font newFont = new Font(display, fontData);
-		tree.setFont(newFont);
+    tree.addListener(SWT.DefaultSelection, new Listener() {
+      /* DefaultSelection = Select by MouseClick or Enter key */
+      @Override
+      public void handleEvent(Event event) {
+        TreeItem sub = (TreeItem) event.item;
+        if (sub != null && sub.getItemCount() == 0) {
+          /* This is the lowest level of the tree */
+          tabFolder.insertText(sub.getText());
+        }
+      }
+    });
 
-		while ((key = input.readLine()) != null) {
+    TreeItem item = null;
+    Font initialFont = tree.getFont();
+    FontData[] fontData = initialFont.getFontData();
+    for (int i = 0; i < fontData.length; i++) {
+      fontData[i].setHeight(14);
+    }
+    Font newFont = new Font(display, fontData);
+    tree.setFont(newFont);
 
-			if (2 <= key.length() && key.substring(0, 2).compareTo("- ") == 0
-					|| key.substring(0, 2).compareTo("| ") == 0) { /*
-																	 * Next Tree
-																	 */
+    while ((key = input.readLine()) != null) {
 
-				item = new TreeItem(tree, SWT.NONE);
-				item.setText(new String[] { key });
-			} else { /* Sub Tree */
-				if (item != null) {
-					TreeItem subItem = new TreeItem(item, SWT.NONE);
-					subItem.setText(key);
+      if (2 <= key.length() && key.substring(0, 2).compareTo("- ") == 0 || key.substring(0, 2).compareTo("| ") == 0) {
+        /* Next Tree */
 
-				}
-			}
-		}
+        item = new TreeItem(tree, SWT.NONE);
+        item.setText(new String[] { key });
+      } else { /* Sub Tree */
+        if (item != null) {
+          TreeItem subItem = new TreeItem(item, SWT.NONE);
+          subItem.setText(key);
 
-		input.close();
-		shell.pack();
-		shell.open();
+        }
+      }
+    }
 
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-		shell.close();
-		
+    input.close();
+    shell.pack();
+    shell.open();
 
-	}
+    while (!shell.isDisposed()) {
+      if (!display.readAndDispatch()) {
+        display.sleep();
+      }
+    }
+    shell.close();
+
+  }
 
 }

@@ -1,13 +1,15 @@
 package com.jbricx.source;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
 
 /**
@@ -75,10 +77,11 @@ public class ColorManager implements JBrickObservable{
       ( itr.next()).dispose();
   }
 
+  /**
+   * Update from preference
+   */
   @Override
-  public void update() {
-	  // Update from preference
-	  PreferenceStore store =  JBrickEditor.getInstance().getPreferences();
+  public void update(PreferenceStore store) {
 	  RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
 	  setDefaultColor(fgRBG) ;	
   }

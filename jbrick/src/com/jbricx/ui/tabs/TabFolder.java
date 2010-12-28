@@ -35,4 +35,8 @@ public interface TabFolder {
     int getSelectionIndex();
 
     void saveFile(String filePath);
+
+    void insertText(String text);
+
+    int contains(String fileName);
 }

@@ -2,6 +2,7 @@ package com.jbricx.source;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
@@ -112,7 +113,7 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 	}
 
 	@Override
-	public void update() {
+	public void update(PreferenceStore ps) {
 		// Update the syntax highlighting after preference update
 		initialization() ;
 	}

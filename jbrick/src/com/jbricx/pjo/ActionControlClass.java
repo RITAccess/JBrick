@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.MainWindow;
 import com.jbricx.ui.SafeSaveDialog;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -13,16 +14,15 @@ import java.io.File;
 
 public class ActionControlClass {
 
-    public static void saveFile(JBrickTabItem tabItem, boolean isSaveAs) {
+    public static void saveFile(JBrickTabItem tabItem, boolean isSaveAs, final JBrickManager manager, final String workpath) {
         String fileLocation = tabItem.getDocument().getFileName();
-        MainWindow mainWindow = JBrickEditor.getInstance().getMainWindow();
         Shell mainShell = tabItem.getParent().getShell();
 
         boolean isNewFile = false;
         String filename = null;
 
         if (isSaveAs || fileLocation == null) {
-            SafeSaveDialog dlg = new SafeSaveDialog(mainShell);
+            SafeSaveDialog dlg = new SafeSaveDialog(mainShell, manager, workpath);
             fileLocation = dlg.open();
             isNewFile = true;
         }
@@ -36,8 +36,8 @@ public class ActionControlClass {
             if (isSaveAs || tabItem.getDocument().isDirty() || isNewFile) {
                 if (isSaveAs) { // remove the currently selected file from the list
                     try {
-                        String currFilePath = JBrickEditor.getInstance().getMainWindow().getCurrentTabItem().getFilename();
-                        JBrickEditor.getInstance().getMainWindow().getTabFolder().closeFile(currFilePath);
+                        String currFilePath = manager.getCurrentTabItem().getFilename();
+                        manager.getTabFolder().closeFile(currFilePath);
                     } catch (NullPointerException ne) {
                     }
                 }
@@ -47,13 +47,13 @@ public class ActionControlClass {
 
                 tabItem.setFile(file);
 
-                mainWindow.setStatus(filename + " save complete.");
-                JBrickEditor.getInstance().getMainWindow().refreshExplorerContent();
+                manager.setStatus(filename + " save complete.");
+                manager.refreshExplorerContent();
             } else {
-                mainWindow.setStatus("No changes have been made to the file.");
+                manager.setStatus("No changes have been made to the file.");
             }
         } catch (IOException e) {
-            mainWindow.setStatus(filename + " could not be saved!");
+            manager.setStatus(filename + " could not be saved!");
             showError(mainShell, "Can't save file " + fileLocation + "; " + e.getMessage());
         } catch (NullPointerException ne) {
             // user has opted to cancel the save dialog

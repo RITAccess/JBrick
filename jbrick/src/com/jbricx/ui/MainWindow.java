@@ -38,9 +38,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.source.ColorManager;
+import com.jbricx.source.JBrickCodeScanner;
+import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -64,6 +66,15 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   private FileExplorerTabItem explorer;
   public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
 
+  // The stored preferences
+  private PreferenceStore prefs;
+  // The partition scanner
+  private JBrickPartitionScanner scanner;
+  // The code scanner
+  private JBrickCodeScanner codeScanner;
+  // The color manager
+  private ColorManager colorManager;
+
 	/**
 	 * MainWindow constructor
 	 */
@@ -74,11 +85,24 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		addCoolBar(SWT.NONE);
 		addStatusLine();
 
-		/* viewersList = new ArrayList<SourceViewer>(); */
+		/* */
+		prefs = new PreferenceStore("JBrickEditor.properties");
+    try {
+      prefs.load();
+    } catch (IOException e) {
+      // Ignore
+    }
+    colorManager = new ColorManager();
+    codeScanner = new JBrickCodeScanner(colorManager);
+
+    registerObserver(colorManager);
+    registerObserver(codeScanner);
+    prefs.addPropertyChangeListener(this);
 	}
 
 	public MainWindow(PreferenceStore prefs) {
     this();
+
   }
 
   /**
@@ -166,14 +190,14 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		sashForm1.setLayout(new FillLayout());
 
 		// Create the panel for the editor (JBrickEditorTabFolder)
-		tabFolder = new JBrickEditorTabFolder(sashForm2, SWT.PUSH);
+		tabFolder = new JBrickEditorTabFolder(sashForm2, this, prefs, SWT.PUSH);
 
 		// Create the status panel.
 		// TODO: Resolve code tangling. This is kept just to avoid breaking something, and I don't like it.
 		final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
 		statusTabFolder.setMaximizeVisible(true);
 
-		statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL) {
+		statusTabItem = new StatusTabItem(statusTabFolder, SWT.FILL, this) {
 			@Override
 			protected IDocument getDocument() {
 				return tabFolder.getSelection().getDocument();
@@ -224,7 +248,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	}
 
 	protected void loadPreferences(JBrickTabItem tabItem) {
-		IPreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+		IPreferenceStore ps = getPreferences();
 
 		String fontProp = ps.getString(FileExtensionConstants.FONT);
 		if (fontProp.length() > 0) {
@@ -302,7 +326,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 				PreferenceManager mgr = new PreferenceManager();
 				mgr.addToRoot(new PreferenceNode("text", "Text", null,
 						TextPreferencePage.class.getName()));
-				PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+				PreferenceStore ps = getPreferences();
 				ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles);
 
 				try {
@@ -329,7 +353,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	public String setWorkspacePath(Composite parent) {
 		String workspace = null;
 		String path;
-		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+		PreferenceStore ps = getPreferences();
 		do {
 			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
 			dialog.setText("Workspace Selection");
@@ -352,7 +376,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
-		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+		PreferenceStore ps = getPreferences();
 		String workspace = ps.getString(FileExtensionConstants.WRKSPC);
 
 		// Check if directory exists
@@ -371,7 +395,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		PreferenceManager mgr = new PreferenceManager();
 		mgr.addToRoot(new PreferenceNode("text", "Text", null,
 				TextPreferencePage.class.getName()));
-		PreferenceStore ps = JBrickEditor.getInstance().getPreferences();
+		PreferenceStore ps = getPreferences();
 		Boolean autoCompile = ps.getBoolean(FileExtensionConstants.AUTOCOMPILE);
 		return autoCompile;
 	}
@@ -499,8 +523,32 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
   public void notifyViewers() {
     for (JBrickObservable observer : observerList) {
-      observer.update();
+      observer.update(prefs);
     }
     refreshCurrentTabItem();
+  }
+  
+  public PreferenceStore getPreferences() {
+    return prefs;
+  }
+
+  @Override
+  protected void finalize() throws Throwable {
+    if (colorManager != null) {
+      colorManager.dispose();
+      colorManager = null;
+    }
+
+    super.finalize();
+  }
+
+  @Override
+  public String getWorkPath() {
+    return prefs.getString(FileExtensionConstants.WRKSPC);
+  }
+
+  @Override
+  public ColorManager getColorManager() {
+    return colorManager;
   }
 }

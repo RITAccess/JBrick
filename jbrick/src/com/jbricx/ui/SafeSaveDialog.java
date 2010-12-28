@@ -1,16 +1,14 @@
 package com.jbricx.ui;
 
-import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
-import com.jbricx.ui.tabs.JBrickEditorTabFolder;
-
 import java.io.File;
-import org.eclipse.core.internal.resources.Folder;
+
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+
+import com.jbricx.pjo.FileExtensionConstants;
+import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * This class provides a facade for the "save" FileDialog class. If the selected
@@ -21,16 +19,15 @@ public class SafeSaveDialog {
 
     private FileDialog dlg;
     private Shell mainShell;
+    private JBrickManager manager;
 
     /**
      * SafeSaveDialog constructor
      *
      * @param shell the parent shell
      */
-    public SafeSaveDialog(Shell shell) {
-        PreferenceStore store = JBrickEditor.getInstance().getPreferences();
-        String workspacePath = store.getString(FileExtensionConstants.WRKSPC);
-
+    public SafeSaveDialog(final Shell shell, final JBrickManager manager, final String workspacePath) {
+      this.manager = manager;
         mainShell = shell;
 
         dlg = new FileDialog(shell, SWT.SAVE);
@@ -65,7 +62,7 @@ public class SafeSaveDialog {
                 // User has selected a file; see if it already exists
                 File file = new File(fileName);
 
-                JBrickEditorTabFolder tabfolder = (JBrickEditorTabFolder) JBrickEditor.getInstance().getMainWindow().getTabFolder();
+                TabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {
                     // do not allow the user to specify the an existing file if already open in editor
