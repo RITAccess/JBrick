@@ -43,4 +43,9 @@ public interface JBrickManager {
   //TODO: Remove.
   // WHY? You shouldn't be doing this.
   Composite getTable();
+
+  void cut();
+  void copy();
+  void paste();
+  void selectAll();
 }

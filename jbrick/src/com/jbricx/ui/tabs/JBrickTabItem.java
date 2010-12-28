@@ -206,7 +206,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObservable {
         // part of the observer pattern to update all registered object after
         // changing preference
         // page
-        JBrickEditor.registerObserver(this);
 
 //        menuManager = createRightClickMenuManager(viewer.getTextWidget());
 //        Menu menu = menuManager.createContextMenu(viewer.getTextWidget());

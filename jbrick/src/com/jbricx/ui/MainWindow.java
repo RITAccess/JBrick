@@ -2,6 +2,7 @@ package com.jbricx.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.eclipse.jface.action.CoolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -38,6 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
@@ -60,6 +62,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	private TabFolder tabFolder;
 	private StatusTabItem statusTabItem;
   private FileExplorerTabItem explorer;
+  public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
 
 	/**
 	 * MainWindow constructor
@@ -74,7 +77,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		/* viewersList = new ArrayList<SourceViewer>(); */
 	}
 
-	/**
+	public MainWindow(PreferenceStore prefs) {
+    this();
+  }
+
+  /**
 	 * Runs the application
 	 */
 	public void run() {
@@ -96,6 +103,16 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		super.configureShell(shell);
 		shell.setText("JBrick Editor");
 	}
+
+  public void registerObserver(final JBrickObservable observer) {
+    observerList.add(observer);
+  }
+
+  public void removeObserver(final JBrickObservable observer) {
+    if (observerList.contains(observer)) {
+      observerList.remove(observer);
+    }
+  }
 
 	/**
 	 * Creates the main window's contents
@@ -196,6 +213,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		getMenuBarManager().updateAll(true);
 		l.setFocus();
 
+		notifyViewers();
 		return sashForm1; // return the created Composite.
 	}
 
@@ -368,6 +386,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
 	public void openNewFile() {
 		getTabFolder().openNewFile();
+		registerObserver(getCurrentTabItem());
 	}
 
 	public void saveFile(String filename) {
@@ -392,7 +411,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		CTabItem tabItems[] = tabFolder.getItems();
 
 		int valor = tabItems.length;
-		String valor2 =String.valueOf(valor);
+		String valor2 = String.valueOf(valor);
 		System.out.println("refresh refreshCurrentTabItem = " + valor2);
 
 		for (CTabItem tbItem : tabItems) {
@@ -402,7 +421,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 				JBrickTabItem tabItem = (JBrickTabItem) tbItem;
 				String currentString = tabItem.getViewer().getTextWidget().getText();
 				String currentSaveString = tabItem.getDocument().getFileName();
-				JBrickEditor.removeObserver(tabItem);
+				removeObserver(tabItem);
 				tabItem.dispose();
 				System.out.println("tbItem.dispose...");
 				if (currentSaveString != null) {
@@ -448,5 +467,40 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   @Override
   public void redo() {
     getCurrentTabItem().getUndoManager().redo();
+  }
+
+  /**
+   * Cuts the selection to the clipboard
+   */
+  public void cut() {
+    getCurrentTabItem().getViewer().getTextWidget().cut();
+  }
+
+  /**
+   * Copies the selection to the clipboard
+   */
+  public void copy() {
+    getCurrentTabItem().getViewer().getTextWidget().copy();
+  }
+
+  /**
+   * Select all of the text in the editor
+   */
+  public void selectAll() {
+    getCurrentTabItem().getViewer().getTextWidget().selectAll();
+  }
+
+  /**
+   * Pastes the clipboard
+   */
+  public void paste() {
+    getCurrentTabItem().getViewer().getTextWidget().paste();
+  }
+
+  public void notifyViewers() {
+    for (JBrickObservable observer : observerList) {
+      observer.update();
+    }
+    refreshCurrentTabItem();
   }
 }

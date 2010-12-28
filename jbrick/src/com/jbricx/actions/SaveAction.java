@@ -3,7 +3,6 @@ package com.jbricx.actions;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.ui.JBrickManager;
 
 /**
@@ -27,7 +26,7 @@ public class SaveAction extends AbstractAction {
   @Override
   public void run() {
     getManager().setStatus("Saving File . . .");
-    ActionControlClass.saveFile(JBrickEditor.getInstance().getMainWindow().getCurrentTabItem(), false);
+    ActionControlClass.saveFile(getManager().getCurrentTabItem(), false);
 
     if (getManager().isAutoCompile()) {
       CompileAction compileAction = new CompileAction(getManager());

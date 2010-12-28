@@ -5,8 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.ui.DirectControl.DirectControlWindow;
 
-;
-
 /**
  * This action opens the joystick window
  */

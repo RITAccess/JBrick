@@ -53,15 +53,15 @@ public class MenuAndToolBarManagerDelegate {
 
   private AboutAction aboutAction;
   private HelpContentAction helpContentAction = new HelpContentAction();
-  private CopyAction copyAction = new CopyAction();
-  private CutAction cutAction = new CutAction();
-  private SelectAllAction selectAllAction = new SelectAllAction();
+  private CopyAction copyAction;
+  private CutAction cutAction;
+  private SelectAllAction selectAllAction;
   private ExitAction exitAction;
   private FindAction findAction;
   private GotoAction gotoAction;
   private NewAction newAction;
   private OpenAction openAction;
-  private PasteAction pasteAction = new PasteAction();
+  private PasteAction pasteAction;
   private PreferencesAction prefsAction;
   private PrintAction printAction;
   private PrintPreviewAction printPreviewAction;
@@ -78,6 +78,10 @@ public class MenuAndToolBarManagerDelegate {
   private MethodTemplateAction methodTemplateAction = new MethodTemplateAction();
 
   public MenuAndToolBarManagerDelegate(final JBrickManager manager) {
+    copyAction = new CopyAction(manager);
+    cutAction = new CutAction(manager);
+    selectAllAction = new SelectAllAction(manager);
+    pasteAction = new PasteAction(manager);
     aboutAction = new AboutAction(manager);
     exitAction = new ExitAction(manager);
     findAction = new FindAction(manager);

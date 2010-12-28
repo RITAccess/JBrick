@@ -3,19 +3,14 @@ package com.jbricx.pjo;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.ToolBar;
 
 import com.jbricx.preferences.JBrickObservable;
 import com.jbricx.source.ColorManager;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.MainWindow;
-import com.jbricx.ui.tabs.JBrickTabItem;
 
 /**
  * This class demonstrates TextViewer and Document.
@@ -24,7 +19,6 @@ public class JBrickEditor {
 	// Set up the name of the partitioner
 
 	public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
-	public static ArrayList<JBrickObservable> observerList = new ArrayList<JBrickObservable>();
 	// A reference to the current app
 	private static JBrickEditor APP;
 	/*	// The current document
@@ -37,17 +31,9 @@ public class JBrickEditor {
 
 	public void setPrefs(PreferenceStore prefs) {
 		this.prefs = prefs;
-		notifyViewers();
+//		mainWindow.notifyViewers();
 	}
 
-	public static void notifyViewers() {
-		for (JBrickObservable observer : observerList) {
-			observer.update();
-		}
-		if (mainWindow != null) {
-			mainWindow.refreshCurrentTabItem();
-		}
-	}
 	// The partition scanner
 	private JBrickPartitionScanner scanner;
 	// The code scanner
@@ -64,29 +50,30 @@ public class JBrickEditor {
 		return APP;
 	}
 
+
 	/**
 	 * JBrickEditor constructor
 	 */
 	private JBrickEditor() {
-		APP = this;
+	  APP = this;
+	  
+	  prefs = new PreferenceStore("JBrickEditor.properties");
+	  try {
+	    prefs.load();
+	  } catch (IOException e) {
+	    // Ignore
+	  }
 
-		colorManager = new ColorManager();
-		registerObserver(colorManager);
+	  colorManager = new ColorManager();
+	  codeScanner = new JBrickCodeScanner(colorManager);
+	  mainWindow = new MainWindow(prefs);
+	  mainWindow.registerObserver(colorManager);
+	  mainWindow.registerObserver(codeScanner);
+	  prefs.addPropertyChangeListener(mainWindow);
 
-		prefs = new PreferenceStore("JBrickEditor.properties");
-		try {
-			prefs.load();
-		} catch (IOException e) {
-			// Ignore
-		}
-		notifyViewers();
-
-		codeScanner = new JBrickCodeScanner();
-		registerObserver(codeScanner);
-		mainWindow = new MainWindow();
-		prefs.addPropertyChangeListener(mainWindow);
+	  //TODO: verify this?
+//    mainWindow.notifyViewers();
 	}
-
 	/**
 	 * Runs the application
 	 */
@@ -98,55 +85,6 @@ public class JBrickEditor {
 		if (colorManager != null) {
 			colorManager.dispose();
 		}
-	}
-
-	/**
-	 * Prints the document
-	 */
-	public void print() {
-		mainWindow.getCurrentTabItem().getViewer().getTextWidget().print();
-	}
-
-	/**
-	 * Cuts the selection to the clipboard
-	 */
-	public void cut() {
-		mainWindow.getCurrentTabItem().getViewer().getTextWidget().cut();
-	}
-
-	/**
-	 * Copies the selection to the clipboard
-	 */
-	public void copy() {
-		mainWindow.getCurrentTabItem().getViewer().getTextWidget().copy();
-	}
-
-	/**
-	 * Select all of the text in the editor
-	 */
-	public void selectAll() {
-		mainWindow.getCurrentTabItem().getViewer().getTextWidget().selectAll();
-	}
-
-	/**
-	 * Pastes the clipboard
-	 */
-	public void paste() {
-		mainWindow.getCurrentTabItem().getViewer().getTextWidget().paste();
-	}
-
-	/**
-	 * Undoes the last operation
-	 */
-	public void undo(JBrickTabItem tabItem) {
-		tabItem.getUndoManager().undo();
-	}
-
-	/**
-	 * Redoes the last operation
-	 */
-	public void redo(JBrickTabItem tabItem) {
-		tabItem.getUndoManager().redo();
 	}
 
 	/**
@@ -204,15 +142,5 @@ public class JBrickEditor {
 	public static void main(String[] args) {
 		//ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
 		new JBrickEditor().run();
-	}
-
-	public static void registerObserver(JBrickObservable observer) {
-		observerList.add(observer);
-	}
-
-	public static void removeObserver(JBrickObservable observer) {
-		if (observerList.contains(observer)) {
-			observerList.remove(observer);
-		}
 	}
 }

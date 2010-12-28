@@ -1,29 +1,37 @@
 package com.jbricx.source;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.*;
+import org.eclipse.jface.text.rules.EndOfLineRule;
+import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.IWhitespaceDetector;
+import org.eclipse.jface.text.rules.MultiLineRule;
+import org.eclipse.jface.text.rules.RuleBasedScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
+import org.eclipse.jface.text.rules.Token;
+import org.eclipse.jface.text.rules.WhitespaceRule;
+import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
 
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObservable;
-
 
 /**
  * This class scans through a code partition and colors it.
  */
 public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObservable {
+
+  private ColorManager cm;
 	/**
 	 * JBrickCodeScanner constructor
 	 */
-	public JBrickCodeScanner() {
+	public JBrickCodeScanner(final ColorManager cm) {
+	  this.cm = cm;
 		initialization() ;
 	}
 	
 	private void initialization(){
-		// Get the color manager
-		ColorManager cm = JBrickEditor.getInstance().getColorManager();
 
 		// Create the tokens for keywords, strings, and other (everything else)
 		IToken keyword = new Token(
@@ -96,7 +104,7 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 		
 		
 		rules.add(wordRule);
-		System.out.println("rules.size" + rules.size());
+//		System.out.println("rules.size" + rules.size());
 		
 		IRule[] result = new IRule[rules.size()];
 		rules.toArray(result);
@@ -105,7 +113,7 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserva
 
 	@Override
 	public void update() {
-		// Update the syntax highliting after preference update
+		// Update the syntax highlighting after preference update
 		initialization() ;
 	}
 }

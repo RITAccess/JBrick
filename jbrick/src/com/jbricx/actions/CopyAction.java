@@ -1,21 +1,19 @@
 package  com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.JBrickManager;
 
-//TODO: Remove the dependency with the JBrickEditor class.
 /**
  * This action copies the current selection to the clipboard
  */
-public class CopyAction extends Action {
+public class CopyAction extends AbstractAction {
   /**
    * CopyAction constructor
    */
-  public CopyAction() {
+  public CopyAction(final JBrickManager manager) {
     super("&Copy@Ctrl+C", ImageDescriptor.createFromFile(CopyAction.class,
-        "/images/edit-copy.png"));
+        "/images/edit-copy.png"), manager);
     setToolTipText("Copy");
   }
 
@@ -23,7 +21,6 @@ public class CopyAction extends Action {
    * Runs the action
    */
   public void run() {
-    //TODO: why?
-    JBrickEditor.getInstance().copy();
+    getManager().copy();
   }
 }

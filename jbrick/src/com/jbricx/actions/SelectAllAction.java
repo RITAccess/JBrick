@@ -1,21 +1,19 @@
-package  com.jbricx.actions;
+package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.pjo.JBrickEditor;
+import com.jbricx.ui.JBrickManager;
 
-//TODO: Remove the dependency with the JBrickEditor class.
 /**
  * This action copies the current selection to the clipboard
  */
-public class SelectAllAction extends Action {
+public class SelectAllAction extends AbstractAction {
   /**
    * CopyAction constructor
    */
-  public SelectAllAction() {
-    super("&Select All@Ctrl+A", ImageDescriptor.createFromFile(SelectAllAction.class,
-        "/images/edit-selectall.png"));
+  public SelectAllAction(final JBrickManager manager) {
+    super("&Select All@Ctrl+A", ImageDescriptor.createFromFile(SelectAllAction.class, "/images/edit-selectall.png"),
+        manager);
     setToolTipText("Select All");
   }
 
@@ -23,7 +21,6 @@ public class SelectAllAction extends Action {
    * Runs the action
    */
   public void run() {
-    //TODO: WHY?
-    JBrickEditor.getInstance().selectAll();
+    getManager().selectAll();
   }
 }
