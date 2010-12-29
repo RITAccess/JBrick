@@ -16,7 +16,7 @@ public class CommentScanner extends RuleBasedScanner {
 
     // Create the tokens
     IToken other = new Token(new TextAttribute(cm
-        .getColor(ColorManager.COMMENT)));
+        .getColor(ColorManager.ColorFor.COMMENT)));
 
     // Use "other" for default
     setDefaultReturnToken(other);

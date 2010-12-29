@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -16,10 +14,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -33,12 +28,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.model.PersistentDocument;
-import com.jbricx.preferences.JBrickObserver;
 
 /**
  * This class displays a find/replace dialog
  */
-public class FindReplaceDialog extends Dialog implements JBrickObserver {
+public class FindReplaceDialog extends Dialog {
 
 	// The adapter that does the finding/replacing
 	private FindReplaceDocumentAdapter frda;
@@ -375,10 +369,6 @@ public class FindReplaceDialog extends Dialog implements JBrickObserver {
 		changableComponentList.add(doReplaceFind);
 		changableComponentList.add(findText);
 
-		// apply changes from the preference page
-		// JBrickEditor.registerObserver(this);
-		// this.update();
-
 		// Set defaults
 		down.setSelection(true);
 		findText.setFocus();
@@ -405,31 +395,5 @@ public class FindReplaceDialog extends Dialog implements JBrickObserver {
 	 */
 	protected void showError(String message) {
 		MessageDialog.openError(getParent(), "Error", message);
-	}
-
-	@Override
-	public void update(final PreferenceStore store) {
-
-		RGB bgRBG = PreferenceConverter.getColor(store, "editorBGColor");
-		RGB fgRBG = PreferenceConverter.getColor(store, "editorFGColor");
-
-		Font font = new Font(display, PreferenceConverter.getFontData(store, "font"));
-		Color bgColor = new Color(getParent().getDisplay(), bgRBG);
-		Color fgColor = new Color(getParent().getDisplay(), fgRBG);
-
-		for (Control control : changableComponentList) {
-			if (!control.isDisposed()) {
-				control.setFont(font);
-				control.setBackground(bgColor);
-				control.setForeground(fgColor);
-			}
-		}
-
-		System.out.println("bgColor is: " + bgColor);
-		System.out.println("fgColor is: " + fgColor);
-
-		viewer.getTextWidget().setBackground(bgColor);
-		viewer.setTextColor(fgColor);
-		viewer.getTextWidget().setForeground(fgColor);
 	}
 }

@@ -17,7 +17,6 @@ import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.LineNumberChangeRulerColumn;
 import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -60,7 +59,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     filenamesList = new ArrayList<String>();
     newFileCount = 0;
 
-    colorManager = new ColorManager();
+    colorManager = new ColorManager(ps);
     JBrickCodeScanner codeScanner = new JBrickCodeScanner(colorManager);
     CommentScanner commentScanner = new CommentScanner(colorManager);
     sourceViewerConfiguration = new JBrickEditorSourceViewerConfiguration(codeScanner, commentScanner);

@@ -1,4 +1,4 @@
-package  com.jbricx.actions;
+package com.jbricx.actions;
 
 import java.io.IOException;
 
@@ -11,7 +11,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.ui.JBrickManager;
 
-//TODO: Remove the dependency with JBrickEditor.
 /**
  * This action displays the preferences dialog
  */
@@ -21,8 +20,8 @@ public class PreferencesAction extends AbstractAction {
    * PreferencesAction constructor
    */
   public PreferencesAction(final JBrickManager manager) {
-    super("P&references...@Ctrl+R", ImageDescriptor.createFromFile(PasteAction.class,
-    "/images/preferences-desktop.png"), manager);
+    super("P&references...@Ctrl+R", ImageDescriptor
+        .createFromFile(PasteAction.class, "/images/preferences-desktop.png"), manager);
     setToolTipText("Preferences");
   }
 
@@ -31,22 +30,20 @@ public class PreferencesAction extends AbstractAction {
    */
   public void run() {
     PreferenceManager mgr = new PreferenceManager();
-    mgr.addToRoot(new PreferenceNode("text", "Text", null,
-        TextPreferencePage.class.getName()));
-//    mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
-//    		EditorPreferencePage.class.getName()));
+    mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
+    // mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
+    // EditorPreferencePage.class.getName()));
 
     PreferenceDialog dlg = new PreferenceDialog(getManager().getShell(), mgr);
-    dlg.setPreferenceStore(getManager().getPreferences());
+    PreferenceStore ps = getManager().getPreferences();
+    dlg.setPreferenceStore(ps);
     dlg.open();
-    PreferenceStore store = (PreferenceStore) dlg.getPreferenceStore();
     try {
-		store.save() ;
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    getManager().setPreferences(store);
+      ps.save();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+//    getManager().setPreferences(store);
   }
 
 }

@@ -9,9 +9,8 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -41,9 +40,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
 
 import annotation.AnnotationConfiguration;
 import annotation.AnnotationHover;
@@ -350,7 +347,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   }
 
   @Override
-  public void update(final PreferenceStore store) {
+  public void update(final IPreferenceStore store) {
     RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
     RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
 

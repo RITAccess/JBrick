@@ -1,7 +1,7 @@
 package com.jbricx.preferences;
 
-import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 public interface JBrickObserver {
-  void update(PreferenceStore store);
+  void update(IPreferenceStore store);
 }

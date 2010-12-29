@@ -2,7 +2,7 @@ package com.jbricx.source;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IRule;
@@ -37,27 +37,27 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserve
 		// Create the tokens for keywords, strings, and other (everything else)
 		IToken keyword = new Token(
 							new TextAttribute(
-									cm.getColor(ColorManager.KEYWORD), 
-									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD));
+									cm.getColor(ColorManager.ColorFor.KEYWORD), 
+									cm.getColor(ColorManager.ColorFor.BACKGROUND), SWT.BOLD));
 		
 		IToken specialKeyword = new Token(
 							new TextAttribute(
-									cm.getColor(ColorManager.KEYWORD), 
-									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD|SWT.ITALIC));
+									cm.getColor(ColorManager.ColorFor.KEYWORD), 
+									cm.getColor(ColorManager.ColorFor.BACKGROUND), SWT.BOLD|SWT.ITALIC));
 		
 		
 		IToken numericOperator = new Token(
 							new TextAttribute(
-									cm.getColor(ColorManager.OPERATOR), 
-									cm.getColor(ColorManager.BACKGROUND), SWT.BOLD));
+									cm.getColor(ColorManager.ColorFor.OPERATOR), 
+									cm.getColor(ColorManager.ColorFor.BACKGROUND), SWT.BOLD));
 		
 		
-		IToken other = new Token(new TextAttribute(cm.getColor(ColorManager.DEFAULT)));
-		IToken string = new Token(new TextAttribute(cm.getColor(ColorManager.STRING)));
+		IToken other = new Token(new TextAttribute(cm.getColor(ColorManager.ColorFor.FOREGROUND)));
+		IToken string = new Token(new TextAttribute(cm.getColor(ColorManager.ColorFor.STRING)));
 		//comments
-		IToken javadoc = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
-	    IToken multilineComment = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
-	    IToken singleLineComment = new Token(new TextAttribute(cm.getColor(ColorManager.COMMENT)));
+		IToken javadoc = new Token(new TextAttribute(cm.getColor(ColorManager.ColorFor.COMMENT)));
+	    IToken multilineComment = new Token(new TextAttribute(cm.getColor(ColorManager.ColorFor.COMMENT)));
+	    IToken singleLineComment = new Token(new TextAttribute(cm.getColor(ColorManager.ColorFor.COMMENT)));
 		// Use "other" for default
 		setDefaultReturnToken(other);
 
@@ -113,7 +113,7 @@ public class JBrickCodeScanner extends RuleBasedScanner implements JBrickObserve
 	}
 
 	@Override
-	public void update(PreferenceStore ps) {
+	public void update(final IPreferenceStore ps) {
 		// Update the syntax highlighting after preference update
 		initialization() ;
 	}
