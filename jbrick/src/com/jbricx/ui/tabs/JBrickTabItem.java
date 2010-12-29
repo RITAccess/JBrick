@@ -50,6 +50,7 @@ import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObserver;
+import com.jbricx.source.ColorManager.ColorFor;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
 import com.jbricx.source.JBrickPartitionScanner;
 import com.jbricx.ui.JBrickStatusUpdater;
@@ -82,9 +83,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
    * 
    * @param parent
    * @param style
-   * @param fileName
+   * @param file
    */
-  // public JBrickTabItem(CTabFolder parent, int style, String fileName) {
   public JBrickTabItem(CTabFolder parent, int style, File file, final JBrickStatusUpdater statusUpdater, final JBrickEditorSourceViewerConfiguration configuration) {
     super(parent, style);
     setFile(file);
@@ -92,10 +92,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     ruler = new CompositeRuler(10);
     lnrc = new LineNumberRulerColumn();
-    // lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
-
-    // System.out.println("number line color");
-    lnrc.setForeground(new Color(parent.getShell().getDisplay(), new RGB(255, 0, 0)));
     ruler.addDecorator(0, lnrc);
 
     // annotation ruler to view annotation
@@ -238,7 +234,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     }
 
     return line;
-
   }
 
   public void insertString(String inputString) {
@@ -264,6 +259,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
      */
     // Use the new font
     this.getViewer().getTextWidget().setFont(temp);
+    this.ruler.setFont(temp);
   }
 
   public IUndoManager getUndoManager() {
@@ -348,8 +344,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   @Override
   public void update(final IPreferenceStore store) {
-    RGB bgRBG = PreferenceConverter.getColor(store, "bgColor");
-    RGB fgRBG = PreferenceConverter.getColor(store, "fgColor");
+    //TODO: even though this works, why is it been read from the preference store?
+    RGB bgRBG = PreferenceConverter.getColor(store, ColorFor.BACKGROUND.property());
+    RGB fgRBG = PreferenceConverter.getColor(store, ColorFor.FOREGROUND.property());
 
     String fontProp = store.getString(FileExtensionConstants.FONT);
     if (fontProp.length() > 0) { /* Check if the font is available */
@@ -360,6 +357,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     if (bgRBG != fgRBG) {/* Check if the colors are available */
 
       Color bgColor = new Color(getDisplay(), bgRBG);
+      lnrc.setForeground(new Color(getDisplay(), PreferenceConverter.getColor(store, ColorFor.LINENUMBERFG.property())));
+      lnrc.setBackground(new Color(getDisplay(), PreferenceConverter.getColor(store, ColorFor.LINENUMBERBG.property())));
 
       // Color fgColor = new
       // Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);

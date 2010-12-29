@@ -43,7 +43,7 @@ public class PreferencesAction extends AbstractAction {
     } catch (IOException e) {
       e.printStackTrace();
     }
-//    getManager().setPreferences(store);
+    getManager().updatePreferences();
   }
 
 }

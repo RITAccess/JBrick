@@ -24,6 +24,8 @@ public class ColorManager implements JBrickObserver {
     KEYWORD,
     OPERATOR,
     STRING,
+    LINENUMBERFG,
+    LINENUMBERBG,
     EDITORBG,
     EDITORFG;
 

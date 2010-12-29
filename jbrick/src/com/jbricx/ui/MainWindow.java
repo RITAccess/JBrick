@@ -451,8 +451,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   }
   
   @Override
-  public void setPreferences(PreferenceStore store) {
-    this.prefs = store;
+  public void updatePreferences() {
     notifyViewers();
   }
 }

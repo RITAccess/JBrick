@@ -22,12 +22,6 @@ public interface JBrickManager extends JBrickStatusUpdater {
   // This creates a dependency.
   JBrickTabItem getCurrentTabItem();
 
-  //TODO: Remove, Rename, Refactor.
-  // It's been kept to not break anything, but makes no sense.
-  boolean isAutoCompile();
-
-  //TODO: Rename method name.
-  // Even though it's invoked when the editor window is closed, it shouldn't be called close(), don't you think?
   boolean close();
 
   //TODO: Remove.
@@ -40,10 +34,11 @@ public interface JBrickManager extends JBrickStatusUpdater {
 
   String getWorkPath();
 
-  //TODO: remove
-  // I don't like it.
   PreferenceStore getPreferences();
-  void setPreferences(PreferenceStore store);
 
   void registerObserver(JBrickObserver o);
+
+  void updatePreferences();
+  
+  boolean isAutoCompile();
 }

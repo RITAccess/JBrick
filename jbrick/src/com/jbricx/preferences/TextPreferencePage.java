@@ -33,6 +33,8 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
     store.setDefault(ColorFor.FOREGROUND.property(), Color.black.getRGB());
     store.setDefault(ColorFor.OPERATOR.property(), Color.orange.getRGB());
     store.setDefault(ColorFor.COMMENT.property(), Color.gray.getRGB());
+    store.setDefault(ColorFor.LINENUMBERFG.property(), Color.red.getRGB());
+    store.setDefault(ColorFor.LINENUMBERBG.property(), Color.white.getRGB());
     store.setDefault(ColorFor.STRING.property(), Color.green.getRGB());
     store.setDefault(ColorFor.KEYWORD.property(), Color.blue.getRGB());
   }
@@ -68,6 +70,8 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
         "Keyword color:",
         "Operator color:",
         "String color:",
+        "Line numbers FG color:",
+        "Line numbers BG color:",
         "Editor BG (?):",
         "Editor FG (?):"
     };

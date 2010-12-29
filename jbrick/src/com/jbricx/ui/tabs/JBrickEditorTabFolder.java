@@ -10,8 +10,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
@@ -33,7 +31,6 @@ import annotation.AnnotationMarkerAccess;
 import annotation.ColorCache;
 
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.source.ColorManager;
 import com.jbricx.source.CommentScanner;
 import com.jbricx.source.JBrickCodeScanner;
@@ -62,6 +59,12 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     colorManager = new ColorManager(ps);
     JBrickCodeScanner codeScanner = new JBrickCodeScanner(colorManager);
     CommentScanner commentScanner = new CommentScanner(colorManager);
+
+    //TODO: these three lines. The scanners should observe the colorManager.
+    statusUpdater.registerObserver(colorManager);
+    statusUpdater.registerObserver(commentScanner);
+    statusUpdater.registerObserver(codeScanner);
+
     sourceViewerConfiguration = new JBrickEditorSourceViewerConfiguration(codeScanner, commentScanner);
 
     setMinimizeVisible(true);
@@ -185,6 +188,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
       if (file.exists()) {
         // this file does not exist in the editor so create one
         JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath), statusUpdater, sourceViewerConfiguration);
+        newTabItem.update(statusUpdater.getPreferences());
 
         filenamesList.add(filepath);
         this.setSelection(newTabItem);
@@ -205,6 +209,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     String fileName = "New File " + newFileCount;
 
     JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null, statusUpdater, sourceViewerConfiguration);
+    newTabItem.update(statusUpdater.getPreferences());
     newTabItem.setText(fileName);
     setSelection(newTabItem);
 
@@ -258,8 +263,6 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
   public ArrayList<String> getRecentFiles(PreferenceStore ps) {
     // Get the preference store
-    PreferenceManager mgr = new PreferenceManager();
-    mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
     Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
 
     ArrayList<String> recentfiles = new ArrayList<String>();
@@ -303,18 +306,23 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
   @Override
   public void insertText(final String text) {
-    //TODO: throw exception or verify or something.
-    getSelection().insertString(text);
+    if (getSelection() != null) {
+      getSelection().insertString(text);
+    }
   }
 
   @Override
   public void undo() {
-    getSelection().getUndoManager().undo();
+    if (getSelection() != null) {
+      getSelection().getUndoManager().undo();
+    }
   }
 
   @Override
   public void redo() {
-    getSelection().getUndoManager().redo();
+    if (getSelection() != null) {
+      getSelection().getUndoManager().redo();
+    }
   }
 
   /**
@@ -322,7 +330,9 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
    */
   @Override
   public void cut() {
-    getSelection().getViewer().getTextWidget().cut();
+    if (getSelection() != null) {
+      getSelection().getViewer().getTextWidget().cut();
+    }
   }
 
   /**
@@ -330,7 +340,9 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
    */
   @Override
   public void copy() {
-    getSelection().getViewer().getTextWidget().copy();
+    if (getSelection() != null) {
+      getSelection().getViewer().getTextWidget().copy();
+    }
   }
   
   /**
@@ -338,7 +350,9 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
    */
   @Override
   public void paste() {
-    getSelection().getViewer().getTextWidget().paste();
+    if (getSelection() != null) {
+      getSelection().getViewer().getTextWidget().paste();
+    }
   }
 
   /**
