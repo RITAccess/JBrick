@@ -1,13 +1,11 @@
 package com.jbricx.preferences;
 
-import java.awt.Color;
-
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FontFieldEditor;
-import org.eclipse.jface.preference.IPreferenceStore;
+
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.source.ColorManager.ColorFor;
 
@@ -25,18 +23,11 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
    */
   @Override
   protected void performDefaults() {
-    // Get the preference store
-    IPreferenceStore store = getPreferenceStore();
+    //Workaround to preserve the workspace
+    getPreferenceStore().setDefault(FileExtensionConstants.WRKSPC,
+        getPreferenceStore().getString(FileExtensionConstants.WRKSPC));
 
-    // Reset the fields to the defaults
-    store.setDefault(ColorFor.BACKGROUND.property(), Color.white.getRGB());
-    store.setDefault(ColorFor.FOREGROUND.property(), Color.black.getRGB());
-    store.setDefault(ColorFor.OPERATOR.property(), Color.orange.getRGB());
-    store.setDefault(ColorFor.COMMENT.property(), Color.gray.getRGB());
-    store.setDefault(ColorFor.LINENUMBERFG.property(), Color.red.getRGB());
-    store.setDefault(ColorFor.LINENUMBERBG.property(), Color.white.getRGB());
-    store.setDefault(ColorFor.STRING.property(), Color.green.getRGB());
-    store.setDefault(ColorFor.KEYWORD.property(), Color.blue.getRGB());
+    super.performDefaults();
   }
 
   /**
@@ -54,11 +45,11 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
     addField(new DirectoryFieldEditor(FileExtensionConstants.WRKSPC, "Workspace Directory",
         getFieldEditorParent()));
 
-    // Add the field for word wrap
+    // Add the field for loading recent files
     addField(new BooleanFieldEditor(FileExtensionConstants.BOOLRECENTFILES, "Load Recently Opened Files",
         getFieldEditorParent()));
 
-    // Add the field for word wrap
+    // Add the field for auto-compile
     addField(new BooleanFieldEditor(FileExtensionConstants.AUTOCOMPILE, "Auto Compile",
         getFieldEditorParent()));
 

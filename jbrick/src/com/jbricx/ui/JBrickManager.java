@@ -32,7 +32,7 @@ public interface JBrickManager extends JBrickStatusUpdater {
 
   void refreshExplorerContent();
 
-  String getWorkPath();
+  String getWorkspacePath();
 
   PreferenceStore getPreferences();
 

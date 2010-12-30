@@ -28,7 +28,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -65,20 +64,14 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	/**
 	 * MainWindow constructor
 	 */
-	public MainWindow() {
+	public MainWindow(final PreferenceStore preferences) {
 		super(null);
 		menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate(this);
 		addMenuBar();
 		addCoolBar(SWT.NONE);
 		addStatusLine();
-
-		prefs = new PreferenceStore("JBrickEditor.properties");
-    try {
-      prefs.load();
-    } catch (IOException e) {
-      // Ignore
-    }
-    prefs.addPropertyChangeListener(this);
+		prefs = preferences;
+		prefs.addPropertyChangeListener(this);
 	}
 
   /**
@@ -121,12 +114,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 	 */
 	@Override
 	protected Control createContents(final Composite parent) {
-
-		String workspacePath = getWorkspacePath();
-		if (workspacePath == null) {
-			workspacePath = setWorkspacePath(parent);
-		}
-		this.treeRootFile = new File(workspacePath);
+		this.treeRootFile = new File(getWorkspacePath());
 		setStatus("Successfully Lauched!");
 
 		// Someday we'll know what these three lines are for.
@@ -145,7 +133,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
 		// Create the tree viewer to display the file tree.
 		final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
-		explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, workspacePath);
+		explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, getWorkspacePath());
 
 		explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
@@ -323,47 +311,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		this.treeRootFile = treeRootFile;
 	}
 
-	// Going to modify this to request preferences
-	public String setWorkspacePath(Composite parent) {
-		String workspace = null;
-		String path;
-		PreferenceStore ps = getPreferences();
-		do {
-			DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
-			dialog.setText("Workspace Selection");
-			path = dialog.open();
-		} while (path == null);
-		ps.putValue(FileExtensionConstants.WRKSPC, path);
-		try {
-			ps.save();
-		} catch (IOException e) {
-			System.out.println("Error Saving Preferences: " + e.getMessage());
-		}
-		workspace = path;
-		return workspace;
-	}
-
-	// Going to modify this to request preferences
-	public String getWorkspacePath() {
-		// Get the preference store
-		PreferenceManager mgr = new PreferenceManager();
-		mgr.addToRoot(new PreferenceNode("text", "Text", null,
-				TextPreferencePage.class.getName()));
-		PreferenceStore ps = getPreferences();
-		String workspace = ps.getString(FileExtensionConstants.WRKSPC);
-
-		// Check if directory exists
-		File file = new File(workspace);
-		boolean exists = file.exists();
-		if (workspace.equals("") || !exists) {
-			return null;
-		} else {
-			return workspace;
-		}
-	}
-
   @Override
-  public String getWorkPath() {
+  public String getWorkspacePath() {
     return prefs.getString(FileExtensionConstants.WRKSPC);
   }
 
