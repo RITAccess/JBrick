@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationRulerColumn;
 import org.eclipse.jface.text.source.CompositeRuler;
@@ -45,14 +45,14 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public LineNumberChangeRulerColumn lnrc;
   private final List<String> filenamesList;
   private int newFileCount;
-  private JBrickManager statusUpdater;
+  private JBrickManager manager;
   private JBrickEditorSourceViewerConfiguration sourceViewerConfiguration;
   // The color manager
   private ColorManager colorManager;
 
-  public JBrickEditorTabFolder(final Composite parent, final JBrickManager statusUpdater, final PreferenceStore ps, final int style) {
+  public JBrickEditorTabFolder(final Composite parent, final JBrickManager manager, final IPreferenceStore ps, final int style) {
     super(parent, style);
-    this.statusUpdater = statusUpdater;
+    this.manager = manager;
     filenamesList = new ArrayList<String>();
     newFileCount = 0;
 
@@ -61,9 +61,9 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     CommentScanner commentScanner = new CommentScanner(colorManager);
 
     //TODO: these three lines. The scanners should observe the colorManager.
-    statusUpdater.registerObserver(colorManager);
-    statusUpdater.registerObserver(commentScanner);
-    statusUpdater.registerObserver(codeScanner);
+    manager.registerObserver(colorManager);
+    manager.registerObserver(commentScanner);
+    manager.registerObserver(codeScanner);
 
     sourceViewerConfiguration = new JBrickEditorSourceViewerConfiguration(codeScanner, commentScanner);
 
@@ -77,7 +77,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
         JBrickTabItem tabItem = (JBrickTabItem) event.item;
 
         if (askCloseWithoutSaving(tabItem)) {
-          statusUpdater.setStatus("Closed");
+          manager.setStatus("Closed");
 
           try {
             filenamesList.remove(tabItem.getFilename());
@@ -187,8 +187,8 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
       File file = new File(filepath);
       if (file.exists()) {
         // this file does not exist in the editor so create one
-        JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath), statusUpdater, sourceViewerConfiguration);
-        newTabItem.update(statusUpdater.getPreferences());
+        JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, new File(filepath), manager, sourceViewerConfiguration);
+        newTabItem.update(manager.getPreferences());
 
         filenamesList.add(filepath);
         this.setSelection(newTabItem);
@@ -208,14 +208,14 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     newFileCount++;
     String fileName = "New File " + newFileCount;
 
-    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null, statusUpdater, sourceViewerConfiguration);
-    newTabItem.update(statusUpdater.getPreferences());
+    JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null, manager, sourceViewerConfiguration);
+    newTabItem.update(manager.getPreferences());
     newTabItem.setText(fileName);
     setSelection(newTabItem);
 
     // filenamesList.add(fileName); // also add to the file list
 
-    statusUpdater.registerObserver(newTabItem);
+    manager.registerObserver(newTabItem);
     return true;
   }
 
@@ -261,7 +261,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     return proceed;
   }
 
-  public ArrayList<String> getRecentFiles(PreferenceStore ps) {
+  public ArrayList<String> getRecentFiles(final IPreferenceStore ps) {
     // Get the preference store
     Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
 
