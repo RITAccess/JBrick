@@ -54,4 +54,8 @@ public interface TabFolder {
     void paste();
     
     void selectAll();
+
+    String getCurrentFilename();
+
+    int getCurrentIndex();
 }

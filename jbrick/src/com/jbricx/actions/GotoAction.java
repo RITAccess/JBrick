@@ -21,7 +21,7 @@ public class GotoAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager().getCurrentTabItem().getDocument(),
+    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager().getTabFolder().getSelection().getDocument(),
         getManager().getTabFolder().getSourceViewer());
     dlg.open();
   }

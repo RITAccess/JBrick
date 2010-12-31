@@ -1,16 +1,14 @@
 package com.jbricx.pjo;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.MainWindow;
 import com.jbricx.ui.SafeSaveDialog;
 import com.jbricx.ui.tabs.JBrickTabItem;
-
-import java.io.File;
 
 public class ActionControlClass {
 
@@ -36,7 +34,7 @@ public class ActionControlClass {
             if (isSaveAs || tabItem.getDocument().isDirty() || isNewFile) {
                 if (isSaveAs) { // remove the currently selected file from the list
                     try {
-                        String currFilePath = manager.getCurrentTabItem().getFilename();
+                        String currFilePath = manager.getTabFolder().getCurrentFilename();
                         manager.getTabFolder().closeFile(currFilePath);
                     } catch (NullPointerException ne) {
                     }

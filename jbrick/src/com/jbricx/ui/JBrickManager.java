@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.preferences.JBrickObserver;
-import com.jbricx.ui.tabs.JBrickTabItem;
 import com.jbricx.ui.tabs.TabFolder;
 
 /**
@@ -17,10 +16,6 @@ import com.jbricx.ui.tabs.TabFolder;
 public interface JBrickManager extends JBrickStatusUpdater {
 
   Shell getShell();
-
-  //TODO: Remove.
-  // This creates a dependency.
-  JBrickTabItem getCurrentTabItem();
 
   boolean close();
 

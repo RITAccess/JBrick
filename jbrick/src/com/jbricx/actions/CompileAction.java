@@ -37,7 +37,7 @@ public class CompileAction extends AbstractAction {
    * Shows an about box
    */
   public void run() {
-    JBrickTabItem curTabItem = getManager().getCurrentTabItem();
+    JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();
     PersistentDocument currDoc = curTabItem.getDocument();
 
     if (currDoc.getFileName() == null) { /* A new file so save before compiling */
@@ -54,8 +54,7 @@ public class CompileAction extends AbstractAction {
         getManager().setStatus("Saving File . . .");
       } catch (IOException e) {
         getManager().setStatus("There was error while saving File . . .");
-        // TODO Auto-generated catch block
-        // e1.printStackTrace();
+        e.printStackTrace();
       }
     }
 
@@ -64,7 +63,7 @@ public class CompileAction extends AbstractAction {
     tbl.removeAll();
     ExitStatus e = BrickCreator.createBrick().compile(currDoc.getFileName());
 
-    JBrickTabItem tab = getManager().getCurrentTabItem();
+    JBrickTabItem tab = getManager().getTabFolder().getSelection();
     tab.fAnnotationModel.removeAllAnnotations();
     if (e.isOk()) {
       MessageDialog.openInformation(getManager().getShell(), "Compile",
@@ -111,7 +110,6 @@ public class CompileAction extends AbstractAction {
           tab.fAnnotationModel.addAnnotation(errorAnnotation,
               new Position(offset, tab.getDocument().getLineLength(intLineNumber - 1)));
         } catch (BadLocationException e1) {
-          // TODO Auto-generated catch block
           e1.printStackTrace();
         }
         // lets underline the word "texst"

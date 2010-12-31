@@ -367,4 +367,14 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public SourceViewer getSourceViewer() {
     return getSelection().getViewer();
   }
+
+  @Override
+  public String getCurrentFilename() {
+    return getSelection().getFilename();
+  }
+
+  @Override
+  public int getCurrentIndex() {
+    return getSelectionIndex();
+  }
 }

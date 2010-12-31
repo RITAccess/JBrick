@@ -8,7 +8,6 @@ import org.eclipse.jface.action.CoolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -24,7 +23,6 @@ import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -209,18 +207,6 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		}
 	}
 
-	protected void loadPreferences(JBrickTabItem tabItem) {
-		IPreferenceStore ps = getPreferences();
-
-		String fontProp = ps.getString(FileExtensionConstants.FONT);
-		if (fontProp.length() > 0) {
-			FontData[] fd = new FontData[1];
-			fd[0] = new FontData(fontProp);
-			// setFont(fd, tabItem);
-			this.getCurrentTabItem().setFont(fd);
-		}
-	}
-
 	/**
 	 * Updates the view with the preferences
 	 */
@@ -327,21 +313,14 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 		return autoCompile;
 	}
 
+	@Override
 	public TabFolder getTabFolder() {
 		return tabFolder;
 	}
 
-	public JBrickTabItem getCurrentTabItem() {
-		return getTabFolder().getSelection();
-	}
-
-	protected int getCurrentTabIndex() {
-		return getTabFolder().getSelectionIndex();
-	}
-
 	// TODO : check and delete. What's the purpose of this?
 	public void refreshCurrentTabItem() {
-		int selectedIndex = getCurrentTabIndex();
+		int selectedIndex = getTabFolder().getCurrentIndex();
 		CTabItem tabItems[] = tabFolder.getItems();
 
 		int valor = tabItems.length;
@@ -366,7 +345,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 				  getTabFolder().openNewFile();
 					System.out.println("openNewFile");
 				}
-				tabItem = getCurrentTabItem();
+				tabItem = getTabFolder().getSelection();
 				tabItem.getViewer().getTextWidget().setText(currentString);
 
 			}

@@ -23,11 +23,9 @@ public class SaveAsAction extends AbstractAction {
    * Saves the file
    */
   public void run() {
-    JBrickTabItem tabItem = getManager().getCurrentTabItem();
+    JBrickTabItem tabItem = getManager().getTabFolder().getSelection();
     ActionControlClass.saveFile(tabItem, true, getManager(), getManager().getWorkspacePath());
 
-    // TODO: Figure out why isAutoCompile() method part of the manager
-    // interface. It makes no sense.
     if (getManager().isAutoCompile()) {
       CompileAction compileAction = new CompileAction(getManager());
       compileAction.run();

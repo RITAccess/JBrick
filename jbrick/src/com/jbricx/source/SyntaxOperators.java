@@ -43,7 +43,7 @@ public class SyntaxOperators {
 						// words
 						OPERATORS.add(((Element) list.item(i)).getTextContent());
 					}
-					
+
 				} else {
 					System.out.print("File not found!");
 				}

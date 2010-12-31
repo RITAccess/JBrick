@@ -28,7 +28,7 @@ public class DownloadAction extends AbstractAction {
     AbstractNXTBrick nxt = BrickCreator.createBrick();
 
     // nxt.NXTConnect(NXT.ConnectionType.USB);
-    ExitStatus e = nxt.downloadFile(getManager().getCurrentTabItem().getDocument().getFileName());
+    ExitStatus e = nxt.downloadFile(getManager().getTabFolder().getSelection().getDocument().getFileName());
 
     if (e.isOk()) {
       MessageDialog.openInformation(getManager().getShell(), "Download", "Downloading was a success!!");
