@@ -40,15 +40,32 @@ public class CompileAction extends AbstractAction {
     JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();
     PersistentDocument currDoc = curTabItem.getDocument();
 
-    if (currDoc.getFileName() == null) { /* A new file so save before compiling */
-      MessageBox box = new MessageBox(getManager().getShell(), SWT.OK);
-      box.setText("Compile");
-      box.setMessage("Before compiling, you need to save the code to file");
+    currDoc.setFileName(curTabItem.getText() + ".nxc");
+	try {	
+		currDoc.save();
+	} catch (IOException e1) {
+	}
+	//Old save dialog code, now saving the file to a temporary file instead
+    //if (currDoc.getFileName() == null) { /* A new file so save before compiling */
+      //MessageBox box = new MessageBox(getManager().getShell(), SWT.OK);
+      //box.setText("Compile");
+      //box.setMessage("Before compiling, you need to save the code to file");
 
-      if (box.open() == SWT.OK) {
-        ActionControlClass.saveFile(curTabItem, false, getManager(), getManager().getWorkspacePath());
-      }
-    } else if (currDoc.isDirty()) {
+      //if (box.open() == SWT.OK) {
+    	//String wksPath = getManager().getWorkspacePath();
+    	// ActionControlClass.saveFile(curTabItem, true, getManager(), getManager().getWorkspacePath());
+    	 
+    	 //String path = curTabItem.getFilename();
+    	 //curTabItem.getDocument().setFileName(curTabItem.getFilename());
+    	 //try {
+		//	curTabItem.getDocument().save();
+		//} catch (IOException e1) {
+			// TODO Auto-generated catch block
+		//	e1.printStackTrace();
+		//}
+        //Saving instead of prompting ActionControlClass.saveFile(curTabItem, false, getManager(), getManager().getWorkspacePath());
+      //}
+    /*} else if (currDoc.isDirty()) {
       try {
         currDoc.save();
         getManager().setStatus("Saving File . . .");
@@ -56,7 +73,7 @@ public class CompileAction extends AbstractAction {
         getManager().setStatus("There was error while saving File . . .");
         e.printStackTrace();
       }
-    }
+    }*/
 
     // get the debugging table from the main window
     Table tbl = (Table) getManager().getTable();
