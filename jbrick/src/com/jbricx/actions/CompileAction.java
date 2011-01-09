@@ -40,7 +40,7 @@ public class CompileAction extends AbstractAction {
     JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();
     PersistentDocument currDoc = curTabItem.getDocument();
 
-    currDoc.setFileName(curTabItem.getText() + ".nxc");
+    currDoc.setFileName(curTabItem.getText() + ".nxc.bak");
 	try {	
 		currDoc.save();
 	} catch (IOException e1) {
