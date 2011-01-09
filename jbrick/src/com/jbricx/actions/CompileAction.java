@@ -38,9 +38,11 @@ public class CompileAction extends AbstractAction {
 	 * Shows an about box
 	 */
 	public void run() {
-		JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();
+		JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();	
+		if(curTabItem == null)
+			return;
+		
 		PersistentDocument currDoc = curTabItem.getDocument();
-
 		if (currDoc.getFileName() == null) {
 			//New file so save to a temporary file
 			currDoc.setFileName(curTabItem.getText() + ".nxc.bak");
@@ -52,7 +54,7 @@ public class CompileAction extends AbstractAction {
 				e.printStackTrace();
 			}
 		} else if (currDoc.isDirty()) {
-			//file has been modified so save before compiling
+			//File has been modified so save before compiling
 			try {
 				currDoc.save();
 				getManager().setStatus("Saving File . . .");
