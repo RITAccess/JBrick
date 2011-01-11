@@ -312,8 +312,12 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 		// Get the preference store
 		Boolean loadrecent = ps
 				.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
-
 		ArrayList<String> recentfiles = new ArrayList<String>();
+		File dir = new File(manager.getWorkspacePath() + "\\jbrick");
+		String[] fileNames = dir.list();
+		for(int i=0; fileNames != null && i < fileNames.length; i++)
+			if(fileNames[i].endsWith(".bak"))
+				recentfiles.add(fileNames[i]);
 		if (loadrecent) {
 			for (String s : ps.getString(FileExtensionConstants.RECENTFILES)
 					.split(";")) {
