@@ -7,7 +7,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Position;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -16,9 +15,9 @@ import annotation.ErrorAnnotation;
 import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.ExitStatus;
 import com.jbricx.model.PersistentDocument;
-import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.tabs.JBrickTabItem;
+import org.eclipse.swt.widgets.MessageBox;
 
 /**
  * This class shows an About box
@@ -43,8 +42,8 @@ public class CompileAction extends AbstractAction {
 			return;
 
 		PersistentDocument currDoc = curTabItem.getDocument();
+    System.out.println(""+ currDoc.getFileName());
 		if (currDoc.getFileName() == null) {
-			// New file so save to a temporary file
 			currDoc.setFileName(curTabItem.getText() + ".nxc.bak");
 			try {
 				currDoc.save();
@@ -55,6 +54,7 @@ public class CompileAction extends AbstractAction {
 			}
 		} else if (currDoc.isDirty()) {
 			// File has been modified so save before compiling
+      System.out.println("dirty");
 			try {
 				currDoc.save();
 				getManager().setStatus("Saving File . . .");
