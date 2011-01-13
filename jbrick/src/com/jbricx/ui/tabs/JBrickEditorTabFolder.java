@@ -26,8 +26,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.TableItem;
 
 import annotation.AnnotationMarkerAccess;
 import annotation.ColorCache;
@@ -37,6 +35,7 @@ import com.jbricx.source.ColorManager;
 import com.jbricx.source.CommentScanner;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
+import com.jbricx.state.ClipboardObserver;
 import com.jbricx.ui.JBrickManager;
 
 /**
@@ -51,6 +50,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 	private JBrickEditorSourceViewerConfiguration sourceViewerConfiguration;
 	// The color manager
 	private ColorManager colorManager;
+  protected List<ClipboardObserver> clipboardObserver;
 
 	public JBrickEditorTabFolder(final Composite parent,
 			final JBrickManager manager, final IPreferenceStore ps,
@@ -137,11 +137,11 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 		// parent.getShell().getDisplay().getSystemColor(
 		// SWT.COLOR_TITLE_FOREGROUND);
 
+
 		Color titleBackColor2 = parent.getShell().getDisplay()
 				.getSystemColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT);
 		setSelectionForeground(titleForeColor);
-		setSelectionBackground(
-				new Color[] { titleBackColor1, titleBackColor2 },
+		setSelectionBackground(new Color[] { titleBackColor1, titleBackColor2 },
 				new int[] { 100 }, true);
 
 		// TODO: change tabs names and content, not byktol's
@@ -372,6 +372,8 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 			getSelection().getUndoManager().undo();
 		}
 	}
+
+
 
 	@Override
 	public void redo() {

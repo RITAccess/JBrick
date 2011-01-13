@@ -7,55 +7,54 @@ import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabItem;
 
-
 /**
  * @author byktol
  */
 public interface TabFolder {
 
-    boolean open(final String filename);
+  boolean open(final String filename);
 
-    void closeFile(String filename);
+  void closeFile(String filename);
 
-    boolean openNewFile();
+  boolean openNewFile();
 
-    boolean checkOverwrite();
+  boolean checkOverwrite();
 
-    JBrickTabItem getSelection();
+  JBrickTabItem getSelection();
 
-    SourceViewer getSourceViewer();
+  SourceViewer getSourceViewer();
 
-    void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter);
+  void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter);
 
-    void setMaximized(boolean b);
+  void setMaximized(boolean b);
 
-    void setMinimized(boolean b);
+  void setMinimized(boolean b);
 
-    void setSelection(int selectedIndex);
+  void setSelection(int selectedIndex);
 
-    CTabItem[] getItems();
+  CTabItem[] getItems();
 
-    int getSelectionIndex();
+  int getSelectionIndex();
 
-    void saveFile(String filePath);
+  void saveFile(String filePath);
 
-    void insertText(String text);
+  void insertText(String text);
 
-    int contains(String fileName);
+  int contains(String fileName);
 
-    void undo();
-    
-    void redo();
-    
-    void cut();
-    
-    void copy();
-    
-    void paste();
-    
-    void selectAll();
+  void undo();
 
-    String getCurrentFilename();
+  void redo();
 
-    int getCurrentIndex();
+  void cut();
+
+  void copy();
+
+  void paste();
+
+  void selectAll();
+
+  String getCurrentFilename();
+
+  int getCurrentIndex();
 }

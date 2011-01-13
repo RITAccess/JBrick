@@ -140,7 +140,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     // hover manager that shows text when we hover
     AnnotationBarHoverManager fAnnotationHoverManager = new AnnotationBarHoverManager(fCompositeRuler, viewer,
-        new AnnotationHover(), new AnnotationConfiguration());
+            new AnnotationHover(), new AnnotationConfiguration());
     fAnnotationHoverManager.install(annotationRuler.getControl());
 
     // to paint the annotations
@@ -155,24 +155,23 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     viewer.getTextWidget().addKeyListener(new KeyListener() {
 
-      @Override      
+      @Override
       public void keyPressed(KeyEvent e) {
-    	  int code = e.keyCode;
-    	  if(code == 13){
-    		  
-    		   getUndoManager().undo();
-    		   getUndoManager().redo();
-    		   
-    		   int ln = getCursorLocation();
-    		   int totalNumberOfLines = viewer.getDocument().getNumberOfLines();
-    		   
-    		   	if(ln == totalNumberOfLines){
-    			   	StyledText styledText = viewer.getTextWidget();
-    			   	int charcount = viewer.getTextWidget().getCharCount();
-    			   	styledText.setCaretOffset(charcount + 10);
-    			}
-    		}
-    	}
+        int code = e.keyCode;
+        if (code == 13) {
+          getUndoManager().undo();
+          getUndoManager().redo();
+
+          int ln = getCursorLocation();
+          int totalNumberOfLines = viewer.getDocument().getNumberOfLines();
+
+          if (ln == totalNumberOfLines) {
+            StyledText styledText = viewer.getTextWidget();
+            int charcount = viewer.getTextWidget().getCharCount();
+            styledText.setCaretOffset(charcount + 10);
+          }
+        }
+      }
 
       @Override
       public void keyReleased(KeyEvent arg0) {
@@ -259,7 +258,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       translatedString = translatedString.replace("\\<", "\r\n");
       viewer.getTextWidget().insert(translatedString);
     }
-}
+  }
 
   public void setFont(FontData[] fontData) {
     // System.out.print("setFont");
@@ -278,7 +277,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   public IUndoManager getUndoManager() {
     return undoManager;
   }
-  
+
   public void setWrap(boolean wrap) {
     viewer.getTextWidget().setWordWrap(wrap);
   }
@@ -344,7 +343,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   // parent.setMenu(menu);
   // return rightMenuBar;
   // }
-
   class ColorCache implements ISharedTextColors {
 
     public Color getColor(RGB rgb) {
