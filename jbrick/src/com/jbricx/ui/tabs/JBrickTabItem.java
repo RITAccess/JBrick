@@ -61,10 +61,12 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   private LineNumberRulerColumn lnrc;
   // The partition scanner
   private JBrickPartitionScanner scanner;
+  private JBrickEditorTabFolder jbrickeditortabfolder;
   // Right Click Menu
   private MenuManager menuManager;
   // The undo manager
   private IUndoManager undoManager;
+  private IUndoManagerTest undoManagerTest;
   // The viewer
   private SourceViewer viewer;
   // The current document
@@ -154,10 +156,24 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     viewer.getTextWidget().addKeyListener(new KeyListener() {
 
-      @Override
-      public void keyPressed(KeyEvent arg0) {
-        // System.out.println("keyPressed");
-      }
+      @Override      
+      public void keyPressed(KeyEvent e) {
+    	  int code = e.keyCode;
+    	  if(code == 13){
+    		  
+    		   getUndoManager().undo();
+    		   getUndoManager().redo();
+    		   
+    		   int ln = getCursorLocation();
+    		   int totalNumberOfLines = viewer.getDocument().getNumberOfLines();
+    		   
+    		   	if(ln == totalNumberOfLines){
+    			   	StyledText styledText = viewer.getTextWidget();
+    			   	int charcount = viewer.getTextWidget().getCharCount();
+    			   	styledText.setCaretOffset(charcount + 10);
+    			}
+    		}
+    	}
 
       @Override
       public void keyReleased(KeyEvent arg0) {
@@ -237,7 +253,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   }
 
   public void insertString(String inputString) {
-    // System.out.print("registrando data: insertString");
     if (viewer != null) {
       String translatedString = inputString;
       translatedString = translatedString.replace("\\=", "\r\n");
@@ -245,8 +260,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       translatedString = translatedString.replace("\\<", "\r\n");
       viewer.getTextWidget().insert(translatedString);
     }
-
-  }
+}
 
   public void setFont(FontData[] fontData) {
     // System.out.print("setFont");
@@ -264,6 +278,10 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   public IUndoManager getUndoManager() {
     return undoManager;
+  }
+  
+  public IUndoManagerTest getUndoManagerTest() {
+	return undoManagerTest;
   }
 
   public void setWrap(boolean wrap) {
