@@ -91,7 +91,6 @@ public class NXTManager {
     } else {
       throw new NXTNotFoundException("No NXT with name: " + name);
     }
-
   }
 
   public static boolean isConnected(String name) throws NXTNotFoundException {
@@ -100,11 +99,13 @@ public class NXTManager {
   }
 
   public static void checkBricks() {
-    System.out.println("d:" + nxtobservers.size());
-
+//    for (String name : nxtobservers.keySet()) {
+//       System.out.println("NXTManager.java@106::checkBricks():" + name);
+//    }
+    //System.out.println("d:" + nxtobservers.size());
     for (String name : nxtobservers.keySet()) {
-      System.out.println("checkBricks() disconnected: " + name);
       AbstractNXTBrick nxt = nxtstore.get(name);
+      System.out.println("NXTManager.java@106::checkBricks():" + name);
       notifyObserver(nxtobservers.get(name), nxt.isConnected());
       if (!nxt.isConnected()) {//not connected
         // System.out.println("checkBricks() disconnected: "+name);
