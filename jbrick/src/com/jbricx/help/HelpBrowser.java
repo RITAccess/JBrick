@@ -40,6 +40,7 @@ public class HelpBrowser {
 	private ArrayList<String> urls = new ArrayList<String>();
 	private String[] titles;
 	private int index;
+	private int x = 0;
 	private boolean flag = false;
 
 	Label labelStatus;
@@ -159,10 +160,13 @@ public class HelpBrowser {
 		};
 		actionForward.setEnabled(true); // action is disabled at start up.
 
+		
+		
 		Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
 			HelpBrowser.class, "/images/process-stop.png")) {
 			public void run() {
 				browser.setUrl("");
+				x = 1;
 				// browser.stop();
 			}
 		};
@@ -170,7 +174,11 @@ public class HelpBrowser {
 		Action actionRefresh = new Action("&Refresh", ImageDescriptor
 				.createFromFile(HelpBrowser.class, "/images/view-refresh.png")) {
 			public void run() {
-				browser.refresh();
+				if (x==1){
+						browser.back();
+				}else{
+						browser.refresh();	
+					 }
 			}
 		};
 
