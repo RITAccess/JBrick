@@ -38,13 +38,13 @@ public class CompileAction extends AbstractAction {
 	 * Shows an about box
 	 */
 	public void run() {
-		JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();	
-		if(curTabItem == null)
+		JBrickTabItem curTabItem = getManager().getTabFolder().getSelection();
+		if (curTabItem == null)
 			return;
-		
+
 		PersistentDocument currDoc = curTabItem.getDocument();
 		if (currDoc.getFileName() == null) {
-			//New file so save to a temporary file
+			// New file so save to a temporary file
 			currDoc.setFileName(curTabItem.getText() + ".nxc.bak");
 			try {
 				currDoc.save();
@@ -54,7 +54,7 @@ public class CompileAction extends AbstractAction {
 				e.printStackTrace();
 			}
 		} else if (currDoc.isDirty()) {
-			//File has been modified so save before compiling
+			// File has been modified so save before compiling
 			try {
 				currDoc.save();
 				getManager().setStatus("Saving File . . .");
@@ -66,67 +66,80 @@ public class CompileAction extends AbstractAction {
 		}
 
 		// get the debugging table from the main window
+
+		ExitStatus e = null;
 		Table tbl = (Table) getManager().getTable();
-		tbl.removeAll();
-		ExitStatus e = BrickCreator.createBrick()
-				.compile(currDoc.getFileName());
-
 		JBrickTabItem tab = getManager().getTabFolder().getSelection();
-		tab.fAnnotationModel.removeAllAnnotations();
-		if (e.isOk()) {
-			MessageDialog.openInformation(getManager().getShell(), "Compile",
-					"Compile was a success!");
+
+		int cantidadcharacteres = curTabItem.getViewer().getTextWidget()
+				.getCharCount();
+		if (cantidadcharacteres == 0) {
+			MessageBox box = new MessageBox(getManager().getShell(), SWT.OK);
+			box.setText("Compile");
+			box.setMessage("Your file is empty, you need to write some code before compiling");
+			box.open();
 		} else {
-			String msg = e.getMesage();
-			// get the debugging table from the main window
-			tbl.clearAll();
-			int errorMessageIndex;
-			String errorTxt = "";
-			String lineNumber;
 
-			// iterate throw the returned message from the compiler
-			while ((errorMessageIndex = msg.indexOf("Error:")) > 0) {
-				msg = msg.substring(errorMessageIndex);
+			tbl.removeAll();
+			e = BrickCreator.createBrick().compile(currDoc.getFileName());
+			tab.fAnnotationModel.removeAllAnnotations();
 
-				System.out.println(errorMessageIndex);
-				System.out.println(msg.indexOf("File"));
+			if (e.isOk()) {
+				MessageDialog.openInformation(getManager().getShell(),
+						"Compile", "Compile was a success!");
+			} else {
+				String msg = e.getMesage();
+				// get the debugging table from the main window
+				tbl.clearAll();
+				int errorMessageIndex;
+				String errorTxt = "";
+				String lineNumber;
 
-				errorTxt = msg.substring(msg.indexOf("Error:"),
-						msg.indexOf("File"));
-				lineNumber = msg.substring(msg.indexOf("line ") + 5,
-						msg.indexOf("#"));
-				msg = msg.substring(msg.indexOf("#"));
+				// iterate throw the returned message from the compiler
+				while ((errorMessageIndex = msg.indexOf("Error:")) > 0) {
+					msg = msg.substring(errorMessageIndex);
 
-				// add a new row to the table for each error
-				// TableItem line = new TableItem(tbl, SWT.NONE);
-				TableItem line = new TableItem(tbl, SWT.NONE);
-				line.setText("Line: " + lineNumber + "   " + errorTxt);
-				tbl.indexOf(line);
+					System.out.println(errorMessageIndex);
+					System.out.println(msg.indexOf("File"));
 
-				int intLineNumber = Integer.parseInt(lineNumber);
-				if (tab.getDocument().getNumberOfLines() < intLineNumber) {
-					intLineNumber = tab.getDocument().getNumberOfLines();
-					lineNumber = String.valueOf(intLineNumber);
+					errorTxt = msg.substring(msg.indexOf("Error:"),
+							msg.indexOf("File"));
+					lineNumber = msg.substring(msg.indexOf("line ") + 5,
+							msg.indexOf("#"));
+					msg = msg.substring(msg.indexOf("#"));
+
+					// add a new row to the table for each error
+					// TableItem line = new TableItem(tbl, SWT.NONE);
+					TableItem line = new TableItem(tbl, SWT.NONE);
+					line.setText("Line: " + lineNumber + "   " + errorTxt);
+					tbl.indexOf(line);
+
+					int intLineNumber = Integer.parseInt(lineNumber);
+					if (tab.getDocument().getNumberOfLines() < intLineNumber) {
+						intLineNumber = tab.getDocument().getNumberOfLines();
+						lineNumber = String.valueOf(intLineNumber);
+					}
+
+					// add an annotation
+					ErrorAnnotation errorAnnotation = new ErrorAnnotation(
+							intLineNumber, "Learn how to spell \"text!\"");
+
+					try {
+						int offset = tab.getDocument().getLineOffset(
+								intLineNumber - 1);
+
+						// tab.fAnnotationModel.addAnnotation(errorAnnotation,
+						// new
+						// Position(offset,
+						// tab.getDocument().getLineLength(intLineNumber)));
+						tab.fAnnotationModel.addAnnotation(errorAnnotation,
+								new Position(offset, tab.getDocument()
+										.getLineLength(intLineNumber - 1)));
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					}
+					// lets underline the word "texst"
 				}
-
-				// add an annotation
-				ErrorAnnotation errorAnnotation = new ErrorAnnotation(
-						intLineNumber, "Learn how to spell \"text!\"");
-
-				try {
-					int offset = tab.getDocument().getLineOffset(
-							intLineNumber - 1);
-
-					// tab.fAnnotationModel.addAnnotation(errorAnnotation, new
-					// Position(offset,
-					// tab.getDocument().getLineLength(intLineNumber)));
-					tab.fAnnotationModel.addAnnotation(errorAnnotation,
-							new Position(offset, tab.getDocument()
-									.getLineLength(intLineNumber - 1)));
-				} catch (BadLocationException e1) {
-					e1.printStackTrace();
-				}
-				// lets underline the word "texst"
 			}
 		}
 	}
