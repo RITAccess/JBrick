@@ -66,7 +66,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   private MenuManager menuManager;
   // The undo manager
   private IUndoManager undoManager;
-  private IUndoManagerTest undoManagerTest;
   // The viewer
   private SourceViewer viewer;
   // The current document
@@ -280,10 +279,6 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     return undoManager;
   }
   
-  public IUndoManagerTest getUndoManagerTest() {
-	return undoManagerTest;
-  }
-
   public void setWrap(boolean wrap) {
     viewer.getTextWidget().setWordWrap(wrap);
   }
