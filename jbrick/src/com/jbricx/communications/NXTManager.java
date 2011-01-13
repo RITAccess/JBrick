@@ -59,8 +59,8 @@ public class NXTManager {
     } catch (UnableToCreateNXTException e) {
       System.out.println("NXTManager.java@63 :: Unable to create NXT...");
     }
-//    NXTManager.notifyAllObservers(nxt.isConnected());
-    NXTManager.notifyAllObservers(true);
+    NXTManager.notifyAllObservers(nxt.isConnected());
+    //NXTManager.notifyAllObservers(true);
     return nxt;
   }
 
