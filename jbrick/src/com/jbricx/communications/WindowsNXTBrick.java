@@ -1,6 +1,5 @@
 package com.jbricx.communications;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class WindowsNXTBrick extends AbstractNXTBrick {
 		return null;
 	}
 
-	public boolean oldIsConnected() {
+	public boolean connect() {
 		List<String> command = new ArrayList<String>();
 		command.add(NEXTTOOL);
 		command.add("/COM=usb");
@@ -71,7 +70,8 @@ public class WindowsNXTBrick extends AbstractNXTBrick {
 //		System.out.println("Command:"+command.toString());
 //		return run(command);
 		System.out.println("Downloading...");
-		if (oldIsConnected()) {
+		if (connect()) {
+      //System.out.println("connectd");
 			return run(command);
 		} else {
 			return new ExitStatus(ExitStatus.ERROR, "No Brick Connected. Please connect and try again.");

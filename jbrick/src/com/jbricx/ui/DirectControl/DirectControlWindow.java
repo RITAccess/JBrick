@@ -145,16 +145,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 				//e1.printStackTrace();
 				System.out.println("Could not find brick DirectControlWindow line 151");
 			}
-		} catch (NXTNotFoundException e) {
-			System.out.println("DirectControlWindow line 154");
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		} catch (UnableToCreateNXTException e) {
-			System.out.println("DirectControlWindow line 158");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		} 
 
 		try {
 			FormLayout thisLayout = new FormLayout();

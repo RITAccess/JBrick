@@ -1,7 +1,6 @@
 package  com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.ui.JBrickManager;
 
 /**

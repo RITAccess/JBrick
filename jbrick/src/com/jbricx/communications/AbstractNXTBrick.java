@@ -15,7 +15,9 @@ public abstract class AbstractNXTBrick {
 	
 	private String joinToString(List<String> lst){
 		String str = "";
+
 		for (String s: lst){
+      try{
 			if (s.split(" ").length > 1 ){
 				str+="\""+s+"\"";
 			}
@@ -23,6 +25,9 @@ public abstract class AbstractNXTBrick {
 				str+=s;
 			}
 			str+=" ";
+      }catch(NullPointerException ne){
+        
+      }
 		}
 		
 		return str;
@@ -30,13 +35,9 @@ public abstract class AbstractNXTBrick {
 	public ExitStatus run(List<String> command){
 		System.out.println(joinToString(command));
 		return (new ProcessRunner()).run(command);
-	}
+	}	
 	
-	
-	
-	public abstract ExitStatus compile(String filename);
-	
-	
+	public abstract ExitStatus compile(String filename);	
 	
 	public abstract ExitStatus playTone(int frequency, int duration);
 	
@@ -49,10 +50,6 @@ public abstract class AbstractNXTBrick {
 	public abstract ExitStatus downloadFile(String filename);
 	
 	public abstract ExitStatus deleteFile(String filename);
-	
-	
-	
-	
 	public abstract void NXTConnect(ConnectionType type) throws NXTNotFoundException, UnableToCreateNXTException;
 	public abstract boolean isConnected();
 	
@@ -86,6 +83,7 @@ public abstract class AbstractNXTBrick {
 	public abstract Sensor[] listSensors();
 	public abstract SensorType[] listSensorTypes();
 	public abstract SensorMode[] listSensorModes();
-	
+
+  public abstract boolean connect();
 	
 }

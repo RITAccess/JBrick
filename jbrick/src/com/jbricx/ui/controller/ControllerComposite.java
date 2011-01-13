@@ -13,13 +13,14 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 
-public class Controller extends org.eclipse.swt.widgets.Composite {
+public class ControllerComposite extends Composite {
 	
 	private Group group1;
 	private Label label1;
@@ -71,7 +72,7 @@ public class Controller extends org.eclipse.swt.widgets.Composite {
 	public static void showGUI() {
 		Display display = Display.getDefault();
 		Shell shell = new Shell(display);
-		Controller inst = new Controller(shell, SWT.NULL);
+		ControllerComposite inst = new ControllerComposite(shell, SWT.NULL);
 		Point size = inst.getSize();
 		shell.setLayout(new FillLayout());
 		shell.layout();
@@ -89,7 +90,7 @@ public class Controller extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	public Controller(org.eclipse.swt.widgets.Composite parent, int style) {
+	public ControllerComposite(org.eclipse.swt.widgets.Composite parent, int style) {
 		super(parent, style);
 		initGUI();
 	}

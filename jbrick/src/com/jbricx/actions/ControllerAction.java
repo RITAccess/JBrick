@@ -1,27 +1,31 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
+import com.jbricx.ui.JBrickManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.ui.controller.Controller;
+import com.jbricx.ui.controller.ControllerUIWindow;
 
 /**
  * @author Priya Sankaran
+ * @author Abhishek Shrestha
  */
-public class ControllerAction extends Action {
+public class ControllerAction extends AbstractAction {
 
   /**
    * PreferencesAction constructor
    */
-  public ControllerAction() {
-    super("&Controller@Ctrl+J", ImageDescriptor.createFromFile(ControllerAction.class, "/images/controller_icon.png"));
+  public ControllerAction(JBrickManager manager) {
+    super("&Controller@Ctrl+J", ImageDescriptor.createFromFile(ControllerAction.class, "/images/controller_icon.png"), manager);
     setToolTipText("Controller");
   }
 
   /**
    * Runs the action
    */
+  @Override
   public void run() {
-    Controller.showGUI();
+    ControllerUIWindow controller = new ControllerUIWindow(getManager().getShell());
+    controller.setBlockOnOpen(true);
+    controller.open();
   }
 }

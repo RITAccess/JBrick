@@ -34,6 +34,9 @@ import com.jbricx.actions.SaveAction;
 import com.jbricx.actions.SaveAsAction;
 import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
+import com.jbricx.communications.NXTManager;
+import com.jbricx.model.PersistentDocument;
+import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * The purpose is to have the {@link Action}s in a different class other than the {@link MainWindow} because everything
@@ -70,14 +73,16 @@ public class MenuAndToolBarManagerDelegate {
   private SaveAsAction saveAsAction;
   private UndoAction undoAction;
   private DownloadAction downloadAction;
-  private DirectControlAction directControlAction = new DirectControlAction();
-  private JoyStickAction joystickAction = new JoyStickAction();
-  private PianoAction pianoAction = new PianoAction();
-  private FindBrickAction findBrickAction = new FindBrickAction();
+  private DirectControlAction directControlAction;
+  private JoyStickAction joystickAction;
+  private PianoAction pianoAction;
+  private FindBrickAction findBrickAction;
   private CompileAction compileAction;
   private MethodTemplateAction methodTemplateAction;
 
   public MenuAndToolBarManagerDelegate(final JBrickManager manager) {
+    //PersistentDocument doc = manager.getTabFolder().getSelection().getDocument();
+
     copyAction = new CopyAction(manager);
     cutAction = new CutAction(manager);
     selectAllAction = new SelectAllAction(manager);
@@ -98,6 +103,15 @@ public class MenuAndToolBarManagerDelegate {
     downloadAction = new DownloadAction(manager);
     compileAction = new CompileAction(manager);
     methodTemplateAction = new MethodTemplateAction(manager);
+
+    findBrickAction = new FindBrickAction(manager);
+    joystickAction = new JoyStickAction(manager);
+    pianoAction = new PianoAction(manager);
+    directControlAction = new DirectControlAction(manager);
+
+    NXTManager.register("joystick", joystickAction);
+    NXTManager.register("piano", pianoAction);
+    NXTManager.register("directControl", directControlAction);
   }
 
   /**
@@ -128,6 +142,7 @@ public class MenuAndToolBarManagerDelegate {
    * @author byktol
    */
   public class JBrickMenuManager extends MenuManager {
+
     public JBrickMenuManager() {
       MenuManager fileMenu = new MenuManager("&File");
       MenuManager editMenu = new MenuManager("&Edit");
@@ -190,6 +205,7 @@ public class MenuAndToolBarManagerDelegate {
    * @author byktol
    */
   public class JBrickToolBarManager extends ToolBarManager {
+
     public JBrickToolBarManager(int style) {
       super(style);
 
@@ -228,5 +244,4 @@ public class MenuAndToolBarManagerDelegate {
       add(findBrickAction);
     }
   }
-
 }

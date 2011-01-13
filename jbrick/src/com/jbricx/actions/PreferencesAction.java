@@ -20,8 +20,7 @@ public class PreferencesAction extends AbstractAction {
    * PreferencesAction constructor
    */
   public PreferencesAction(final JBrickManager manager) {
-    super("P&references...@Ctrl+R", ImageDescriptor
-        .createFromFile(PasteAction.class, "/images/preferences-desktop.png"), manager);
+    super("P&references...@Ctrl+R", ImageDescriptor.createFromFile(PasteAction.class, "/images/preferences-desktop.png"), manager);
     setToolTipText("Preferences");
   }
 
@@ -45,5 +44,4 @@ public class PreferencesAction extends AbstractAction {
     }
     getManager().updatePreferences();
   }
-
 }

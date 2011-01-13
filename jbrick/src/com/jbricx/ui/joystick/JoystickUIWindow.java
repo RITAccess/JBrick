@@ -3,25 +3,23 @@ package com.jbricx.ui.joystick;
 /*
  * @author Priya Sankaran
  */
-import org.eclipse.jface.window.ApplicationWindow;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 
-public class JoystickUIWindow extends ApplicationWindow {
+public class JoystickUIWindow extends TrayDialog {
 
-	public JoystickUIWindow() {
-		super(null);
-		// TODO Auto-generated constructor stub
-	}
+  public JoystickUIWindow(Shell parentShell) {
+    super(parentShell);
+  }
 
-	protected Control createContents(Composite parent) {
-		getShell().setText("Joystick");
-		parent.setSize(300, 410);
+  @Override
+  protected Control createContents(Composite parent) {
+    getShell().setText("Joystick");
+    parent.setSize(300, 410);
 
-		new JoystickComposite(parent, SWT.NULL);
-
-		return parent;
-	}
-
+    return new JoystickComposite(parent, SWT.NULL);
+  }
 }

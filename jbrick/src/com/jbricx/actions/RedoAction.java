@@ -23,4 +23,12 @@ public class RedoAction extends AbstractAction {
   public void run() {
     getManager().getTabFolder().redo();
   }
+
+  /*public void enableRedo() {
+    setEnabled(true);
+  }
+
+  public void disableRedo() {
+    setEnabled(false);
+  }*/
 }

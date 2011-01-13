@@ -1,26 +1,34 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
+import com.jbricx.communications.NXTObserver;
+import com.jbricx.ui.DirectControl.DirectControlUIWindow;
+import com.jbricx.ui.JBrickManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.ui.DirectControl.DirectControlWindow;
-
 /**
- * This action opens the joystick window
+ * This action opens the DirectControl window
  */
-public class DirectControlAction extends Action {
+public class DirectControlAction extends AbstractAction implements NXTObserver {
+
   /**
-   * CopyAction constructor
+   * DirectControlAction constructor
    */
-  public DirectControlAction() {
-    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class, "/images/direct_control.png"));
+  public DirectControlAction(JBrickManager manager) {
+    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class, "/images/direct_control.png"), manager);
     setToolTipText("Direct Control");
   }
 
   /**
    * Runs the action
    */
+  @Override
   public void run() {
-    DirectControlWindow.showGUI();
+    DirectControlUIWindow control = new DirectControlUIWindow(getManager().getShell());
+    control.setBlockOnOpen(true);
+    control.open();
+  }
+
+  public void update(boolean  isConnected){
+    setEnabled(isConnected);
   }
 }
