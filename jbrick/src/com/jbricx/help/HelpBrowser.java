@@ -56,6 +56,9 @@ public class HelpBrowser {
 
 	@SuppressWarnings("deprecation")
 	private void buildUrls() {
+		
+		System.out.println("build Url");
+		
 		if (!flag) {
 			urls.add("www.google.com");
 			urlList.add("www.google.com");
@@ -117,7 +120,6 @@ public class HelpBrowser {
 		// }
 
 		final CustomTree tree = new CustomTree(form, this);
-
 		browser = new Browser(form, SWT.NONE);
 
 		// list.addListener(SWT.Selection, new Listener(){
@@ -158,9 +160,10 @@ public class HelpBrowser {
 		actionForward.setEnabled(true); // action is disabled at start up.
 
 		Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
-				HelpBrowser.class, "/images/process-stop.png")) {
+			HelpBrowser.class, "/images/process-stop.png")) {
 			public void run() {
-				browser.stop();
+				browser.setUrl("");
+				// browser.stop();
 			}
 		};
 
@@ -209,30 +212,24 @@ public class HelpBrowser {
 			}
 		});
 
+		
 		browser.addOpenWindowListener(new OpenWindowListener() {
-
 			@Override
 			public void open(WindowEvent we) {
 				we.browser = browser;
 			}
 		});
-
 		form.setWeights(new int[] { 15, 85 });
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
-
 		}
-		System.out.println("before clear url");
-		tree.clearNodes();
-
+	    tree.clearNodes();
 	}
 
 	public void setUrl(String url) {
-		System.out.println(url);
 		browser.setUrl(url);
-
 	}
 
 }
