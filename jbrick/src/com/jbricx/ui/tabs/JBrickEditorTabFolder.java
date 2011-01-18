@@ -35,7 +35,6 @@ import com.jbricx.source.ColorManager;
 import com.jbricx.source.CommentScanner;
 import com.jbricx.source.JBrickCodeScanner;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
-import com.jbricx.state.ClipboardObserver;
 import com.jbricx.ui.JBrickManager;
 
 /**
@@ -50,8 +49,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 	private JBrickEditorSourceViewerConfiguration sourceViewerConfiguration;
 	// The color manager
 	private ColorManager colorManager;
-  protected List<ClipboardObserver> clipboardObserver;
-
+  
 	public JBrickEditorTabFolder(final Composite parent,
 			final JBrickManager manager, final IPreferenceStore ps,
 			final int style) {
