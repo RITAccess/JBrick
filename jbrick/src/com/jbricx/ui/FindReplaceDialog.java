@@ -179,24 +179,6 @@ public class FindReplaceDialog extends Dialog {
 								System.out.println("Valor de X ===> " + x);
 								System.out.println("**********Wrap**********");
 								
-								/*
-								offset = viewer.getTextWidget().getCaretOffset();
-								if(!forward){
-									Point pt = viewer.getSelectedRange();
-										if (pt.x != pt.y){
-												offset = pt.x - 1;
-										}
-								}
-								if (offset >= z)
-										offset = z - 1;
-								if (offset < 0)
-										offset = 0;
-								
-								region = frda.find(offset, find, forward, matchCase, wholeWord, regexp);
-								valorMedio = 0;
-								*/
-								
-								
 								viewer.setSelectedRange(x,y);
 								valorMedio = z/2;
 								if(x <= valorMedio){
