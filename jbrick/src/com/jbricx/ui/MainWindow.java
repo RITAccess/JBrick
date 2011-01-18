@@ -74,11 +74,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
 
-    try {
-      NXTManager.connect("jbrickDefault", FindBrickFileIO.getCT());
-    } catch (AlreadyConnectedException ex) {      
-      System.err.println("MainWindow.java@83::Already connected!" + ex.getMessage());
-    }
+//    try {
+//      NXTManager.connect("jbrickDefault", FindBrickFileIO.getCT());
+//    } catch (AlreadyConnectedException ex) {
+//      System.err.println("MainWindow.java@83::Already connected!" + ex.getMessage());
+//    }
   }
 
   /**
