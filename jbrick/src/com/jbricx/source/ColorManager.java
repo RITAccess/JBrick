@@ -25,9 +25,7 @@ public class ColorManager implements JBrickObserver {
     OPERATOR,
     STRING,
     LINENUMBERFG,
-    LINENUMBERBG,
-    EDITORBG,
-    EDITORFG;
+    LINENUMBERBG;
 
     public String property() {
       return this.toString().toLowerCase() + "Color";

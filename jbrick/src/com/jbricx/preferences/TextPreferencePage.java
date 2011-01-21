@@ -62,9 +62,7 @@ public class TextPreferencePage extends FieldEditorPreferencePage {
         "Operator color:",
         "String color:",
         "Line numbers FG color:",
-        "Line numbers BG color:",
-        "Editor BG (?):",
-        "Editor FG (?):"
+        "Line numbers BG color:"
     };
     for (int i = 0; i < ColorFor.values().length; i++) {
       addField(new ColorFieldEditor(ColorFor.values()[i].property(), labels[i], getFieldEditorParent()));
