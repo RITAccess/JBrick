@@ -57,4 +57,6 @@ public interface TabFolder {
   String getCurrentFilename();
 
   int getCurrentIndex();
+
+  void refreshTabItems();
 }

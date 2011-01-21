@@ -1,7 +1,5 @@
 package com.jbricx.ui;
 
-import com.jbricx.communications.NXTManager;
-import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +35,6 @@ import org.eclipse.swt.widgets.Shell;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -200,7 +197,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     new MainTabFolderAdapter((CTabFolder) statusTabFolder, sashForm2);
 
 
-    // Set the different weights for both panels. This affect their size.
+    // Set the different weights for both panels. This affects their size.
     // TODO : find a way to eliminate this. Automatic is always better!
     sashForm1.setWeights(new int[]{20, 80});
     sashForm2.setWeights(new int[]{80, 20});
@@ -276,17 +273,18 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
           font.dispose();
         }
 
-        String recentfiles = "";
+        StringBuilder recentfiles = new StringBuilder();
         for (CTabItem t : tabFolder.getItems()) {
           JBrickTabItem i = (JBrickTabItem) t;
 
-          recentfiles += i.getDocument().getFileName() + ";";
+          recentfiles.append(i.getDocument().getFileName());
+          recentfiles.append(';');
         }
         PreferenceManager mgr = new PreferenceManager();
         mgr.addToRoot(new PreferenceNode("text", "Text", null,
                 TextPreferencePage.class.getName()));
         PreferenceStore ps = getPreferences();
-        ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles);
+        ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles.toString());
 
         try {
           ps.save();
@@ -294,7 +292,6 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
           System.out.println("Error Saving Preferences: "
                   + e.getMessage());
         }
-        //System.out.println(recentfiles);
       }
     }
     return close;
@@ -329,42 +326,6 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     return tabFolder;
   }
 
-  // TODO : check and delete. What's the purpose of this?
-	/*public void refreshCurrentTabItem() {
-  int selectedIndex = getTabFolder().getCurrentIndex();
-  CTabItem tabItems[] = tabFolder.getItems();
-
-  int valor = tabItems.length;
-  String valor2 = String.valueOf(valor);
-  System.out.println("refresh refreshCurrentTabItem = " + valor2);
-
-  for (CTabItem tbItem : tabItems) {
-  System.out.println(":tabItems:");
-  if (tbItem != null) {
-  System.out.println("tbItem != null");
-  JBrickTabItem tabItem = (JBrickTabItem) tbItem;
-  String currentString = tabItem.getViewer().getTextWidget().getText();
-  String currentSaveString = tabItem.getDocument().getFileName();
-  removeObserver(tabItem);
-  tabItem.dispose();
-  System.out.println("tbItem.dispose...");
-  if (currentSaveString != null) {
-  getTabFolder().open(currentSaveString);
-  System.out.println("openFile");
-
-  } else {
-  getTabFolder().openNewFile();
-  System.out.println("openNewFile");
-  }
-  tabItem = getTabFolder().getSelection();
-  tabItem.getViewer().getTextWidget().setText(currentString);
-
-  }
-  }
-  if (0 <= selectedIndex){
-  tabFolder.setSelection(selectedIndex);
-  }
-  }*/
   public void refreshExplorerContent() {
     explorer.refreshView();
   }
@@ -381,7 +342,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     for (JBrickObserver observer : observerList) {
       observer.update(prefs);
     }
-    //refreshCurrentTabItem();
+    tabFolder.refreshTabItems();
   }
 
   public PreferenceStore getPreferences() {

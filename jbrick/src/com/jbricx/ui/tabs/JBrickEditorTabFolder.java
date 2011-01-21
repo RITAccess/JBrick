@@ -333,11 +333,8 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 		filenamesList.remove(filePath);
 	}
 
-	public final void addCTabFolder2Listener(
-			CTabFolder2Adapter cTabFolder2Adapter) {
-		// TODO: UnsupportedOperationException
-		// throw new UnsupportedOperationException("Not supported yet.");
-		super.addCTabFolder2Listener(cTabFolder2Adapter);
+	public final void addCTabFolder2Listener(CTabFolder2Adapter adapter) {
+		super.addCTabFolder2Listener(adapter);
 	}
 
 	public int getTabIndexByFilepath(String filePath) {
@@ -432,4 +429,23 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 	public int getCurrentIndex() {
 		return getSelectionIndex();
 	}
+
+	/**
+	 * Refreshes the content of the tabs. Basically, it only copies the content
+	 * from the current tab and paste it over, letting the associated classes deal
+	 * with the actual refreshing.
+   * This method is convenient for changing the colors of the tab's text.
+	 */
+  @Override
+  public void refreshTabItems() {
+    final CTabItem tabItems[] = getItems();
+
+    for (CTabItem currentItem : tabItems) {
+      if (currentItem != null) {
+        JBrickTabItem tabItem = (JBrickTabItem) currentItem;
+        tabItem.getViewer().getTextWidget()
+                .setText(tabItem.getViewer().getTextWidget().getText());
+      }
+    }
+  }
 }
