@@ -606,8 +606,16 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       case ']':
         keyId = 11;
         break;
+      //two new black key  
+      case 'z':
+        keyId = 12;
+        break;
+      case 'x':
+        keyId = 13;
+        break;  
 
-
+        
+        
       case '2':
         keyId = 0;
         whiteKeys = false;
@@ -640,8 +648,16 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         keyId = 9;
         whiteKeys = false;
         break;
-
-
+      
+      //two new black key
+      case 's':
+        keyId = 11;
+        whiteKeys = false;
+        break;
+      case 'd':
+        keyId = 12;
+        whiteKeys = false;
+        break;
     }
 
     if (keyId > -1) {
