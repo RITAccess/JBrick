@@ -38,6 +38,7 @@ import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
+import com.jbricx.ui.piano.PianoRecording;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -52,7 +53,7 @@ import com.jbricx.ui.findbrick.FindBrickFileIO;
  * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
 public class PianoComposite extends org.eclipse.swt.widgets.Composite {
-
+	
   private Label label1;
   private Label label11;
   private Button onebysixteen;
@@ -101,6 +102,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   int noteLengthDiv = 4;
   int transposeMult = 3;
   int toneDuration = 1000;
+  private PianoRecording recording = new PianoRecording();
   private KeyListener pianoKeyListener = new KeyListener() {
 
     @Override
@@ -547,13 +549,14 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       toneFreq *= transposeMult * 2;
 
       int toneToPlay = (int) Math.round(toneFreq);
-
+      int duration = (int) Math.round(toneDuration / noteLengthDiv);
       System.out.println("Playing Tone: " + toneToPlay);
 
       if (USE_BRICK) {
-        nxt.playTone(toneToPlay, (int) Math.round(toneDuration / noteLengthDiv));
+        nxt.playTone(toneToPlay, duration);
       }
-
+      recording.AddKey(toneToPlay, duration);
+      
       highlightKey(whiteKeys, keyId);
     } else {
       unHighlightKey(whiteKeys, keyId);
