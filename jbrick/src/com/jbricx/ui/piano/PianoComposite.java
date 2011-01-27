@@ -52,7 +52,7 @@ import com.jbricx.ui.piano.PianoRecording;
  * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
  * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class PianoComposite extends Composite {
+public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	
   private Label label1;
   private Label label11;
@@ -157,15 +157,37 @@ public class PianoComposite extends Composite {
     }
   }
 
-  public PianoComposite(Composite parent, int style) {
+  public PianoComposite(org.eclipse.swt.widgets.Composite parent, int style) {
     super(parent, style);
     initGUI();
   }
 
   private void initGUI() {
     myPianoComp = this;
-    layoutComponents();
 
+    if (USE_BRICK) {
+      try {
+        nxt = NXTManager.connect("brick12", FindBrickFileIO.getCT());
+        if (nxt.isConnected()) {
+          nxt.playTone(2000, 300);
+          System.out.println("Piano: Brick Connected!");
+          nxt.playTone(3000, 300);
+        }
+      } catch (AlreadyConnectedException e) {
+        // TODO Auto-generated catch block
+        //e.printStackTrace();
+        System.out.println("Piano already Connected");
+        try {
+          nxt = NXTManager.getBrick("brick1");
+          nxt.playTone(2000, 300);
+          System.out.println("Piano: Brick Connected!");
+        } catch (NXTNotFoundException e1) {
+          // TODO Auto-generated catch block          
+          System.err.println("Could not find brick");
+        }        
+      }
+      layoutComponents();
+    }
     this.addKeyListener(pianoKeyListener);
   }
 
@@ -683,6 +705,7 @@ public class PianoComposite extends Composite {
 	  ArrayList<PianoNote> notes = recording.getNotes();
 	  for(PianoNote note : notes){
 		  nxt.playTone(note.getTone(), note.getDuration());
+		  
 	  }
   }
   

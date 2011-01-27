@@ -1,6 +1,5 @@
 package com.jbricx.ui;
 
-import com.jbricx.communications.NXTManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ import org.eclipse.swt.widgets.Shell;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -50,6 +48,7 @@ import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
  */
 public class MainWindow extends ApplicationWindow implements IPropertyChangeListener, JBrickManager {
 
+  // The font
   private Font font;
   private MenuAndToolBarManagerDelegate menuAndToolbarManagerDelegate;
   private File treeRootFile;
@@ -59,22 +58,24 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   public static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
   // The stored preferences
   private PreferenceStore prefs;
-  private NXTManager nxtManager;
 
   /**
    * MainWindow constructor
    */
   public MainWindow(final PreferenceStore preferences) {
     super(null);
-    setNXTManager(NXTManager.getInstance());
     menuAndToolbarManagerDelegate = new MenuAndToolBarManagerDelegate(this);
-    nxtManager.connect(FindBrickFileIO.getCT());
-
     addMenuBar();
     addCoolBar(SWT.NONE);
     addStatusLine();
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
+
+//    try {
+//      NXTManager.connect("jbrickDefault", FindBrickFileIO.getCT());
+//    } catch (AlreadyConnectedException ex) {
+//      System.err.println("MainWindow.java@83::Already connected!" + ex.getMessage());
+//    }
   }
 
   /**
@@ -155,8 +156,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     sashForm1.setLayout(new FillLayout());
 
     // Create the panel for the editor (JBrickEditorTabFolder)
-    tabFolder = new JBrickEditorTabFolder(sashForm2, this, prefs, SWT.PUSH);
-
+    tabFolder = new JBrickEditorTabFolder(sashForm2, this, prefs, SWT.PUSH);        
+    
     // Create the status panel.
     // TODO: Resolve code tangling. This is kept just to avoid breaking something, and I don't like it.
     final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
@@ -351,17 +352,5 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   @Override
   public void updatePreferences() {
     notifyViewers();
-  }
-
-  public NXTManager getNXTManager() {
-    return nxtManager;
-  }
-
-  private void setNXTManager(NXTManager nxtManager) {
-    this.nxtManager = nxtManager;
-  }
-
-  public boolean isBrickConnected(){
-    return nxtManager.isBrickConnected();
   }
 }

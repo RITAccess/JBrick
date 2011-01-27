@@ -5,6 +5,9 @@ package com.jbricx.ui.findbrick;
  * @author Priya Sankaran
  * 
  */
+import com.jbricx.communications.AbstractNXTBrick;
+import javax.swing.JOptionPane;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -20,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.ui.JBrickButtonUtil;
 import org.eclipse.swt.widgets.Composite;
 
@@ -170,13 +174,23 @@ public class FindBrickComposite extends Composite {
 
       connect.addListener(SWT.Selection, new Listener() {
 
-        public void handleEvent(Event event) {          
-          if (bluetooth.getSelection()) {
-            System.out.println("BT");
-            NXTManager nxtManager = NXTManager.getInstance();
-            if (!nxtManager.isBrickConnected()) {
-              nxtManager.notifyAllObservers(false);
+        public void handleEvent(Event event) {
+          System.out.println("Attempting To Connect");
+          AbstractNXTBrick nxtBrick;
+          try {
+            if (bluetooth.getSelection()) {
+              System.out.println("BT");
+              nxtBrick = NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
+            } else {
+              System.out.println("USB");
+
+              nxtBrick = NXTManager.connect("brick1", ConnectionType.USB);
+              boolean isConnected = nxtBrick.isConnected();
+              NXTManager.notifyAllObservers(isConnected);
             }
+          } catch (AlreadyConnectedException e) {
+            JOptionPane.showMessageDialog(null, "Already Connected to the brick...");
+            //e.printStackTrace();
           }
         }
       });

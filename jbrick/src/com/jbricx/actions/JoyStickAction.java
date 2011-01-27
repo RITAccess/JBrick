@@ -25,14 +25,9 @@ public class JoyStickAction extends AbstractAction implements NXTObserver {
    */
   @Override
   public void run() {
-    if (getManager().getNXTManager().isBrickConnected()) {
-      JoystickUIWindow joystick = new JoystickUIWindow(getManager().getShell());
-      joystick.setBlockOnOpen(true);
-      joystick.open();
-    } else {
-      // disable all the brick related icons
-      getManager().getNXTManager().notifyAllObservers(false);
-    }
+    JoystickUIWindow joystick = new JoystickUIWindow(getManager().getShell());
+    joystick.setBlockOnOpen(true);
+    joystick.open();
   }
 
   public void update(boolean isConnected) {
