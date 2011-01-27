@@ -206,7 +206,21 @@ public class PianoComposite extends Composite {
         playLData.height = 30;
         play.setLayoutData(playLData);
         play.setText("Play");
-        play.addKeyListener(pianoKeyListener);
+        play.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				playButtonPressed();
+			}
+			
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+			}
+		});
       }
       {
         copy = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -228,15 +242,19 @@ public class PianoComposite extends Composite {
         clearLData.height = 31;
         clear.setLayoutData(clearLData);
         clear.setText("Clear");
-        clear.addKeyListener(new KeyListener() {
+        clear.addMouseListener(new MouseListener() {
 			
 			@Override
-			public void keyReleased(KeyEvent arg0){				
+			public void mouseUp(MouseEvent arg0) {
+				clearButtonPressed();
 			}
 			
 			@Override
-			public void keyPressed(KeyEvent arg0) {
-				clearButtonPressed();
+			public void mouseDown(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
 			}
 		});
       }
@@ -659,6 +677,13 @@ public class PianoComposite extends Composite {
 
   protected void clearButtonPressed(){
 	  recording.ClearKeys();
+  }
+  
+  protected void playButtonPressed(){
+	  ArrayList<PianoNote> notes = recording.getNotes();
+	  for(PianoNote note : notes){
+		  nxt.playTone(note.getTone(), note.getDuration());
+	  }
   }
   
   protected void unHighlightKey(boolean whiteKeys, int keyId) {
