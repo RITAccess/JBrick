@@ -188,8 +188,13 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       }
       layoutComponents();
     }
+
     this.addKeyListener(pianoKeyListener);
   }
+  
+  
+  
+  
 
   private void layoutComponents() {
     try {
@@ -206,6 +211,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         help.setLayoutData(helpLData);
         help.setText("Help");
         help.addKeyListener(pianoKeyListener);
+        
       }
 
       {
@@ -858,4 +864,6 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
     }
 
   }
+  
+  
 }
