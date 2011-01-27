@@ -4,9 +4,6 @@ import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.sun.jna.Pointer;
 import java.nio.ByteBuffer;
-//import Fantom;
-//import treelaws.fantom.Status;
-import java.util.Enumeration;
 import java.util.HashMap;
 
 /**
@@ -200,7 +197,6 @@ public class NXT {
         }
       }
       return null;
-
     }
   }
 
@@ -266,7 +262,7 @@ public class NXT {
         byte[] resourceName = FantomUtils.newResourceName();
         fantom.nFANTOM100_iNXTIterator_getName(iNXTIterator, resourceName, status);
 
-        System.out.println("NXT.java@268: "+FantomUtils.asString(resourceName));
+        System.out.println("NXT.java@268: " + FantomUtils.asString(resourceName));
         if (FantomUtils.asString(resourceName).contains(name)) {
           Pointer iNXT = fantom.nFANTOM100_iNXTIterator_getNXT(iNXTIterator, status);
 

@@ -3,6 +3,7 @@
  */
 package com.jbricx.ui;
 
+import com.jbricx.communications.NXTManager;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -34,6 +35,10 @@ public interface JBrickManager extends JBrickStatusUpdater {
   void registerObserver(JBrickObserver o);
 
   void updatePreferences();
-  
+
   boolean isAutoCompile();
+
+  //public boolean isBrickConnected();
+
+  public NXTManager getNXTManager();
 }

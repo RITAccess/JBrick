@@ -25,7 +25,6 @@ import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.joystick.wii.WiiMain;
@@ -105,9 +104,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       shell.setSize(shellBounds.width, shellBounds.height);
     }
     shell.open();
-
-
-    connectNXT();
 
     //Thread t2= new Thread(backupBeep);
     //t2.start();
@@ -569,30 +565,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     } catch (Exception e) {
       e.printStackTrace();
     }
-  }
-
-  private static void connectNXT() {
-
-    String brickname = "brick2";
-    try {
-      nxt = NXTManager.connect(brickname, FindBrickFileIO.getCT());
-      nxt.playTone(2000, 300);
-      System.out.println("Joystick: Brick Connected!");
-      nxt.playTone(3000, 300);
-    } catch (AlreadyConnectedException e) {
-      // TODO Auto-generated catch block
-      //e.printStackTrace();
-      System.out.println("Joystick already Connected");
-      try {
-        nxt = NXTManager.getBrick(brickname);
-        nxt.playTone(2000, 300);
-        System.out.println("Joystick: Brick Connected!");
-      } catch (NXTNotFoundException e1) {
-        // TODO Auto-generated catch block
-        //e1.printStackTrace();
-        System.out.println("Could not find brick");
-      }
-    } 
   }
 
   private static void connectJoypad() {

@@ -24,9 +24,14 @@ public class PianoAction extends AbstractAction implements NXTObserver {
    */
   @Override
   public void run() {
-    PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
-    piano.setBlockOnOpen(true);
-    piano.open();
+    if (getManager().getNXTManager().isBrickConnected()) {
+      PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
+      piano.setBlockOnOpen(true);
+      piano.open();
+    } else {
+      // disable all the brick related icons
+      getManager().getNXTManager().notifyAllObservers(false);
+    }
   }
 
   public void update(boolean isConnected) {

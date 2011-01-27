@@ -34,9 +34,6 @@ import com.jbricx.actions.SaveAction;
 import com.jbricx.actions.SaveAsAction;
 import com.jbricx.actions.SelectAllAction;
 import com.jbricx.actions.UndoAction;
-import com.jbricx.communications.NXTManager;
-import com.jbricx.model.PersistentDocument;
-import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * The purpose is to have the {@link Action}s in a different class other than the {@link MainWindow} because everything
@@ -109,9 +106,9 @@ public class MenuAndToolBarManagerDelegate {
     pianoAction = new PianoAction(manager);
     directControlAction = new DirectControlAction(manager);
 
-    NXTManager.register("joystick", joystickAction);
-    NXTManager.register("piano", pianoAction);
-    NXTManager.register("directControl", directControlAction);
+    manager.getNXTManager().register("joystick", joystickAction);
+    manager.getNXTManager().register("piano", pianoAction);
+    manager.getNXTManager().register("directControl", directControlAction);
   }
 
   /**

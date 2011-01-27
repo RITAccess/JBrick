@@ -23,12 +23,17 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
    */
   @Override
   public void run() {
-    DirectControlUIWindow control = new DirectControlUIWindow(getManager().getShell());
-    control.setBlockOnOpen(true);
-    control.open();
+    if (getManager().getNXTManager().isBrickConnected()) {
+      DirectControlUIWindow control = new DirectControlUIWindow(getManager().getShell());
+      control.setBlockOnOpen(true);
+      control.open();
+    } else {
+      // disable all the brick related icons
+      getManager().getNXTManager().notifyAllObservers(false);
+    }
   }
 
-  public void update(boolean  isConnected){
+  public void update(boolean isConnected) {
     setEnabled(isConnected);
   }
 }
