@@ -228,7 +228,17 @@ public class PianoComposite extends Composite {
         clearLData.height = 31;
         clear.setLayoutData(clearLData);
         clear.setText("Clear");
-        clear.addKeyListener(pianoKeyListener);
+        clear.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent arg0){				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				clearButtonPressed();
+			}
+		});
       }
       {
         length = new Group(this, SWT.NONE);
@@ -647,6 +657,10 @@ public class PianoComposite extends Composite {
 
   }
 
+  protected void clearButtonPressed(){
+	  recording.ClearKeys();
+  }
+  
   protected void unHighlightKey(boolean whiteKeys, int keyId) {
     if (whiteKeys) {
       whiteKeyLabelArray.get(keyId).moveBelow(whiteKeysArray.get(keyId));
