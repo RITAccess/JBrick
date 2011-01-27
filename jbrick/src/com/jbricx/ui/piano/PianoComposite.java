@@ -210,7 +210,28 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         helpLData.height = 27;
         help.setLayoutData(helpLData);
         help.setText("Help");
-        help.addKeyListener(pianoKeyListener);
+        help.addMouseListener(new MouseListener() {
+            final int keyId = 1;
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				pianoClickedHelp(true, keyId, false);
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				pianoClickedHelp(true, keyId, false);
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
         
       }
 
@@ -864,6 +885,11 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
     }
 
   }
+  
+  protected void pianoClickedHelp(boolean whiteKeys, int keyId, boolean isDown) {
+	  System.out.println("it is calling");
+	   
+	  }
   
   
 }
