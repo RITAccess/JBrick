@@ -1,8 +1,6 @@
 package com.jbricx.communications;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.ByteByReference;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
 import java.nio.Buffer;
 
@@ -11,7 +9,7 @@ import java.nio.Buffer;
  * @author Emmanuel Pirsch
  */
 public interface Fantom extends StdCallLibrary {
-    Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);    
+    //Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);
     
     /**
      * 

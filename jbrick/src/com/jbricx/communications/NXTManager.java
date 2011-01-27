@@ -3,6 +3,7 @@ package com.jbricx.communications;
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.ui.findbrick.FindBrickFileIO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,94 +106,97 @@ public class NXTManager {
     nxtObservers.add(observer);
   }
 
-  /*public static void main(String args[]) {
-  try {
-  final String brickName = "myBrick";
+  public static void main(String args[]) {
+    try {
+      final String brickName = "myBrick";
 
-  class Test implements Runnable {
+      class Test implements Runnable {
 
-  boolean connected = false;
-  boolean started = false;
+        boolean connected = false;
+        boolean started = false;
 
-  /*@Override
-  public void nxtConnected(String name, AbstractNXTBrick nxt) {
-  System.out.println("\tConnected: " + name);
+        
+        public void nxtConnected(String name, AbstractNXTBrick nxt) {
+          System.out.println("\tConnected: " + name);
+        }
+
+        
+        public void nxtDisconnected(String name, AbstractNXTBrick nxt) {
+          System.out.println("\t--Disconnected: " + name);
+          connected = false;
+        }
+
+        public void go(String name) {
+          try {
+            AbstractNXTBrick nxt;
+            if (!started) {
+              nxt = NXTManager.getInstance().connect(FindBrickFileIO.getCT());
+              started = true;
+            } else {
+              System.out.println("\tgetting brick");
+              nxt = NXTManager.getInstance().getBrick();
+            }
+            connected = true;
+            System.out.println(nxt.getBatteryLevel());
+            Thread.sleep(2000);
+            System.out.println("\tDone Sleeping");
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            System.out.println("\tCouldn't connect");
+          }
+        }
+
+        @Override
+        public void run() {
+          while (true) {
+            try {
+              Thread.sleep(3000);
+            } catch (InterruptedException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+
+            if (!connected) {
+              System.out.println("\t--notconnected");
+              go(brickName);
+            }
+          }
+
+        }
+      }
+
+      //			String name = "one";
+      Test t = new Test();
+      //NXTManager.register(brickName, t);
+      t.go(brickName);
+      (new Thread(t)).start();
+      System.out.println("main done");
+
+      			AbstractNXTBrick nxt = NXTManager.getInstance().connect(ConnectionType.USB);
+
+            if(nxt.isConnected()){
+      			System.out.println(nxt.getBatteryLevel());
+      			nxt.playTone(2000, 500);
+      			System.out.println(nxt.isConnected());
+      
+      			nxt.motorOn(NXT.Motor.MOTOR_A, 100);
+      }
+      			Thread.sleep(1000);
+      			nxt.motorOff(NXT.Motor.MOTOR_A);
+      
+      			System.out.println(nxt);
+      
+      			Thread.sleep(100);
+      			AbstractNXTBrick nxt2;
+      
+      			//nxt2 = getBrick(brickName);
+      			//System.out.println("Connected: "+nxt.isConnected());
+      			//nxt2.motorOff(NXT.Motor.MOTOR_A);
+      			//System.out.println("DONE");
+      //
+      //			System.out.println(nxt == nxt2);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
-
-  @Override
-  public void nxtDisconnected(String name, AbstractNXTBrick nxt) {
-  System.out.println("\t--Disconnected: " + name);
-  connected = false;
-  }*/
-  /*public void go(String name) {
-  try {
-  AbstractNXTBrick nxt;
-  if (!started) {
-  nxt = NXTManager.connect(name, FindBrickFileIO.getCT());
-  started = true;
-  } else {
-  System.out.println("\tgetting brick");
-  nxt = NXTManager.getBrick(name);
-  }
-  connected = true;
-  System.out.println(nxt.getBatteryLevel());
-  Thread.sleep(2000);
-  System.out.println("\tDone Sleeping");
-  } catch (Exception e) {
-  // TODO Auto-generated catch block
-  System.out.println("\tCouldn't connect");
-  }
-  }
-
-  @Override
-  public void run() {
-  while (true) {
-  try {
-  Thread.sleep(3000);
-  } catch (InterruptedException e) {
-  // TODO Auto-generated catch block
-  e.printStackTrace();
-  }
-
-  if (!connected) {
-  System.out.println("\t--notconnected");
-  go(brickName);
-  }
-  }
-
-  }
-  }
-
-  //			String name = "one";
-  Test t = new Test();
-  //NXTManager.register(brickName, t);
-  t.go(brickName);
-  (new Thread(t)).start();
-  System.out.println("main done");
-
-
-
-
-  //			AbstractNXTBrick nxt = connect(brickName, ConnectionType.USB);
-  //			System.out.println(nxt.getBatteryLevel());
-  //			nxt.playTone(2000, 500);
-  //			System.out.println(nxt.isConnected());
-  //
-  //			nxt.motorOn(Motor.MOTOR_A, 100);
-  //			Thread.sleep(1000);
-  //			nxt.motorOff(Motor.MOTOR_A);
-  //
-  //			System.out.println(nxt);
-  //			Thread.sleep(100);
-  //			AbstractNXTBrick nxt2;
-  //			nxt2 = getBrick(brickName);
-  //			System.out.println("Connected: "+nxt.isConnected());
-  //			nxt2.motorOff(NXT.Motor.MOTOR_A);
-  //			System.out.println("DONE");
-  //
-  //			System.out.println(nxt == nxt2);
-  } catch (Exception e) {
-  e.printStackTrace();
-  }
-  }*/
 }

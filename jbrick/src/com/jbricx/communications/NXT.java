@@ -2,6 +2,7 @@ package com.jbricx.communications;
 
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -215,13 +216,23 @@ public class NXT {
       return this.name;
     }
   }
-  private static Fantom fantom = Fantom.INSTANCE;
+  //private static Fantom fantom = Fantom.INSTANCE;
+  private static Fantom fantom;
   private String name;
   private Pointer nxtPointer;
+
+  static {
+    try {
+      fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
+    } catch (RuntimeException re) {
+      System.out.println("NXT.java NXT() :: Fantom library not found!");
+    }
+  }
 
   public NXT(String name) throws NXTNotFoundException, UnableToCreateNXTException {
     this.name = name;
     this.nxtPointer = connect(name);
+
   }
 
 //    public NXT() throws NXTNotFoundException, UnableToCreateNXTException {
@@ -244,6 +255,7 @@ public class NXT {
     command.put((byte) 0x00);
     command.put(filenameBytes);
     command.put((byte) 0x00);
+
     fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command, command.capacity(), null, 0, status);
     System.out.println(status.getStatus().toString());
   }
