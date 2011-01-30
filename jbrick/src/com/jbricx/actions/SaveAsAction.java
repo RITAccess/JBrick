@@ -33,12 +33,12 @@ public class SaveAsAction extends AbstractAction {
 
 		// Check and see if it was previously saved as a backup
 		if (currDoc.getFileName() != null
-				&& currDoc.getFileName().endsWith(".bak")) {
+				&& currDoc.getFileName().endsWith(".bak.nxc")) {
 			String fname = currDoc.getFileName();
 			ActionControlClass.saveFile(getManager().getTabFolder()
 					.getSelection(), true, getManager(), getManager()
 					.getWorkspacePath());
-			if (!currDoc.getFileName().endsWith(".bak")) {
+			if (!currDoc.getFileName().endsWith(".bak.nxc")) {
 				// File was successfully saved, cleanup the temporary file
 				File f = new File(fname);
 				f.delete();

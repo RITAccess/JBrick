@@ -278,7 +278,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 		boolean proceed = true;
 		String fileName = tabItem.getDocument().getFileName();
 		if (tabItem.getDocument().isDirty() || fileName != null
-				&& fileName.endsWith(".bak")) {
+				&& fileName.endsWith(".bak.nxc")) {
 			proceed = MessageDialog
 					.openQuestion(
 							null,
@@ -299,7 +299,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 	 */
 	private void removeTempFile(JBrickTabItem tab, Boolean remove) {
 		String fileName = tab.getDocument().getFileName();
-		if (remove && fileName != null && fileName.endsWith(".bak")) {
+		if (remove && fileName != null && fileName.endsWith(".bak.nxc")) {
 			File deleteFile = new File(tab.getDocument().getFileName());
 			deleteFile.delete();
 			tab.dispose();
@@ -311,11 +311,11 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 		Boolean loadrecent = ps
 				.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
 		ArrayList<String> recentfiles = new ArrayList<String>();
-		File dir = new File(manager.getWorkspacePath() + "\\jbrick");
+		File dir = new File(manager.getWorkspacePath());
 		String[] fileNames = dir.list();
 		for(int i=0; fileNames != null && i < fileNames.length; i++)
-			if(fileNames[i].endsWith(".bak"))
-				recentfiles.add(fileNames[i]);
+			if(fileNames[i].endsWith(".bak.nxc"))
+				recentfiles.add(manager.getWorkspacePath() + "\\" + fileNames[i]);
 		if (loadrecent) {
 			for (String s : ps.getString(FileExtensionConstants.RECENTFILES)
 					.split(";")) {

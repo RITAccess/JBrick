@@ -42,9 +42,9 @@ public class CompileAction extends AbstractAction {
 			return;
 
 		PersistentDocument currDoc = curTabItem.getDocument();
-    System.out.println(""+ currDoc.getFileName());
+		System.out.println("" + currDoc.getFileName());
 		if (currDoc.getFileName() == null) {
-			currDoc.setFileName(curTabItem.getText() + ".nxc.bak");
+			currDoc.setFileName(getManager().getWorkspacePath() + "\\" + curTabItem.getText() + ".bak.nxc");
 			try {
 				currDoc.save();
 			} catch (IOException e) {
@@ -54,7 +54,7 @@ public class CompileAction extends AbstractAction {
 			}
 		} else if (currDoc.isDirty()) {
 			// File has been modified so save before compiling
-      System.out.println("dirty");
+			System.out.println("dirty");
 			try {
 				currDoc.save();
 				getManager().setStatus("Saving File . . .");
