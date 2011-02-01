@@ -683,6 +683,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
     	 nxt.playTone(note.getTone(), note.getNoteTime());
       }
  
+      highlightKey(whiteKeys, keyId);
     } else {
       unHighlightKey(whiteKeys, keyId);
     }
