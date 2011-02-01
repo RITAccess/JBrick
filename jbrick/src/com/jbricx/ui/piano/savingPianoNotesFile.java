@@ -11,27 +11,25 @@ public class savingPianoNotesFile {
 		System.out.println("noteList.size():" + noteList.size());
 		String starting = "task main{";
 		String closing = "}";
-		
-		for (int x = 0; x < noteList.size(); x++) {
-				PianoNote pianoNote = (PianoNote)noteList.get(x);
-				PrintStream p;
-				
 				try{
-					FileOutputStream fileOut = new FileOutputStream("D://prueba.nxc");
+					FileOutputStream fileOut = new FileOutputStream("C://prueba.nxc");
+					PrintStream p;
 					p = new PrintStream(fileOut);
+					p.println (starting);
 					
-					p.println ("PlayTone("+pianoNote.getTone()+","+pianoNote.getNoteTime()+");");
-					p.println ("Wait("+pianoNote.getTone()+");");
+						for (int x = 0; x < noteList.size(); x++){
+							PianoNote pianoNote = (PianoNote)noteList.get(x);
+							p.println ("  PlayTone("+pianoNote.getTone()+","+pianoNote.getNoteTime()+");");
+							p.println ("  Wait("+pianoNote.getWaitTime()+");");
+						}
+						
+					p.println(closing);
 					p.close();
-					//System.out.println("piano noteTime " + pianoNote.getNoteTime());
-					//System.out.println("piano note " + pianoNote.getTone());
-					//System.out.println("piano waittime " + pianoNote.getWaitTime());
+					
 					}catch (Exception e)
 					{
                         System.err.println ("Error writing to file");
 					}
 		}
-	
-	}
 
 }
