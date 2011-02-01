@@ -799,7 +799,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   protected void playButtonPressed(){
 	  ArrayList<PianoNote> notes = recording.getNotes();
 	  for(PianoNote note : notes){
-		  nxt.playTone(note.getTone(), note.getDuration());
+		  nxt.playTone(note.getTone(), note.getNoteTime());
 		  try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
