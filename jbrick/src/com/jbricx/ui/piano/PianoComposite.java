@@ -801,7 +801,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	  for(PianoNote note : notes){
 		  nxt.playTone(note.getTone(), note.getDuration());
 		  try {
-			Thread.sleep(300);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
