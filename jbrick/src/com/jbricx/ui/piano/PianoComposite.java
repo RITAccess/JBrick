@@ -672,16 +672,14 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 
       System.out.println("Playing Tone: " + toneToPlay);
 
-      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv/16);
+      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv);
       recording.AddKey(note);
+
       if (USE_BRICK) {
         //nxt.playTone(toneToPlay, duration);
     	 nxt.playTone(note.getTone(), note.getNoteTime());
       }
-   	  
-
-      
-      highlightKey(whiteKeys, keyId);
+ 
     } else {
       unHighlightKey(whiteKeys, keyId);
     }
