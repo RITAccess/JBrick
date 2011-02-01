@@ -269,6 +269,9 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				System.out.println("saving_mouseUp");
+				savingPianoNotesFile spnf = new savingPianoNotesFile();
+				spnf.receivingNotes(recording.getNotes());
+				
 				//save.setEnabled(false);
 				SAVE_NOTES = true;
 			}
