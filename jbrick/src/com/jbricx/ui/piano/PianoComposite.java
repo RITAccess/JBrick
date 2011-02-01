@@ -446,18 +446,18 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         rest.addMouseListener(new MouseListener() {
         	double toneFreq = 0;
         	int toneToPlay1 = (int) Math.round(toneFreq);
-            int duration1 = (int) Math.round(toneDuration / noteLengthDiv);
+            //int duration1 = (int) Math.round(toneDuration / noteLengthDiv);
             
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				 recording.AddKey(toneToPlay1, duration1);
+				 recording.AddKey(toneToPlay1, noteLengthDiv);
 			}
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				 recording.AddKey(toneToPlay1, duration1);
+				 recording.AddKey(toneToPlay1, noteLengthDiv);
 			}
 			
 			@Override
