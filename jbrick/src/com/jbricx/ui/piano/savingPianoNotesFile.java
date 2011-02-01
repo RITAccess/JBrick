@@ -19,7 +19,9 @@ public class savingPianoNotesFile {
 					
 						for (int x = 0; x < noteList.size(); x++){
 							PianoNote pianoNote = (PianoNote)noteList.get(x);
-							p.println ("  PlayTone("+pianoNote.getTone()+","+pianoNote.getNoteTime()+");");
+							if(pianoNote.getTone()!= 0){
+									p.println ("  PlayTone("+pianoNote.getTone()+","+pianoNote.getNoteTime()+");");
+							}
 							p.println ("  Wait("+pianoNote.getWaitTime()+");");
 						}
 						
