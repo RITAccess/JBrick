@@ -665,17 +665,20 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       if (toneDouble) {
         toneFreq = toneFreq * 2;
       }
-
-      toneFreq *= transposeMult * 2;
-
+      toneFreq *= transposeMult * 2; 
       int toneToPlay = (int) Math.round(toneFreq);
-      int duration = (int) Math.round(toneDuration / noteLengthDiv);
+      
+      //int duration = (int) Math.round(toneDuration / noteLengthDiv); 
+
       System.out.println("Playing Tone: " + toneToPlay);
 
+      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv/16);
+      recording.AddKey(note);
       if (USE_BRICK) {
-        nxt.playTone(toneToPlay, duration);
+        //nxt.playTone(toneToPlay, duration);
+    	 nxt.playTone(note.getTone(), note.getNoteTime());
       }
-   	  recording.AddKey(toneToPlay, noteLengthDiv);
+   	  
 
       
       highlightKey(whiteKeys, keyId);

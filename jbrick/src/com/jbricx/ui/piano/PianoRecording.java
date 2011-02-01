@@ -12,6 +12,9 @@ public class PianoRecording {
 	public void AddKey(Integer tone, Integer duration){
 		notes.add(new PianoNote(tone, duration));
 	}
+	public void AddKey(PianoNote key){
+		notes.add(key);
+	}
 	public void ClearKeys() {
 		notes = new ArrayList<PianoNote>();
 	}
