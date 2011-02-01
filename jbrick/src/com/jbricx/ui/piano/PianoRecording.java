@@ -21,5 +21,13 @@ public class PianoRecording {
 	public ArrayList<PianoNote> getNotes(){
 		return notes;
 	}
-	
+	public String getRecordingStr(){
+	  String recordStr = "";
+	  for(PianoNote note : notes){
+		  if(note.getTone() != 0)
+			  recordStr += "SendNote(" + note.getTone().toString() + ", " + note.getNoteTime().toString() + ");";
+		  recordStr += "Wait(" + note.getWaitTime().toString() + ");";
+	  }
+	  return recordStr;
+	}
 }

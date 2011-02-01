@@ -6,6 +6,20 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -17,33 +31,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.SWT;
-import java.awt.Desktop;
-
 
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.help.HelpBrowser;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
-import com.jbricx.ui.piano.PianoRecording;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -326,7 +322,17 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         copyLData.height = 31;
         copy.setLayoutData(copyLData);
         copy.setText("Copy");
-        copy.addKeyListener(pianoKeyListener);
+        copy.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				copyButtonPressed();
+			}		
+			@Override
+			public void mouseDown(MouseEvent arg0) {}		
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {}
+		});
       }
       {
         clear = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -796,6 +802,10 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 
   protected void clearButtonPressed(){
 	  recording.ClearKeys();
+  }
+  
+  protected void copyButtonPressed(){
+
   }
   
   protected void playButtonPressed(){
