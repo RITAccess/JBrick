@@ -1,11 +1,14 @@
 package com.jbricx.ui.piano;
 
 //import java.awt.Color;
+import java.applet.AppletContext;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.FileInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -225,7 +228,13 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				pianoClickedHelp(true, keyId, false);
+				try {
+						pianoClickedHelp(true, keyId, false);
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 				// TODO Auto-generated method stub
 				
 				//java.net.URI uri = new java.net.URI( arg );
@@ -238,7 +247,12 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				pianoClickedHelp(true, keyId, false);
+				try {
+						pianoClickedHelp(true, keyId, false);
+					}catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				// TODO Auto-generated method stub
 				
 			}
@@ -975,10 +989,11 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 
   }
   
-  protected void pianoClickedHelp(boolean whiteKeys, int keyId, boolean isDown) {
+  protected void pianoClickedHelp(boolean whiteKeys, int keyId, boolean isDown) throws MalformedURLException {
 	  System.out.println("it is calling");
-	   
-	  }
+	  //testURL_NewWindow test = new testURL_NewWindow();
+	  
+  }
   
   
 }
