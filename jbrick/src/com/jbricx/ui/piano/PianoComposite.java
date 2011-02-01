@@ -102,7 +102,6 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
   private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
   private static final boolean USE_BRICK = true;
-  private static boolean SAVE_NOTES = false;
   private static AbstractNXTBrick nxt;
   private static PianoComposite myPianoComp;
   int noteLengthDiv = 4;
@@ -262,28 +261,19 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         saveLData.height = 30;
         save.setLayoutData(saveLData);
         save.setText("Save");
-        //save.addKeyListener(pianoKeyListener);
         save.addMouseListener(new MouseListener() {
-			
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				System.out.println("saving_mouseUp");
 				savingPianoNotesFile spnf = new savingPianoNotesFile();
 				spnf.receivingNotes(recording.getNotes());
-				
-				//save.setEnabled(false);
-				SAVE_NOTES = true;
 			}
-			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(null, "JBrick will start saving the notes...");
+				JOptionPane.showMessageDialog(null, "it is saving the file on C:");
 				//save.setEnabled(false);
-				SAVE_NOTES = true;
 			}
-			
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
 				// TODO Auto-generated method stub
