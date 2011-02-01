@@ -992,8 +992,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   protected void pianoClickedHelp(boolean whiteKeys, int keyId, boolean isDown) throws MalformedURLException {
 	  System.out.println("it is calling");
 	  //testURL_NewWindow test = new testURL_NewWindow();
-	  
-  }
+	}
   
   
 }
