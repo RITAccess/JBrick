@@ -4,6 +4,8 @@ package com.jbricx.ui.piano;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -32,11 +34,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.SWT;
+import java.awt.Desktop;
+
 
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.exceptions.AlreadyConnectedException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
+import com.jbricx.help.HelpBrowser;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.piano.PianoRecording;
 
@@ -97,12 +102,17 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
   private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
   private static final boolean USE_BRICK = true;
+  private static boolean SAVE_NOTES = false;
   private static AbstractNXTBrick nxt;
   private static PianoComposite myPianoComp;
   int noteLengthDiv = 4;
   int transposeMult = 3;
   int toneDuration = 1000;
+  
+  
   private PianoRecording recording = new PianoRecording();
+  
+  
   private KeyListener pianoKeyListener = new KeyListener() {
 
     @Override
@@ -212,11 +222,19 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         help.setText("Help");
         help.addMouseListener(new MouseListener() {
             final int keyId = 1;
+            //java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				pianoClickedHelp(true, keyId, false);
 				// TODO Auto-generated method stub
 				
+				//java.net.URI uri = new java.net.URI( arg );
+                //desktop.browse( uri );
+
+				
+				//HelpBrowser br = new HelpBrowser();
+				//br.setUrl("www.google.com.pe");
 			}
 			
 			@Override
@@ -244,8 +262,33 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         saveLData.height = 30;
         save.setLayoutData(saveLData);
         save.setText("Save");
-        save.addKeyListener(pianoKeyListener);
-      }
+        //save.addKeyListener(pianoKeyListener);
+        save.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("saving_mouseUp");
+				//save.setEnabled(false);
+				SAVE_NOTES = true;
+			}
+			
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(null, "JBrick will start saving the notes...");
+				//save.setEnabled(false);
+				SAVE_NOTES = true;
+			}
+			
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+        });
+        
+        }
+	
       {
         play = new Button(this, SWT.PUSH | SWT.CENTER);
         FormData playLData = new FormData();
@@ -396,7 +439,29 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
         restLData.height = 80;
         rest.setLayoutData(restLData);
         rest.setText("Rest");
-        rest.addKeyListener(pianoKeyListener);
+        //rest.addKeyListener(pianoKeyListener);
+        rest.addMouseListener(new MouseListener() {
+        	double toneFreq = 0;
+        	int toneToPlay1 = (int) Math.round(toneFreq);
+            int duration1 = (int) Math.round(toneDuration / noteLengthDiv);
+            
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				 recording.AddKey(toneToPlay1, duration1);
+			}
+			
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				 recording.AddKey(toneToPlay1, duration1);
+			}
+			
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
       }
       {
         transpose_label = new Label(this, SWT.NONE);
@@ -610,7 +675,10 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       if (USE_BRICK) {
         nxt.playTone(toneToPlay, duration);
       }
-      recording.AddKey(toneToPlay, duration);
+      if(SAVE_NOTES){
+    	  System.out.println("graba esta nota");
+    	  recording.AddKey(toneToPlay, duration);
+      }
       
       highlightKey(whiteKeys, keyId);
     } else {
@@ -733,7 +801,7 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	  for(PianoNote note : notes){
 		  nxt.playTone(note.getTone(), note.getDuration());
 		  try {
-			Thread.sleep(3000);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
