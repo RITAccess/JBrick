@@ -83,7 +83,7 @@ public class CustomTree {
 				"help\\html\\gettingstarted.html");
 		nodes.add(category);
 		new Node("Basic Tutorial", category, "help\\html\\basictutorial.html");
-
+		nodes.add(new Node("Piano Composer", null, "help\\html\\Piano Composer.html"));
 		//category = new Node("Concepts", null, "help\\html\\concepts.html");
 		//nodes.add(category);
 
