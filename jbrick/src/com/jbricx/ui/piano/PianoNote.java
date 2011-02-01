@@ -16,6 +16,9 @@ public class PianoNote {
 	public void setTone(Integer tone) {
 		this.tone = tone;
 	}
+	public void setDuration(Integer newDuration){
+		duration = newDuration;
+	}
 	public Integer getNoteTime() {
 		return duration * noteTime;
 	}

@@ -675,10 +675,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       if (USE_BRICK) {
         nxt.playTone(toneToPlay, duration);
       }
-      if(SAVE_NOTES){
-    	  System.out.println("graba esta nota");
-    	  recording.AddKey(toneToPlay, duration);
-      }
+   	  recording.AddKey(toneToPlay, noteLengthDiv);
+
       
       highlightKey(whiteKeys, keyId);
     } else {
