@@ -1,6 +1,10 @@
 package com.jbricx.ui.piano;
 
 //import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
@@ -805,7 +809,17 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   }
   
   protected void copyButtonPressed(){
-
+	  String recStr = recording.getRecordingStr();
+	  
+	  Clipboard systemClipboard =
+			Toolkit
+				.getDefaultToolkit()
+				.getSystemClipboard();
+		Transferable transferableText =
+			new StringSelection(recStr);
+		systemClipboard.setContents(
+			transferableText,
+			null);
   }
   
   protected void playButtonPressed(){
