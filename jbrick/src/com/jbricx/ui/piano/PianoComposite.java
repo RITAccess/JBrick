@@ -818,8 +818,10 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	  for(PianoNote note : notes){
 		  nxt.playTone(note.getTone(), note.getNoteTime());
 		  try {
-			nxt.wait(note.getWaitTime());
-		} catch (InterruptedException e1) { System.out.println("Exception thrown from nxt.wait");}
+			Thread.sleep(note.getWaitTime());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	  }
   }
   
