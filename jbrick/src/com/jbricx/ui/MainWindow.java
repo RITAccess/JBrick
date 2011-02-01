@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
@@ -46,7 +47,8 @@ import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
 /**
  * This class provides the main window of JBrickEditor
  */
-public class MainWindow extends ApplicationWindow implements IPropertyChangeListener, JBrickManager {
+public class MainWindow extends ApplicationWindow implements
+    IPropertyChangeListener, JBrickManager {
 
   // The font
   private Font font;
@@ -56,6 +58,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
   private StatusTabItem statusTabItem;
   private FileExplorerTabItem explorer;
   public static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
+  private NXTManager nxtManager; 
   // The stored preferences
   private PreferenceStore prefs;
 
@@ -70,12 +73,9 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     addStatusLine();
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
-
-//    try {
-//      NXTManager.connect("jbrickDefault", FindBrickFileIO.getCT());
-//    } catch (AlreadyConnectedException ex) {
-//      System.err.println("MainWindow.java@83::Already connected!" + ex.getMessage());
-//    }
+    
+    //nxtManager = NXTManager.getInstance();
+    //nxtManager.connect("jbrickDefault", FindBrickFileIO.getCT());
   }
 
   /**
@@ -89,9 +89,9 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
   /**
    * Configures the shell
-   *
+   * 
    * @param shell
-   *            the shell
+   *          the shell
    */
   @Override
   protected void configureShell(Shell shell) {
@@ -111,9 +111,9 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
   /**
    * Creates the main window's contents
-   *
+   * 
    * @param parent
-   *            the main window
+   *          the main window
    * @return Control
    */
   @Override
@@ -126,9 +126,10 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     l.setToolTipText("helllllll oooooo Jaws:");
     l.setVisible(false);
 
-    /* Divide the main window in three sections: Explorer, Editor and Status.
-     * The first SashForm contains the Explorer and the second SashForm.
-     * The second SashForm contains the Editor and the Status.
+    /*
+     * Divide the main window in three sections: Explorer, Editor and Status.
+     * The first SashForm contains the Explorer and the second SashForm. The
+     * second SashForm contains the Editor and the Status.
      */
 
     // Create the first SashForm to hold the Explorer and second SashForm.
@@ -137,12 +138,14 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
     // Create the tree viewer to display the file tree.
     final CTabFolder explorerTabFolder = new CTabFolder(sashForm1, SWT.LEFT);
-    explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL, getWorkspacePath());
+    explorer = new FileExplorerTabItem(explorerTabFolder, SWT.FILL,
+        getWorkspacePath());
 
     explorer.addTreeListener(SWT.DefaultSelection, new Listener() {
 
       public void handleEvent(Event e) {
-        IStructuredSelection selection = (IStructuredSelection) explorer.getSelection();
+        IStructuredSelection selection = (IStructuredSelection) explorer
+            .getSelection();
         File file = (File) selection.getFirstElement();
 
         if (!file.isDirectory()) {
@@ -156,10 +159,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     sashForm1.setLayout(new FillLayout());
 
     // Create the panel for the editor (JBrickEditorTabFolder)
-    tabFolder = new JBrickEditorTabFolder(sashForm2, this, prefs, SWT.PUSH);        
-    
+    tabFolder = new JBrickEditorTabFolder(sashForm2, this, prefs, SWT.PUSH);
+
     // Create the status panel.
-    // TODO: Resolve code tangling. This is kept just to avoid breaking something, and I don't like it.
+    // TODO: Resolve code tangling. This is kept just to avoid breaking
+    // something, and I don't like it.
     final CTabFolder statusTabFolder = new CTabFolder(sashForm2, SWT.PUSH);
     statusTabFolder.setMaximizeVisible(true);
 
@@ -172,7 +176,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
       @Override
       protected void setSelectedRange(int offset, int lineLength) {
-        tabFolder.getSelection().getViewer().setSelectedRange(offset, lineLength);
+        tabFolder.getSelection().getViewer()
+            .setSelectedRange(offset, lineLength);
       }
 
       @Override
@@ -182,8 +187,8 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     };
 
     // Add listeners the Editor Panel. The order matters, be careful.
-    final CTabFolder2Adapter toolbarizerAdapter =
-            new ToolBarizeEditTabFolderAdapter((CTabFolder) tabFolder, getCoolBarManager(), sashForm2);
+    final CTabFolder2Adapter toolbarizerAdapter = new ToolBarizeEditTabFolderAdapter(
+        (CTabFolder) tabFolder, getCoolBarManager(), sashForm2);
     new MainTabFolderAdapter((CTabFolder) tabFolder, sashForm2);
 
     // Add the listener for the Status Panel
@@ -196,11 +201,10 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     });
     new MainTabFolderAdapter((CTabFolder) statusTabFolder, sashForm2);
 
-
     // Set the different weights for both panels. This affects their size.
     // TODO : find a way to eliminate this. Automatic is always better!
-    sashForm1.setWeights(new int[]{20, 80});
-    sashForm2.setWeights(new int[]{80, 20});
+    sashForm1.setWeights(new int[] { 20, 80 });
+    sashForm2.setWeights(new int[] { 80, 20 });
 
     getMenuBarManager().updateAll(true);
     l.setFocus();
@@ -220,11 +224,11 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
    */
   @Override
   public void propertyChange(PropertyChangeEvent event) {
-    /*if (FileExtensionConstants.FONT.equals(event.getProperty()))
-    this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
-
     /*
-     * if (FileExtensionConstants.WRAP.equals(event.getProperty()))
+     * if (FileExtensionConstants.FONT.equals(event.getProperty()))
+     * this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
+     * 
+     * /* if (FileExtensionConstants.WRAP.equals(event.getProperty()))
      * setWrap(((Boolean) event.getNewValue()).booleanValue()); else if
      * (FileExtensionConstants.FONT.equals(event.getProperty()))
      * this.getCurrentTabItem().setFont((FontData[]) event.getNewValue());
@@ -233,7 +237,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
   /**
    * Creates the menu manager
-   *
+   * 
    * @return MenuManager
    */
   @Override
@@ -248,8 +252,9 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
 
   /**
    * Creates the toolbar
-   *
-   * @param style the style for the toolbar
+   * 
+   * @param style
+   *          the style for the toolbar
    * @return ToolBarManager
    */
   @Override
@@ -282,15 +287,14 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
         }
         PreferenceManager mgr = new PreferenceManager();
         mgr.addToRoot(new PreferenceNode("text", "Text", null,
-                TextPreferencePage.class.getName()));
+            TextPreferencePage.class.getName()));
         PreferenceStore ps = getPreferences();
         ps.putValue(FileExtensionConstants.RECENTFILES, recentfiles.toString());
 
         try {
           ps.save();
         } catch (IOException e) {
-          System.out.println("Error Saving Preferences: "
-                  + e.getMessage());
+          System.out.println("Error Saving Preferences: " + e.getMessage());
         }
       }
     }
@@ -315,7 +319,7 @@ public class MainWindow extends ApplicationWindow implements IPropertyChangeList
     // Get the preference store
     PreferenceManager mgr = new PreferenceManager();
     mgr.addToRoot(new PreferenceNode("text", "Text", null,
-            TextPreferencePage.class.getName()));
+        TextPreferencePage.class.getName()));
     PreferenceStore ps = getPreferences();
     Boolean autoCompile = ps.getBoolean(FileExtensionConstants.AUTOCOMPILE);
     return autoCompile;

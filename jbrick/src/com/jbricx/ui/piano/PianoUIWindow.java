@@ -10,7 +10,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class PianoUIWindow extends TrayDialog {
+import com.jbricx.communications.NXTObserver;
+
+public class PianoUIWindow extends TrayDialog implements NXTObserver {
 
   public PianoUIWindow(Shell parentShell) {
     super(parentShell);
@@ -21,5 +23,10 @@ public class PianoUIWindow extends TrayDialog {
     getShell().setText("Piano");
 
     return new PianoComposite(parent, SWT.NULL);
+  }
+
+  @Override
+  public void update(boolean isConnected) {
+    // TODO: do some saving implementation
   }
 }

@@ -8,7 +8,7 @@ public class BrickCreator {
 		
 		if(  System.getProperty("os.name").contains("indow") ){
 			//windows
-			brick = new WindowsNXTBrick();
+			//brick = new WindowsNXTBrick();
 		}
 		else if(  System.getProperty("os.name").contains("inux") ){
 			//linux

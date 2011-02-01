@@ -21,13 +21,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXT.Motor;
-import com.jbricx.communications.exceptions.AlreadyConnectedException;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.JBrickButtonUtil;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.joystick.wii.WiiMain;
 
 public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
@@ -83,6 +78,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
    */
   protected void checkSubclass() {
   }
+
   /**
    * Auto-generated method to display this org.eclipse.swt.widgets.Composite
    * inside a new Shell.
@@ -106,12 +102,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     }
     shell.open();
 
-
-    connectNXT();
-
-    //Thread t2= new Thread(backupBeep);
-    //t2.start();
-
     while (!shell.isDisposed()) {
       if (!display.readAndDispatch()) {
         display.sleep();
@@ -119,8 +109,9 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     }
     thread.stop();
 
-    //t2.stop();
+    // t2.stop();
   }
+
   Shell shell;
 
   public JoystickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
@@ -141,7 +132,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           UpLeft = new Button(Movement, SWT.PUSH | SWT.CENTER);
           UpLeft.setImage(new Image(null, new FileInputStream(
-                  "src/images/UpLeft.png")));
+              "src/images/UpLeft.png")));
 
           UpLeft.setBounds(18, 36, 26, 26);
           buttonUtil.setAccessibleString(UpLeft, "Up Left Arrow");
@@ -155,8 +146,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           Up = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          Up.setImage(new Image(null, new FileInputStream(
-                  "src/images/Up.png")));
+          Up.setImage(new Image(null, new FileInputStream("src/images/Up.png")));
           Up.setBounds(42, 36, 27, 26);
           buttonUtil.setAccessibleString(Up, "Up Arrow");
 
@@ -170,7 +160,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           UpRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
           UpRight.setImage(new Image(null, new FileInputStream(
-                  "src/images/UpRight.png")));
+              "src/images/UpRight.png")));
           UpRight.setBounds(67, 37, 27, 26);
           buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
           UpRight.addSelectionListener(new SelectionAdapter() {
@@ -183,7 +173,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           Left = new Button(Movement, SWT.PUSH | SWT.CENTER);
           Left.setImage(new Image(null, new FileInputStream(
-                  "src/images/left.png")));
+              "src/images/left.png")));
           Left.setBounds(18, 59, 24, 30);
           buttonUtil.setAccessibleString(Left, "Left Arrow");
           Left.addSelectionListener(new SelectionAdapter() {
@@ -196,7 +186,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           centreStop = new Button(Movement, SWT.PUSH | SWT.CENTER);
           centreStop.setImage(new Image(null, new FileInputStream(
-                  "src/images/centreStop.png")));
+              "src/images/centreStop.png")));
           centreStop.setBounds(41, 62, 27, 26);
           buttonUtil.setAccessibleString(centreStop, "Stop");
           centreStop.addSelectionListener(new SelectionAdapter() {
@@ -209,7 +199,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           right = new Button(Movement, SWT.PUSH | SWT.CENTER);
           right.setImage(new Image(null, new FileInputStream(
-                  "src/images/right.png")));
+              "src/images/right.png")));
           right.setBounds(66, 59, 28, 30);
           buttonUtil.setAccessibleString(right, "Right Arrow");
           right.addSelectionListener(new SelectionAdapter() {
@@ -222,7 +212,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           downLeft = new Button(Movement, SWT.PUSH | SWT.CENTER);
           downLeft.setImage(new Image(null, new FileInputStream(
-                  "src/images/downLeft.png")));
+              "src/images/downLeft.png")));
           downLeft.setBounds(18, 84, 24, 28);
           buttonUtil.setAccessibleString(downLeft, "Down Left Arrow");
           downLeft.addSelectionListener(new SelectionAdapter() {
@@ -235,7 +225,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           down = new Button(Movement, SWT.PUSH | SWT.CENTER);
           down.setImage(new Image(null, new FileInputStream(
-                  "src/images/down.png")));
+              "src/images/down.png")));
           down.setBounds(43, 87, 25, 24);
           buttonUtil.setAccessibleString(down, "Down Arrow");
           down.addSelectionListener(new SelectionAdapter() {
@@ -248,10 +238,9 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           downRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
           downRight.setImage(new Image(null, new FileInputStream(
-                  "src/images/downRight.png")));
+              "src/images/downRight.png")));
           downRight.setBounds(68, 86, 25, 26);
-          buttonUtil.setAccessibleString(downRight,
-                  "Down Right Arrow");
+          buttonUtil.setAccessibleString(downRight, "Down Right Arrow");
           downRight.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -259,41 +248,40 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
             }
           });
         }
-//				{
-//					T1 = new Button(Movement, SWT.PUSH | SWT.CENTER);
-//					T1.setImage(new Image(null, new FileInputStream(
-//							"src/images/T1.png")));
-//					T1.setBounds(30, 125, 24, 24);
-//					buttonUtil.setAccessibleString(T1, "T1");
-//					T1.addSelectionListener(new SelectionAdapter() {
-//						public void widgetSelected(SelectionEvent evt) {
-//							
-//						}
-//					});
-//				}
-//				{
-//					T2 = new Button(Movement, SWT.PUSH | SWT.CENTER);
-//					T2.setImage(new Image(null, new FileInputStream(
-//							"src/images/T2.png")));
-//					T2.setBounds(55, 124, 25, 24);
-//					buttonUtil.setAccessibleString(T2, "T2");
-//					T2.addSelectionListener(new SelectionAdapter() {
-//						public void widgetSelected(SelectionEvent evt) {
-//							
-//						}
-//					});
-//				}
+        // {
+        // T1 = new Button(Movement, SWT.PUSH | SWT.CENTER);
+        // T1.setImage(new Image(null, new FileInputStream(
+        // "src/images/T1.png")));
+        // T1.setBounds(30, 125, 24, 24);
+        // buttonUtil.setAccessibleString(T1, "T1");
+        // T1.addSelectionListener(new SelectionAdapter() {
+        // public void widgetSelected(SelectionEvent evt) {
+        //
+        // }
+        // });
+        // }
+        // {
+        // T2 = new Button(Movement, SWT.PUSH | SWT.CENTER);
+        // T2.setImage(new Image(null, new FileInputStream(
+        // "src/images/T2.png")));
+        // T2.setBounds(55, 124, 25, 24);
+        // buttonUtil.setAccessibleString(T2, "T2");
+        // T2.addSelectionListener(new SelectionAdapter() {
+        // public void widgetSelected(SelectionEvent evt) {
+        //
+        // }
+        // });
+        // }
       }
       {
         driveMode = new Group(this, SWT.NONE);
         driveMode.setText("Drive Mode");
-        driveMode.setBounds(142, 266, 115, 84); //(142, 266,
+        driveMode.setBounds(142, 266, 115, 84); // (142, 266,
         {
           leftRight = new Button(driveMode, SWT.RADIO | SWT.LEFT);
           leftRight.setText("Left-Right");
           leftRight.setBounds(12, 21, 73, 30);
-          buttonUtil.setAccessibleString(leftRight,
-                  "Left Right Drive Mode");
+          buttonUtil.setAccessibleString(leftRight, "Left Right Drive Mode");
           leftRight.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -325,13 +313,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           none = new Button(controlSelection, SWT.RADIO | SWT.LEFT);
           none.setText("None");
           none.setBounds(12, 21, 73, 30);
-          buttonUtil.setAccessibleString(none,
-                  "Disable external controls");
+          buttonUtil.setAccessibleString(none, "Disable external controls");
           none.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              //TODO: add method to kill wii and xbox objects
-              //kill xbox thread
+              // TODO: add method to kill wii and xbox objects
+              // kill xbox thread
               try {
                 wiiMain.killWiiThreads();
                 wiiMain = null;
@@ -345,19 +332,18 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           xbox = new Button(controlSelection, SWT.RADIO | SWT.LEFT);
           xbox.setText("xBox");
           xbox.setBounds(12, 44, 73, 30);
-          buttonUtil.setAccessibleString(leftRight,
-                  "Left Right Drive Mode");
+          buttonUtil.setAccessibleString(leftRight, "Left Right Drive Mode");
           xbox.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              //TODO: start xbox drivers here - NEEDS TESTING
+              // TODO: start xbox drivers here - NEEDS TESTING
               connectJoypad();
               try {
                 wiiMain.killWiiThreads();
                 wiiMain = null;
                 thread = null;
               } catch (NullPointerException e) {
-                //do nothing
+                // do nothing
               }
 
               thread = new Thread(pollController);
@@ -375,13 +361,13 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           wii.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              //TODO: start wii drivers here
-//							try{
-//							thread.destroy();
+              // TODO: start wii drivers here
+              // try{
+              // thread.destroy();
               thread = null;
-//							} catch(NullPointerException e){
-//								//do nothing
-//							}
+              // } catch(NullPointerException e){
+              // //do nothing
+              // }
               if (wiiMain == null) {
                 wiiMain = new WiiMain(nxt);
                 thread = new Thread(wiiMain);
@@ -435,12 +421,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           });
         }
         {
-          leftMotor_Reversed = new Button(leftMotor, SWT.CHECK
-                  | SWT.LEFT);
+          leftMotor_Reversed = new Button(leftMotor, SWT.CHECK | SWT.LEFT);
           leftMotor_Reversed.setText("Reversed");
           leftMotor_Reversed.setBounds(12, 48, 80, 20);
           buttonUtil.setAccessibleString(leftMotor_Reversed,
-                  "Left Motor Reversed");
+              "Left Motor Reversed");
           leftMotor_Reversed.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -456,13 +441,12 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       {
         rightMotor = new Group(this, SWT.NONE);
         rightMotor.setText("Right Motor");
-        rightMotor.setBounds(141, 176, 115, 74);//(141, 176,
+        rightMotor.setBounds(141, 176, 115, 74);// (141, 176,
         {
           rightMotor_A = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
           rightMotor_A.setText("A");
           rightMotor_A.setBounds(12, 20, 27, 23);
-          buttonUtil.setAccessibleString(rightMotor_A,
-                  "Right Motor A");
+          buttonUtil.setAccessibleString(rightMotor_A, "Right Motor A");
           rightMotor_A.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -475,8 +459,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           rightMotor_B.setText("B");
           rightMotor_B.setBounds(48, 20, 26, 23);
           rightMotor_B.setSelection(true);
-          buttonUtil.setAccessibleString(rightMotor_B,
-                  "Right Motor B");
+          buttonUtil.setAccessibleString(rightMotor_B, "Right Motor B");
           rightMotor_B.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -488,8 +471,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           rightMotor_C = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
           rightMotor_C.setText("C");
           rightMotor_C.setBounds(82, 19, 24, 23);
-          buttonUtil.setAccessibleString(rightMotor_C,
-                  "Right Motor C");
+          buttonUtil.setAccessibleString(rightMotor_C, "Right Motor C");
           rightMotor_C.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -498,12 +480,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           });
         }
         {
-          rightMotor_Reversed = new Button(rightMotor, SWT.CHECK
-                  | SWT.LEFT);
+          rightMotor_Reversed = new Button(rightMotor, SWT.CHECK | SWT.LEFT);
           rightMotor_Reversed.setText("Reversed");
           rightMotor_Reversed.setBounds(12, 45, 70, 24);
           buttonUtil.setAccessibleString(rightMotor_Reversed,
-                  "Right Motor Reversed");
+              "Right Motor Reversed");
           rightMotor_Reversed.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
@@ -561,7 +542,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       buttonArray.add(T2);
       buttonArray.add(help);
 
-
       FormLayout thisLayout = new FormLayout();
 
       this.layout();
@@ -571,30 +551,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     }
   }
 
-  private static void connectNXT() {
-
-    String brickname = "brick2";
-    try {
-      nxt = NXTManager.connect(brickname, FindBrickFileIO.getCT());
-      nxt.playTone(2000, 300);
-      System.out.println("Joystick: Brick Connected!");
-      nxt.playTone(3000, 300);
-    } catch (AlreadyConnectedException e) {
-      // TODO Auto-generated catch block
-      //e.printStackTrace();
-      System.out.println("Joystick already Connected");
-      try {
-        nxt = NXTManager.getBrick(brickname);
-        nxt.playTone(2000, 300);
-        System.out.println("Joystick: Brick Connected!");
-      } catch (NXTNotFoundException e1) {
-        // TODO Auto-generated catch block
-        //e1.printStackTrace();
-        System.out.println("Could not find brick");
-      }
-    } 
-  }
-
   private static void connectJoypad() {
     try {
       gpc = new GamePadController();
@@ -602,6 +558,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       gpc = null;
     }
   }
+
   static GamePadController gpc;
   static AbstractNXTBrick nxt;
   static Motor Motor_1_ID = Motor.MOTOR_A;
@@ -621,8 +578,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       while (true) {
         playSound = !playSound;
         curDir = gpc.getXYStickDir();
-        if (((curDir == 7) || (curDir == 8) || (curDir == 6))
-                && playSound) {
+        if (((curDir == 7) || (curDir == 8) || (curDir == 6)) && playSound) {
           nxt.playTone(1500, 600);
         }
 
@@ -639,7 +595,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     public void run() {
       int rotateSubtractor = 15;
       int spinSubtractor = 25;
-
 
       while (true) {
         if (gpc != null) {
@@ -669,56 +624,62 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
 
         if (joypadValue == 1) {
-          //up
+          // up
 
           nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
         }
 
         if (joypadValue == 0) {
-          //ul
+          // ul
           nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, (motorSpeed - rotateSubtractor) * Motor_2_DIR);
         }
 
         if (joypadValue == 2) {
-          //ur
+          // ur
           nxt.motorOn(Motor_1_ID, (motorSpeed - rotateSubtractor) * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
         }
 
         if (joypadValue == 7) {
-          //down
+          // down
           nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, -1 * motorSpeed * Motor_2_DIR);
         }
 
         if (joypadValue == 3) {
-          //left
-          nxt.motorOn(Motor_1_ID, 1 * (motorSpeed - spinSubtractor) * Motor_1_DIR);
-          nxt.motorOn(Motor_2_ID, -1 * (motorSpeed - spinSubtractor) * Motor_2_DIR);
+          // left
+          nxt.motorOn(Motor_1_ID, 1 * (motorSpeed - spinSubtractor)
+              * Motor_1_DIR);
+          nxt.motorOn(Motor_2_ID, -1 * (motorSpeed - spinSubtractor)
+              * Motor_2_DIR);
         }
 
         if (joypadValue == 5) {
-          //right
-          nxt.motorOn(Motor_1_ID, -1 * (motorSpeed - spinSubtractor) * Motor_1_DIR);
-          nxt.motorOn(Motor_2_ID, 1 * (motorSpeed - spinSubtractor) * Motor_2_DIR);
+          // right
+          nxt.motorOn(Motor_1_ID, -1 * (motorSpeed - spinSubtractor)
+              * Motor_1_DIR);
+          nxt.motorOn(Motor_2_ID, 1 * (motorSpeed - spinSubtractor)
+              * Motor_2_DIR);
         }
 
         if (joypadValue == 6) {
-          //ll
+          // ll
           nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
-          nxt.motorOn(Motor_2_ID, -1 * (motorSpeed - rotateSubtractor) * Motor_2_DIR);
+          nxt.motorOn(Motor_2_ID, -1 * (motorSpeed - rotateSubtractor)
+              * Motor_2_DIR);
         }
 
         if (joypadValue == 8) {
-          //lr
-          nxt.motorOn(Motor_1_ID, -1 * (motorSpeed - rotateSubtractor) * Motor_1_DIR);
+          // lr
+          nxt.motorOn(Motor_1_ID, -1 * (motorSpeed - rotateSubtractor)
+              * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, -1 * motorSpeed * Motor_2_DIR);
         }
 
         if (joypadValue == 4) {
-          //idle
+          // idle
           nxt.motorOff(Motor_1_ID);
           nxt.motorOff(Motor_2_ID);
         }
@@ -735,41 +696,39 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
             nxt.playTone(2000, 200);
           }
 
-          //Speed up
+          // Speed up
           if (gpc.isButtonPressed(4)) {
             motorSpeed += 10;
             if (motorSpeed > 100) {
               motorSpeed = 100;
             }
-            display.syncExec(
-                    new Runnable() {
+            display.syncExec(new Runnable() {
 
-                      public void run() {
-                        speedBar.setSelection(motorSpeed);
-                      }
-                    });
+              public void run() {
+                speedBar.setSelection(motorSpeed);
+              }
+            });
             System.out.println(motorSpeed);
           }
 
-          //Slow Down
+          // Slow Down
           if (gpc.isButtonPressed(3)) {
             motorSpeed -= 10;
             if (motorSpeed < 60) {
               motorSpeed = 60;
             }
-            display.syncExec(
-                    new Runnable() {
+            display.syncExec(new Runnable() {
 
-                      public void run() {
-                        speedBar.setSelection(motorSpeed);
-                      }
-                    });
+              public void run() {
+                speedBar.setSelection(motorSpeed);
+              }
+            });
             System.out.println(motorSpeed);
           }
 
         }
 
-        //poll every 200ms
+        // poll every 200ms
         try {
           Thread.sleep(200);
         } catch (InterruptedException e) {

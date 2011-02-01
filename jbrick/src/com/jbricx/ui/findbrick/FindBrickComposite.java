@@ -5,15 +5,13 @@ package com.jbricx.ui.findbrick;
  * @author Priya Sankaran
  * 
  */
-import com.jbricx.communications.AbstractNXTBrick;
-import javax.swing.JOptionPane;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -21,11 +19,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.NXTManager;
+import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXT.ConnectionType;
-import com.jbricx.communications.exceptions.AlreadyConnectedException;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickButtonUtil;
-import org.eclipse.swt.widgets.Composite;
 
 @SuppressWarnings("unused")
 public class FindBrickComposite extends Composite {
@@ -51,14 +48,15 @@ public class FindBrickComposite extends Composite {
   }
 
   /**
-   * Overriding checkSubclass allows this class to extend org.eclipse.swt.widgets.Composite
+   * Overriding checkSubclass allows this class to extend
+   * org.eclipse.swt.widgets.Composite
    */
   protected void checkSubclass() {
   }
 
   /**
-   * Auto-generated method to display this
-   * org.eclipse.swt.widgets.Composite inside a new Shell.
+   * Auto-generated method to display this org.eclipse.swt.widgets.Composite
+   * inside a new Shell.
    */
   public static void showGUI() {
     Shell shell;
@@ -101,10 +99,12 @@ public class FindBrickComposite extends Composite {
       info.setBounds(3, 15, 340, 60);
 
       info.setText("To connect to the brick, select the communication method and click 'Connect'.  "
-              + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
-      buttonUtil.setAccessibleString(info, "To connect to the brick, select the communication method and click 'Connect'.  "
-              + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
-
+          + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
+      buttonUtil
+          .setAccessibleString(
+              info,
+              "To connect to the brick, select the communication method and click 'Connect'.  "
+                  + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
 
       rightMotor = new Group(this, SWT.NONE);
       rightMotor.setText("Connection Type");
@@ -162,7 +162,8 @@ public class FindBrickComposite extends Composite {
         public void handleEvent(Event event) {
           System.out.println("Cancel Button selected");
           /*
-           * dispose works when only launching this gui, but does not work whne launching everything else
+           * dispose works when only launching this gui, but does not work whne
+           * launching everything else
            */
         }
       });
@@ -176,21 +177,19 @@ public class FindBrickComposite extends Composite {
 
         public void handleEvent(Event event) {
           System.out.println("Attempting To Connect");
-          AbstractNXTBrick nxtBrick;
-          try {
-            if (bluetooth.getSelection()) {
-              System.out.println("BT");
-              nxtBrick = NXTManager.connect("brick1", ConnectionType.BLUETOOTH);
-            } else {
-              System.out.println("USB");
-
-              nxtBrick = NXTManager.connect("brick1", ConnectionType.USB);
-              boolean isConnected = nxtBrick.isConnected();
-              NXTManager.notifyAllObservers(isConnected);
-            }
-          } catch (AlreadyConnectedException e) {
-            JOptionPane.showMessageDialog(null, "Already Connected to the brick...");
-            //e.printStackTrace();
+          AbstractNXTBrick nxtManager = NXTManager.getInstance();
+          
+          if (bluetooth.getSelection()) {
+            System.out.println("BT");
+            
+            
+              nxtManager.connect(FindBrickFileIO.getCT());
+            
+          } else {
+            System.out.println("USB");
+              nxtManager.connect(FindBrickFileIO.getCT());
+                        
+            nxtManager.notifyAllObservers(nxtManager.isConnected());
           }
         }
       });

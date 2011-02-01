@@ -1,8 +1,10 @@
 package com.jbricx.actions;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import com.jbricx.ui.piano.PianoUIWindow;
 
 /**
@@ -15,7 +17,8 @@ public class PianoAction extends AbstractAction implements NXTObserver {
    * PreferencesAction constructor
    */
   public PianoAction(JBrickManager manager) {
-    super("&Piano@Ctrl+Alt+D", ImageDescriptor.createFromFile(PianoAction.class, "/images/piano_icon.png"), manager);
+    super("&Piano@Ctrl+Alt+D", ImageDescriptor.createFromFile(
+        PianoAction.class, "/images/piano_icon.png"), manager);
     setToolTipText("Piano");
   }
 
@@ -26,6 +29,9 @@ public class PianoAction extends AbstractAction implements NXTObserver {
   public void run() {
     PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
     piano.setBlockOnOpen(true);
+    NXTManager nxtManager = NXTManager.getInstance();
+    nxtManager.register(piano);
+
     piano.open();
   }
 

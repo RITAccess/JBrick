@@ -7,6 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Position;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -17,7 +18,6 @@ import com.jbricx.communications.ExitStatus;
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.tabs.JBrickTabItem;
-import org.eclipse.swt.widgets.MessageBox;
 
 /**
  * This class shows an About box

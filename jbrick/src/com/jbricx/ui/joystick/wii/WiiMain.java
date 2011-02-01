@@ -1,17 +1,7 @@
 package com.jbricx.ui.joystick.wii;
 
-import java.io.IOException;
-
 import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.NXT;
-import com.jbricx.communications.NXTManager;
-import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
-import com.jbricx.communications.exceptions.AlreadyConnectedException;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.NotConnectedException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 /**
  * @author Mike Goldstein
  */

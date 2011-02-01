@@ -1,8 +1,8 @@
 package com.jbricx.actions;
 
-import com.jbricx.ui.JBrickManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.controller.ControllerUIWindow;
 
 /**

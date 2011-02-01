@@ -1,7 +1,6 @@
 package com.jbricx.ui.piano;
 
 import java.util.ArrayList;
-import com.jbricx.ui.piano.PianoNote;
 
 public class PianoRecording {
 	private ArrayList<PianoNote> notes;

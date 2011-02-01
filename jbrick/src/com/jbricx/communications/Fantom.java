@@ -1,10 +1,9 @@
 package com.jbricx.communications;
+import java.nio.Buffer;
+
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.ByteByReference;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
-import java.nio.Buffer;
 
 /**
  * Provides access to the Lego Mindstorm Fantom Library

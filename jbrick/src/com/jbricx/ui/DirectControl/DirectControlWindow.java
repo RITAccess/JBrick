@@ -4,18 +4,29 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.*;
-import com.jbricx.communications.NXT.*;
-import com.jbricx.communications.exceptions.AlreadyConnectedException;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.communications.AbstractNXTBrick;
+import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXT.Sensor;
+import com.jbricx.communications.NXT.SensorMode;
+import com.jbricx.communications.NXT.SensorType;
 import com.jbricx.ui.JBrickButtonUtil;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 
 /**
  * 
@@ -125,28 +136,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
 	private void initGUI() {
 		String brickname = "brick2";
-		try {
-
-			nxt = NXTManager.connect(brickname, FindBrickFileIO.getCT());
-
-			nxt.playTone(2000, 300);
-			System.out.println("Joystick: Brick Connected!");
-			nxt.playTone(3000, 300);
-		} catch (AlreadyConnectedException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			System.out.println("Joystick already Connected");
-			try {
-				nxt = NXTManager.getBrick(brickname);
-				nxt.playTone(2000, 300);
-				System.out.println("Joystick: Brick Connected!");
-			} catch (NXTNotFoundException e1) {
-				// TODO Auto-generated catch block
-				//e1.printStackTrace();
-				System.out.println("Could not find brick DirectControlWindow line 151");
-			}
-		} 
-
+		
 		try {
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);

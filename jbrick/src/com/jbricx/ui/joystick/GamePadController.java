@@ -21,9 +21,11 @@ together in an array.
 
 The rumbler can be switched on/off, and its current status retrieved.
  */
-import java.io.*;
-import net.java.games.input.*;
+import net.java.games.input.Component;
 import net.java.games.input.Component.POV;
+import net.java.games.input.Controller;
+import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.Rumbler;
 
 public class GamePadController {
 

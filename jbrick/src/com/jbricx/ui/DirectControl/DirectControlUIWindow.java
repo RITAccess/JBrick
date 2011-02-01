@@ -3,12 +3,13 @@ package com.jbricx.ui.DirectControl;
 /**
  * @author Abhishek Shrestha
  */
-import com.jbricx.ui.controller.*;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+
+import com.jbricx.ui.controller.ControllerComposite;
 
 public class DirectControlUIWindow extends TrayDialog {
 

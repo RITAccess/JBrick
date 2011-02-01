@@ -1,11 +1,14 @@
 package com.jbricx.source;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class SyntaxConstants {
 	public static ArrayList<String> CONSTANTS ;

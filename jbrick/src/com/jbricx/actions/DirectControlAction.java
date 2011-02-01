@@ -1,9 +1,10 @@
 package com.jbricx.actions;
 
-import com.jbricx.communications.NXTObserver;
-import com.jbricx.ui.DirectControl.DirectControlUIWindow;
-import com.jbricx.ui.JBrickManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+
+import com.jbricx.communications.NXTObserver;
+import com.jbricx.ui.JBrickManager;
+import com.jbricx.ui.DirectControl.DirectControlUIWindow;
 
 /**
  * This action opens the DirectControl window

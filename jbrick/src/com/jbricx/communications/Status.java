@@ -1,7 +1,8 @@
 package com.jbricx.communications;
-import com.sun.jna.Structure;
 import java.util.EnumSet;
 import java.util.HashMap;
+
+import com.sun.jna.Structure;
 
 /**
  *
