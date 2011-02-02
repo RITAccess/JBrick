@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import com.jbricx.pjo.ActionControlClass;
+
 public class savingPianoNotesFile {
 	
 	public void receivingNotes(ArrayList<PianoNote> noteList){
@@ -27,6 +29,8 @@ public class savingPianoNotesFile {
 						
 					p.println(closing);
 					p.close();
+					
+			
 					
 					}catch (Exception e)
 					{
