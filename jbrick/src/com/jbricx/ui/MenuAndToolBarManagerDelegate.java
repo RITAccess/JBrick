@@ -53,7 +53,7 @@ import com.jbricx.communications.NXTManager;
 public class MenuAndToolBarManagerDelegate {
 
   private AboutAction aboutAction;
-  private HelpContentAction helpContentAction = new HelpContentAction();
+  private HelpContentAction helpContentAction;
   private CopyAction copyAction;
   private CutAction cutAction;
   private SelectAllAction selectAllAction;
@@ -101,7 +101,7 @@ public class MenuAndToolBarManagerDelegate {
     downloadAction = new DownloadAction(manager);
     compileAction = new CompileAction(manager);
     methodTemplateAction = new MethodTemplateAction(manager);
-
+    helpContentAction = new HelpContentAction(manager);
     findBrickAction = new FindBrickAction(manager);
     joystickAction = new JoyStickAction(manager);
     pianoAction = new PianoAction(manager);
