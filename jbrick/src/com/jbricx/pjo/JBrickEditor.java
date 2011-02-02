@@ -10,6 +10,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTManager;
 import com.jbricx.source.ColorManager.ColorFor;
 import com.jbricx.ui.MainWindow;
 
@@ -27,6 +28,7 @@ public class JBrickEditor {
   protected void run() {
     MainWindow mainWindow = new MainWindow(setDefaults());
     mainWindow.run();
+    NXTManager.getInstance().s
   }
 
   /**

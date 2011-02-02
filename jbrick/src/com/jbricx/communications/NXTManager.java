@@ -60,8 +60,7 @@ public class NXTManager extends AbstractNXTBrick {
   public AbstractNXTBrick connect(ConnectionType type) {
     try {
       nxt = new NXT(type.getName());
-
-      playTone(2000, 200);
+      //playTone(2000, 200);
 
       notifyAllObservers(nxt.isConnected());
       if (!connectedRunnable.isAlive()) {
@@ -316,5 +315,9 @@ public class NXTManager extends AbstractNXTBrick {
   @Override
   public int getConvertedSensorData(Sensor name) {
     return nxt.getConvertedSensorData(name.getName(), name.getMode());
+  }
+  
+  public void stopPolling(){
+    running = false; 
   }
 }
