@@ -53,7 +53,7 @@ import com.jbricx.communications.NXTManager;
 public class MenuAndToolBarManagerDelegate {
 
   private AboutAction aboutAction;
-  private HelpContentAction helpContentAction;
+  private HelpContentAction helpContentAction = new HelpContentAction();
   private CopyAction copyAction;
   private CutAction cutAction;
   private SelectAllAction selectAllAction;
@@ -79,8 +79,6 @@ public class MenuAndToolBarManagerDelegate {
   private MethodTemplateAction methodTemplateAction;
 
   public MenuAndToolBarManagerDelegate(final JBrickManager manager) {
-    //PersistentDocument doc = manager.getTabFolder().getSelection().getDocument();
-
     copyAction = new CopyAction(manager);
     cutAction = new CutAction(manager);
     selectAllAction = new SelectAllAction(manager);
@@ -101,7 +99,6 @@ public class MenuAndToolBarManagerDelegate {
     downloadAction = new DownloadAction(manager);
     compileAction = new CompileAction(manager);
     methodTemplateAction = new MethodTemplateAction(manager);
-    helpContentAction = new HelpContentAction(manager);
     findBrickAction = new FindBrickAction(manager);
     joystickAction = new JoyStickAction(manager);
     pianoAction = new PianoAction(manager);

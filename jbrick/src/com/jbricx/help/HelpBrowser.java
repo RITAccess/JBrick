@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -26,37 +24,31 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolBar;
 
-public class HelpBrowser extends TrayDialog {
+public class HelpBrowser extends ApplicationWindow {
 
 	private Browser browser;
 	private ArrayList<String> urls = new ArrayList<String>();
-	private String[] titles;
-	private int index;
 	private int x = 0;
 	private boolean flag = false;
+	private Label labelStatus;
+	private Text textLocation;
+	private CustomTree tree;
 
-	Label labelStatus;
-	Text textLocation;
-  private final Shell shell;
-
-	static Vector nodes = new Vector();
 	
 
-	public HelpBrowser(final Shell parentShell) {
-		super(parentShell);
-		this.shell = parentShell;
-		buildUrls();
+	public HelpBrowser() {
+		super(Display.getCurrent().getActiveShell());
+		addToolBar(0);
 	}
 
-
-	ArrayList urlList = new ArrayList();
+	ArrayList<String> urlList = new ArrayList<String>();
 
 	@SuppressWarnings("deprecation")
 	private void buildUrls() {
@@ -66,7 +58,7 @@ public class HelpBrowser extends TrayDialog {
 		if (!flag) {
 			urls.add("www.google.com");
 			urlList.add("www.google.com");
-			DirectoryDialog dialog = new DirectoryDialog(this.shell);
+			DirectoryDialog dialog = new DirectoryDialog(getShell());
 			// String folder =
 			// "C:\\Users\\spencer\\workspace\\jbrick\\help\\html";//dialog.open();
 			String folder = "help\\html";// dialog.open();
@@ -80,8 +72,6 @@ public class HelpBrowser extends TrayDialog {
 				}
 			});
 
-			titles = new String[files.length];
-			index = 0;
 			for (int i = 0; i < files.length; i++) {
 				try {
 					String url = files[i].toURL().toString();
@@ -94,20 +84,78 @@ public class HelpBrowser extends TrayDialog {
 		}
 	}
 
-	public void show() {
+	@Override
+	protected ToolBarManager createToolBarManager(int style) {
+	  final ToolBarManager manager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+	  // Adds tool bar items using actions.
+    final Action actionBackward = new Action("&Back", ImageDescriptor
+        .createFromFile(HelpBrowser.class, "/images/go-previous.png")) {
+      public void run() {
+        browser.back();
+      }
+    };
+    actionBackward.setEnabled(true); // action is disabled at start up.
 
-		this.shell.setText("Jbricx Help Browser");
-		this.shell.setLayout(new GridLayout());
+    final Action actionForward = new Action("&Forward", ImageDescriptor
+        .createFromFile(HelpBrowser.class, "/images/go-next.png")) {
+      public void run() {
+        browser.forward();
+      }
+    };
+    actionForward.setEnabled(true); // action is disabled at start up.
 
-		ToolBar toolBar = new ToolBar(this.shell, SWT.FLAT | SWT.RIGHT);
-		final ToolBarManager manager = new ToolBarManager(toolBar);
+    
+    
+    Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
+      HelpBrowser.class, "/images/process-stop.png")) {
+      public void run() {
+        browser.setUrl("");
+        x = 1;
+        // browser.stop();
+      }
+    };
 
-		Composite compTools = new Composite(this.shell, SWT.NONE);
+    Action actionRefresh = new Action("&Refresh", ImageDescriptor
+        .createFromFile(HelpBrowser.class, "/images/view-refresh.png")) {
+      public void run() {
+        if (x==1){
+            browser.back();
+        }else{
+            browser.refresh();  
+           }
+      }
+    };
+
+    Action actionHome = new Action("&Home", ImageDescriptor.createFromFile(
+        HelpBrowser.class, "/images/go-home.png")) {
+      public void run() {
+        browser.setUrl(tree.getHome());
+      }
+    };
+
+    manager.add(actionBackward);
+    manager.add(actionForward);
+    manager.add(actionStop);
+    manager.add(actionRefresh);
+    manager.add(actionHome);
+    manager.update(true);
+	  
+	  return manager;
+	}
+
+	@Override
+	protected Control createContents(final Composite parent) {
+	  buildUrls();
+	  getShell().setText("Jbricx Help Browser");
+	  getShell().setLayout(new GridLayout());
+
+
+		Composite compTools = new Composite(parent, SWT.NONE);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		compTools.setLayoutData(data);
 		compTools.setLayout(new GridLayout(2, false));
 
-		Composite compWin = new Composite(this.shell, SWT.NONE);
+		Composite compWin = new Composite(compTools, SWT.NONE);
 		data = new GridData(GridData.FILL_BOTH);
 
 		compWin.setLayoutData(data);
@@ -116,26 +164,10 @@ public class HelpBrowser extends TrayDialog {
 
 		form.setLayout(new FillLayout());
 
-		// final List list = new List(form,SWT.SIMPLE);
-
-		// list.setSize(300, SWT.FILL);
-		// for (String s: urls){
-		// list.add(s);
-		// }
-
-		final CustomTree tree = new CustomTree(form, this);
+		tree = new CustomTree(form, this);
 		browser = new Browser(form, SWT.NONE);
 
-		// list.addListener(SWT.Selection, new Listener(){
-		// @Override
-		// public void handleEvent(Event arg0) {
-		// int index = list.getSelectionIndex();
-		// browser.setUrl(urls.get(index));
-		//				
-		// }
-		// });
-
-		Composite compositeStatus = new Composite(this.shell, SWT.NULL);
+		Composite compositeStatus = new Composite(parent, SWT.NULL);
 		compositeStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		compositeStatus.setLayout(new GridLayout(2, false));
 
@@ -143,100 +175,42 @@ public class HelpBrowser extends TrayDialog {
 		labelStatus.setText("Ready");
 		labelStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final ProgressBar progressBar = new ProgressBar(compositeStatus,
-				SWT.SMOOTH);
+		final ProgressBar progressBar = new ProgressBar(compositeStatus, SWT.SMOOTH);
 
-		// Adds tool bar items using actions.
-		final Action actionBackward = new Action("&Back", ImageDescriptor
-				.createFromFile(HelpBrowser.class, "/images/go-previous.png")) {
-			public void run() {
-				browser.back();
-			}
-		};
-		actionBackward.setEnabled(true); // action is disabled at start up.
 
-		final Action actionForward = new Action("&Forward", ImageDescriptor
-				.createFromFile(HelpBrowser.class, "/images/go-next.png")) {
-			public void run() {
-				browser.forward();
-			}
-		};
-		actionForward.setEnabled(true); // action is disabled at start up.
+    browser.addProgressListener(new ProgressListener() {
+      public void changed(ProgressEvent event) {
+        progressBar.setMaximum(event.total);
+        progressBar.setSelection(event.current);
+      }
 
-		
-		
-		Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
-			HelpBrowser.class, "/images/process-stop.png")) {
-			public void run() {
-				browser.setUrl("");
-				x = 1;
-				// browser.stop();
-			}
-		};
+      public void completed(ProgressEvent event) {
+        progressBar.setSelection(0);
+      }
+    });
 
-		Action actionRefresh = new Action("&Refresh", ImageDescriptor
-				.createFromFile(HelpBrowser.class, "/images/view-refresh.png")) {
-			public void run() {
-				if (x==1){
-						browser.back();
-				}else{
-						browser.refresh();	
-					 }
-			}
-		};
+    browser.addStatusTextListener(new StatusTextListener() {
+      public void changed(StatusTextEvent event) {
+        labelStatus.setText(event.text);
+      }
+    });
 
-		Action actionHome = new Action("&Home", ImageDescriptor.createFromFile(
-				HelpBrowser.class, "/images/go-home.png")) {
-			public void run() {
-				browser.setUrl(tree.getHome());
-			}
-		};
+    browser.addTitleListener(new TitleListener() {
+      public void changed(TitleEvent event) {
+//        HelpBrowser.this.shell.setText(event.title + " - powered by SWT");
+      }
+    });
 
-		manager.add(actionBackward);
-		manager.add(actionForward);
-		manager.add(actionStop);
-		manager.add(actionRefresh);
-		manager.add(actionHome);
-		manager.update(true);
-		toolBar.pack();
+    browser.addOpenWindowListener(new OpenWindowListener() {
+      @Override
+      public void open(WindowEvent we) {
+        we.browser = browser;
+      }
+    });
 
-		browser.addProgressListener(new ProgressListener() {
-			public void changed(ProgressEvent event) {
-				progressBar.setMaximum(event.total);
-				progressBar.setSelection(event.current);
-			}
-
-			public void completed(ProgressEvent event) {
-				progressBar.setSelection(0);
-			}
-		});
-
-		browser.addStatusTextListener(new StatusTextListener() {
-			public void changed(StatusTextEvent event) {
-				labelStatus.setText(event.text);
-			}
-		});
-
-		browser.addTitleListener(new TitleListener() {
-			public void changed(TitleEvent event) {
-			  HelpBrowser.this.shell.setText(event.title + " - powered by SWT");
-			}
-		});
-
-		
-		browser.addOpenWindowListener(new OpenWindowListener() {
-			@Override
-			public void open(WindowEvent we) {
-				we.browser = browser;
-			}
-		});
-		form.setWeights(new int[] { 15, 85 });
-		this.shell.open();
-//		while (!this.shell.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-	    tree.clearNodes();
+    form.setWeights(new int[] { 15, 85 });
+    tree.clearNodes();
+	  return compTools;
 	}
 
 	public void setUrl(String url) {

@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
@@ -58,7 +57,6 @@ public class MainWindow extends ApplicationWindow implements
   private StatusTabItem statusTabItem;
   private FileExplorerTabItem explorer;
   public static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
-  private NXTManager nxtManager; 
   // The stored preferences
   private PreferenceStore prefs;
 
@@ -73,9 +71,6 @@ public class MainWindow extends ApplicationWindow implements
     addStatusLine();
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
-    
-    //nxtManager = NXTManager.getInstance();
-    //nxtManager.connect("jbrickDefault", FindBrickFileIO.getCT());
   }
 
   /**
