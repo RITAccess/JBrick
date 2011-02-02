@@ -6,7 +6,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.FileInputStream;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -40,9 +39,9 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXTManager;
-import com.jbricx.help.HelpBrowser;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -54,7 +53,7 @@ import com.jbricx.help.HelpBrowser;
  * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
-public class PianoComposite extends org.eclipse.swt.widgets.Composite {
+public class PianoComposite extends Composite {
 	
   private Label label1;
   private Label label11;
@@ -104,7 +103,6 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
   int noteLengthDiv = 4;
   int transposeMult = 3;
   int toneDuration = 1000;
-  
   
   private PianoRecording recording = new PianoRecording();
   
@@ -203,33 +201,12 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				try {
-						pianoClickedHelp(true, keyId, false);
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				// TODO Auto-generated method stub
-				
-				//java.net.URI uri = new java.net.URI( arg );
-                //desktop.browse( uri );
-
-				
-				//HelpBrowser br = new HelpBrowser();
-				//br.setUrl("www.google.com.pe");
+				help();
 			}
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				try {
-						pianoClickedHelp(true, keyId, false);
-					}catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				// TODO Auto-generated method stub
-				
+				help();
 			}
 			
 			@Override
@@ -576,6 +553,11 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
       e.printStackTrace();
     }
   }
+  /**
+   * Creates the help contents Window.
+   * This method is not implemented here to avoid dependencies.
+   */
+  protected void help() { }
 
   protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
 
@@ -963,14 +945,5 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
     }
 
   }
-  
-  protected void pianoClickedHelp(boolean whiteKeys, int keyId, boolean isDown) throws MalformedURLException {
-	  System.out.println("it is calling");
-	  //testURL_NewWindow test = new testURL_NewWindow();
-	  HelpBrowser hb =  new HelpBrowser();
-	  String url = "www.google.com";
-	  hb.setUrl(url);
-	}
-  
-  
+   
 }
