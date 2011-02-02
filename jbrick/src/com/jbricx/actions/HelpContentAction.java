@@ -1,14 +1,14 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.help.HelpBrowser;
+import com.jbricx.ui.JBrickManager;
 
-public class HelpContentAction extends Action {
+public class HelpContentAction extends AbstractAction {
 
-  public HelpContentAction() {
-    super("&Help Content@F1", ImageDescriptor.createFromFile(AboutAction.class, "/images/help-browser.png"));
+  public HelpContentAction(final JBrickManager manager) {
+    super("&Help Content@F1", ImageDescriptor.createFromFile(AboutAction.class, "/images/help-browser.png"), manager);
     setToolTipText("Help Content");
   }
 
@@ -16,7 +16,7 @@ public class HelpContentAction extends Action {
    * Shows an about box
    */
   public void run() {
-    HelpBrowser hb = new HelpBrowser();
+    HelpBrowser hb = new HelpBrowser(getManager().getShell());
     hb.show();
   }
 
