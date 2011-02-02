@@ -28,7 +28,7 @@ public class JBrickEditor {
   protected void run() {
     MainWindow mainWindow = new MainWindow(setDefaults());
     mainWindow.run();
-    NXTManager.getInstance().s
+    NXTManager.getInstance().stopPolling();
   }
 
   /**
