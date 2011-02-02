@@ -968,7 +968,8 @@ public class PianoComposite extends org.eclipse.swt.widgets.Composite {
 	  System.out.println("it is calling");
 	  //testURL_NewWindow test = new testURL_NewWindow();
 	  HelpBrowser hb =  new HelpBrowser();
-	  hb.show();
+	  String url = "www.google.com";
+	  hb.setUrl(url);
 	}
   
   
