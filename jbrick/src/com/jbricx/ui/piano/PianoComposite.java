@@ -106,6 +106,7 @@ public class PianoComposite extends Composite {
   
   private PianoRecording recording = new PianoRecording();
   
+  private HelpContentAction helpAction = new HelpContentAction();
   
   private KeyListener pianoKeyListener = new KeyListener() {
 
@@ -200,9 +201,7 @@ public class PianoComposite extends Composite {
             //java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
 
 			@Override
-			public void mouseUp(MouseEvent arg0) {
-				help();
-			}
+			public void mouseUp(MouseEvent arg0) { }
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
@@ -210,10 +209,7 @@ public class PianoComposite extends Composite {
 			}
 			
 			@Override
-			public void mouseDoubleClick(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void mouseDoubleClick(MouseEvent arg0) { }
 		});
         
       }
@@ -554,10 +550,11 @@ public class PianoComposite extends Composite {
     }
   }
   /**
-   * Creates the help contents Window.
-   * This method is not implemented here to avoid dependencies.
+   * Invokes the help contents Window.
    */
-  protected void help() { }
+  protected void help() {
+    helpAction.run();
+  }
 
   protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
 
