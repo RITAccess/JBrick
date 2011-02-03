@@ -413,13 +413,13 @@ public class PianoComposite extends Composite {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				 recording.AddKey(toneToPlay1, noteLengthDiv);
+			   recording.AddKey(toneToPlay1, noteLengthDiv);
 			}
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				 recording.AddKey(toneToPlay1, noteLengthDiv);
+				
 			}
 			
 			@Override
