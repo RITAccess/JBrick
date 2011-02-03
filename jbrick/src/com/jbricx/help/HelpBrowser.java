@@ -208,7 +208,7 @@ public class HelpBrowser extends ApplicationWindow {
       }
     });
 
-    //form.setWeights(new int[] { 15, 85 });
+    form.setWeights(new int[] { 15, 85 });
     form.setSize(750, 500);
     tree.clearNodes();
 	  return compTools;
