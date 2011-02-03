@@ -11,7 +11,7 @@ public class savingPianoNotesFile {
 	public void receivingNotes(ArrayList<PianoNote> noteList){
 		
 		System.out.println("noteList.size():" + noteList.size());
-		String starting = "task main{";
+		String starting = "task main(){";
 		String closing = "}";
 				try{
 					FileOutputStream fileOut = new FileOutputStream("C://prueba.nxc");
