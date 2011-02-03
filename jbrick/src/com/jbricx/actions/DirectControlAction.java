@@ -17,6 +17,7 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
   public DirectControlAction(JBrickManager manager) {
     super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(AboutAction.class, "/images/direct_control.png"), manager);
     setToolTipText("Direct Control");
+    setEnabled(false);
   }
 
   /**

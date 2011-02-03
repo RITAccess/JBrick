@@ -18,6 +18,7 @@ public class JoyStickAction extends AbstractAction implements NXTObserver {
   public JoyStickAction(JBrickManager manager) {
     super("&JoyStick@Ctrl+Shift+D", ImageDescriptor.createFromFile(JoyStickAction.class, "/images/joystick_icon.png"), manager);
     setToolTipText("Joystick");
+    setEnabled(false);
   }
 
   /**

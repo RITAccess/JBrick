@@ -18,8 +18,9 @@ public class PianoAction extends AbstractAction implements NXTObserver {
    */
   public PianoAction(JBrickManager manager) {
     super("&Piano@Ctrl+Alt+D", ImageDescriptor.createFromFile(
-        PianoAction.class, "/images/piano_icon.png"), manager);
+        PianoAction.class, "/images/piano_icon.png"), manager);    
     setToolTipText("Piano");
+    setEnabled(false);
   }
 
   /**
@@ -27,7 +28,7 @@ public class PianoAction extends AbstractAction implements NXTObserver {
    */
   @Override
   public void run() {
-    PianoUIWindow piano = new PianoUIWindow(getManager());
+    PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
     piano.setBlockOnOpen(true);
     NXTManager nxtManager = NXTManager.getInstance();
     nxtManager.register(piano);
