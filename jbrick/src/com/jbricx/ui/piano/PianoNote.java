@@ -6,9 +6,11 @@ public class PianoNote {
 	private Integer duration;
 	private Integer noteTime = 40;
 	private Integer waitTime = 48;
-	PianoNote(Integer tone, Integer duration){
+	PianoNote(Integer tone, Integer duration, Integer noteTime, Integer waitTime){
 		this.tone = tone;
 		this.setDuration(duration);
+		this.noteTime = noteTime;
+		this.waitTime = waitTime;
 	}
 	public Integer getTone() {
 		return tone;

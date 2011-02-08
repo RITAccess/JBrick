@@ -8,8 +8,8 @@ public class PianoRecording {
 	PianoRecording(){
 		notes = new ArrayList<PianoNote>();
 	}
-	public void AddKey(Integer tone, Integer duration){
-		notes.add(new PianoNote(tone, duration));
+	public void AddKey(Integer tone, Integer duration, Integer noteTime, Integer waitTime){
+		notes.add(new PianoNote(tone, duration, noteTime, waitTime));
 	}
 	public void AddKey(PianoNote key){
 		notes.add(key);

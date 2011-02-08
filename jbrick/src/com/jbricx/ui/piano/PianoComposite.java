@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.AbstractNXTBrick;
@@ -57,6 +58,9 @@ public class PianoComposite extends Composite {
 	
   private Label label1;
   private Label label11;
+  private Label waitTimeLabel;
+  private Label noteLengthLabel;
+  private Text noteLength;
   private Button onebysixteen;
   private Label dash2;
   private Label dash1;
@@ -80,7 +84,7 @@ public class PianoComposite extends Composite {
   private Group language;
   private Button help;
   private List list22;
-  private Label waitTime;
+  private Text waitTime;
   private List list1;
   private Label noteTime;
   private Button save;
@@ -172,6 +176,46 @@ public class PianoComposite extends Composite {
 
   private void initGUI() {
     myPianoComp = this;
+    {
+    	waitTime = new Text(this, SWT.NONE);
+    	FormData waitTimeLData = new FormData();
+    	waitTimeLData.left =  new FormAttachment(0, 1000, 227);
+    	waitTimeLData.top =  new FormAttachment(0, 1000, 404);
+    	waitTimeLData.width = 24;
+    	waitTimeLData.height = 15;
+    	waitTime.setLayoutData(waitTimeLData);
+    	waitTime.setText("20");
+    }
+    {
+    	waitTimeLabel = new Label(this, SWT.NONE);
+    	FormData waitTimeLabelLData = new FormData();
+    	waitTimeLabelLData.left =  new FormAttachment(0, 1000, 164);
+    	waitTimeLabelLData.top =  new FormAttachment(0, 1000, 404);
+    	waitTimeLabelLData.width = 57;
+    	waitTimeLabelLData.height = 15;
+    	waitTimeLabel.setLayoutData(waitTimeLabelLData);
+    	waitTimeLabel.setText("Wait Time:");
+    }
+    {
+    	noteLengthLabel = new Label(this, SWT.NONE);
+    	FormData noteLengthLabelLData = new FormData();
+    	noteLengthLabelLData.left =  new FormAttachment(0, 1000, 62);
+    	noteLengthLabelLData.top =  new FormAttachment(0, 1000, 404);
+    	noteLengthLabelLData.width = 62;
+    	noteLengthLabelLData.height = 15;
+    	noteLengthLabel.setLayoutData(noteLengthLabelLData);
+    	noteLengthLabel.setText("Note Time:");
+    }
+    {
+    	noteLength = new Text(this, SWT.NONE);
+    	FormData noteLengthLData = new FormData();
+    	noteLengthLData.left =  new FormAttachment(0, 1000, 124);
+    	noteLengthLData.top =  new FormAttachment(0, 1000, 404);
+    	noteLengthLData.width = 28;
+    	noteLengthLData.height = 15;
+    	noteLength.setLayoutData(noteLengthLData);
+    	noteLength.setText("40");
+    }
 
       layoutComponents();
 
@@ -413,7 +457,7 @@ public class PianoComposite extends Composite {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-			   recording.AddKey(toneToPlay1, noteLengthDiv);
+			   recording.AddKey(toneToPlay1, noteLengthDiv, Integer.parseInt(noteLength.getText()), Integer.parseInt(waitTime.getText()));
 			}
 			
 			@Override
@@ -642,8 +686,10 @@ public class PianoComposite extends Composite {
       //int duration = (int) Math.round(toneDuration / noteLengthDiv); 
 
       System.out.println("Playing Tone: " + toneToPlay);
+      Integer noteDuration = Integer.parseInt(noteLength.getText());
+      Integer waitDuration = Integer.parseInt(waitTime.getText());
 
-      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv);
+      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv, noteDuration, waitDuration);
       recording.AddKey(note);
 
       if (USE_BRICK) {
@@ -815,6 +861,7 @@ public class PianoComposite extends Composite {
     }
     this.layout();
     pack();
+    this.setSize(1307, 453);
   }
 
   private void buildKeyLabels() {
