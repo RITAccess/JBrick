@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -43,6 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXTManager;
+import com.jbricx.pjo.FileExtensionConstants;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -176,6 +178,9 @@ public class PianoComposite extends Composite {
 
   private void initGUI() {
     myPianoComp = this;
+    display = Display.getDefault();
+    shell = new Shell(display);
+    
     {
     	waitTime = new Text(this, SWT.NONE);
     	FormData waitTimeLData = new FormData();
@@ -273,6 +278,8 @@ public class PianoComposite extends Composite {
 				// TODO Auto-generated method stub
 				savingPianoNotesFile spnf = new savingPianoNotesFile();
 				spnf.receivingNotes(recording.getNotes());
+				creatingSavingInterface();
+				
 			}
 			@Override
 			public void mouseDown(MouseEvent arg0) {
@@ -989,5 +996,17 @@ public class PianoComposite extends Composite {
     }
 
   }
+  
+  
+  public void creatingSavingInterface() {
+    String fileLocation = null;
+      //MainWindow.
+      //FileDialog dlg =  new FileDialog(shell);
+      FileDialog dlg = new FileDialog(shell, SWT.SAVE);
+      dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
+      dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
+      fileLocation = dlg.open();
+      System.out.println("fileLocation = " + fileLocation);
+    }
    
 }
