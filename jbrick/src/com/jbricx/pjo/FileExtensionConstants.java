@@ -20,5 +20,9 @@ public class FileExtensionConstants {
 	//Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
 	public static final String RECENTFILES = "recentfiles";
-	
+
+	// Tools names for preferences
+	public static final String BRICKTOOL = "brickTool";
+	public static final String NEXTTOOL = "nextTool";
+	public static final String NBCTOOL = "nbcTool";
 }
