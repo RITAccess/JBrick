@@ -835,15 +835,8 @@ public class PianoComposite extends Composite {
   }
   
   protected void playButtonPressed(){
-	  ArrayList<PianoNote> notes = recording.getNotes();
-	  for(PianoNote note : notes){
-		  nxt.playTone(note.getTone(), note.getNoteTime());
-		  try {
-			Thread.sleep(note.getWaitTime());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	  }
+	  PlayThread thread = new PlayThread();
+	  thread.start();
   }
   
   protected void unHighlightKey(boolean whiteKeys, int keyId) {
@@ -997,7 +990,6 @@ public class PianoComposite extends Composite {
 
   }
   
-  
   public void creatingSavingInterface() {
     String fileLocation = null;
       //MainWindow.
@@ -1009,4 +1001,22 @@ public class PianoComposite extends Composite {
       System.out.println("fileLocation = " + fileLocation);
     }
    
+  //Thread for playing back the recording, needs to be a thread since we sleep the thread for the 
+  //wait times between notes and this would cause the window to stop responding
+  class PlayThread extends Thread {
+      PlayThread() {
+      }
+      public void run() {
+    	  ArrayList<PianoNote> notes = recording.getNotes();
+    	  for(PianoNote note : notes){
+    		  nxt.playTone(note.getTone(), note.getNoteTime());
+    		  try {
+    			Thread.sleep(note.getWaitTime());
+    		} catch (InterruptedException e) {
+    			e.printStackTrace();
+    		}
+    	  }
+      }
+  }
+  
 }
