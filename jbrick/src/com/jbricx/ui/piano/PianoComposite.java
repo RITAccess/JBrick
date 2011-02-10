@@ -46,6 +46,8 @@ import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
+import com.jbricx.ui.JBrickManager;
+import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -110,6 +112,7 @@ public class PianoComposite extends Composite {
   int noteLengthDiv = 4;
   int transposeMult = 3;
   int toneDuration = 1000;
+  private JBrickManager manager;
   
   private PianoRecording recording = new PianoRecording();
   
@@ -277,15 +280,14 @@ public class PianoComposite extends Composite {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				savingPianoNotesFile spnf = new savingPianoNotesFile();
-				spnf.receivingNotes(recording.getNotes());
+				//savingPianoNotesFile spnf = new savingPianoNotesFile();
+				//spnf.receivingNotes(recording.getNotes());
 				creatingSavingInterface();
-				
 			}
 			@Override
 			public void mouseDown(MouseEvent arg0) {
 				// TODO Auto-generated method stub
-				JOptionPane.showMessageDialog(null, "it is saving the file on C:");
+				//JOptionPane.showMessageDialog(null, "it is saving the file on C:");
 				//save.setEnabled(false);
 			}
 			@Override
@@ -992,17 +994,18 @@ public class PianoComposite extends Composite {
   
   public void creatingSavingInterface() {
       String fileName = null;
-      //MainWindow.
-      //FileDialog dlg =  new FileDialog(shell);
-      FileDialog dlg = new FileDialog(shell, SWT.SAVE);
-      dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-      dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-      fileName = dlg.open();
-      if (fileName != null) {
-        File file = new File(fileName);
-      }
+      try{
       
-      System.out.println("fileLocation = " + fileName);
+          FileDialog dlg = new FileDialog(shell, SWT.SAVE);
+          dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
+          dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
+          fileName = dlg.open();
+          savingPianoNotesFile spnf = new savingPianoNotesFile();
+          spnf.receivingNotes(recording.getNotes(), fileName);
+       
+      }catch(Exception e){
+            e.printStackTrace();
+       }
     }
    
   //Thread for playing back the recording, needs to be a thread since we sleep the thread for the 
