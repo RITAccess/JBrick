@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -113,6 +114,7 @@ public class PianoComposite extends Composite {
   int transposeMult = 3;
   int toneDuration = 1000;
   private JBrickManager manager;
+
   
   private PianoRecording recording = new PianoRecording();
   
@@ -994,16 +996,31 @@ public class PianoComposite extends Composite {
   
   public void creatingSavingInterface() {
       String fileName = null;
+      boolean done = false;
       try{
-      
           FileDialog dlg = new FileDialog(shell, SWT.SAVE);
           dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
           dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
           fileName = dlg.open();
           savingPianoNotesFile spnf = new savingPianoNotesFile();
-          spnf.receivingNotes(recording.getNotes(), fileName);
-       
-      }catch(Exception e){
+          
+          if(fileName == null){
+              done = true;
+          }else{
+              File file = new File(fileName);
+              if(file.exists()){
+                    boolean overwrite = MessageDialog.openQuestion(shell, "Confirm over write", fileName + " already exists. Do you want to replace it?");
+                    if(!overwrite) {
+                            fileName = null;
+                    }else{
+                            spnf.receivingNotes(recording.getNotes(), fileName);        
+                    }
+              }else{
+                     spnf.receivingNotes(recording.getNotes(), fileName);
+                   }
+          }
+          
+       }catch(Exception e){
             e.printStackTrace();
        }
     }
