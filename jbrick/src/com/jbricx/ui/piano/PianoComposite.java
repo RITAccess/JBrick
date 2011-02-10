@@ -609,7 +609,6 @@ public class PianoComposite extends Composite {
   }
 
   protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
-
     if (isDown) {
 
       double toneFreq = 0;
@@ -1013,14 +1012,13 @@ public class PianoComposite extends Composite {
       }
       public void run() {
     	  ArrayList<PianoNote> notes = recording.getNotes();
+    	  try{
     	  for(PianoNote note : notes){
     		  nxt.playTone(note.getTone(), note.getNoteTime());
-    		  try {
-    			Thread.sleep(note.getWaitTime());
-    		} catch (InterruptedException e) {
-    			e.printStackTrace();
-    		}
+    		  Thread.sleep(note.getWaitTime());
     	  }
+    	  }
+    	  catch(Exception e){}
       }
   }
   
