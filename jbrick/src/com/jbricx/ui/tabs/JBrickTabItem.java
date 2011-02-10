@@ -272,6 +272,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     // Use the new font
     this.getViewer().getTextWidget().setFont(temp);
     this.ruler.setFont(temp);
+    this.ruler.relayout();
   }
 
   public IUndoManager getUndoManager() {
