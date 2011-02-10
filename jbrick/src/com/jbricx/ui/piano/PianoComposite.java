@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
@@ -991,14 +992,18 @@ public class PianoComposite extends Composite {
   }
   
   public void creatingSavingInterface() {
-    String fileLocation = null;
+      String fileName = null;
       //MainWindow.
       //FileDialog dlg =  new FileDialog(shell);
       FileDialog dlg = new FileDialog(shell, SWT.SAVE);
       dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
       dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-      fileLocation = dlg.open();
-      System.out.println("fileLocation = " + fileLocation);
+      fileName = dlg.open();
+      if (fileName != null) {
+        File file = new File(fileName);
+      }
+      
+      System.out.println("fileLocation = " + fileName);
     }
    
   //Thread for playing back the recording, needs to be a thread since we sleep the thread for the 
