@@ -41,9 +41,18 @@ public class HelpBrowser extends ApplicationWindow {
 	private Text textLocation;
 	private CustomTree tree;
 
-	
+	/** There can be only one Help window opened. */
+	private static HelpBrowser instance = null;
 
-	public HelpBrowser() {
+  public static HelpBrowser getInstance() {
+    if (instance == null) {
+      instance = new HelpBrowser();
+    }
+
+    return instance;
+  }
+
+	private HelpBrowser() {
 		super(Display.getCurrent().getActiveShell());
 		addToolBar(0);
 	}
@@ -218,4 +227,9 @@ public class HelpBrowser extends ApplicationWindow {
 		browser.setUrl(url);
 	}
 
+	@Override
+	public boolean close() {
+	  instance = null;
+	  return super.close();
+	}
 }

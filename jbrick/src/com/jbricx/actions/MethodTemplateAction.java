@@ -1,7 +1,7 @@
 package com.jbricx.actions;
 
 import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.methodTemplate.MethodTemplateComposite;
+import com.jbricx.ui.methodTemplate.MethodTemplateUIWindow;
 
 /**
  * This class shows the Method Template dialog box
@@ -21,10 +21,9 @@ public class MethodTemplateAction extends AbstractAction {
 	 * Shows an about box
 	 */
 	public void run() {
-//		MethodTemplateUIWindow methodTemplate = new MethodTemplateUIWindow();
-//		methodTemplate.setBlockOnOpen(true);
-//		methodTemplate.open();
-
-		MethodTemplateComposite.getInstance(getManager().getTabFolder());
+		MethodTemplateUIWindow methodTemplate =
+		  MethodTemplateUIWindow.getInstance(getManager().getTabFolder());
+		methodTemplate.setBlockOnOpen(true);
+		methodTemplate.open();
 	}
 }
