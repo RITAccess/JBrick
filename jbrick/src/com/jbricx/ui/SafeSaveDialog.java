@@ -61,10 +61,10 @@ public class SafeSaveDialog {
             } else {
                 // User has selected a file; see if it already exists
                 File file = new File(fileName);
-
                 TabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {
+               
                     // do not allow the user to specify the an existing file if already open in editor
 
                     int tabIndex = tabfolder.contains(fileName);
@@ -86,7 +86,6 @@ public class SafeSaveDialog {
                 }
                 
                 tabfolder.saveFile(fileName);
-                //tabfolder.
             }
         }
         return fileName;
