@@ -8,13 +8,11 @@ import com.jbricx.pjo.ActionControlClass;
 
 public class savingPianoNotesFile {
 	
-	public void receivingNotes(ArrayList<PianoNote> noteList){
-		
-		System.out.println("noteList.size():" + noteList.size());
+	public void receivingNotes(ArrayList<PianoNote> noteList, String fileName){
 		String starting = "task main(){";
 		String closing = "}";
 				try{
-					FileOutputStream fileOut = new FileOutputStream("C://prueba.nxc");
+				  FileOutputStream fileOut = new FileOutputStream(fileName);
 					PrintStream p;
 					p = new PrintStream(fileOut);
 					p.println (starting);
