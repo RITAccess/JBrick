@@ -5,6 +5,8 @@ package com.jbricx.ui.findbrick;
  * @author Priya Sankaran
  * 
  */
+import java.awt.Toolkit;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -36,8 +38,11 @@ public class FindBrickComposite extends Composite {
   private Button connect;
   private Button save;
   private Label info;
+  private Label connectionInfo;
   private Group driveMode;
+  private Group connectionGrp;
   JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
+  private String connectionStatus = "Not Connected";
 
   /**
    * Auto-generated main method to display this
@@ -93,22 +98,34 @@ public class FindBrickComposite extends Composite {
     try {
       driveMode = new Group(this, SWT.NONE);
       driveMode.setText("Information");
-      driveMode.setBounds(19, 35, 356, 80);
+      driveMode.setBounds(19, 10, 356, 80);
 
       info = new Label(driveMode, SWT.WRAP);
       info.setBounds(3, 15, 340, 60);
 
-      info.setText("To connect to the brick, select the communication method and click 'Connect'.  "
-          + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
-      buttonUtil
-          .setAccessibleString(
-              info,
-              "To connect to the brick, select the communication method and click 'Connect'.  "
-                  + "You can save your preference by clicking the 'Save' button so you do not need to come back to this screen in the future.");
+      info.setText("To connect to the brick, select the communication method "
+          + "and click 'Connect'.  You can save your preference by clicking "
+          + "the 'Save' button so you do not need to come back to this screen "
+          + "in the future.");
+
+      connectionGrp = new Group(this, SWT.NONE);
+      connectionGrp.setText("Connection satus:");
+      connectionGrp.setBounds(19, 100, 356, 50);
+
+      connectionInfo = new Label(connectionGrp, SWT.WRAP);
+      connectionInfo.setBounds(13, 20, 340, 25);
+      connectionInfo.setText(connectionStatus);
+      buttonUtil.setAccessibleString(connectionInfo, "Connection status:");
+
+      buttonUtil.setAccessibleString(info,
+          "To connect to the brick, select the "
+              + "communication method and click 'Connect'. You can save your "
+              + "preference by clicking the 'Save' button so you do not "
+              + "need to come back to this screen in the future.");
 
       rightMotor = new Group(this, SWT.NONE);
       rightMotor.setText("Connection Type");
-      rightMotor.setBounds(19, 145, 356, 74);
+      rightMotor.setBounds(19, 160, 356, 74);
 
       usb = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
       usb.setText("USB");
@@ -130,23 +147,19 @@ public class FindBrickComposite extends Composite {
       buttonUtil.setAccessibleString(bluetooth, "Bluetooth");
 
       bluetooth.addListener(SWT.Selection, new Listener() {
-
         public void handleEvent(Event event) {
           ct = ConnectionType.BLUETOOTH;
-          System.out.println("Bluetooth radio Button selected");
         }
       });
 
       save = new Button(this, SWT.PUSH | SWT.CENTER);
       save.setText("Save");
-      save.setBounds(157, 231, 60, 30);
+      save.setBounds(157, 250, 60, 30);
       buttonUtil.setAccessibleString(save, "Save");
 
       save.addListener(SWT.Selection, new Listener() {
 
         public void handleEvent(Event event) {
-          System.out.println("Save Button selected");
-
           FBFIO.saveCT(ct);
         }
       });
@@ -154,53 +167,45 @@ public class FindBrickComposite extends Composite {
       cancel = new Button(this, SWT.PUSH | SWT.CENTER);
       cancel.setText("Quit");
       cancel.setSize(60, 30);
-      cancel.setBounds(237, 231, 60, 30);
+      cancel.setBounds(237, 250, 60, 30);
       buttonUtil.setAccessibleString(cancel, "Cancel");
-      cancel.setEnabled(false);
       cancel.addListener(SWT.Selection, new Listener() {
-
         public void handleEvent(Event event) {
-          System.out.println("Cancel Button selected");
-          /*
-           * dispose works when only launching this gui, but does not work whne
-           * launching everything else
-           */
+          getParent().dispose();
         }
       });
 
       connect = new Button(this, SWT.PUSH | SWT.CENTER);
       connect.setText("Connect");
-      connect.setBounds(74, 231, 60, 30);
+      connect.setBounds(74, 250, 60, 30);
       buttonUtil.setAccessibleString(connect, "Connect");
 
+      ct = FindBrickFileIO.getCT();
       connect.addListener(SWT.Selection, new Listener() {
 
         public void handleEvent(Event event) {
-          System.out.println("Attempting To Connect");
           AbstractNXTBrick nxtManager = NXTManager.getInstance();
+
+          nxtManager.connect(ct);
+          boolean isConnected = nxtManager.isConnected();
           
-          if (bluetooth.getSelection()) {
-            System.out.println("BT");
+          if (!isConnected) {
+            String status = "Connection attempted using " + ct + " but failed!";
+            connectionInfo.setText(status);
             
-            
-              nxtManager.connect(FindBrickFileIO.getCT());
-            
+            Toolkit.getDefaultToolkit().beep();
+            buttonUtil.setAccessibleString(connectionInfo, status);
           } else {
-            System.out.println("USB");
-              nxtManager.connect(FindBrickFileIO.getCT());
-                        
-            nxtManager.notifyAllObservers(nxtManager.isConnected());
+            nxtManager.playTone(1000, 300);
+            getParent().dispose();
           }
+          nxtManager.notifyAllObservers(isConnected);
         }
       });
 
-      ct = FindBrickFileIO.getCT();
-
       if (ct == ConnectionType.BLUETOOTH) {
-        System.out.println("Read BT from file");
         bluetooth.setSelection(true);
       } else {
-        System.out.println("Read ~BT from file");
         usb.setSelection(true);
       }
 

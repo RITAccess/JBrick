@@ -2,6 +2,7 @@ package com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.communications.FantomListener;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
@@ -11,7 +12,7 @@ import com.jbricx.ui.piano.PianoUIWindow;
  * @author Priya Sankaran
  * @author Abhishek Shrestha
  */
-public class PianoAction extends AbstractAction implements NXTObserver {
+public class PianoAction extends AbstractAction implements NXTObserver, FantomListener {
 
   /**
    * PreferencesAction constructor

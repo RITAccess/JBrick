@@ -2,7 +2,9 @@ package com.jbricx.communications.exceptions;
 
 public class NotConnectedException extends Exception{
 
-	public NotConnectedException(final String message) {
+  private static final long serialVersionUID = -359660256408715269L;
+
+  public NotConnectedException(final String message) {
 		super(message);
 	}
 }

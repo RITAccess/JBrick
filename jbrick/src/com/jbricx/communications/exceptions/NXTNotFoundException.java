@@ -1,9 +1,10 @@
 package com.jbricx.communications.exceptions;
 
-public class NXTNotFoundException extends Exception
-{
+public class NXTNotFoundException extends Exception {
 
-	public NXTNotFoundException(final String message) {
-		super(message);
-	}
+  private static final long serialVersionUID = -6159895016080042043L;
+
+  public NXTNotFoundException(final String message) {
+    super(message);
+  }
 }

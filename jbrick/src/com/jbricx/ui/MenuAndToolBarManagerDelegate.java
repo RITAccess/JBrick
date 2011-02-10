@@ -37,11 +37,13 @@ import com.jbricx.actions.UndoAction;
 import com.jbricx.communications.NXTManager;
 
 /**
- * The purpose is to have the {@link Action}s in a different class other than the {@link MainWindow} because everything
- * is clogged up in there. This class works in a factory-pattern sort of way.
+ * The purpose is to have the {@link Action}s in a different class other than
+ * the {@link MainWindow} because everything is clogged up in there. This class
+ * works in a factory-pattern sort of way.
  * 
- * We can decouple this a little more by creating individual Manager classes, each one implementing the same set of
- * attributes we're using here. I'm not doing it right now just to avoid the copy+paste.
+ * We can decouple this a little more by creating individual Manager classes,
+ * each one implementing the same set of attributes we're using here. I'm not
+ * doing it right now just to avoid the copy+paste.
  * 
  * @see MainWindow
  * @see MenuManager
@@ -104,10 +106,16 @@ public class MenuAndToolBarManagerDelegate {
     pianoAction = new PianoAction(manager);
     directControlAction = new DirectControlAction(manager);
     NXTManager nxtManager = NXTManager.getInstance();
-    
+
     nxtManager.register(joystickAction);
     nxtManager.register(pianoAction);
     nxtManager.register(directControlAction);
+    
+    nxtManager.addFantomListener(joystickAction);
+    nxtManager.addFantomListener(pianoAction);
+    nxtManager.addFantomListener(directControlAction);
+    
+    nxtManager.addFantomListener(findBrickAction);
   }
 
   /**
@@ -122,8 +130,9 @@ public class MenuAndToolBarManagerDelegate {
   /**
    * Creates a {@link ToolBarManager} based on the {@link Action}s attributes.
    * 
-   * @param style an {@link SWT} property describing the toolbar style
-   * @return a MenuManager containing the options for the system operations. 
+   * @param style
+   *          an {@link SWT} property describing the toolbar style
+   * @return a MenuManager containing the options for the system operations.
    */
   public ToolBarManager createToolBarManager(int style) {
     return new JBrickToolBarManager(style);
@@ -132,8 +141,8 @@ public class MenuAndToolBarManagerDelegate {
   /**
    * Contains the main menu used in the application.
    * 
-   * It's been nested to avoid a different file somewhere and because it's more of a data/wrapper class with no
-   * additional behavior.
+   * It's been nested to avoid a different file somewhere and because it's more
+   * of a data/wrapper class with no additional behavior.
    * 
    * @author byktol
    */
@@ -195,8 +204,8 @@ public class MenuAndToolBarManagerDelegate {
   /**
    * Contains the main toolbar used in the application.
    * 
-   * It's been nested to avoid a different file somewhere and because it's more of a data/wrapper class with no
-   * additional behavior.
+   * It's been nested to avoid a different file somewhere and because it's more
+   * of a data/wrapper class with no additional behavior.
    * 
    * @author byktol
    */

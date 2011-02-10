@@ -32,9 +32,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.ui.findbrick.FindBrickFileIO;
 import com.jbricx.ui.tabs.FileExplorerTabItem;
 import com.jbricx.ui.tabs.JBrickEditorTabFolder;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -71,10 +73,12 @@ public class MainWindow extends ApplicationWindow implements
     addStatusLine();
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
+    
+    NXTManager.getInstance().connect(FindBrickFileIO.getCT());
   }
 
   /**
-   * Runs the application
+   * Runs the applicati
    */
   public void run() {
     setBlockOnOpen(true);

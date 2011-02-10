@@ -2,6 +2,7 @@ package com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.communications.FantomListener;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.joystick.JoystickUIWindow;
@@ -10,7 +11,7 @@ import com.jbricx.ui.joystick.JoystickUIWindow;
  * @author Priya Sankaran
  * @author Abhishek Shrestha
  */
-public class JoyStickAction extends AbstractAction implements NXTObserver {
+public class JoyStickAction extends AbstractAction implements NXTObserver, FantomListener {
 
   /**
    * PreferencesAction constructor
