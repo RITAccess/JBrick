@@ -19,5 +19,11 @@ public class HelpContentAction extends Action {
     HelpBrowser hb = HelpBrowser.getInstance();
     hb.open();
   }
-
+  
+  public void runPianoLink() {
+    HelpBrowser hb = HelpBrowser.getInstance();
+    hb.open();
+    hb.getPianoHelpLink();
+  }
+  
 }
