@@ -42,7 +42,6 @@ public class FindBrickComposite extends Composite {
   private Group driveMode;
   private Group connectionGrp;
   JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
-  private String connectionStatus = "Not Connected";
 
   /**
    * Auto-generated main method to display this
@@ -96,6 +95,8 @@ public class FindBrickComposite extends Composite {
 
   private void initGUI() {
     try {
+      ct = FindBrickFileIO.getCT();
+
       driveMode = new Group(this, SWT.NONE);
       driveMode.setText("Information");
       driveMode.setBounds(19, 10, 356, 80);
@@ -114,7 +115,13 @@ public class FindBrickComposite extends Composite {
 
       connectionInfo = new Label(connectionGrp, SWT.WRAP);
       connectionInfo.setBounds(13, 20, 340, 25);
-      connectionInfo.setText(connectionStatus);
+
+      if (NXTManager.getInstance().isConnected()) {
+        connectionInfo.setText("Connected using "
+            + NXTManager.getInstance().getConnectionType().toString());
+      } else {
+        connectionInfo.setText("Not Connected..!");
+      }
       buttonUtil.setAccessibleString(connectionInfo, "Connection status:");
 
       buttonUtil.setAccessibleString(info,
@@ -149,6 +156,7 @@ public class FindBrickComposite extends Composite {
       bluetooth.addListener(SWT.Selection, new Listener() {
         public void handleEvent(Event event) {
           ct = ConnectionType.BLUETOOTH;
+          System.out.println("BT selected");
         }
       });
 
@@ -180,19 +188,17 @@ public class FindBrickComposite extends Composite {
       connect.setBounds(74, 250, 60, 30);
       buttonUtil.setAccessibleString(connect, "Connect");
 
-      ct = FindBrickFileIO.getCT();
       connect.addListener(SWT.Selection, new Listener() {
 
         public void handleEvent(Event event) {
           AbstractNXTBrick nxtManager = NXTManager.getInstance();
-
           nxtManager.connect(ct);
           boolean isConnected = nxtManager.isConnected();
-          
+         
           if (!isConnected) {
             String status = "Connection attempted using " + ct + " but failed!";
             connectionInfo.setText(status);
-            
+
             Toolkit.getDefaultToolkit().beep();
             buttonUtil.setAccessibleString(connectionInfo, status);
           } else {

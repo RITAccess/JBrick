@@ -3,13 +3,14 @@ package com.jbricx.actions;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.communications.FantomListener;
+import com.jbricx.communications.NXT;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.findbrick.FindBrickUIWindow;
 
 /**
  * This class shows an About box
  */
-public class FindBrickAction extends AbstractAction implements FantomListener {
+public class FindBrickAction extends AbstractAction {
 
   /**
    * AboutAction constructor
@@ -18,7 +19,7 @@ public class FindBrickAction extends AbstractAction implements FantomListener {
     super("&FindBrick@Ctrl+B", ImageDescriptor.createFromFile(
         FindBrickAction.class, "/images/find_brick.png"), manager);
     setToolTipText("Find Brick");
-
+    setEnabled(NXT.isFantomDriverLoaded());
     // try {
     // NXTManager.getInstance().getFantom();
     // } catch (FantomDriverNotFoundException e) {
@@ -35,7 +36,7 @@ public class FindBrickAction extends AbstractAction implements FantomListener {
     FindBrickUIWindow findBrick = new FindBrickUIWindow(getManager().getShell());
     findBrick.setBlockOnOpen(true);
     findBrick.open();
-    setEnabled(false);
+
   }
 
   public void update(boolean isDriverAvailable) {

@@ -110,12 +110,6 @@ public class MenuAndToolBarManagerDelegate {
     nxtManager.register(joystickAction);
     nxtManager.register(pianoAction);
     nxtManager.register(directControlAction);
-    
-    nxtManager.addFantomListener(joystickAction);
-    nxtManager.addFantomListener(pianoAction);
-    nxtManager.addFantomListener(directControlAction);
-    
-    nxtManager.addFantomListener(findBrickAction);
   }
 
   /**

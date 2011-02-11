@@ -3,8 +3,10 @@ package com.jbricx.communications;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
+import com.jbricx.communications.exceptions.FantomDriverNotFoundException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 /**
@@ -12,6 +14,16 @@ import com.sun.jna.Pointer;
  * @author Spencer Herzberg
  */
 public class NXT {
+
+  static {
+    try {
+      fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
+      isDriverLoaded = true;
+    } catch (UnsatisfiedLinkError e) {
+      // TODO: notify the user that the fantom driver is missing
+      isDriverLoaded = false;
+    }
+  }
 
   public enum Motor {
 
@@ -206,16 +218,18 @@ public class NXT {
     }
   }
 
-  private static Fantom fantom = Fantom.INSTANCE;
+  private static Fantom fantom;
   // private String name;
   private Pointer nxtPointer;
-  public boolean isConnected;
+  public boolean isConnected = false;
+  private static boolean isDriverLoaded;
 
   public NXT(String name) throws NXTNotFoundException,
       UnableToCreateNXTException {
-    // this.name = name;
-    this.nxtPointer = connect(name);
-    isConnected = false;
+    if (isFantomDriverLoaded()) {
+      // this.name = name;
+      this.nxtPointer = connect(name);
+    }
   }
 
   public Pointer getPointer() {
@@ -229,6 +243,10 @@ public class NXT {
   public ExitStatus download(String filename) {
     System.out.println("lodingdown");
     return new ExitStatus(0, "Download failed");
+  }
+
+  public static boolean isFantomDriverLoaded() {
+    return isDriverLoaded;
   }
 
   public void startProgram(String filename) {
@@ -541,7 +559,6 @@ public class NXT {
 
       }
       System.out.println("main done");
-
     } catch (NXTNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

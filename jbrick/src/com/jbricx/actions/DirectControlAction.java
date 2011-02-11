@@ -3,6 +3,7 @@ package com.jbricx.actions;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.communications.FantomListener;
+import com.jbricx.communications.NXT;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.DirectControl.DirectControlUIWindow;
@@ -10,8 +11,7 @@ import com.jbricx.ui.DirectControl.DirectControlUIWindow;
 /**
  * This action opens the DirectControl window
  */
-public class DirectControlAction extends AbstractAction implements NXTObserver,
-    FantomListener {
+public class DirectControlAction extends AbstractAction implements NXTObserver {
 
   /**
    * DirectControlAction constructor
@@ -20,7 +20,7 @@ public class DirectControlAction extends AbstractAction implements NXTObserver,
     super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(
         AboutAction.class, "/images/direct_controller.png"), manager);
     setToolTipText("Direct Control");
-    setEnabled(false);
+    setEnabled(NXT.isFantomDriverLoaded());
   }
 
   /**

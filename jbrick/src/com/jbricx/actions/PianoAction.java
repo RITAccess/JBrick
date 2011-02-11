@@ -3,6 +3,7 @@ package com.jbricx.actions;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.communications.FantomListener;
+import com.jbricx.communications.NXT;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
@@ -12,16 +13,16 @@ import com.jbricx.ui.piano.PianoUIWindow;
  * @author Priya Sankaran
  * @author Abhishek Shrestha
  */
-public class PianoAction extends AbstractAction implements NXTObserver, FantomListener {
+public class PianoAction extends AbstractAction implements NXTObserver {
 
   /**
    * PreferencesAction constructor
    */
   public PianoAction(JBrickManager manager) {
     super("&Piano@Ctrl+Alt+D", ImageDescriptor.createFromFile(
-        PianoAction.class, "/images/piano_icon.png"), manager);    
+        PianoAction.class, "/images/piano_icon.png"), manager);
     setToolTipText("Piano");
-    setEnabled(false);
+    setEnabled(NXT.isFantomDriverLoaded());
   }
 
   /**

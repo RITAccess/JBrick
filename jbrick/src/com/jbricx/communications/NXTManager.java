@@ -12,6 +12,7 @@ import com.jbricx.communications.exceptions.FantomDriverNotFoundException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
+import com.sun.jna.Native;
 
 public class NXTManager extends AbstractNXTBrick {
   private static NXTManager nxtManager = null;
@@ -19,6 +20,7 @@ public class NXTManager extends AbstractNXTBrick {
   private static ArrayList<FantomListener> fantonListeners = new ArrayList<FantomListener>();
 
   private static boolean running = false;
+  private ConnectionType ct;
   private static final int WAITTIME = 3000;
   private static final String COM = "/COM=usb";// USB0::0X0694::0X0002::0016530996B4::RAW";
   // these must be on the build path. we will want to have
@@ -26,7 +28,7 @@ public class NXTManager extends AbstractNXTBrick {
   private static String NBC = "lib/nbc.exe";
   private static String NEXTTOOL = "lib/NeXTTool.exe";
   private static String BRICKTOOL = "BrickTool.exe";
-  private NXT nxt;
+  private static NXT nxt;
   private static Fantom fantom;
 
   private Thread connectedRunnable = pollingCreator();
@@ -55,75 +57,56 @@ public class NXTManager extends AbstractNXTBrick {
 
   static {
     nxtManager = new NXTManager();
-    try {
-      fantom = Fantom.INSTANCE;
-    } catch (UnsatisfiedLinkError e) {
-      // TODO: notify the user that the fantom driver is missing
-      System.out
-          .println("FindBrickAction.FindBrickAction(): Fantom driver missing!");
-    }
   }
 
   public static NXTManager getInstance() {
     return nxtManager;
   }
 
-  public Fantom getFantom() throws FantomDriverNotFoundException {
-    if (fantom == null) {
-      throw new FantomDriverNotFoundException("Fantom driver not found!");
-    } else {
-      return fantom;
-    }
-  }
+  /*
+   * public Fantom getFantom() throws FantomDriverNotFoundException { if (fantom
+   * == null) { throw new
+   * FantomDriverNotFoundException("Fantom driver not found!"); } else { return
+   * fantom; } }
+   */
 
   public AbstractNXTBrick connect(ConnectionType type) {
     try {
-      fantom = getFantom(); // see if fantom can be loaded
+      ct = type;
+      nxt = new NXT(type.getName());
+      // playTone(2000, 200);
+      
+      notifyAllObservers(nxt.isConnected());
+      if (!connectedRunnable.isAlive()) {
+        connectedRunnable = pollingCreator();
+        connectedRunnable.start();
+      }
+      nxt.setConnected(true);
+
+    } catch (NXTNotFoundException e) {
+      // JOptionPane.showMessageDialog(null, "No bricks found...");
+      System.out.println("NXTManager.java@63 :: Trying to connect to "
+          + type.getName() + " but failed!");
+      // stop polling once the brick has been disconnected
+      running = false;
+      try {
+        nxt.setConnected(false);
+      } catch (NullPointerException ne) {
+
+      }
+      notifyAllObservers(false);
+    } catch (UnableToCreateNXTException e) {
+      System.out.println("NXTManager.java@63 :: Unable to create NXT...");
+      notifyAllObservers(false);
+      // stop polling once the brick has been disconnected
 
       try {
-        nxt = new NXT(type.getName());
-        // playTone(2000, 200);
+        nxt.setConnected(false);
+        connectedRunnable.interrupt();
+      } catch (NullPointerException ne) {
 
-        notifyAllObservers(nxt.isConnected());
-        if (!connectedRunnable.isAlive()) {
-          connectedRunnable = pollingCreator();
-          connectedRunnable.start();
-        }
-        nxt.setConnected(true);
-
-      } catch (NXTNotFoundException e) {
-        // JOptionPane.showMessageDialog(null, "No bricks found...");
-        System.out.println("NXTManager.java@63 :: Trying to connect to "
-            + type.getName() + " but failed!");
-        // stop polling once the brick has been disconnected
-        running = false;
-        try {
-          nxt.setConnected(false);
-        } catch (NullPointerException ne) {
-
-        }
-        notifyAllObservers(false);
-      } catch (UnableToCreateNXTException e) {
-        System.out.println("NXTManager.java@63 :: Unable to create NXT...");
-        notifyAllObservers(false);
-        // stop polling once the brick has been disconnected
-
-        try {
-          nxt.setConnected(false);
-          connectedRunnable.interrupt();
-        } catch (NullPointerException ne) {
-
-        }
-      }
-
-    } catch (FantomDriverNotFoundException f) {
-      if (fantom == null) {
-        notifyAllFantomListeners(false);
-      } else {
-        notifyAllFantomListeners(true);
       }
     }
-   
     return this;
   }
 
@@ -153,16 +136,18 @@ public class NXTManager extends AbstractNXTBrick {
   public void removeFantomListener(FantomListener fl) {
     fantonListeners.remove(fl);
   }
-
-  public void notifyFantomListener(FantomListener fl, boolean isDriverAvailable) {
-    fl.update(isDriverAvailable);
+  
+  public ConnectionType getConnectionType(){
+    return ct;
   }
 
-  public void notifyAllFantomListeners(boolean isDriverAvailable) {
-    for (FantomListener fl : fantonListeners) {
-      fl.update(isDriverAvailable);
-    }
-  }
+  /*
+   * public void notifyFantomListener(FantomListener fl, boolean
+   * isDriverAvailable) { fl.update(isDriverAvailable); }
+   * 
+   * public void notifyAllFantomListeners(boolean isDriverAvailable) { for
+   * (FantomListener fl : fantonListeners) { fl.update(isDriverAvailable); } }
+   */
 
   @Override
   public ExitStatus compile(String filename) {
@@ -253,7 +238,7 @@ public class NXTManager extends AbstractNXTBrick {
     nxt.setConnected(isConnected);
   }
 
-  @Override
+  
   public boolean isConnected() {
     try {
       return nxt.isConnected();

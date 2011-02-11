@@ -41,6 +41,8 @@ public abstract class AbstractNXTBrick {
   public abstract ExitStatus deleteFile(String filename);
 
   public abstract boolean isConnected();
+  
+  public abstract ConnectionType getConnectionType();
 
   public abstract AbstractNXTBrick connect(ConnectionType type);
 
