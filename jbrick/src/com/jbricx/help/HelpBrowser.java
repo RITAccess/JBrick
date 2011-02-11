@@ -232,4 +232,10 @@ public class HelpBrowser extends ApplicationWindow {
 	  instance = null;
 	  return super.close();
 	}
+	
+	public void getPianoHelpLink(){
+     String val = "help\\html\\Piano Composer.html";
+     File file = new File(val);
+     browser.setUrl(file.getAbsolutePath());
+  }
 }
