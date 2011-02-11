@@ -69,6 +69,7 @@ public class CustomTree {
 	public String getHome() {
 		return this.home;
 	}
+	
 
 	@SuppressWarnings(value = { "unchecked" })
 	public Vector<Node> genNodes() {
