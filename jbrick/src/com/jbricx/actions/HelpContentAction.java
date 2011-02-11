@@ -4,7 +4,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 import com.jbricx.help.HelpBrowser;
-import com.jbricx.ui.JBrickManager;
 
 public class HelpContentAction extends Action {
 
@@ -17,7 +16,7 @@ public class HelpContentAction extends Action {
    * Shows an about box
    */
   public void run() {
-    HelpBrowser hb = new HelpBrowser();
+    HelpBrowser hb = HelpBrowser.getInstance();
     hb.open();
   }
 

@@ -8,6 +8,7 @@ import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import com.jbricx.preferences.BrickToolsPreferencePage;
 import com.jbricx.preferences.TextPreferencePage;
 import com.jbricx.ui.JBrickManager;
 
@@ -30,6 +31,7 @@ public class PreferencesAction extends AbstractAction {
   public void run() {
     PreferenceManager mgr = new PreferenceManager();
     mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
+    mgr.addToRoot(new PreferenceNode("tool", "Tools", null, BrickToolsPreferencePage.class.getName()));
     // mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
     // EditorPreferencePage.class.getName()));
 
