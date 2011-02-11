@@ -609,7 +609,6 @@ public class PianoComposite extends Composite {
    * Invokes the help contents Window.
    */
   protected void help() {
-    //helpAction.run();
     helpAction.runPianoLink();
   }
 
