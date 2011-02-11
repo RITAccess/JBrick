@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="aspectPackage/LogAspect.aj" kind="src" path="src"/>
+	<classpathentry excluding="aspectPackage/LogAspect.aj|tests/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/tests"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jlib">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="jbrick/lib"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.commands_3.4.0.I20080509-2000.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
@@ -19,13 +15,10 @@
 	<classpathentry kind="lib" path="lib/swt_linux.jar"/>
 	<classpathentry kind="lib" path="lib/swt-debug_linux.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.jobs_3.4.0.v20080512.jar"/>
-	<classpathentry kind="lib" path="lib/BrickTool.exe"/>
-	<classpathentry kind="lib" path="lib/nbc.exe"/>
-	<classpathentry kind="lib" path="lib/NeXTTool.exe"/>
 	<classpathentry kind="lib" path="lib/com.ibm.icu_4.0.1.v20090822.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar"/>
 	<classpathentry kind="lib" path="lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/jinput.jar"/>
-	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/comm2.0.3/comm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
