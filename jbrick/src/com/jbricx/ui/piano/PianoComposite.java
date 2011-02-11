@@ -609,7 +609,8 @@ public class PianoComposite extends Composite {
    * Invokes the help contents Window.
    */
   protected void help() {
-    helpAction.run();
+    //helpAction.run();
+    helpAction.runPianoLink();
   }
 
   protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
