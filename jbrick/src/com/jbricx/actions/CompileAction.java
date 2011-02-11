@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.TableItem;
 
 import annotation.ErrorAnnotation;
 
-import com.jbricx.communications.BrickCreator;
 import com.jbricx.communications.ExitStatus;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.tabs.JBrickTabItem;
@@ -81,7 +81,7 @@ public class CompileAction extends AbstractAction {
 		} else {
 
 			tbl.removeAll();
-			e = BrickCreator.createBrick().compile(currDoc.getFileName());
+			e = NXTManager.getInstance().compile(currDoc.getFileName());
 			tab.fAnnotationModel.removeAllAnnotations();
 
 			if (e.isOk()) {

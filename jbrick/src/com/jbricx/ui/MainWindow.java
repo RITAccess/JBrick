@@ -75,6 +75,7 @@ public class MainWindow extends ApplicationWindow implements
     prefs = preferences;
     prefs.addPropertyChangeListener(this);
 
+    NXTManager.getInstance().setPreferences(preferences);
     if (NXT.isFantomDriverLoaded()) {
       NXTManager.getInstance().connect(FindBrickFileIO.getCT());
     } else {

@@ -3,21 +3,21 @@ package com.jbricx.communications;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+
 import com.jbricx.communications.NXT.ConnectionType;
 import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.NXT.Sensor;
 import com.jbricx.communications.NXT.SensorMode;
 import com.jbricx.communications.NXT.SensorType;
-import com.jbricx.communications.exceptions.FantomDriverNotFoundException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.ui.findbrick.FindBrickFileIO;
-import com.sun.jna.Native;
 
 public class NXTManager extends AbstractNXTBrick {
   private static NXTManager nxtManager = null;
   private static ArrayList<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
-  private static ArrayList<FantomListener> fantonListeners = new ArrayList<FantomListener>();
 
   private static boolean running = false;
   private ConnectionType ct;
@@ -25,13 +25,11 @@ public class NXTManager extends AbstractNXTBrick {
   private static final String COM = "/COM=usb";// USB0::0X0694::0X0002::0016530996B4::RAW";
   // these must be on the build path. we will want to have
   // this in preferences eventually.
-  private static String NBC = "lib/nbc.exe";
-  private static String NEXTTOOL = "lib/NeXTTool.exe";
-  private static String BRICKTOOL = "BrickTool.exe";
   private static NXT nxt;
   private static Fantom fantom;
 
   private Thread connectedRunnable = pollingCreator();
+  private IPreferenceStore preferences;
 
   private Thread pollingCreator() {
     return new Thread() {
@@ -73,40 +71,40 @@ public class NXTManager extends AbstractNXTBrick {
   public AbstractNXTBrick connect(ConnectionType type) {
     try {
       ct = type;
-      nxt = new NXT(type.getName());
-      // playTone(2000, 200);
-      
-      notifyAllObservers(nxt.isConnected());
-      if (!connectedRunnable.isAlive()) {
-        connectedRunnable = pollingCreator();
-        connectedRunnable.start();
+        nxt = new NXT(type.getName());
+        // playTone(2000, 200);
+
+        notifyAllObservers(nxt.isConnected());
+        if (!connectedRunnable.isAlive()) {
+          connectedRunnable = pollingCreator();
+          connectedRunnable.start();
+        }
+        nxt.setConnected(true);
+
+      } catch (NXTNotFoundException e) {
+        // JOptionPane.showMessageDialog(null, "No bricks found...");
+        System.out.println("NXTManager.java :: Trying to connect to "
+            + type.getName() + " but failed!");
+        // stop polling once the brick has been disconnected
+        running = false;
+        try {
+          nxt.setConnected(false);
+        } catch (NullPointerException ne) {
+
+        }
+        notifyAllObservers(false);
+      } catch (UnableToCreateNXTException e) {
+        System.out.println("NXTManager.java :: Unable to create NXT...");
+        notifyAllObservers(false);
+        // stop polling once the brick has been disconnected
+
+        try {
+          nxt.setConnected(false);
+          connectedRunnable.interrupt();
+        } catch (NullPointerException ne) {
+
+        }
       }
-      nxt.setConnected(true);
-
-    } catch (NXTNotFoundException e) {
-      // JOptionPane.showMessageDialog(null, "No bricks found...");
-      System.out.println("NXTManager.java@63 :: Trying to connect to "
-          + type.getName() + " but failed!");
-      // stop polling once the brick has been disconnected
-      running = false;
-      try {
-        nxt.setConnected(false);
-      } catch (NullPointerException ne) {
-
-      }
-      notifyAllObservers(false);
-    } catch (UnableToCreateNXTException e) {
-      System.out.println("NXTManager.java@63 :: Unable to create NXT...");
-      notifyAllObservers(false);
-      // stop polling once the brick has been disconnected
-
-      try {
-        nxt.setConnected(false);
-        connectedRunnable.interrupt();
-      } catch (NullPointerException ne) {
-
-      }
-    }
     return this;
   }
 
@@ -129,14 +127,6 @@ public class NXTManager extends AbstractNXTBrick {
     nxtObservers.add(observer);
   }
 
-  public void addFantomListener(FantomListener fl) {
-    fantonListeners.add(fl);
-  }
-
-  public void removeFantomListener(FantomListener fl) {
-    fantonListeners.remove(fl);
-  }
-  
   public ConnectionType getConnectionType(){
     return ct;
   }
@@ -153,7 +143,7 @@ public class NXTManager extends AbstractNXTBrick {
   public ExitStatus compile(String filename) {
     System.out.println("Trying to compile: " + filename);
     List<String> command = new ArrayList<String>();
-    command.add(NBC);
+    command.add(preferences.getString(FileExtensionConstants.NBCTOOL));
     // command.add("-help");
     // command.add("-S");//+where);
     // command.add("usb");
@@ -353,5 +343,9 @@ public class NXTManager extends AbstractNXTBrick {
 
   public void stopPolling() {
     running = false;
+  }
+
+  public void setPreferences(final IPreferenceStore preferences) {
+    this.preferences = preferences;
   }
 }

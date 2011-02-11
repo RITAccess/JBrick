@@ -2,7 +2,6 @@ package com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.communications.FantomListener;
 import com.jbricx.communications.NXT;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.findbrick.FindBrickUIWindow;
