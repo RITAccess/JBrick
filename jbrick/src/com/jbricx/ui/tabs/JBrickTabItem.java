@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
@@ -38,7 +39,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
@@ -72,7 +72,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   private PersistentDocument document;
   // error identifiers, images and colors
   public static String ERROR_TYPE = "error.type";
-  public static Image ERROR_IMAGE;
+  public static ImageDescriptor ERROR_IMAGE;
   public static final RGB ERROR_RGB = new RGB(255, 0, 0);
   // amarillo
   public static final RGB ERROR_RGB2 = new RGB(255, 255, 0);
@@ -97,7 +97,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     // annotation ruler to view annotation
 
-    ERROR_IMAGE = new Image(Display.getDefault(), "src/images/error_ovr.gif");
+    ERROR_IMAGE = ImageDescriptor.createFromFile(JBrickTabItem.class, "src/images/error_ovr.gif");
 
     IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
 

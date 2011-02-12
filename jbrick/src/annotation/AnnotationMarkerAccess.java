@@ -1,5 +1,6 @@
 package annotation;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationAccess;
 import org.eclipse.jface.text.source.IAnnotationAccessExtension;
@@ -40,7 +41,7 @@ public class AnnotationMarkerAccess implements IAnnotationAccess,
 
 	public void paint(Annotation annotation, GC gc, Canvas canvas,
 			Rectangle bounds) {
-		ImageUtilities.drawImage(((ErrorAnnotation) annotation).getImage(), gc,
+		ImageUtilities.drawImage(((ErrorAnnotation) annotation).getImage().createImage(), gc,
 				canvas, bounds, SWT.CENTER, SWT.TOP);
 	}
 

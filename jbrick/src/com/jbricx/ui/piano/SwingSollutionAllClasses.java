@@ -1,4 +1,4 @@
-//package com.jbricx.ui.piano;
+package com.jbricx.ui.piano;
 //
 //import java.awt.Component;
 //import org.eclipse.swt.events.KeyEvent;
@@ -10,7 +10,7 @@
 //import javax.swing.SwingUtilities;
 //import javax.swing.WindowConstants;
 //
-//public class SwingSollutionAllClasses {
+public class SwingSollutionAllClasses {
 //
 ///**
 //* this class is responsible for maintaining a key status map
@@ -187,4 +187,4 @@
 //public static void main(String[] args) {
 //	KeyPressTest.main(args);
 //}
-//}
+}

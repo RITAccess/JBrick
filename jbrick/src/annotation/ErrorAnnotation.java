@@ -1,16 +1,15 @@
 package annotation;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 // one error annotation
 public class ErrorAnnotation extends Annotation {
 	// error identifiers, images and colors
 	public static String ERROR_TYPE = "error.type";
-	public static Image ERROR_IMAGE;
+	public static ImageDescriptor ERROR_IMAGE;
 	private IMarker marker;
 	private String text;
 	private int line;
@@ -25,9 +24,8 @@ public class ErrorAnnotation extends Annotation {
 		this.marker = null;
 		this.line = line;
 		this.text = text;
-		
-		ERROR_IMAGE = new Image(Display.getDefault(),
-		"src/images/error_ovr.gif");
+
+		ERROR_IMAGE = ImageDescriptor.createFromFile(ErrorAnnotation.class, "/images/help-browser.png");
 	}
 
 	public IMarker getMarker() {
@@ -42,8 +40,8 @@ public class ErrorAnnotation extends Annotation {
 		return text;
 	}
 
-	public Image getImage() {
-		return ERROR_IMAGE;
+	public ImageDescriptor getImage() {
+	  return ERROR_IMAGE;
 	}
 
 	public int getLayer() {
