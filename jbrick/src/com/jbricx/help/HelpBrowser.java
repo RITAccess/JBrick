@@ -118,9 +118,8 @@ public class HelpBrowser extends ApplicationWindow {
     Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
       HelpBrowser.class, "/images/process-stop.png")) {
       public void run() {
-        browser.setUrl("");
-        x = 1;
-        // browser.stop();
+          browser.stop();
+          x = 1;
       }
     };
 
