@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -556,7 +557,8 @@ public class PianoComposite extends Composite {
               pianoClicked(false, keyId, true);
             }
           });
-          myLabel.setImage(new Image(null, new FileInputStream("src/images/black_key.PNG")));
+          myLabel.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/black_key.PNG").createImage());
           blackKeysArray.add(x, myLabel);
         }
         leftValue += 46;
@@ -590,7 +592,8 @@ public class PianoComposite extends Composite {
             pianoClicked(true, keyId, true);
           }
         });
-        myLabel.setImage(new Image(null, new FileInputStream("src/images/white_key.PNG")));
+        myLabel.setImage(ImageDescriptor.createFromFile(getClass(),
+          "/images/white_key.PNG").createImage());
         whiteKeysArray.add(x, myLabel);
         leftValue += 46;
       }

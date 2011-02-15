@@ -283,7 +283,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
         && fileName.endsWith(".bak.nxc")) {
       proceed = MessageDialog.openQuestion(null, "Close without saving?",
           "Changes to \"" + tabItem.getText()
-              + "\" have not been saved.Do you still want to proceed?");
+              + "\" have not been saved. Do you still want to proceed?");
       removeTempFile(tabItem, proceed);
     }
     return proceed;

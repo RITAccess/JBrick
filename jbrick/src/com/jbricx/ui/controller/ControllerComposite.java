@@ -2,6 +2,7 @@ package com.jbricx.ui.controller;
 
 import java.io.FileInputStream;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -166,7 +167,8 @@ public class ControllerComposite extends Composite {
 					GridData label1LData = new GridData();
 					label1LData.horizontalIndent = 17;
 					label1.setLayoutData(label1LData);
-					label1.setImage(new Image(null, new FileInputStream("src/images/1.PNG")));
+					label1.setImage(ImageDescriptor.createFromFile(getClass(),
+					  "/images/1.PNG").createImage());
 				}
 			}
 			{
@@ -334,7 +336,8 @@ public class ControllerComposite extends Composite {
 					GridData label2LData = new GridData();
 					label2LData.horizontalIndent = 21;
 					label2.setLayoutData(label2LData);
-					label2.setImage(new Image(null, new FileInputStream("src/images/2.PNG")));
+					label2.setImage(ImageDescriptor.createFromFile(getClass(),
+          "/images/2.PNG").createImage());
 				}
 			}
 			{
@@ -355,7 +358,8 @@ public class ControllerComposite extends Composite {
 					GridData label3LData = new GridData();
 					label3LData.horizontalIndent = 21;
 					label3.setLayoutData(label3LData);
-					label3.setImage(new Image(null, new FileInputStream("src/images/3.PNG")));
+					label3.setImage(ImageDescriptor.createFromFile(getClass(),
+          "/images/3.PNG").createImage());
 				}
 			}
 			{
@@ -376,7 +380,8 @@ public class ControllerComposite extends Composite {
 					GridData label4LData = new GridData();
 					label4LData.horizontalIndent = 23;
 					label4.setLayoutData(label4LData);
-					label4.setImage(new Image(null, new FileInputStream("src/images/4.PNG")));
+					label4.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/4.PNG").createImage());
 				}
 			}
 			this.layout();

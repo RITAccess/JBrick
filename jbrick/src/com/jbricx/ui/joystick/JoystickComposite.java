@@ -6,6 +6,7 @@ package com.jbricx.ui.joystick;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -131,8 +132,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         Movement.setBounds(14, 10, 115, 154);
         {
           UpLeft = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          UpLeft.setImage(new Image(null, new FileInputStream(
-              "src/images/UpLeft.png")));
+          UpLeft.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/UpLeft.png").createImage());
 
           UpLeft.setBounds(18, 36, 26, 26);
           buttonUtil.setAccessibleString(UpLeft, "Up Left Arrow");
@@ -146,7 +147,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           Up = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          Up.setImage(new Image(null, new FileInputStream("src/images/Up.png")));
+          Up.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/Up.png").createImage());
           Up.setBounds(42, 36, 27, 26);
           buttonUtil.setAccessibleString(Up, "Up Arrow");
 
@@ -159,8 +161,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           UpRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          UpRight.setImage(new Image(null, new FileInputStream(
-              "src/images/UpRight.png")));
+          UpRight.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/Up.png").createImage());
           UpRight.setBounds(67, 37, 27, 26);
           buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
           UpRight.addSelectionListener(new SelectionAdapter() {
@@ -172,8 +174,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           Left = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          Left.setImage(new Image(null, new FileInputStream(
-              "src/images/left.png")));
+          Left.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/left.png").createImage());
           Left.setBounds(18, 59, 24, 30);
           buttonUtil.setAccessibleString(Left, "Left Arrow");
           Left.addSelectionListener(new SelectionAdapter() {
@@ -185,8 +187,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           centreStop = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          centreStop.setImage(new Image(null, new FileInputStream(
-              "src/images/centreStop.png")));
+          centreStop.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/centreStop.png").createImage());
           centreStop.setBounds(41, 62, 27, 26);
           buttonUtil.setAccessibleString(centreStop, "Stop");
           centreStop.addSelectionListener(new SelectionAdapter() {
@@ -198,8 +200,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           right = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          right.setImage(new Image(null, new FileInputStream(
-              "src/images/right.png")));
+          right.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/right.png").createImage());
           right.setBounds(66, 59, 28, 30);
           buttonUtil.setAccessibleString(right, "Right Arrow");
           right.addSelectionListener(new SelectionAdapter() {
@@ -211,8 +213,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           downLeft = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          downLeft.setImage(new Image(null, new FileInputStream(
-              "src/images/downLeft.png")));
+          downLeft.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/downLeft.png").createImage());
           downLeft.setBounds(18, 84, 24, 28);
           buttonUtil.setAccessibleString(downLeft, "Down Left Arrow");
           downLeft.addSelectionListener(new SelectionAdapter() {
@@ -224,8 +226,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           down = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          down.setImage(new Image(null, new FileInputStream(
-              "src/images/down.png")));
+          down.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/down.png").createImage());
           down.setBounds(43, 87, 25, 24);
           buttonUtil.setAccessibleString(down, "Down Arrow");
           down.addSelectionListener(new SelectionAdapter() {
@@ -237,8 +239,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         }
         {
           downRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
-          downRight.setImage(new Image(null, new FileInputStream(
-              "src/images/downRight.png")));
+          downRight.setImage(ImageDescriptor.createFromFile(getClass(),
+            "/images/downRight.png").createImage());
           downRight.setBounds(68, 86, 25, 26);
           buttonUtil.setAccessibleString(downRight, "Down Right Arrow");
           downRight.addSelectionListener(new SelectionAdapter() {

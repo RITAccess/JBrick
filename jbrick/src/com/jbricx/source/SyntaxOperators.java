@@ -10,6 +10,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.jbricx.pjo.FileExtensionConstants;
+
 /**
  * This class contains the syntax keywords
  */
@@ -27,7 +29,9 @@ public class SyntaxOperators {
 			OPERATORS = new ArrayList<String>();
 
 			try {
-				String xmlFilePath = "src\\config\\Operators.xml";
+				final String xmlFilePath = ClassLoader.getSystemResource(
+				  FileExtensionConstants.OPERATORS_FILE).getFile();
+
 				File file = new File(xmlFilePath);
 				if (file.exists()) {
 					// Create a factory

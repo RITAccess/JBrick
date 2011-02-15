@@ -10,6 +10,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.jbricx.pjo.FileExtensionConstants;
+
 /**
  * This class contains the syntax keywords
  */
@@ -27,8 +29,10 @@ public class SyntaxKeyWords {
 			KEYWORDS = new ArrayList<String>();
 
 			try {
-				String xmlFilePath = "src\\config\\KeyWords.xml";
-				File file = new File(xmlFilePath);
+			  final String xmlFilePath = ClassLoader.getSystemResource(
+			    FileExtensionConstants.KEYWORDS_FILE).getFile();
+
+			  File file = new File(xmlFilePath);
 				if (file.exists()) {
 					// Create a factory
 					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

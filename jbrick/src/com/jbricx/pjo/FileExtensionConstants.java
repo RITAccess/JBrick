@@ -25,4 +25,9 @@ public class FileExtensionConstants {
 	public static final String BRICKTOOL = "brickTool";
 	public static final String NEXTTOOL = "nextTool";
 	public static final String NBCTOOL = "nbcTool";
+
+	// Configuration files
+  public static final String KEYWORDS_FILE  = "config/KeyWords.xml";
+  public static final String OPERATORS_FILE = "config/Operators.xml";
+  public static final String CONSTANTS_FILE = "config/Constants.xml";
 }

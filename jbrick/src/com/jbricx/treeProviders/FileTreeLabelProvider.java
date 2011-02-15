@@ -1,10 +1,9 @@
 package com.jbricx.treeProviders;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -43,12 +42,8 @@ public class FileTreeLabelProvider implements ILabelProvider {
    
 
     // Create the images
-    try {
-      fileIcon = new Image(null, new FileInputStream("src/images/accessories-text-editor.png"));
-      dirIcon = new Image(null, new FileInputStream("src/images/folder_package.gif"));
-    } catch (FileNotFoundException e) {
-      // Swallow it; we'll do without images
-    }
+    fileIcon = ImageDescriptor.createFromFile(getClass(), "/images/accessories-text-editor.png").createImage();
+    dirIcon = ImageDescriptor.createFromFile(getClass(), "/images/folder_package.gif").createImage();
   }
   
   
