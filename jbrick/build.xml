@@ -10,7 +10,7 @@
     </copy>
     <copy todir="./bin/images/">
       <fileset dir="./resources/images/">
-        <incluse name="**/*.*" />
+        <include name="**/*.*" />
       </fileset>
     </copy>
     <jar destfile="./jbrick.jar">

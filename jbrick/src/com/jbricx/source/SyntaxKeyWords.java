@@ -1,6 +1,6 @@
 package com.jbricx.source;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -29,29 +29,24 @@ public class SyntaxKeyWords {
 			KEYWORDS = new ArrayList<String>();
 
 			try {
-			  final String xmlFilePath = ClassLoader.getSystemResource(
-			    FileExtensionConstants.KEYWORDS_FILE).getFile();
+			  final InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
+			          FileExtensionConstants.KEYWORDS_FILE);
 
-			  File file = new File(xmlFilePath);
-				if (file.exists()) {
-					// Create a factory
-					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-					// Use the factory to create a builder
-					DocumentBuilder builder = factory.newDocumentBuilder();
-					Document doc = builder.parse(xmlFilePath);
-					// Get a list of all elements in the document
-					NodeList list = doc.getElementsByTagName("word");
-				
-					
-					for (int i = 0; i < list.getLength(); i++) {
-						// Add elements from xml file to the list of constant
-						// words
-						KEYWORDS.add(((Element) list.item(i)).getTextContent());
-					}
-					
-				} else {
-					System.out.print("File not found!");
-				}
+        // Create a factory
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        // Use the factory to create a builder
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(keywordStream);
+        // Get a list of all elements in the document
+        NodeList list = doc.getElementsByTagName("word");
+
+        for (int i = 0; i < list.getLength(); i++) {
+          // Add elements from xml file to the list of constant
+          // words
+          KEYWORDS.add(((Element) list.item(i)).getTextContent());
+        }
+        keywordStream.close();
+
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
