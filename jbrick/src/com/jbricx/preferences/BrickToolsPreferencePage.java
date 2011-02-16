@@ -27,11 +27,6 @@ public class BrickToolsPreferencePage extends FieldEditorPreferencePage {
     final FileFieldEditor brickToolPath = new FileFieldEditor(
             FileExtensionConstants.BRICKTOOL, "Brick Tool", fieldEditorParent);
 
-    /* Disable this field editors */
-    nextToolPath.setEnabled(false, fieldEditorParent);
-    brickToolPath.setEnabled(false, fieldEditorParent);
-    nbcToolPath.setEnabled(false, fieldEditorParent);
-
     /* Add the fields */
     addField(nextToolPath);
     addField(brickToolPath);
