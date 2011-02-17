@@ -234,10 +234,6 @@ public class PianoComposite extends Composite {
     this.addKeyListener(pianoKeyListener);
   }
   
-  
-  
-  
-
   private void layoutComponents() {
     try {
       FormLayout thisLayout = new FormLayout();
@@ -621,7 +617,7 @@ public class PianoComposite extends Composite {
       double toneFreq = 0;
       boolean toneDouble = false;
       int toneId = keyId;
-
+      
       if (whiteKeys) {
         System.out.println("White Key: " + keyId);
         if (toneId > 6) {
@@ -724,7 +720,8 @@ public class PianoComposite extends Composite {
         //nxt.playTone(toneToPlay, duration);
     	 nxt.playTone(note.getTone(), note.getNoteTime());
       }
- 
+      if(noteLength.isFocusControl() || waitTime.isFocusControl())
+    	  this.length.setFocus();
       highlightKey(whiteKeys, keyId);
     } else {
       unHighlightKey(whiteKeys, keyId);
