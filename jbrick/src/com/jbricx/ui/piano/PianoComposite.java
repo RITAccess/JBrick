@@ -196,7 +196,7 @@ public class PianoComposite extends Composite {
     	waitTimeLData.width = 24;
     	waitTimeLData.height = 15;
     	waitTime.setLayoutData(waitTimeLData);
-    	waitTime.setText("20");
+    	waitTime.setText("40");
     }
     {
     	waitTimeLabel = new Label(this, SWT.NONE);
@@ -226,7 +226,7 @@ public class PianoComposite extends Composite {
     	noteLengthLData.width = 28;
     	noteLengthLData.height = 15;
     	noteLength.setLayoutData(noteLengthLData);
-    	noteLength.setText("40");
+    	noteLength.setText("80");
     }
 
       layoutComponents();
@@ -700,8 +700,22 @@ public class PianoComposite extends Composite {
       //int duration = (int) Math.round(toneDuration / noteLengthDiv); 
 
       System.out.println("Playing Tone: " + toneToPlay);
-      Integer noteDuration = Integer.parseInt(noteLength.getText());
-      Integer waitDuration = Integer.parseInt(waitTime.getText());
+      Integer noteDuration;
+      try{
+      noteDuration = Integer.parseInt(noteLength.getText());
+      }
+      catch(Exception e){
+    	  noteDuration = 80;
+    	  noteLength.setText("80");
+      }
+      Integer waitDuration;
+      try{
+      	waitDuration = Integer.parseInt(waitTime.getText());    	
+      }
+      catch(Exception e){
+    	  waitDuration = 40;
+    	  waitTime.setText("40");
+      }
 
       PianoNote note = new PianoNote(toneToPlay, noteLengthDiv, noteDuration, waitDuration);
       recording.AddKey(note);
