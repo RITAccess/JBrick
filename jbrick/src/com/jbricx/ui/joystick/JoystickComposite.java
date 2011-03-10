@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickButtonUtil;
 import com.jbricx.ui.joystick.wii.WiiMain;
 
@@ -87,6 +88,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
   static Display display;
 
   public static void showGUI() {
+
     display = Display.getDefault();
     Shell shell = new Shell(display);
 
@@ -118,8 +120,11 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
   public JoystickComposite(org.eclipse.swt.widgets.Composite parent, int style) {
     super(parent, style);
 
+    nxt = NXTManager.getInstance();
     display = Display.getDefault();
     shell = new Shell(display);
+    Thread th = new Thread(pollController);
+    th.start();
 
     initGUI();
   }
@@ -530,6 +535,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           public void widgetSelected(SelectionEvent evt) {
           }
         });
+
       }
 
       buttonArray.add(UpLeft);
