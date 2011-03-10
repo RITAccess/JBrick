@@ -44,7 +44,7 @@ public class CompileAction extends AbstractAction {
 		PersistentDocument currDoc = curTabItem.getDocument();
 		System.out.println("" + currDoc.getFileName());
 		if (currDoc.getFileName() == null) {
-			currDoc.setFileName(getManager().getWorkspacePath() + "\\" + curTabItem.getText() + ".bak.nxc");
+			currDoc.setFileName(getManager().getWorkspacePath() + "\\" + curTabItem.getText() + ".bak.nxcs");
 			try {
 				currDoc.save();
 			} catch (IOException e) {
