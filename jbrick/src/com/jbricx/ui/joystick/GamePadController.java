@@ -206,7 +206,9 @@ public class GamePadController {
   // ----------------- polling and getting data ------------------
   public boolean poll() // update the component values in the controller
   {
-    return controller.poll();
+	if(controller != null)
+		return controller.poll();
+	else return false;
   }
 
   public int getXYStickDir() // return the (x,y) analog stick compass direction

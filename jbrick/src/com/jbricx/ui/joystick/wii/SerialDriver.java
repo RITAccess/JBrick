@@ -51,7 +51,8 @@ public class SerialDriver implements javax.comm.SerialPortEventListener {
     //closes the port
 
     public void killSerial() {
-        port.close();
+    	if(port != null)
+    		port.close();
     }
 
     private void sInit(String com, int rate) {

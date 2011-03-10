@@ -339,14 +339,15 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
             public void widgetSelected(SelectionEvent evt) {
               // TODO: start xbox drivers here - NEEDS TESTING
-              connectJoypad();
               try {
-                wiiMain.killWiiThreads();
-                wiiMain = null;
-                thread = null;
-              } catch (NullPointerException e) {
-                // do nothing
+                gpc = new GamePadController();
+              } catch (Exception e) {
+                	  gpc = null;
               }
+              if(wiiMain != null)
+            		  wiiMain.killWiiThreads();
+              wiiMain = null;
+              thread = null;
 
               thread = new Thread(pollController);
               thread.start();
@@ -370,7 +371,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
               // } catch(NullPointerException e){
               // //do nothing
               // }
-              if (wiiMain == null) {
+              if (wiiMain == null && nxt != null) {
                 wiiMain = new WiiMain(nxt);
                 thread = new Thread(wiiMain);
                 thread.start();
@@ -553,14 +554,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
     }
   }
 
-  private static void connectJoypad() {
-    try {
-      gpc = new GamePadController();
-    } catch (Exception e) {
-      gpc = null;
-    }
-  }
-
   static GamePadController gpc;
   static AbstractNXTBrick nxt;
   static Motor Motor_1_ID = Motor.MOTOR_A;
@@ -611,6 +604,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         } else {
           useGUI = true;
         }
+        if(nxt == null) continue;
 
         if (virtualJoypad != lastVirtualJoypadValue) {
           useGUI = true;
