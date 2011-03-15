@@ -1,44 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project jbrick with Jar-in-Jar Loader">
-  <!--this file was created by Eclipse Runnable JAR Export Wizard-->
-  <!--ANT 1.7 is required                                        -->
-  <target name="create_run_jar">
-    <copy todir="./bin/config/">
-      <fileset dir="./resources/config/">
+<project default="create_jar" name="Create Runnable Jar for Project jbrick with Eclipse's Jar-in-Jar Loader">
+  <!--this file was [once] created by Eclipse Runnable JAR Export Wizard-->
+  <!--ANT 1.7 is required (or so we believe)                            -->
+
+  <!-- Properties used throughout the script -->
+  <property name="workDir" value="${basedir}/target" />
+  <property name="libsDir" value="${basedir}/lib" />
+	<property name="srcDir" value="${basedir}/src" />
+	<property name="configDirDest" value="${workDir}/config" />
+	<property name="configDirSrc" value="${basedir}/resources/config" />
+	<property name="imageDirDest" value="${workDir}/images/" />
+	<property name="imageDirSrc" value="${basedir}/resources/images/" />
+
+	<!-- Compiles the source code, no Eclipse required -->
+  <target name="compile" depends="prepare">
+    <javac target="1.6" source="1.6" destdir="${workDir}" classpath="${libsDir}">
+      <src path="${srcDir}" /> 
+      <classpath>
+        <fileset dir="${libsDir}"> 
+          <include name="**/*.jar"/> 
+        </fileset>  
+      </classpath>  
+    </javac>
+  </target>
+
+	<!-- A couple of things to do before compiling. -->
+  <target name="prepare">
+  	<delete dir="${workDir}" />
+    <mkdir dir="${workDir}"/>
+
+  	<!-- Copy the configuration files. -->
+    <copy todir="${configDirDest}">
+      <fileset dir="${configDirSrc}">
         <include name="**/*.xml" />
       </fileset>
     </copy>
-    <copy todir="./bin/images/">
-      <fileset dir="./resources/images/">
+
+    <!-- Copy the image files. -->
+    <copy todir="${imageDirDest}">
+      <fileset dir="${imageDirSrc}">
         <include name="**/*.*" />
       </fileset>
     </copy>
-    <jar destfile="./jbrick.jar">
+  </target>
+
+	<!-- Create the runnable JAR file -->
+  <target name="create_jar" depends="test">
+    <tstamp>
+  	  <!-- The format for the JAR file. -->
+      <format property="archive.name" pattern="'jbrick-'yyyyMMdd'.jar'" />
+    </tstamp>
+
+  	<!-- We haven't run this on a non-Windows machine. Check for the property ${os.name}. -->
+    <jar destfile="${basedir}/${archive.name}">
       <manifest>
         <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />
         <attribute name="Rsrc-Main-Class" value="com.jbricx.pjo.JBrickEditor" />
         <attribute name="Class-Path" value="." />
         <attribute name="Rsrc-Class-Path" value="./ org.eclipse.core.commands_3.4.0.I20080509-2000.jar org.eclipse.core.runtime_3.4.0.v20080512.jar org.eclipse.equinox.common_3.4.0.v20080421-2006.jar org.eclipse.jface_3.4.1.M20080827-2000.jar org.eclipse.jface.text_3.4.1.r341_v20080827-1100.jar org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar org.eclipse.swt_3.4.1.v3449c.jar org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar org.eclipse.text_3.4.0.v20080605-1800.jar swt_linux.jar swt-debug_linux.jar org.eclipse.core.jobs_3.4.0.v20080512.jar com.ibm.icu_4.0.1.v20090822.jar org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar jna.jar jinput.jar comm.jar" />
       </manifest>
-      <fileset dir="./bin" />
+
+      <fileset dir="${workDir}" />
       <zipfileset src="jar-in-jar-loader.zip" />
-      <zipfileset dir="./lib" includes="org.eclipse.core.commands_3.4.0.I20080509-2000.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.core.runtime_3.4.0.v20080512.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.equinox.common_3.4.0.v20080421-2006.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.jface_3.4.1.M20080827-2000.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.jface.text_3.4.1.r341_v20080827-1100.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.swt_3.4.1.v3449c.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.text_3.4.0.v20080605-1800.jar" />
-      <zipfileset dir="./lib" includes="swt_linux.jar" />
-      <zipfileset dir="./lib" includes="swt-debug_linux.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.core.jobs_3.4.0.v20080512.jar" />
-      <zipfileset dir="./lib" includes="com.ibm.icu_4.0.1.v20090822.jar" />
-      <zipfileset dir="./lib" includes="org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar" />
-      <zipfileset dir="./lib" includes="jna.jar" />
-      <zipfileset dir="./lib" includes="jinput.jar" />
-      <zipfileset dir="./lib/comm2.0.3" includes="comm.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.core.commands_3.4.0.I20080509-2000.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.core.runtime_3.4.0.v20080512.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.equinox.common_3.4.0.v20080421-2006.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.jface_3.4.1.M20080827-2000.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.jface.text_3.4.1.r341_v20080827-1100.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.osgi_3.4.2.R34x_v20080826-1230.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.swt_3.4.1.v3449c.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.swt.win32.win32.x86_3.4.1.v3449c.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.text_3.4.0.v20080605-1800.jar" />
+      <zipfileset dir="${libsDir}" includes="swt_linux.jar" />
+      <zipfileset dir="${libsDir}" includes="swt-debug_linux.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.core.jobs_3.4.0.v20080512.jar" />
+      <zipfileset dir="${libsDir}" includes="com.ibm.icu_4.0.1.v20090822.jar" />
+      <zipfileset dir="${libsDir}" includes="org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar" />
+      <zipfileset dir="${libsDir}" includes="jna.jar" />
+      <zipfileset dir="${libsDir}" includes="jinput.jar" />
+      <zipfileset dir="${libsDir}/comm2.0.3" includes="comm.jar" />
     </jar>
+
+    <delete dir="${workDir}" />
   </target>
+
+	<!-- A unit test target is missing, the application is packaged untested. -->
+	<target name="test" depends="compile">
+		<echo>MISSING TESTS!!1</echo>
+	</target>
 </project>

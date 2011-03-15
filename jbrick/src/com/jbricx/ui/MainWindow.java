@@ -215,7 +215,6 @@ public class MainWindow extends ApplicationWindow implements
     getMenuBarManager().updateAll(true);
     l.setFocus();
 
-    notifyViewers();
     return sashForm1; // return the created Composite.
   }
 
