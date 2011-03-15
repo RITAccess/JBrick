@@ -144,9 +144,8 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           buttonUtil.setAccessibleString(UpLeft, "Up Left Arrow");
 
           UpLeft.addSelectionListener(new SelectionAdapter() {
-
             public void widgetSelected(SelectionEvent evt) {
-              virtualJoypad = 0;
+                virtualJoypad = 0;
             }
           });
         }
@@ -167,7 +166,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         {
           UpRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
           UpRight.setImage(ImageDescriptor.createFromFile(getClass(),
-            "/images/Up.png").createImage());
+            "/images/UpRight.png").createImage());
           UpRight.setBounds(67, 37, 27, 26);
           buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
           UpRight.addSelectionListener(new SelectionAdapter() {
