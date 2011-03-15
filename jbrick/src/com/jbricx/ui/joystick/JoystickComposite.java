@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.NXT.Motor;
 import com.jbricx.communications.NXTManager;
@@ -532,6 +533,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         help.addSelectionListener(new SelectionAdapter() {
 
           public void widgetSelected(SelectionEvent evt) {
+        	  helpAction.runPianoLink();
           }
         });
 
@@ -558,7 +560,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
       e.printStackTrace();
     }
   }
-
+  private HelpContentAction helpAction = new HelpContentAction();
   static GamePadController gpc;
   static AbstractNXTBrick nxt;
   static Motor Motor_1_ID = Motor.MOTOR_A;
