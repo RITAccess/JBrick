@@ -148,23 +148,15 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
     ArrayList<String> recentfiles = getRecentFiles(ps);
 
-    boolean openedfile = false;
-
-    for (String file : recentfiles) {
-      File f = new File(file);
-      boolean exists = f.exists();
-      if (exists) {
-        open(file);
-        openedfile = true;
+    if (recentfiles.size() > 0) {
+      for (String file : recentfiles) {
+        if (new File(file).exists()) {
+          open(file);
+        }
       }
-
-    }
-
-    if (!openedfile) {
+    } else {
       this.openNewFile();
     }
-
-    // ///////////////////////////////////////////////////////////////
 
     // rulers
     AnnotationModel fAnnotationModel = new AnnotationModel();
@@ -221,7 +213,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     // counter for the number of times a new file is opened
     newFileCount++;
     String fileName = "New File " + newFileCount;
-
+    // load recent files if they exist on preference (JBrickEditor.properties)
     JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null,
         manager, sourceViewerConfiguration);
     newTabItem.update(manager.getPreferences());
@@ -310,12 +302,16 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
     // Get the preference store
     Boolean loadrecent = ps.getBoolean(FileExtensionConstants.BOOLRECENTFILES);
     ArrayList<String> recentfiles = new ArrayList<String>();
-    File dir = new File(manager.getWorkspacePath());
-    String[] fileNames = dir.list();
-    for (int i = 0; fileNames != null && i < fileNames.length; i++)
-      if (fileNames[i].endsWith(".bak.nxc"))
-        recentfiles.add(manager.getWorkspacePath() + "\\" + fileNames[i]);
     if (loadrecent) {
+      File dir = new File(manager.getWorkspacePath());
+      String[] fileNames = dir.list();
+
+      for (int i = 0; fileNames != null && i < fileNames.length; i++) {
+        if (fileNames[i].endsWith(".bak.nxc")) {
+          recentfiles.add(manager.getWorkspacePath() + "\\" + fileNames[i]);
+        }
+      }
+
       for (String s : ps.getString(FileExtensionConstants.RECENTFILES).split(
           ";")) {
         recentfiles.add(s);
