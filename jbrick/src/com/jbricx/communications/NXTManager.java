@@ -22,14 +22,11 @@ public class NXTManager extends AbstractNXTBrick {
   private static boolean running = false;
   private ConnectionType ct;
   private static final int WAITTIME = 3000;
-  private static final String COM = "/COM=usb";// USB0::0X0694::0X0002::0016530996B4::RAW";
-  // these must be on the build path. we will want to have
-  // this in preferences eventually.
   private static NXT nxt;
-  private static Fantom fantom;
 
   private Thread connectedRunnable = pollingCreator();
   private IPreferenceStore preferences;
+  private ConnectionType connectionType = FindBrickFileIO.getCT();
 
   private Thread pollingCreator() {
     return new Thread() {
@@ -39,10 +36,10 @@ public class NXTManager extends AbstractNXTBrick {
         while (running) {
           try {
             Thread.sleep(WAITTIME);
-            connect(FindBrickFileIO.getCT());
+            connect(connectionType);
           } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-            // e.printStackTrace();
+            e.printStackTrace();
           }
         }
       }
@@ -61,13 +58,6 @@ public class NXTManager extends AbstractNXTBrick {
     return nxtManager;
   }
 
-  /*
-   * public Fantom getFantom() throws FantomDriverNotFoundException { if (fantom
-   * == null) { throw new
-   * FantomDriverNotFoundException("Fantom driver not found!"); } else { return
-   * fantom; } }
-   */
-
   public AbstractNXTBrick connect(ConnectionType type) {
     try {
       ct = type;
@@ -78,9 +68,8 @@ public class NXTManager extends AbstractNXTBrick {
       if (!connectedRunnable.isAlive()) {
         connectedRunnable = pollingCreator();
         connectedRunnable.start();
+        nxt.setConnected(true);
       }
-      nxt.setConnected(true);
-
     } catch (NXTNotFoundException e) {
       // JOptionPane.showMessageDialog(null, "No bricks found...");
       System.out.println("NXTManager.java :: Trying to connect to "
@@ -180,17 +169,17 @@ public class NXTManager extends AbstractNXTBrick {
   @Override
   public ExitStatus downloadFile(String filename) {
     List<String> command = new ArrayList<String>();
-    command.add(preferences.getString(FileExtensionConstants.NBCTOOL));
-    command.add("-S=usb");// +where);
-    command.add("-d");
-    command.add(filename);
+    // command.add(preferences.getString(FileExtensionConstants.NBCTOOL));
+    // command.add("-S=usb");// +where);
+    // command.add("-d");
+    // command.add(filename);
     // System.out.println("Command:"+command.toString());
     // return run(command);
     System.out.println("Downloading...");
-    
+
     if (isConnected()) {
       // System.out.println("connectd");
-      nxt.download(filename);
+      // nxt.download(filename);
       return run(command);
     } else {
       return new ExitStatus(ExitStatus.ERROR,
@@ -223,6 +212,7 @@ public class NXTManager extends AbstractNXTBrick {
   }
 
   public void setConnected(boolean isConnected) {
+    System.out.println("NXTManager.setConnected()" + isConnected);
     nxt.setConnected(isConnected);
   }
 

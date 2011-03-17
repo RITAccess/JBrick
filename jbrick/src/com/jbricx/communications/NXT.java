@@ -3,7 +3,6 @@ package com.jbricx.communications;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
-import com.jbricx.communications.exceptions.FantomDriverNotFoundException;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.sun.jna.Native;
@@ -52,7 +51,6 @@ public class NXT {
         }
       }
       return null;
-
     }
   }
 

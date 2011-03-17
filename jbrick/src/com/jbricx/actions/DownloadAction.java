@@ -14,8 +14,8 @@ public class DownloadAction extends AbstractAction {
    * AboutAction constructor
    */
   public DownloadAction(final JBrickManager manager) {
-    super("&Download@Ctrl+Alt+B",
-        ImageDescriptor.createFromFile(AboutAction.class, "/images/media-playback-start.png"), manager);
+    super("&Download@Ctrl+Alt+B", ImageDescriptor.createFromFile(
+        AboutAction.class, "/images/media-playback-start.png"), manager);
     setToolTipText("Download");
   }
 
@@ -28,13 +28,15 @@ public class DownloadAction extends AbstractAction {
     AbstractNXTBrick nxt = NXTManager.getInstance();
 
     // nxt.NXTConnect(NXT.ConnectionType.USB);
-    ExitStatus e = nxt.downloadFile(getManager().getTabFolder().getSelection().getDocument().getFileName());
+    ExitStatus e = nxt.downloadFile(getManager().getTabFolder().getSelection()
+        .getDocument().getFileName());
 
     if (e.isOk()) {
-      MessageDialog.openInformation(getManager().getShell(), "Download", "Downloading was a success!!");
+      MessageDialog.openInformation(getManager().getShell(), "Download",
+          "Downloading was a success!!");
     } else {
-      MessageDialog.openInformation(getManager().getShell(), "Download", "Downloading failed: \n" + e.getMesage());
+      MessageDialog.openInformation(getManager().getShell(), "Download",
+          "Downloading failed: \n" + e.getMesage());
     }
-
   }
 }

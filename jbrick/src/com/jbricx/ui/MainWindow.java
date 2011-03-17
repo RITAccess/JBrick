@@ -303,6 +303,7 @@ public class MainWindow extends ApplicationWindow implements
         }
       }
     }
+    NXTManager.getInstance().stopPolling();
     return close;
   }
 
