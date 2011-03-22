@@ -237,4 +237,11 @@ public class HelpBrowser extends ApplicationWindow {
      File file = new File(val);
      browser.setUrl(file.getAbsolutePath());
   }
+	
+	public void runJoistickLink(){
+    String val = "help\\html\\Joistick Composer.html";
+    File file = new File(val);
+    browser.setUrl(file.getAbsolutePath());
+  }
+	
 }
