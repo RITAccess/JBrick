@@ -59,8 +59,7 @@ public class CustomTree {
 
 					File file = new File(item.getUrl());
 					System.out.println(file.getAbsolutePath());
-					browser.setUrl(file.getAbsolutePath());
-
+					browser.setUrl(file.getAbsolutePath());					
 				}
 			}
 		});
@@ -85,6 +84,7 @@ public class CustomTree {
 		nodes.add(category);
 		new Node("Basic Tutorial", category, "help\\html\\basictutorial.html");
 		nodes.add(new Node("Piano Composer", null, "help\\html\\Piano Composer.html"));
+		nodes.add(new Node("Joystick Composer", null, "help\\html\\Joistick Composer.html"));
 		//category = new Node("Concepts", null, "help\\html\\concepts.html");
 		//nodes.add(category);
 
