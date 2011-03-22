@@ -3,8 +3,8 @@ package com.jbricx.actions;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.communications.AbstractNXTBrick;
 import com.jbricx.communications.ExitStatus;
+import com.jbricx.communications.NXTConnectionManager;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;
 
@@ -25,7 +25,7 @@ public class DownloadAction extends AbstractAction {
   public void run() {
 
     // System.out.println(JBrickEditor.getMainWindow().getCurrentTabItem().getDocument().getFileName());
-    AbstractNXTBrick nxt = NXTManager.getInstance();
+    NXTConnectionManager nxt = NXTManager.getInstance();
 
     // nxt.NXTConnect(NXT.ConnectionType.USB);
     ExitStatus e = nxt.downloadFile(getManager().getTabFolder().getSelection()

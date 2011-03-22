@@ -21,17 +21,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.NXT.Motor;
-import com.jbricx.communications.NXT.Sensor;
-import com.jbricx.communications.NXT.SensorMode;
-import com.jbricx.communications.NXT.SensorType;
+import com.jbricx.communications.NXTGadgetManager;
+import com.jbricx.communications.enums.Motor;
+import com.jbricx.communications.enums.Sensor;
+import com.jbricx.communications.enums.SensorMode;
+import com.jbricx.communications.enums.SensorType;
 import com.jbricx.ui.JBrickButtonUtil;
 
 /**
- * 
  * @author Yuji Fujiki
- *
  */
 public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 
@@ -76,7 +74,7 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
 	JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 	private ArrayList<Button> allButtons = new ArrayList<Button>();
 	private ArrayList<Scale> allScale = new ArrayList<Scale>();
-	private static AbstractNXTBrick nxt;
+	private static NXTGadgetManager nxt;
 	final Runnable timer = new Runnable() {
 
 		public void run() {

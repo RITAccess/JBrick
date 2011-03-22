@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.enums.ConnectionType;
 
 public class FindBrickFileIO {
 

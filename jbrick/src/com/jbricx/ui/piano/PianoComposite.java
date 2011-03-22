@@ -6,10 +6,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -24,7 +21,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -45,11 +41,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.actions.HelpContentAction;
-import com.jbricx.communications.AbstractNXTBrick;
+import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -109,7 +104,7 @@ public class PianoComposite extends Composite {
   private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
   private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
   private static final boolean USE_BRICK = true;
-  private static AbstractNXTBrick nxt;
+  private static NXTGadgetManager nxt;
   private static PianoComposite myPianoComp;
   int noteLengthDiv = 4;
   int transposeMult = 3;
@@ -268,11 +263,7 @@ public class PianoComposite extends Composite {
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-			    //if(!disabuttons){
-			        help();
-				  //}else{
-				  //  System.out.println("help button is disabled");
-				  //}
+				help();
 			}
 			
 			@Override
@@ -296,11 +287,7 @@ public class PianoComposite extends Composite {
 				// TODO Auto-generated method stub
 				//savingPianoNotesFile spnf = new savingPianoNotesFile();
 				//spnf.receivingNotes(recording.getNotes());
-			    //if(!disabuttons){
-			        creatingSavingInterface();
-			    //}else{
-			    //  System.out.println("save button is disabled");
-			    //}
+				creatingSavingInterface();
 			}
 			@Override
 			public void mouseDown(MouseEvent arg0) {
@@ -329,7 +316,7 @@ public class PianoComposite extends Composite {
 			
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-			  playButtonPressed();
+				playButtonPressed();
 			}
 			
 			@Override
@@ -888,15 +875,17 @@ public class PianoComposite extends Composite {
   }
 
   protected void highlightKey(boolean whiteKeys, int keyId) {
-      cleanKeys();
-      if (whiteKeys) {
-        whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
-      } else {
-        blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
-      }
-      this.layout();
-      pack();
-      this.setSize(1307, 453);
+
+    cleanKeys();
+
+    if (whiteKeys) {
+      whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
+    } else {
+      blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
+    }
+    this.layout();
+    pack();
+    this.setSize(1307, 453);
   }
 
   private void buildKeyLabels() {

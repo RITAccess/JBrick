@@ -1,10 +1,5 @@
 package com.jbricx.ui.findbrick;
 
-/*
- * @author Michael Goldstein
- * @author Priya Sankaran
- * 
- */
 import java.awt.Toolkit;
 
 import org.eclipse.swt.SWT;
@@ -21,11 +16,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.NXT.ConnectionType;
+import com.jbricx.communications.NXTConnectionManager;
 import com.jbricx.communications.NXTManager;
+import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.ui.JBrickButtonUtil;
 
+/**
+ * @author Michael Goldstein
+ * @author Priya Sankaran
+ */
 @SuppressWarnings("unused")
 public class FindBrickComposite extends Composite {
 
@@ -105,8 +104,8 @@ public class FindBrickComposite extends Composite {
       info.setBounds(3, 15, 340, 60);
 
       info.setText("To connect to the brick, select the communication method "
-          + "and click 'Connect'.  You can save your preference by clicking "
-          + "the 'Save' button so you do not need to come back to this screen "
+          + "and click Connect.  You can save your preference by clicking "
+          + "the Save button so you do not need to come back to this screen "
           + "in the future.");
 
       connectionGrp = new Group(this, SWT.NONE);
@@ -118,7 +117,7 @@ public class FindBrickComposite extends Composite {
 
       if (NXTManager.getInstance().isConnected()) {
         connectionInfo.setText("Connected using "
-            + NXTManager.getInstance().getConnectionType().toString());
+            + NXTManager.getInstance());
       } else {
         connectionInfo.setText("Not Connected..!");
       }
@@ -160,6 +159,30 @@ public class FindBrickComposite extends Composite {
         }
       });
 
+      connect = new Button(this, SWT.PUSH | SWT.CENTER);
+      connect.setText("Connect");
+      connect.setBounds(74, 250, 60, 30);
+      buttonUtil.setAccessibleString(connect, "Connect");
+      connect.addListener(SWT.Selection, new Listener() {
+
+        public void handleEvent(Event event) {
+          NXTConnectionManager nxtManager = NXTManager.getInstance();
+          nxtManager.connect(ct);
+          boolean isConnected = nxtManager.isConnected();
+         
+          if (!isConnected) {
+            String status = "Connection attempted using " + ct + " but failed!";
+            connectionInfo.setText(status);
+
+            Toolkit.getDefaultToolkit().beep();
+            buttonUtil.setAccessibleString(connectionInfo, status);
+          } else {
+            getParent().dispose();
+          }
+          nxtManager.notifyAllObservers(isConnected);
+        }
+      });
+
       save = new Button(this, SWT.PUSH | SWT.CENTER);
       save.setText("Save");
       save.setBounds(157, 250, 60, 30);
@@ -180,32 +203,6 @@ public class FindBrickComposite extends Composite {
       cancel.addListener(SWT.Selection, new Listener() {
         public void handleEvent(Event event) {
           getParent().dispose();
-        }
-      });
-
-      connect = new Button(this, SWT.PUSH | SWT.CENTER);
-      connect.setText("Connect");
-      connect.setBounds(74, 250, 60, 30);
-      buttonUtil.setAccessibleString(connect, "Connect");
-
-      connect.addListener(SWT.Selection, new Listener() {
-
-        public void handleEvent(Event event) {
-          AbstractNXTBrick nxtManager = NXTManager.getInstance();
-          nxtManager.connect(ct);
-          boolean isConnected = nxtManager.isConnected();
-         
-          if (!isConnected) {
-            String status = "Connection attempted using " + ct + " but failed!";
-            connectionInfo.setText(status);
-
-            Toolkit.getDefaultToolkit().beep();
-            buttonUtil.setAccessibleString(connectionInfo, status);
-          } else {
-            nxtManager.playTone(1000, 300);
-            getParent().dispose();
-          }
-          nxtManager.notifyAllObservers(isConnected);
         }
       });
 

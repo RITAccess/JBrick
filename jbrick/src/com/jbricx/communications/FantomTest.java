@@ -1,8 +1,8 @@
 package com.jbricx.communications;
 
-import com.jbricx.communications.NXT.Sensor;
-import com.jbricx.communications.NXT.SensorMode;
-import com.jbricx.communications.NXT.SensorType;
+import com.jbricx.communications.enums.Sensor;
+import com.jbricx.communications.enums.SensorMode;
+import com.jbricx.communications.enums.SensorType;
 
 public class FantomTest {
 
@@ -10,13 +10,13 @@ public class FantomTest {
 	 * @param args
 	 */
 	
-	static NXT nxt;
+	static NXTConnection nxt;
 	
 	
 	public static void main(String[] args){
 		try{
 			System.out.println("Starting");
-			NXT nxt = new NXT("USB");
+			NXTConnection nxt = new NXTConnection("USB");
 //			nxt.resetMotor(Motor.MOTOR_A.getPort());
 //			nxt.runMotor(Motor.MOTOR_A.getPort(),100);
 //			System.out.println("Connected");

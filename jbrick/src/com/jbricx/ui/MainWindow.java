@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
-import com.jbricx.communications.NXT;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.preferences.JBrickObserver;
@@ -76,7 +75,7 @@ public class MainWindow extends ApplicationWindow implements
     prefs.addPropertyChangeListener(this);
 
     NXTManager.getInstance().setPreferences(preferences);
-    if (NXT.isFantomDriverLoaded()) {
+    if (NXTManager.isFantomDriverLoaded()) {
       NXTManager.getInstance().connect(FindBrickFileIO.getCT());
     } else {
       // TODO: make the notification accessible!

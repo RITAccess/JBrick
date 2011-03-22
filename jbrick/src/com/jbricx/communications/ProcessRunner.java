@@ -10,7 +10,7 @@ public class ProcessRunner {
 
 	// public ExitStatus run(List<String> cmd) {
 	public ExitStatus run(List<String> cmd) {
-		download();		
+		download();
 		return new ExitStatus(
 				ExitStatus.OK,
 				"If you got this error something terrible happened. Good luck finding out what happend. Let the force be with you.");
@@ -18,13 +18,17 @@ public class ProcessRunner {
 	
 	public static void download(){
 		List<String> command = new ArrayList<String>();
-		command.add("X:\\workspace\\jbrick\\lib\\nbc.exe");
-		command.add("-S=usb");
-		command.add("-d");
-		command.add("C:\\Users\\user\\Desktop\\test15555.nxc");
+//		command.add("D:\\workspace\\jbrick\\lib\\nbc.exe");
+//		command.add("-S=usb");
+//		command.add("-d");
+//		command.add("D:/Desktop/nxc/Untitled1.nxc");
 
 		Process p;
-		ProcessBuilder pb = new ProcessBuilder(command);
+		ProcessBuilder pb = new ProcessBuilder(
+		        "D:\\workspace\\jbrick\\lib\\nbc.exe"
+            ,"-S=usb"
+            ,"-d"
+            ,"D:\\Desktop\\nxc\\hola.nxc");
 
 		try {
 			p = pb.start();

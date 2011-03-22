@@ -2,7 +2,7 @@ package com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.communications.NXT;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.findbrick.FindBrickUIWindow;
 
@@ -18,7 +18,7 @@ public class FindBrickAction extends AbstractAction {
     super("&FindBrick@Ctrl+B", ImageDescriptor.createFromFile(
         FindBrickAction.class, "/images/find_brick.png"), manager);
     setToolTipText("Find Brick");
-    setEnabled(NXT.isFantomDriverLoaded());
+    setEnabled(NXTManager.isFantomDriverLoaded());
     // try {
     // NXTManager.getInstance().getFantom();
     // } catch (FantomDriverNotFoundException e) {

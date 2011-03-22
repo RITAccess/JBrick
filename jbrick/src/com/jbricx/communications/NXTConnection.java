@@ -1,18 +1,24 @@
 package com.jbricx.communications;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 
+import com.jbricx.communications.enums.ConnectionType;
+import com.jbricx.communications.enums.Sensor;
+import com.jbricx.communications.enums.SensorMode;
+import com.jbricx.communications.enums.SensorType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 /**
- * 
  * @author Spencer Herzberg
+ * @author byktol
  */
-public class NXT {
+public class NXTConnection {
+  private static Fantom fantom;
+  private Pointer nxtPointer;
+  private static boolean isDriverLoaded;
 
   static {
     try {
@@ -24,227 +30,19 @@ public class NXT {
     }
   }
 
-  public enum Motor {
-
-    MOTOR_A((byte) 0x00, "Motor A"), MOTOR_B((byte) 0x01, "Motor B"), MOTOR_C(
-        (byte) 0x02, "Motor C");
-    private byte port;
-    private String name;
-
-    Motor(byte port, String name) {
-      this.port = port;
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public byte getPort() {
-      return port;
-    }
-
-    public static Motor getMotorByName(String name) {
-      for (Motor m : values()) {
-        if (m.getName().equals(name)) {
-          return m;
-        }
-      }
-      return null;
-    }
-  }
-
-  public static final HashMap<String, Motor> MOTORS = new HashMap<String, Motor>();
-
-  static {
-    for (Motor m : Motor.values()) {
-      MOTORS.put(m.getName(), m);
-    }
-  }
-
-  public enum Sensor {
-
-    SENSOR_1((byte) 0x00, "Sensor 1"), SENSOR_2((byte) 0x01, "Sensor 2"), SENSOR_3(
-        (byte) 0x02, "Sensor 3"), SENSOR_4((byte) 0x03, "Sensor 4");
-    private byte port;
-    private String name;
-    private SensorType type;
-    private SensorMode mode;
-    private boolean enabled;
-
-    Sensor(byte port, String name) {
-      this.port = port;
-      this.name = name;
-      this.type = SensorType.NONE;
-      this.mode = SensorMode.BOOLEAN;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public byte getPort() {
-      return port;
-    }
-
-    public byte getType() {
-      return type.getType();
-    }
-
-    public byte getMode() {
-      return mode.getMode();
-    }
-
-    public void setMode(SensorMode mode) {
-      this.enabled = true;
-      this.mode = mode;
-    }
-
-    public void setType(SensorType type) {
-      if (type == SensorType.NONE) {
-        this.enabled = false;
-      } else {
-        this.enabled = true;
-      }
-      this.type = type;
-    }
-
-    public boolean isEnabled() {
-      return enabled;
-    }
-  }
-
-  public static final HashMap<String, Sensor> SENSORS = new HashMap<String, Sensor>();
-
-  static {
-    for (Sensor s : Sensor.values()) {
-      SENSORS.put(s.getName(), s);
-    }
-  }
-
-  public enum SensorType {
-
-    NONE((byte) 0x00, "None", SensorMode.RAW), SWITCH((byte) 0x01, "Switch",
-        SensorMode.BOOLEAN), SOUNDDB((byte) 0x07, "Sound DB", SensorMode.RAW), REFLECTION(
-        (byte) 0x03, "Reflection", SensorMode.RAW), LOWSPEED9V((byte) 0x0B,
-        "Low Speed 9V", SensorMode.RAW), TEMPERATURE((byte) 0x02,
-        "Temperature", SensorMode.FAHRENHEIT), ANGLE((byte) 0x04, "Angle",
-        SensorMode.RAW), LIGHTACTIVE((byte) 0x05, "Light Active",
-        SensorMode.RAW), LIGHTINACTIVE((byte) 0x06, "Light Inactive",
-        SensorMode.RAW), SOUNDDBA((byte) 0x08, "Sound DBA", SensorMode.RAW), CUSTOM(
-        (byte) 0x09, "Custom", SensorMode.RAW), LOWSPEED((byte) 0x0A,
-        "Low Speed", SensorMode.RAW), TOUCH((byte) 0x0C, "Touch",
-        SensorMode.RAW);
-    private byte type;
-    private String name;
-    private SensorMode defaultMode;
-
-    SensorType(byte type, String name, SensorMode mode) {
-      this.type = type;
-      this.name = name;
-      this.defaultMode = mode;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public byte getType() {
-      return type;
-    }
-
-    public SensorMode getMode() {
-      return defaultMode;
-    }
-
-    public static SensorType getTypeByName(String name) {
-      for (SensorType s : values()) {
-        if (s.getName().equals(name)) {
-          return s;
-        }
-      }
-      return null;
-
-    }
-  }
-
-  public enum SensorMode {
-
-    RAW((byte) 0x00, "Raw"), BOOLEAN((byte) 0x20, "Boolean"), TRANSITIONCNT(
-        (byte) 0x40, "Transition CNT"), PERIODCOUNTER((byte) 0x60,
-        "Period Counter"), PCTFULLSCALE((byte) 0x80, "PCT Full Scale"), CELSIUS(
-        (byte) 0xA0, "Celsius"), FAHRENHEIT((byte) 0xC0, "Fahrenheit"), ANGLESTEP(
-        (byte) 0xC0, "Angle Step"), SLOPEMASK((byte) 0xE0, "Slope Mask"), MASK(
-        (byte) 0xE0, "Mask");
-    private byte mode;
-    private String name;
-
-    SensorMode(byte mode, String name) {
-      this.mode = mode;
-      this.name = name;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public byte getMode() {
-      return mode;
-    }
-
-    public static SensorMode getTypeByName(String name) {
-      for (SensorMode m : values()) {
-        if (m.getName().equals(name)) {
-          return m;
-        }
-      }
-      return null;
-    }
-  }
-
-  public enum ConnectionType {
-
-    USB("USB"), BLUETOOTH("BTH");
-    private String name;
-
-    ConnectionType(String name) {
-      this.name = name;
-    }
-
-    public String getName() {
-      return this.name;
-    }
-  }
-
-  private static Fantom fantom;
-  // private String name;
-  private Pointer nxtPointer;
-  public boolean isConnected = false;
-  private static boolean isDriverLoaded;
-
-  public NXT(String name) throws NXTNotFoundException,
-      UnableToCreateNXTException {
+  public NXTConnection(String name) throws NXTNotFoundException, UnableToCreateNXTException {
     if (isFantomDriverLoaded()) {
-      // this.name = name;
       this.nxtPointer = connect(name);
     }
   }
 
-  public Pointer getPointer() {
-    return this.nxtPointer;
-  }
-
-  public void setConnected(boolean isConnected) {
-    this.isConnected = isConnected;
-  }
-
-  public ExitStatus download(String filename) {
-    System.out.println("lodingdown");
-    return new ExitStatus(0, "Download failed");
-  }
-
-  public static boolean isFantomDriverLoaded() {
+  protected static boolean isFantomDriverLoaded() {
     return isDriverLoaded;
+  }
+
+  public ConnectionType getConnectionType() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   public void startProgram(String filename) {
@@ -266,8 +64,7 @@ public class NXT {
         null, 0, new Status());
   }
 
-  private Pointer connect(String name) throws NXTNotFoundException,
-      UnableToCreateNXTException {
+  private Pointer connect(String name) throws NXTNotFoundException, UnableToCreateNXTException {
     Status status = new Status();
     Pointer iNXTIterator = fantom.nFANTOM100_createNXTIterator(true, 5, status);
     try {
@@ -281,10 +78,8 @@ public class NXT {
               status);
 
           if (Status.Statuses.SUCCESS.equals(status.getStatus())) {
-            this.isConnected = true;
             return iNXT;
           } else {
-            setConnected(false);
             throw new UnableToCreateNXTException(
                 " not able to create connection");
           }
@@ -297,6 +92,11 @@ public class NXT {
       }
     }
     throw new NXTNotFoundException(" no nxt found");
+  }
+
+  public void disconnect() {
+    Status status = new Status();
+    fantom.nFANTOM100_destroyNXTIterator(nxtPointer, status);
   }
 
   // private Pointer directConnect()throws UnableToCreateNXTException
@@ -391,7 +191,6 @@ public class NXT {
       fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command,
           command.capacity(), null, 0, status);
     } catch (NullPointerException e) {
-      this.isConnected = false;
     }
 
   }
@@ -417,7 +216,6 @@ public class NXT {
       fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command,
           command.capacity(), null, 0, status);
     } catch (NullPointerException e) {
-      this.isConnected = false;
     }
   }
 
@@ -432,19 +230,18 @@ public class NXT {
       fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false, command,
           command.capacity(), null, 0, status);
     } catch (NullPointerException e) {
-      this.isConnected = false;
     }
   }
 
   public void setSensorType(String name, SensorType type) {
-    Sensor s = SENSORS.get(name);
+    Sensor s = Sensor.valueOf(name);
     s.setType(type);
 
     resetSensor(s);
   }
 
   public void setSensorMode(String name, SensorMode mode) {
-    Sensor s = SENSORS.get(name);
+    Sensor s = Sensor.valueOf(name);
     s.setMode(mode);
 
     resetSensor(s);
@@ -499,7 +296,7 @@ public class NXT {
   }
 
   public byte[] getSensorValues(String sensorName) {
-    Sensor s = SENSORS.get(sensorName);
+    Sensor s = Sensor.valueOf(sensorName);
     // used for the distance
     Status status = new Status();
     ByteBuffer command = ByteBuffer.allocate(2);
@@ -549,7 +346,7 @@ public class NXT {
 
     System.out.println("----");
     try {
-      NXT nxt = new NXT("USB");
+      NXTConnection nxt = new NXTConnection("USB");
       System.out.println("----");
       for (int i = 0; i < 10; i++) {
         System.out.println("i " + i);
@@ -566,6 +363,5 @@ public class NXT {
     }
 
     System.out.println("Totally Done");
-
   }
 }

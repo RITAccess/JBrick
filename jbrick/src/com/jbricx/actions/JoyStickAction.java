@@ -2,7 +2,7 @@ package com.jbricx.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.jbricx.communications.NXT;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.joystick.JoystickUIWindow;
@@ -21,7 +21,7 @@ public class JoyStickAction extends AbstractAction implements NXTObserver {
         JoyStickAction.class, "/images/joystick_icon.png"), manager);
     setToolTipText("Joystick");
     
-    setEnabled(NXT.isFantomDriverLoaded());
+    setEnabled(NXTManager.isFantomDriverLoaded());
   }
 
   /**

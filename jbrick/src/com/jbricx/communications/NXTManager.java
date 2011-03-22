@@ -1,86 +1,122 @@
 package com.jbricx.communications;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import com.jbricx.communications.NXT.ConnectionType;
-import com.jbricx.communications.NXT.Motor;
-import com.jbricx.communications.NXT.Sensor;
-import com.jbricx.communications.NXT.SensorMode;
-import com.jbricx.communications.NXT.SensorType;
+import com.jbricx.communications.enums.ConnectionType;
+import com.jbricx.communications.enums.Motor;
+import com.jbricx.communications.enums.Sensor;
+import com.jbricx.communications.enums.SensorMode;
+import com.jbricx.communications.enums.SensorType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.ui.findbrick.FindBrickFileIO;
 
-public class NXTManager extends AbstractNXTBrick {
+/**
+ * @author Abhishek Shrestha 
+ * @author byktol
+ */
+public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   private static NXTManager nxtManager = null;
-  private static ArrayList<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
 
-  private static boolean running = false;
-  private ConnectionType ct;
-  private static final int WAITTIME = 3000;
-  private static NXT nxt;
+  private static final int sleepTime = 3000;
 
-  private Thread connectedRunnable = pollingCreator();
+  private final Map<String, NXTConnection> connections = new HashMap<String, NXTConnection>();
+  private final Map<String, Thread> threads = new HashMap<String, Thread>();
+  private final Map<String, Boolean> runnings = new HashMap<String, Boolean>();
+
+  private final ArrayList<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
+
+  private final ProcessRunner processRunner = new ProcessRunner();
   private IPreferenceStore preferences;
-  private ConnectionType connectionType = FindBrickFileIO.getCT();
+  /* FIXME: This variable is meant to be used help point the current connection,
+   * but the methods it's been used in doesn't help it. I mean methods such as
+   * connect(), which set the value of this variable but it's invoked many times
+   * by a thread.
+   */
+  private String currentConnection;
 
-  private Thread pollingCreator() {
-    return new Thread() {
-      @Override
-      public void run() {
-        running = true;
-        while (running) {
-          try {
-            Thread.sleep(WAITTIME);
-            connect(connectionType);
-          } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-        }
-      }
-    };
-  }
-
-  private NXTManager() {
-
-  }
+  /**
+   * Constructor for Singleton
+   */
+  private NXTManager() { }
 
   static {
     nxtManager = new NXTManager();
   }
 
+  public static boolean isFantomDriverLoaded() {
+    return NXTConnection.isFantomDriverLoaded();
+  }
+
+  /**
+   * 
+   * @param name
+   * @return
+   */
+  private Thread createConnectionPollingThread(final String name) {
+    return new Thread() {
+      @Override
+      public void run() {
+        runnings.put(name, true);
+        while (runnings.get(name)) {
+          try {
+            Thread.sleep(sleepTime);
+            connect(connections.get(name).getConnectionType());
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+        connections.remove(name);
+        threads.remove(name);
+        runnings.remove(name);
+      }
+    };
+  }
+
+  /**
+   * FIXME: This doesn't look good. Create a process runner and return a method
+   * call's result. 
+   */
+  public ExitStatus run(String... command) {
+    return processRunner.run(Arrays.asList(command));
+  }
+
+  /**
+   * @return the instance
+   */
   public static NXTManager getInstance() {
     return nxtManager;
   }
 
-  public AbstractNXTBrick connect(ConnectionType type) {
+  public NXTGadgetManager connect(ConnectionType type) {
     try {
-      ct = type;
-      nxt = new NXT(type.getName());
+      currentConnection = type.getName();
+      NXTConnection nxtConn = new NXTConnection(type.getName());
+      connections.put(type.getName(), nxtConn);
       // playTone(2000, 200);
+      notifyAllObservers(nxtConn.isConnected());
 
-      notifyAllObservers(nxt.isConnected());
-      if (!connectedRunnable.isAlive()) {
-        connectedRunnable = pollingCreator();
-        connectedRunnable.start();
-        nxt.setConnected(true);
+      Thread t = createConnectionPollingThread(type.getName());
+      if (threads.get(type.getName()) != null && !threads.get(type.getName()).isAlive()) {
+        threads.put(type.getName(), t) .start();
+      } else {
+        threads.put(type.getName(), t);
+        t.start();
       }
+      playTone(1000, 300);
+
     } catch (NXTNotFoundException e) {
       // JOptionPane.showMessageDialog(null, "No bricks found...");
       System.out.println("NXTManager.java :: Trying to connect to "
           + type.getName() + " but failed!");
       // stop polling once the brick has been disconnected
-      running = false;
-      try {
-        nxt.setConnected(false);
-      } catch (NullPointerException ne) {
+      runnings.put(type.getName(), false);
 
-      }
       notifyAllObservers(false);
     } catch (UnableToCreateNXTException e) {
       System.out.println("NXTManager.java :: Unable to create NXT...");
@@ -88,37 +124,43 @@ public class NXTManager extends AbstractNXTBrick {
       // stop polling once the brick has been disconnected
 
       try {
-        nxt.setConnected(false);
-        connectedRunnable.interrupt();
+        threads.get(type.getName()).interrupt();
       } catch (NullPointerException ne) {
-
       }
     }
     return this;
   }
 
-  public void notifyObserver(NXTObserver o, boolean isConnected) {
-    o.update(isConnected);
+  @Override
+  public void disconnect() {
+    disconnect(currentConnection);
+  }
+
+  @Override
+  public void disconnect(final String name) {
+    connections.remove(name).disconnect();
+    runnings.remove(name);
+    
+
+    if (threads.get(name) != null) {
+      threads.remove(name).interrupt();
+    }
+  }
+
+  /**
+   * Register an observer
+   * @param observer
+   */
+  public void register(final NXTObserver observer) {
+    nxtObservers.add(observer);
   }
 
   public void notifyAllObservers(boolean isConnected) {
-    try {
-      nxt.setConnected(isConnected);
-    } catch (NullPointerException e) {
-
-    }
     for (NXTObserver nxtObserver : nxtObservers) {
       nxtObserver.update(isConnected);
     }
   }
 
-  public void register(NXTObserver observer) {
-    nxtObservers.add(observer);
-  }
-
-  public ConnectionType getConnectionType() {
-    return ct;
-  }
 
   /*
    * public void notifyFantomListener(FantomListener fl, boolean
@@ -131,14 +173,14 @@ public class NXTManager extends AbstractNXTBrick {
   @Override
   public ExitStatus compile(String filename) {
     System.out.println("Trying to compile: " + filename);
-    List<String> command = new ArrayList<String>();
-    command.add(preferences.getString(FileExtensionConstants.NBCTOOL));
-    // command.add("-help");
-    // command.add("-S");//+where);
-    // command.add("usb");
-    // command.add("-d");
-    command.add(filename);
-
+    final String[] command = {
+       preferences.getString(FileExtensionConstants.NBCTOOL),
+    //  "-help",
+    //  "-S", //+where);
+    //  "usb",
+    //  "-d",
+      filename,
+    };
     return run(command);
   }
 
@@ -168,22 +210,21 @@ public class NXTManager extends AbstractNXTBrick {
 
   @Override
   public ExitStatus downloadFile(String filename) {
-    List<String> command = new ArrayList<String>();
-    // command.add(preferences.getString(FileExtensionConstants.NBCTOOL));
-    // command.add("-S=usb");// +where);
-    // command.add("-d");
-    // command.add(filename);
-    // System.out.println("Command:"+command.toString());
-    // return run(command);
+    final String[] command = {
+      preferences.getString(FileExtensionConstants.NBCTOOL),
+    //  "-S=usb", // +where);
+    //  "-d",
+    //  filename,
+    };
     System.out.println("Downloading...");
 
     if (isConnected()) {
-      // System.out.println("connectd");
-      // nxt.download(filename);
+      disconnect();
       return run(command);
     } else {
-      return new ExitStatus(ExitStatus.ERROR,
-          "No Brick Connected. Please connect and try again.");
+//      return new ExitStatus(ExitStatus.ERROR,
+//          "No Brick Connected. Please connect and try again.");
+      return run(command);
     }
   }
 
@@ -195,7 +236,7 @@ public class NXTManager extends AbstractNXTBrick {
 
   @Override
   public ExitStatus playTone(int frequency, int duration) {
-    nxt.playSound(frequency, duration);
+    connections.get(currentConnection).playSound(frequency, duration);
     return null;
   }
 
@@ -211,14 +252,9 @@ public class NXTManager extends AbstractNXTBrick {
     return null;
   }
 
-  public void setConnected(boolean isConnected) {
-    System.out.println("NXTManager.setConnected()" + isConnected);
-    nxt.setConnected(isConnected);
-  }
-
   public boolean isConnected() {
     try {
-      return nxt.isConnected();
+      return connections.get(currentConnection).isConnected();
     } catch (NullPointerException ne) {
       return false;
     }
@@ -226,27 +262,27 @@ public class NXTManager extends AbstractNXTBrick {
 
   @Override
   public int getBatteryLevel() {
-    return nxt.getBattery();
+    return connections.get(currentConnection).getBattery();
   }
 
   @Override
   public byte getRawSensorValue(String name) {
-    return nxt.getRawSensorValue(name);
+    return connections.get(currentConnection).getRawSensorValue(name);
   }
 
   @Override
   public byte getRawSensorValue(Sensor sensor) {
-    return nxt.getRawSensorValue(sensor.getName());
+    return connections.get(currentConnection).getRawSensorValue(sensor.getName());
   }
 
   @Override
   public byte[] getSensorValues(String name) {
-    return nxt.getSensorValues(name);
+    return connections.get(currentConnection).getSensorValues(name);
   }
 
   @Override
   public byte[] getSensorValues(Sensor sensor) {
-    return nxt.getSensorValues(sensor.getName());
+    return connections.get(currentConnection).getSensorValues(sensor.getName());
   }
 
   @Override
@@ -266,70 +302,64 @@ public class NXTManager extends AbstractNXTBrick {
 
   @Override
   public void motorOff(String motorName) {
-    nxt.stopMotor(Motor.valueOf(motorName).getPort());
-
+    connections.get(currentConnection).stopMotor(Motor.valueOf(motorName).getPort());
   }
 
   @Override
   public void motorOff(Motor motor) {
-    nxt.stopMotor(motor.getPort());
+    connections.get(currentConnection).stopMotor(motor.getPort());
 
   }
 
   @Override
   public void motorOn(String motorName, int speed) {
-    nxt.runMotor(Motor.valueOf(motorName).getPort(), speed);
-
+    connections.get(currentConnection).runMotor(Motor.valueOf(motorName).getPort(), speed);
   }
 
   @Override
   public void motorOn(Motor motor, int speed) {
-    nxt.runMotor(motor.getPort(), speed);
+    connections.get(currentConnection).runMotor(motor.getPort(), speed);
   }
 
   @Override
   public void motorReset(String motorName) {
-    nxt.resetMotor(Motor.valueOf(motorName).getPort());
+    connections.get(currentConnection).resetMotor(Motor.valueOf(motorName).getPort());
 
   }
 
   @Override
   public void motorReset(Motor motor) {
-    nxt.resetMotor(motor.getPort());
-
+    connections.get(currentConnection).resetMotor(motor.getPort());
   }
 
   @Override
   public void setSensorMode(String name, SensorMode mode) {
-    nxt.setSensorMode(name, mode);
-
+    connections.get(currentConnection).setSensorMode(name, mode);
   }
 
   @Override
   public void setSensorMode(Sensor sensor, SensorMode mode) {
-    nxt.setSensorMode(sensor.getName(), mode);
-
+    connections.get(currentConnection).setSensorMode(sensor.getName(), mode);
   }
 
   @Override
   public void setSensorType(String name, SensorType type) {
-    nxt.setSensorType(name, type);
-
+    connections.get(currentConnection).setSensorType(name, type);
   }
 
   @Override
   public void setSensorType(Sensor sensor, SensorType type) {
-    nxt.setSensorType(sensor.getName(), type);
-
+    connections.get(currentConnection).setSensorType(sensor.getName(), type);
   }
 
   @Override
   public int getConvertedSensorData(Sensor name) {
-    return nxt.getConvertedSensorData(name.getName(), name.getMode());
+    return connections.get(currentConnection).getConvertedSensorData(name.getName(), name.getMode());
   }
 
+  //FIXME
   public void stopPolling() {
-    running = false;
+//    running = false;
   }
 
   public void setPreferences(final IPreferenceStore preferences) {

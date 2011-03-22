@@ -3,8 +3,8 @@ package com.jbricx.communications;
 public class BrickCreator {
 
 	
-	public static AbstractNXTBrick createBrick(){
-		AbstractNXTBrick brick=null;
+	public static NXTConnectionManager createBrick(){
+	  NXTConnectionManager brick=null;
 		
 		if(  System.getProperty("os.name").contains("indow") ){
 			//windows

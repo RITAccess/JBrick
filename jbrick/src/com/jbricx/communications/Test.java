@@ -1,6 +1,6 @@
 package com.jbricx.communications;
 
-import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.enums.Motor;
 
 public class Test {
 
