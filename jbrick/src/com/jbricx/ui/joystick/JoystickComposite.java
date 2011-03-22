@@ -533,7 +533,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         help.addSelectionListener(new SelectionAdapter() {
 
           public void widgetSelected(SelectionEvent evt) {
-        	  helpAction.runPianoLink();
+        	  helpAction.runJoistickLink();
           }
         });
 
@@ -628,7 +628,6 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
         if (joypadValue == 1) {
           // up
-
           nxt.motorOn(Motor_1_ID, motorSpeed * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, motorSpeed * Motor_2_DIR);
         }
@@ -661,6 +660,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
         if (joypadValue == 5) {
           // right
+          //motorSpeed = motorSpeed * 2
           nxt.motorOn(Motor_1_ID, -1 * (motorSpeed - spinSubtractor)
               * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, 1 * (motorSpeed - spinSubtractor)
@@ -669,6 +669,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
         if (joypadValue == 6) {
           // ll
+          //motorSpeed = motorSpeed * 2
           nxt.motorOn(Motor_1_ID, -1 * motorSpeed * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, -1 * (motorSpeed - rotateSubtractor)
               * Motor_2_DIR);
