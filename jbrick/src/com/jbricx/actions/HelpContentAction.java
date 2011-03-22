@@ -26,4 +26,10 @@ public class HelpContentAction extends Action {
     hb.getPianoHelpLink();
   }
   
+  public void runJoistickLink() {
+    HelpBrowser hb = HelpBrowser.getInstance();
+    hb.open();
+    hb.runJoistickLink();
+  }
+  
 }
