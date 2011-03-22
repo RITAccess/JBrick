@@ -13,20 +13,26 @@ import com.jbricx.communications.NXTObserver;
  * @author Abhishek Shrestha
  */
 public class PianoUIWindow extends TrayDialog implements NXTObserver {
+  public Control pianoComposite1 =  null;
 
   public PianoUIWindow(final Shell shell) {
     super(shell);
   }
 
+  PianoComposite pianoComposite;
   @Override
   protected Control createContents(Composite parent) {
     getShell().setText("Piano");
-
-    return new PianoComposite(parent, SWT.NULL);
+    pianoComposite= new PianoComposite(parent, SWT.NULL);
+    return pianoComposite;
   }
 
   @Override
   public void update(boolean isConnected) {
     // TODO: do some saving implementation
+      if(!isConnected){
+            System.out.println("abishesk");
+            //pianoComposite.disableButtons();
+        }
   }
 }
