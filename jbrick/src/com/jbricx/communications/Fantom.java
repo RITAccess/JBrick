@@ -49,6 +49,7 @@ public interface Fantom extends StdCallLibrary {
 
   Pointer nFANTOM100_iNXTIterator_getNXT(Pointer iNXTIterator, Status status);
 
+  void nFANTOM100_destroyNXT (Pointer nxtPtr, Status status);
   void nFANTOM100_destroyNXTIterator(Pointer iNXTIterator, Status status);
 
   int nFANTOM100_iNXT_sendDirectCommand(Pointer iNXT, boolean requireResponse,

@@ -94,9 +94,12 @@ public class NXTConnection {
     throw new NXTNotFoundException(" no nxt found");
   }
 
+  /**
+   * Disconnects the links to the connected brick.
+   */
   public void disconnect() {
     Status status = new Status();
-    fantom.nFANTOM100_destroyNXTIterator(nxtPointer, status);
+    fantom.nFANTOM100_destroyNXT(nxtPointer, status);
   }
 
   // private Pointer directConnect()throws UnableToCreateNXTException
