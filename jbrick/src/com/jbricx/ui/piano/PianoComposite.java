@@ -115,6 +115,7 @@ public class PianoComposite extends Composite {
   int transposeMult = 3;
   int toneDuration = 1000;
   private JBrickManager manager;
+  public static boolean disabuttons = false;
 
   
   private PianoRecording recording = new PianoRecording();
@@ -153,6 +154,16 @@ public class PianoComposite extends Composite {
    * Auto-generated method to display this org.eclipse.swt.widgets.Composite
    * inside a new Shell.
    */
+  
+  public static void disableButtons(){
+      System.out.println("====== disableButtons =======");
+      disabuttons = true;
+    }
+  public static void enableButtons(){
+      System.out.println("====== enableButtons =======");
+      disabuttons = false;
+  }
+  
   public static void showGUI() {
     display = Display.getDefault();
     shell = new Shell(display);
@@ -257,7 +268,11 @@ public class PianoComposite extends Composite {
 			
 			@Override
 			public void mouseDown(MouseEvent arg0) {
-				help();
+			    //if(!disabuttons){
+			        help();
+				  //}else{
+				  //  System.out.println("help button is disabled");
+				  //}
 			}
 			
 			@Override
@@ -281,7 +296,11 @@ public class PianoComposite extends Composite {
 				// TODO Auto-generated method stub
 				//savingPianoNotesFile spnf = new savingPianoNotesFile();
 				//spnf.receivingNotes(recording.getNotes());
-				creatingSavingInterface();
+			    //if(!disabuttons){
+			        creatingSavingInterface();
+			    //}else{
+			    //  System.out.println("save button is disabled");
+			    //}
 			}
 			@Override
 			public void mouseDown(MouseEvent arg0) {
@@ -310,7 +329,7 @@ public class PianoComposite extends Composite {
 			
 			@Override
 			public void mouseUp(MouseEvent arg0) {
-				playButtonPressed();
+			  playButtonPressed();
 			}
 			
 			@Override
@@ -869,17 +888,15 @@ public class PianoComposite extends Composite {
   }
 
   protected void highlightKey(boolean whiteKeys, int keyId) {
-
-    cleanKeys();
-
-    if (whiteKeys) {
-      whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
-    } else {
-      blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
-    }
-    this.layout();
-    pack();
-    this.setSize(1307, 453);
+      cleanKeys();
+      if (whiteKeys) {
+        whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
+      } else {
+        blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
+      }
+      this.layout();
+      pack();
+      this.setSize(1307, 453);
   }
 
   private void buildKeyLabels() {
