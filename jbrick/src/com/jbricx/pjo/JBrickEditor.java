@@ -28,6 +28,7 @@ public class JBrickEditor {
   protected void run() {
     MainWindow mainWindow = new MainWindow(setDefaults());
     mainWindow.run();    
+    
   }
 
   /**
@@ -40,6 +41,7 @@ public class JBrickEditor {
   public static void main(String[] args) throws IOException {
     // ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
     new JBrickEditor().run();
+    
   }
 
   protected static void detectOS() {
