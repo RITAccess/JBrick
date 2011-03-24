@@ -2,17 +2,18 @@ package com.jbricx.communications;
 
 import java.nio.Buffer;
 
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.win32.StdCallLibrary;
 
 /**
- * Provides access to the Lego Mindstorm Fantom Library
+ * Provides access to the Lego Mindstorm Fantom Library For more methods realted
+ * to Fantom driver see <a
+ * href="http://nxtpp.clustur.com/projectdocs/i_n_x_t_8h.html"> here </a>
  * 
  * @author Emmanuel Pirsch
  */
 public interface Fantom extends StdCallLibrary {
-  //Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);
+  // Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);
 
   /**
    * 
@@ -49,7 +50,8 @@ public interface Fantom extends StdCallLibrary {
 
   Pointer nFANTOM100_iNXTIterator_getNXT(Pointer iNXTIterator, Status status);
 
-  void nFANTOM100_destroyNXT (Pointer nxtPtr, Status status);
+  void nFANTOM100_destroyNXT(Pointer nxtPtr, Status status);
+
   void nFANTOM100_destroyNXTIterator(Pointer iNXTIterator, Status status);
 
   int nFANTOM100_iNXT_sendDirectCommand(Pointer iNXT, boolean requireResponse,
