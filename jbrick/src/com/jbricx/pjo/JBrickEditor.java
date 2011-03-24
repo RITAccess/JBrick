@@ -40,8 +40,7 @@ public class JBrickEditor {
    */
   public static void main(String[] args) throws IOException {
     // ExitStatus e = BrickCreator.createBrick().getBatteryLevel();
-    new JBrickEditor().run();
-    
+    new JBrickEditor().run();    
   }
 
   protected static void detectOS() {
