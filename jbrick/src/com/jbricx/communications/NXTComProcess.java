@@ -8,18 +8,30 @@ import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
 
 /**
+ * Manages a single connection to the brick and polls the port to verify it's
+ * connected.
+ * 
  * @author byktol
  */
 public class NXTComProcess {
   private static final int sleepTime = 3000;
 
+  /**
+   * Low-level abstraction to the interactions with the brick.
+   */
   private NXTConnection connection;
+  /**
+   * Poll the port for the specific connection.
+   */
   private Thread thread;
+  /**
+   * Whether this connection is active or not.
+   */
   private volatile boolean running;
 
   /**
-   * @param name
-   * @return
+   * Creates the thread used for polling the port/connection status.
+   * @return a new thread that polls the connection.
    */
   private Thread createConnectionPollingThread() {
     return new Thread() {
@@ -31,6 +43,7 @@ public class NXTComProcess {
           try {
             Thread.sleep(sleepTime);
             running = connection.isConnected();
+
             // FIXME: I just don't think this is a good idea.
             NXTManager.getInstance().notifyAllObservers(running);
 
@@ -44,9 +57,10 @@ public class NXTComProcess {
   }
 
   /**
-   * 
-   * @param type
-   * @return
+   * Creates a new connection of the specified type.
+   * @param type the type of connection to create.
+   * @return whether the connection to the brick was successful or not.
+   * @see ConnectionType
    */
   public boolean connect(final ConnectionType type) {
     boolean success = false;
@@ -60,20 +74,21 @@ public class NXTComProcess {
       }
       running = success = true;
 
-    } catch (NXTNotFoundException e) {
+    } catch (final NXTNotFoundException e) {
       e.printStackTrace();
       running = false;
 
-    } catch (UnableToCreateNXTException e) {
-
+    } catch (final UnableToCreateNXTException e) {
       e.printStackTrace();
       running = false;
+
     } finally {
       
       //FIXME: I don't believe this is a good practice.
       //FIXME: What happens when 2 different bricks are connected?
       NXTManager.getInstance().notifyAllObservers(running);
     }
+
     return success;
   }
 
@@ -93,21 +108,22 @@ public class NXTComProcess {
   }
 
   /**
-   * @return the connection
+   * @return the low-level connection interface
    */
   public NXTConnection getConnection() {
     return connection;
   }
 
   /**
-   * @return the running
+   * @return whether the connection to the brick is active or not.
    */
   public boolean isRunning() {
     return running;
   }
 
   /**
-   * @return
+   * @return whether the Lego's Fantom Driver was successfully loaded. This
+   * depends on the class implementing the low-level interface.
    */
   protected static boolean isFantomDriverLoaded() {
     return NXTConnectionImpl.isFantomDriverLoaded();

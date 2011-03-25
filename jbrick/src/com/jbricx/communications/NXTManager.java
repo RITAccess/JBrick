@@ -64,9 +64,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   public NXTManager connect(final ConnectionType connectionType) {
     currentConnection = connectionType.getName();
 
-    if ((connections.get(currentConnection) != null && !connections.get(currentConnection).isRunning()) ||
-            connections.get(currentConnection) == null
-          ) {
+    if ( !(connections.containsKey(currentConnection)
+          && connections.get(currentConnection).isRunning()) ) {
       NXTComProcess c = new NXTComProcess();
       c.connect(connectionType);
       connections.put(currentConnection, c);
@@ -83,7 +82,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   @Override
   public void disconnect(final String name) {
     connections.remove(name).disconnect();
-    //TODO: add a way to distinguish whether the las brick is disconnected
+    //TODO: add a way to distinguish whether the last brick is disconnected.
     notifyAllObservers(false);
   }
 
@@ -130,28 +129,39 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     return null;
   }
 
+  /**
+   * Downloads a file to the brick. It should read uploads a file from your
+   * computer to the brick, but who knows what were they thinking.
+   */
   @Override
-  public ExitStatus downloadFile(String filename) {
-    final String[] command = {
-      preferences.getString(FileExtensionConstants.NBCTOOL),
-    //  "-S=usb", // +where);
-    //  "-d",
-    //  filename,
-    };
-    System.out.println("Downloading...");
+  public ExitStatus downloadFile(final String filename) {
+    if (connections.containsKey(currentConnection)
+          && isConnected()) {
 
-    if (isConnected()) {
       NXTComProcess proc = connections.get(currentConnection);
+
+      // The commands are as follow:
+      // 1. nbc -S=[COMn or usb] -d filename
+      // 2. nbc -BT -d filename
+      // Read the nbc -help.
+      final String[] command = {
+        preferences.getString(FileExtensionConstants.NBCTOOL),
+        proc.getConnection().getConnectionType().toPort() ,
+        "-d",
+        filename,
+      };
+      System.out.println("Downloading...");
+  
+      // This is how it works: disconnect the brick, transfer file, re-connect.
       disconnect();
       ExitStatus status = run(command);
       connect(proc.getConnection().getConnectionType());
+
       return status;
-      //TODO: connect again
-    } else {
-//      return new ExitStatus(ExitStatus.ERROR,
-//          "No Brick Connected. Please connect and try again.");
-      return run(command);
     }
+
+    return new ExitStatus(ExitStatus.ERROR,
+      "No Brick Connected. Please connect and try again.");
   }
 
   @Override

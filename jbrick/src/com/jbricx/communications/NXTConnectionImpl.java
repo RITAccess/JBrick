@@ -12,7 +12,18 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 /**
- * 0x0B Battery
+ * I warn you that we have no idea how this stuff work. Somebody copy it here,
+ * and wherever it came from, it sure lacks documentation. So far, I've seen
+ * this hex values but I haven't figured out what they mean. It looks like for
+ * every command you send to the brick, you must set a hex value so the brick
+ * would know what to do.
+ * 
+ * 0x03
+ * 0x04
+ * 0x05
+ * 0x07
+ * 0x0A 
+ * 0x0B Battery, apparently.
  * 
  * @author Spencer Herzberg
  * @author byktol
