@@ -16,7 +16,7 @@ public class FantomTest {
 	public static void main(String[] args){
 		try{
 			System.out.println("Starting");
-			NXTConnection nxt = new NXTConnection("USB");
+			NXTConnection nxt = new NXTConnectionImpl("USB");
 //			nxt.resetMotor(Motor.MOTOR_A.getPort());
 //			nxt.runMotor(Motor.MOTOR_A.getPort(),100);
 //			System.out.println("Connected");

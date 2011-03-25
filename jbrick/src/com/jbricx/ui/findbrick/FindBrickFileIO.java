@@ -34,7 +34,7 @@ public class FindBrickFileIO {
 			String str;
 			try {
 				str = in.readLine();
-				System.out.println("FindBrickFileIO.getCT()" + str);
+
 				if (str.equals("BT")) {
 					ct = ConnectionType.BLUETOOTH;
 				} else {
