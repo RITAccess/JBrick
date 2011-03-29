@@ -631,7 +631,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("Up");
           System.out.println("moving Up :  a= " + Motor_1_DIR +" - b= " + Motor_2_DIR);
           System.out.println("moving Up :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           nxt.motorOn(Motor_1_ID, motorSpeed_2 * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, motorSpeed_2 * Motor_2_DIR);
         }
@@ -641,7 +641,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("Up left -- " + motorSpeed);
           System.out.println("moving Up left : a= " + Motor_1_DIR +" - b= " + Motor_2_DIR);
           System.out.println("moving Up left : a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           nxt.motorOn(Motor_1_ID, motorSpeed_2 * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, (motorSpeed_2 - rotateSubtractor) * Motor_2_DIR);
         }
@@ -651,7 +651,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("Up right -- " + motorSpeed);
           System.out.println("moving Up right : a= " + Motor_1_DIR +" - b= " + Motor_2_DIR);
           System.out.println("moving Up right : a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           nxt.motorOn(Motor_2_ID, motorSpeed_2 * Motor_2_DIR);
           nxt.motorOn(Motor_1_ID, (motorSpeed_2 - rotateSubtractor) * Motor_1_DIR);
         }
@@ -661,7 +661,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("Down");
           System.out.println("moving down :  a= " + Motor_1_DIR +"; b= " + Motor_2_DIR);
           System.out.println("moving down :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           nxt.motorOn(Motor_1_ID, -1 * motorSpeed_2 * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, -1 * motorSpeed_2 * Motor_2_DIR);
         }
@@ -671,7 +671,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("Moving left");
           System.out.println("moving left :  a= " + Motor_1_DIR +"; b= " + Motor_2_DIR);
           System.out.println("moving left :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed + 25;
           nxt.motorOn(Motor_1_ID, 1 * (motorSpeed_2 - spinSubtractor) * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, -1 * (motorSpeed_2 - spinSubtractor) * Motor_2_DIR);
         }
@@ -681,7 +681,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
           System.out.println("moving right");
           System.out.println("moving right :  a= " + Motor_1_DIR +"; b= " + Motor_2_DIR);
           System.out.println("moving right :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed + 25;
           nxt.motorOn(Motor_1_ID, -1 * (motorSpeed_2 - spinSubtractor) * Motor_1_DIR);
           nxt.motorOn(Motor_2_ID, 1 * (motorSpeed_2 - spinSubtractor) * Motor_2_DIR);
         }
@@ -689,7 +689,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         if (joypadValue == 6) {
           // ll
           System.out.println("low left");
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           System.out.println("moving Up :  a= " + Motor_1_DIR +" - b= " + Motor_2_DIR);
           System.out.println("moving Up :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
           nxt.motorOn(Motor_1_ID, -1 * motorSpeed_2 * Motor_1_DIR);
@@ -699,7 +699,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
         if (joypadValue == 8) {
           // lr
           System.out.println("low right");
-          motorSpeed_2 = motorSpeed + 50;
+          motorSpeed_2 = motorSpeed;
           System.out.println("moving Up :  a= " + Motor_1_DIR +" - b= " + Motor_2_DIR);
           System.out.println("moving Up :  a1= "+ Motor_1_ID + " - b1=" + Motor_2_ID);
           nxt.motorOn(Motor_1_ID, -1 * (motorSpeed_2 - rotateSubtractor) * Motor_1_DIR);
