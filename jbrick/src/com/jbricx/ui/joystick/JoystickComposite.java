@@ -1,16 +1,11 @@
 package com.jbricx.ui.joystick;
 
-/*
- * @author Priya Sankaran
- */
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -22,12 +17,15 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.actions.HelpContentAction;
-import com.jbricx.communications.AbstractNXTBrick;
-import com.jbricx.communications.NXT.Motor;
+import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
+import com.jbricx.communications.enums.Motor;
 import com.jbricx.ui.JBrickButtonUtil;
 import com.jbricx.ui.joystick.wii.WiiMain;
 
+/**
+ * @author Priya Sankaran
+ */
 public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
 
   private Group Movement;
@@ -563,7 +561,7 @@ public class JoystickComposite extends org.eclipse.swt.widgets.Composite {
   }
   private HelpContentAction helpAction = new HelpContentAction();
   static GamePadController gpc;
-  static AbstractNXTBrick nxt;
+  static NXTGadgetManager nxt;
   static Motor Motor_1_ID = Motor.MOTOR_B;
   static Motor Motor_2_ID = Motor.MOTOR_C;
   static int Motor_1_DIR = 1;
