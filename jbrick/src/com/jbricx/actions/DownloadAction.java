@@ -7,6 +7,9 @@ import com.jbricx.communications.ExitStatus;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;
 
+/**
+ * Downloads the current file into the brick.
+ */
 public class DownloadAction extends AbstractCompilerAction {
 
   /**

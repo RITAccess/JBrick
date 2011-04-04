@@ -26,7 +26,7 @@ public class NXTComProcess {
   private Thread thread;
 
   /**
-   * Creates the thread used for polling the port/connection status.
+   * Creates a thread used for polling the port/connection status.
    * @return a new thread that polls the connection.
    */
   private Thread createConnectionPollingThread() {
@@ -40,11 +40,14 @@ public class NXTComProcess {
             Thread.sleep(sleepTime);
             running = connection.isConnected();
 
-            // FIXME: I just don't think this is a good idea.
-            NXTManager.getInstance().notifyAllObservers(running);
+            if (!running) {
+              NXTManager.getInstance().disconnect(connection.getConnectionType().getName());
+              NXTManager.getInstance().verifyLastDisconnect(running);
+            }
 
           } catch (InterruptedException e) {
-            // IGNORE
+            // IGNORE. The disconnect() method intentionally interrupts the
+            // thread.
           }
 
         } // end of while
@@ -78,11 +81,6 @@ public class NXTComProcess {
       e.printStackTrace();
       success = false;
 
-    } finally {
-      
-      //FIXME: I don't believe this is a good practice.
-      //FIXME: What happens when 2 different bricks are connected?
-      NXTManager.getInstance().notifyAllObservers(success);
     }
 
     return success;

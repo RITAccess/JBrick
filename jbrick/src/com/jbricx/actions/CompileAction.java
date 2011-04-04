@@ -8,7 +8,7 @@ import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;
 
 /**
- * This class shows an About box
+ * Compiles the current file.
  */
 public class CompileAction extends AbstractCompilerAction {
 

@@ -65,7 +65,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     if ( !(connections.containsKey(currentConnection)
           && connections.get(currentConnection).isRunning()) ) {
       NXTComProcess c = new NXTComProcess();
-      c.connect(connectionType);
+      boolean successful = c.connect(connectionType);
+      notifyAllObservers(successful);
       connections.put(currentConnection, c);
     }
 
@@ -75,13 +76,14 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   @Override
   public void disconnect() {
     disconnect(currentConnection);
+    verifyLastDisconnect(false);
   }
 
   @Override
   public void disconnect(final String name) {
-    connections.remove(name).disconnect();
-    //TODO: add a way to distinguish whether the last brick is disconnected.
-    notifyAllObservers(false);
+    if (connections.containsKey(name)) {
+      connections.remove(name).disconnect();
+    }
   }
 
   /**
@@ -283,5 +285,21 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   public void setPreferences(final IPreferenceStore preferences) {
     this.compilerRunner.setPreferences(preferences);
+  }
+
+  public void verifyLastDisconnect(final boolean running) {
+    if (!running) {
+      // Why, yes, go through all the trouble just to find the first connection.
+      for (String connection : connections.keySet()) {
+        currentConnection = connection;
+        break;
+      }
+      // If the last active connection is removed, then notify the observers,
+      // otherwise, we don't want to disable the features while there might be
+      // one brick connected
+      if (connections.isEmpty()) {
+        notifyAllObservers(false);
+      }
+    }
   }
 }

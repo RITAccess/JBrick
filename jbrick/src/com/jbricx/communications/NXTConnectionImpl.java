@@ -38,7 +38,7 @@ public class NXTConnectionImpl implements NXTConnection {
   /**
    * The pointer to the active connection. If this pointer is being used, the
    * only interaction allowed with the brick are those associated with the
-   * Fantom driver
+   * Fantom driver.
    */
   private Pointer nxtPointer;
   private ConnectionType connectionType;
