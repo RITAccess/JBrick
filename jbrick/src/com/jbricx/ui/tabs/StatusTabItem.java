@@ -13,78 +13,66 @@ import org.eclipse.swt.widgets.TableItem;
 
 import com.jbricx.ui.JBrickStatusUpdater;
 
-/** This {@link CTabItem} is used to present a status panel for compilation error messages.
- * These messages are 'clickable' and move the text cursor to the line in the opened file containing the error.
+/**
+ * This {@link CTabItem} is used to present a status panel for compilation error
+ * messages. These messages are 'clickable' and move the text cursor to the line
+ * in the opened file containing the error.
  * 
  * @author byktol
  */
 public class StatusTabItem extends CTabItem {
   private Table table;
-  private JBrickStatusUpdater statusUpdater;
 
   public StatusTabItem(CTabFolder parent, int style, final JBrickStatusUpdater statusUpdater) {
     super(parent, style);
 
     setText("Status");
     table = new Table(parent, SWT.BORDER);
-    this.statusUpdater = statusUpdater;
     setControl(table);
     parent.setSelection(this);
 
     table.addListener(SWT.DefaultSelection, new Listener() {
 
-        public void handleEvent(Event e) {
-            IDocument document = getDocument();
-            /*
-             * String txt =
-             * getCurrentTabItem().getViewer().getTextWidget().getText();
-             * System.out.println("txt"+ txt);
-             * getCurrentTabItem().getViewer().setSelectedRange(12, 2);
-             * System.out.println("Item Text is:  " + ((TableItem)e.item
-             * ).getText());
-             */
-            try {
+      public void handleEvent(Event e) {
+        IDocument document = getDocument();
 
-                String errorMessageText = ((TableItem) e.item).getText();
-//                System.out.println("Item Text is:  " + errorMessageText);
-                String strLineNumber = errorMessageText.substring(
-                        errorMessageText.indexOf("Line:") + 5,
-                        errorMessageText.indexOf("Error"));
+        try {
 
-                int errorLineNumber = Integer.parseInt(strLineNumber.trim()) - 1;
+          String errorMessageText = ((TableItem) e.item).getText();
 
-                int offset = document.getLineOffset(errorLineNumber);
-                int lineLength = document.getLineLength(errorLineNumber);
-                setSelectedRange(offset, lineLength);
-                statusUpdater.setStatus(" status bar Line " + strLineNumber);
+          // FIXME: The location is based on a hard-coded string.
+          String strLineNumber = errorMessageText.substring(
+                  errorMessageText.indexOf("Error on line") + 13,
+                  errorMessageText.indexOf(":"));
 
-                // System.out.println("Info is: "+configuration.getInformationPresenter(getCurrentTabItem().getViewer())
-                // );
-//                System.out.println("Info is: "
-//                        + tabFolder.getSelection().getViewer().getTextWidget().getSelection());
+          int errorLineNumber = Integer.parseInt(strLineNumber.trim()) - 1;
 
-                /*
-                 * if(lnrc != null){
-                 * System.out.println("mouse thing -- "+lnrc
-                 * .getLineOfLastMouseButtonActivity()); } else{
-                 * System.out.println("it is null"); }
-                 */
+          int offset = document.getLineOffset(errorLineNumber);
+          int lineLength = document.getLineLength(errorLineNumber);
+          setSelectedRange(offset, lineLength);
+          statusUpdater.setStatus(" status bar line " + strLineNumber);
 
-                //TODO: What does this do?
-                getStatusLineManager().getControl().setFocus();
+          /*
+           * if(lnrc != null){ System.out.println("mouse thing -- "+lnrc
+           * .getLineOfLastMouseButtonActivity()); } else{
+           * System.out.println("it is null"); }
+           */
 
-            } catch (BadLocationException e1) {
-                e1.printStackTrace();
-            }
+          // TODO: What does this do?
+          getStatusLineManager().getControl().setFocus();
 
+        } catch (BadLocationException ble) {
+          ble.printStackTrace();
         }
+
+      }
     });
   }
 
-
   /*
-   * The following methods are here for 'compatibility' issues with previous version.
-   * We want to add features without breaking something, right?
+   * The following methods are here for 'compatibility' issues with previous
+   * version. We want to add features without breaking something, right? These
+   * methods should be checked for refactoring purposes.
    */
 
   /**
@@ -102,8 +90,10 @@ public class StatusTabItem extends CTabItem {
   }
 
   /**
-   * @param offset The number of lines to skip
-   * @param lineLength The number of lines to select
+   * @param offset
+   *          The number of lines to skip
+   * @param lineLength
+   *          The number of lines to select
    */
   protected void setSelectedRange(int offset, int lineLength) {
   }
@@ -111,7 +101,7 @@ public class StatusTabItem extends CTabItem {
   /**
    * @return
    */
-  protected StatusLineManager getStatusLineManager () {
+  protected StatusLineManager getStatusLineManager() {
     return null;
   }
 }

@@ -43,19 +43,9 @@ public class JBrickEditor {
     new JBrickEditor().run();    
   }
 
-  protected static void detectOS() {
-    Properties properties = System.getProperties();
-    for (Object i : properties.keySet()) {
-      System.out.println(i + " --> " + properties.get(i));
-    }
-    //os.name --> Windows 7
-    //os.name --> Mac
-    //user.dir --> D:\workspace\jbrick
-  }
-
   protected PreferenceStore setDefaults() {
-    final PreferenceStore preferences = new PreferenceStore("JBrickEditor.properties");
-
+    final PreferenceStore preferences =
+      new PreferenceStore(FileExtensionConstants.PREFERENCES_FILE);
 
     try {
       preferences.load();

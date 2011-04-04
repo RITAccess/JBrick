@@ -12,7 +12,9 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 /**
- * I warn you that we have no idea how this stuff work. Somebody copy it here,
+ * Implements the low-level methods for connecting to the Lego Brick.
+ * 
+ * I warn you that we have no idea how this stuff work. Somebody copied it here,
  * and wherever it came from, it sure lacks documentation. So far, I've seen
  * this hex values but I haven't figured out what they mean. It looks like for
  * every command you send to the brick, you must set a hex value so the brick
@@ -29,7 +31,15 @@ import com.sun.jna.Pointer;
  * @author byktol
  */
 public class NXTConnectionImpl implements NXTConnection {
+  /**
+   * The Lego Fantom driver interface.
+   */
   private static Fantom fantom;
+  /**
+   * The pointer to the active connection. If this pointer is being used, the
+   * only interaction allowed with the brick are those associated with the
+   * Fantom driver
+   */
   private Pointer nxtPointer;
   private ConnectionType connectionType;
   private static boolean isDriverLoaded;
@@ -38,8 +48,8 @@ public class NXTConnectionImpl implements NXTConnection {
     try {
       fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
       isDriverLoaded = true;
-    } catch (UnsatisfiedLinkError e) {
-      // TODO: notify the user that the fantom driver is missing
+    } catch (final UnsatisfiedLinkError e) {
+      // TODO: notify the user that the fantom driver is missing or something
       isDriverLoaded = false;
     }
   }

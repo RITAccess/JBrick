@@ -6,6 +6,8 @@ import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
 
 /**
+ * Defines the methods for the low-level connections to the Lego Brick.
+ * 
  * @author byktol
  */
 public interface NXTConnection {

@@ -24,10 +24,6 @@ public class NXTComProcess {
    * Poll the port for the specific connection.
    */
   private Thread thread;
-  /**
-   * Whether this connection is active or not.
-   */
-  private volatile boolean running;
 
   /**
    * Creates the thread used for polling the port/connection status.
@@ -37,7 +33,7 @@ public class NXTComProcess {
     return new Thread() {
       @Override
       public void run() {
-        running = true;
+        boolean running = true;
         while (running) {
 
           try {
@@ -48,7 +44,7 @@ public class NXTComProcess {
             NXTManager.getInstance().notifyAllObservers(running);
 
           } catch (InterruptedException e) {
-            e.printStackTrace();
+            // IGNORE
           }
 
         } // end of while
@@ -72,21 +68,21 @@ public class NXTComProcess {
         thread = createConnectionPollingThread();
         thread.start();        
       }
-      running = success = true;
+      success = true;
 
     } catch (final NXTNotFoundException e) {
       e.printStackTrace();
-      running = false;
+      success = false;
 
     } catch (final UnableToCreateNXTException e) {
       e.printStackTrace();
-      running = false;
+      success = false;
 
     } finally {
       
       //FIXME: I don't believe this is a good practice.
       //FIXME: What happens when 2 different bricks are connected?
-      NXTManager.getInstance().notifyAllObservers(running);
+      NXTManager.getInstance().notifyAllObservers(success);
     }
 
     return success;
@@ -96,8 +92,6 @@ public class NXTComProcess {
    * Disconnects the brick.
    */
   public void disconnect() {
-    running = false;
-
     if (connection != null) {
       connection.disconnect();
     }
@@ -118,7 +112,7 @@ public class NXTComProcess {
    * @return whether the connection to the brick is active or not.
    */
   public boolean isRunning() {
-    return running;
+    return (thread != null) && thread.isAlive();
   }
 
   /**

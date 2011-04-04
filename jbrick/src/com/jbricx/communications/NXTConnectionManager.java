@@ -6,6 +6,8 @@ package com.jbricx.communications;
 import com.jbricx.communications.enums.ConnectionType;
 
 /**
+ * Defines the methods for connecting and disconnecting to a Lego Brick. 
+ * 
  * @author byktol
  */
 public interface NXTConnectionManager {

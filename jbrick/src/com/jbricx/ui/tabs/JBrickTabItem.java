@@ -16,6 +16,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.IUndoManager;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.TextViewerUndoManager;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.source.AnnotationBarHoverManager;
@@ -45,6 +46,7 @@ import org.eclipse.swt.widgets.Display;
 import annotation.AnnotationConfiguration;
 import annotation.AnnotationHover;
 import annotation.AnnotationMarkerAccess;
+import annotation.ErrorAnnotation;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.FileExtensionConstants;
@@ -391,5 +393,29 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   public void setFile(File file) {
     this.file = file;
+  }
+
+  public void addAnnotation(int intLineNumber, String message) {
+    // add an annotation
+    ErrorAnnotation errorAnnotation = new ErrorAnnotation(
+        intLineNumber, message);
+
+    try {
+      int offset = getDocument().getLineOffset(intLineNumber - 1);
+
+      // tab.fAnnotationModel.addAnnotation(errorAnnotation,
+      // new
+      // Position(offset,
+      // tab.getDocument().getLineLength(intLineNumber)));
+      fAnnotationModel.addAnnotation(errorAnnotation,
+          new Position(offset, getDocument()
+              .getLineLength(intLineNumber - 1)));
+    } catch (BadLocationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void clearAnnotations() {
+    fAnnotationModel.removeAllAnnotations();
   }
 }

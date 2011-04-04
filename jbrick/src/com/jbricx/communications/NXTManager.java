@@ -1,7 +1,6 @@
 package com.jbricx.communications;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,20 +11,24 @@ import com.jbricx.communications.enums.Motor;
 import com.jbricx.communications.enums.Sensor;
 import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
-import com.jbricx.pjo.FileExtensionConstants;
 
 /**
+ * This class works as a Façade, its interface contains all the methods related
+ * to the Brick operations. It's also a singleton.
+ * 
  * @author Abhishek Shrestha 
  * @author byktol
  */
 public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   private static NXTManager nxtManager = null;
 
+  /**
+   * The current connections.
+   */
   private final Map<String, NXTComProcess> connections = new HashMap<String, NXTComProcess>();
   private final ArrayList<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
 
-  private final ProcessRunner processRunner = new ProcessRunner();
-  private IPreferenceStore preferences;
+  private final CompilerRunner compilerRunner = new CompilerRunner();
 
   /* FIXME: This variable is meant to be used help point the current connection,
    * but the methods it's been used in doesn't help its cause.
@@ -41,17 +44,12 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     nxtManager = new NXTManager();
   }
 
-  public static boolean isFantomDriverLoaded() {
-    return NXTComProcess.isFantomDriverLoaded();
-  }
-
   /**
-   * 
-   * @param command
-   * @return
+   * @return whether the Fantom driver is installed.
    */
-  public ExitStatus run(String... command) {
-    return processRunner.run(Arrays.asList(command));
+  public static boolean isFantomDriverLoaded() {
+    // This is done to avoid accessing this class method from outside the Façade
+    return NXTComProcess.isFantomDriverLoaded();
   }
 
   /**
@@ -110,17 +108,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
    */
 
   @Override
-  public ExitStatus compile(String filename) {
-    System.out.println("Trying to compile: " + filename);
-    final String[] command = {
-       preferences.getString(FileExtensionConstants.NBCTOOL),
-    //  "-help",
-    //  "-S", //+where);
-    //  "usb",
-    //  "-d",
-      filename,
-    };
-    return run(command);
+  public ExitStatus compile(final String filename) {
+    return compilerRunner.compile(filename);
   }
 
   @Override
@@ -139,29 +128,19 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
           && isConnected()) {
 
       NXTComProcess proc = connections.get(currentConnection);
-
-      // The commands are as follow:
-      // 1. nbc -S=[COMn or usb] -d filename
-      // 2. nbc -BT -d filename
-      // Read the nbc -help.
-      final String[] command = {
-        preferences.getString(FileExtensionConstants.NBCTOOL),
-        proc.getConnection().getConnectionType().toPort() ,
-        "-d",
-        filename,
-      };
-      System.out.println("Downloading...");
   
       // This is how it works: disconnect the brick, transfer file, re-connect.
       disconnect();
-      ExitStatus status = run(command);
+      ExitStatus status = compilerRunner.download(filename,
+              proc.getConnection().getConnectionType().toPort());
       connect(proc.getConnection().getConnectionType());
 
       return status;
     }
 
-    return new ExitStatus(ExitStatus.ERROR,
-      "No Brick Connected. Please connect and try again.");
+    // Since we know we're using the same tool to compile and download, let's
+    // try to compile the file if no connection is available.
+    return compile(filename);
   }
 
   @Override
@@ -303,6 +282,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   }
 
   public void setPreferences(final IPreferenceStore preferences) {
-    this.preferences = preferences;
+    this.compilerRunner.setPreferences(preferences);
   }
 }

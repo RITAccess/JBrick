@@ -9,6 +9,9 @@ import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
 
 /**
+ * Defines the methods related to the different gadgets that can be attached to
+ * a Lego Brick.
+ * 
  * @author byktol
  */
 public interface NXTGadgetManager extends NXTConnectionManager {

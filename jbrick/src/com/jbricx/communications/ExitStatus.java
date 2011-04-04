@@ -1,38 +1,25 @@
 package com.jbricx.communications;
 
+import java.util.List;
+
 public class ExitStatus {
 
 	public static int OK = 0;
 	public static int ERROR = 1;
 	
-	private String message;
 	private int status;
+	private List<CompilerError> compilerErrors;
 	
-	public ExitStatus(int status, String msg){
-		this.status = status;
-		this.message = msg;
-	}
-	
-	public boolean isOk(){
+	public ExitStatus(int status, final List<CompilerError> list) {
+	  this.status = status;
+	  this.compilerErrors = list;
+  }
+
+  public boolean isOk(){
 		return this.status == OK;
 	}
 	
-	public String getMesage(){
-		return this.message;
-	}
-	
-	public String toString(){
-		String str = "";
-		str+="[Exit Status]\n";
-		if (this.status==OK){
-			str+="Status: OK\n";
-		}
-		else{
-			str+="Status: ERROR\n";
-		}
-		
-		str+="Message: "+this.message;
-		
-		return str;
-	}
+	public List<CompilerError> getCompilerErrors() {
+    return compilerErrors;
+  }
 }
