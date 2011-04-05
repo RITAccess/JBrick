@@ -42,11 +42,11 @@ public class NXTComProcess {
 
             if (!running) {
               NXTManager.getInstance().disconnect(connection.getConnectionType().getName());
-              NXTManager.getInstance().verifyLastDisconnect(running);
+              NXTManager.getInstance().verifyLastDisconnect();
             }
 
           } catch (InterruptedException e) {
-            // IGNORE. The disconnect() method intentionally interrupts the
+            // IGNORE: The disconnect() method intentionally interrupts the
             // thread.
           }
 

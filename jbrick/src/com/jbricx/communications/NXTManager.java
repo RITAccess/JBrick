@@ -76,7 +76,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   @Override
   public void disconnect() {
     disconnect(currentConnection);
-    verifyLastDisconnect(false);
+    verifyLastDisconnect();
   }
 
   @Override
@@ -287,19 +287,21 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     this.compilerRunner.setPreferences(preferences);
   }
 
-  public void verifyLastDisconnect(final boolean running) {
-    if (!running) {
-      // Why, yes, go through all the trouble just to find the first connection.
-      for (String connection : connections.keySet()) {
-        currentConnection = connection;
-        break;
-      }
-      // If the last active connection is removed, then notify the observers,
-      // otherwise, we don't want to disable the features while there might be
-      // one brick connected
-      if (connections.isEmpty()) {
-        notifyAllObservers(false);
-      }
+  public void verifyLastDisconnect() {
+    // Why, yes, go through all the trouble just to find the first connection.
+    for (String connection : connections.keySet()) {
+      currentConnection = connection;
+      break;
     }
+    // If the last active connection is removed, then notify the observers,
+    // otherwise, we don't want to disable the features while there might be
+    // one brick connected
+    if (connections.isEmpty()) {
+      notifyAllObservers(false);
+    }
+  }
+
+  public String getCurrentConnection() {
+    return currentConnection;
   }
 }
