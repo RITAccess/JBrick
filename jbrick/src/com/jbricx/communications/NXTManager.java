@@ -89,7 +89,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   }
 
   @Override
-  public void disconnect(final String name) {    
+  public void disconnect(final String name) {
     if (connections.containsKey(name)) {
       NXTComProcess comProcess = connections.remove(name);
       comProcess.disconnect();
@@ -107,7 +107,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     nxtObservers.add(observer);
   }
 
-  public void unregister(NXTObserver observer) {
+  public void unregister(NXTObserver observer) {    
     synchronized (nxtObservers) {
       if (nxtObservers.contains(observer)) {
         nxtObservers.remove(observer);
@@ -124,7 +124,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     }
 
     Iterator<NXTObserver> iterator = copiedObservers.iterator();
-    
+
     while (iterator.hasNext()) {
       NXTObserver nxtObserver = iterator.next();
       nxtObserver.update(isConnected);

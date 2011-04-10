@@ -30,6 +30,11 @@ public class PianoUIWindow extends TrayDialog implements NXTObserver {
     pianoComposite = new PianoComposite(parent, SWT.NULL);
     return pianoComposite;
   }
+  
+  public void handleShellCloseEvent(){
+    NXTManager.getInstance().unregister(this);
+    super.handleShellCloseEvent();
+  }
 
   @Override
   public void update(boolean isConnected) {
