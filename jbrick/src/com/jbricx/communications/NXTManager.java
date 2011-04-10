@@ -2,6 +2,8 @@ package com.jbricx.communications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -16,7 +18,7 @@ import com.jbricx.communications.enums.SensorType;
  * This class works as a Façade, its interface contains all the methods related
  * to the Brick operations. It's also a singleton.
  * 
- * @author Abhishek Shrestha 
+ * @author Abhishek Shrestha
  * @author byktol
  */
 public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
@@ -26,11 +28,12 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
    * The current connections.
    */
   private final Map<String, NXTComProcess> connections = new HashMap<String, NXTComProcess>();
-  private final ArrayList<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
+  private final List<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
 
   private final CompilerRunner compilerRunner = new CompilerRunner();
 
-  /* FIXME: This variable is meant to be used help point the current connection,
+  /*
+   * FIXME: This variable is meant to be used help point the current connection,
    * but the methods it's been used in doesn't help its cause.
    */
   private String currentConnection;
@@ -38,7 +41,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   /**
    * Constructor for Singleton
    */
-  private NXTManager() { }
+  private NXTManager() {
+  }
 
   static {
     nxtManager = new NXTManager();
@@ -62,14 +66,14 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   public NXTManager connect(final ConnectionType connectionType) {
     currentConnection = connectionType.getName();
 
-    if ( !(connections.containsKey(currentConnection)
-          && connections.get(currentConnection).isRunning()) ) {
+    if (!(connections.containsKey(currentConnection) && connections.get(
+        currentConnection).isRunning())) {
       NXTComProcess c = new NXTComProcess();
-      boolean successful = c.connect(connectionType);
-      notifyAllObservers(successful);
+      boolean isConnected = c.connect(connectionType);
+
+      notifyAllObservers(isConnected);
       connections.put(currentConnection, c);
     }
-
     return this;
   }
 
@@ -80,26 +84,52 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   }
 
   @Override
-  public void disconnect(final String name) {
+  public void softDisconnect(String name) {
+    notifyAllObservers(false);
+  }
+
+  @Override
+  public void disconnect(final String name) {    
     if (connections.containsKey(name)) {
-      connections.remove(name).disconnect();
+      NXTComProcess comProcess = connections.remove(name);
+      comProcess.disconnect();
     }
+    // TODO: add a way to distinguish whether the last brick is disconnected.
+    notifyAllObservers(false);
   }
 
   /**
    * Register an observer
+   * 
    * @param observer
    */
   public void register(final NXTObserver observer) {
     nxtObservers.add(observer);
   }
 
-  public void notifyAllObservers(boolean isConnected) {
-    for (NXTObserver nxtObserver : nxtObservers) {
-      nxtObserver.update(isConnected);
+  public void unregister(NXTObserver observer) {
+    synchronized (nxtObservers) {
+      if (nxtObservers.contains(observer)) {
+        nxtObservers.remove(observer);
+      }
     }
   }
 
+  public synchronized void notifyAllObservers(boolean isConnected) {
+    List<NXTObserver> copiedObservers = new ArrayList<NXTObserver>();
+
+    synchronized (nxtObservers) {
+      // CONCURRENCY IDIOM: copy then iterate
+      copiedObservers.addAll(nxtObservers);
+    }
+
+    Iterator<NXTObserver> iterator = copiedObservers.iterator();
+    
+    while (iterator.hasNext()) {
+      NXTObserver nxtObserver = iterator.next();
+      nxtObserver.update(isConnected);
+    }
+  }
 
   /*
    * public void notifyFantomListener(FantomListener fl, boolean
@@ -126,15 +156,14 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
    */
   @Override
   public ExitStatus downloadFile(final String filename) {
-    if (connections.containsKey(currentConnection)
-          && isConnected()) {
+    if (connections.containsKey(currentConnection) && isConnected()) {
 
       NXTComProcess proc = connections.get(currentConnection);
-  
+
       // This is how it works: disconnect the brick, transfer file, re-connect.
       disconnect();
-      ExitStatus status = compilerRunner.download(filename,
-              proc.getConnection().getConnectionType().toPort());
+      ExitStatus status = compilerRunner.download(filename, proc
+          .getConnection().getConnectionType().toPort());
       connect(proc.getConnection().getConnectionType());
 
       return status;
@@ -153,7 +182,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public ExitStatus playTone(int frequency, int duration) {
-    connections.get(currentConnection).getConnection().playSound(frequency, duration);
+    connections.get(currentConnection).getConnection()
+        .playSound(frequency, duration);
     return null;
   }
 
@@ -184,22 +214,26 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public byte getRawSensorValue(String name) {
-    return connections.get(currentConnection).getConnection().getRawSensorValue(name);
+    return connections.get(currentConnection).getConnection()
+        .getRawSensorValue(name);
   }
 
   @Override
   public byte getRawSensorValue(Sensor sensor) {
-    return connections.get(currentConnection).getConnection().getRawSensorValue(sensor.getName());
+    return connections.get(currentConnection).getConnection()
+        .getRawSensorValue(sensor.getName());
   }
 
   @Override
   public byte[] getSensorValues(String name) {
-    return connections.get(currentConnection).getConnection().getSensorValues(name);
+    return connections.get(currentConnection).getConnection()
+        .getSensorValues(name);
   }
 
   @Override
   public byte[] getSensorValues(Sensor sensor) {
-    return connections.get(currentConnection).getConnection().getSensorValues(sensor.getName());
+    return connections.get(currentConnection).getConnection()
+        .getSensorValues(sensor.getName());
   }
 
   @Override
@@ -219,66 +253,77 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public void motorOff(String motorName) {
-    connections.get(currentConnection).getConnection().stopMotor(Motor.valueOf(motorName).getPort());
+    connections.get(currentConnection).getConnection()
+        .stopMotor(Motor.valueOf(motorName).getPort());
   }
 
   @Override
   public void motorOff(Motor motor) {
-    connections.get(currentConnection).getConnection().stopMotor(motor.getPort());
+    connections.get(currentConnection).getConnection()
+        .stopMotor(motor.getPort());
 
   }
 
   @Override
   public void motorOn(String motorName, int speed) {
-    connections.get(currentConnection).getConnection().runMotor(Motor.valueOf(motorName).getPort(), speed);
+    connections.get(currentConnection).getConnection()
+        .runMotor(Motor.valueOf(motorName).getPort(), speed);
   }
 
   @Override
   public void motorOn(Motor motor, int speed) {
-    connections.get(currentConnection).getConnection().runMotor(motor.getPort(), speed);
+    connections.get(currentConnection).getConnection()
+        .runMotor(motor.getPort(), speed);
   }
 
   @Override
   public void motorReset(String motorName) {
-    connections.get(currentConnection).getConnection().resetMotor(Motor.valueOf(motorName).getPort());
+    connections.get(currentConnection).getConnection()
+        .resetMotor(Motor.valueOf(motorName).getPort());
 
   }
 
   @Override
   public void motorReset(Motor motor) {
-    connections.get(currentConnection).getConnection().resetMotor(motor.getPort());
+    connections.get(currentConnection).getConnection()
+        .resetMotor(motor.getPort());
   }
 
   @Override
   public void setSensorMode(String name, SensorMode mode) {
-    connections.get(currentConnection).getConnection().setSensorMode(name, mode);
+    connections.get(currentConnection).getConnection()
+        .setSensorMode(name, mode);
   }
 
   @Override
   public void setSensorMode(Sensor sensor, SensorMode mode) {
-    connections.get(currentConnection).getConnection().setSensorMode(sensor.getName(), mode);
+    connections.get(currentConnection).getConnection()
+        .setSensorMode(sensor.getName(), mode);
   }
 
   @Override
   public void setSensorType(String name, SensorType type) {
-    connections.get(currentConnection).getConnection().setSensorType(name, type);
+    connections.get(currentConnection).getConnection()
+        .setSensorType(name, type);
   }
 
   @Override
   public void setSensorType(Sensor sensor, SensorType type) {
-    connections.get(currentConnection).getConnection().setSensorType(sensor.getName(), type);
+    connections.get(currentConnection).getConnection()
+        .setSensorType(sensor.getName(), type);
   }
 
   @Override
   public int getConvertedSensorData(Sensor name) {
-    return connections.get(currentConnection).getConnection().getConvertedSensorData(name.getName(), name.getMode());
+    return connections.get(currentConnection).getConnection()
+        .getConvertedSensorData(name.getName(), name.getMode());
   }
 
   /**
    * Stops the threads used for polling the connection.
    */
   public void stopPolling() {
-    for (String name: connections.keySet()) {
+    for (String name : connections.keySet()) {
       connections.get(name).disconnect();
     }
   }

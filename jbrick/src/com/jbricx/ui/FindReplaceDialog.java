@@ -1,6 +1,7 @@
 package com.jbricx.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -37,7 +38,7 @@ public class FindReplaceDialog extends Dialog {
 	// The adapter that does the finding/replacing
 	private FindReplaceDocumentAdapter frda;
 
-	private static ArrayList<Control> changableComponentList = new ArrayList<Control>();
+	private static List<Control> changableComponentList = new ArrayList<Control>();
 
 	// The associated viewer
 	private ITextViewer viewer;

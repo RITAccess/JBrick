@@ -1,11 +1,13 @@
 package com.jbricx.ui.piano;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 
 /**
@@ -13,26 +15,33 @@ import com.jbricx.communications.NXTObserver;
  * @author Abhishek Shrestha
  */
 public class PianoUIWindow extends TrayDialog implements NXTObserver {
-  public Control pianoComposite1 =  null;
+  private Shell shell = null;
 
-  public PianoUIWindow(final Shell shell) {
+  public PianoUIWindow(Shell shell) {
     super(shell);
+    this.shell = shell;
   }
 
   PianoComposite pianoComposite;
+
   @Override
   protected Control createContents(Composite parent) {
     getShell().setText("Piano");
-    pianoComposite= new PianoComposite(parent, SWT.NULL);
+    pianoComposite = new PianoComposite(parent, SWT.NULL);
     return pianoComposite;
   }
 
   @Override
   public void update(boolean isConnected) {
-    // TODO: do some saving implementation
-      if(!isConnected){
-            System.out.println("abishesk");
-            //pianoComposite.disableButtons();
-        }
+    NXTManager.getInstance().unregister(this);
+
+    // save the notes that have been played
+    pianoComposite.copyButtonPressed();
+
+    MessageDialog.openInformation(shell, "Connection Status",
+        "Piano: NXTBrick has been disconnected!"
+            + " The notes (if played) have been copied to clipboard.\r\n"
+            + " The paino window will be closed now!");
+    this.getShell().dispose(); // finally close the piano dialog
   }
 }

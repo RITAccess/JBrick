@@ -58,7 +58,7 @@ public class MainWindow extends ApplicationWindow implements
   private TabFolder tabFolder;
   private StatusTabItem statusTabItem;
   private FileExplorerTabItem explorer;
-  public static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
+  private static ArrayList<JBrickObserver> observerList = new ArrayList<JBrickObserver>();
   // The stored preferences
   private PreferenceStore prefs;
 

@@ -30,9 +30,8 @@ public class PianoAction extends AbstractAction implements NXTObserver {
   public void run() {
     PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
     piano.setBlockOnOpen(true);
-    NXTManager nxtManager = NXTManager.getInstance();
-    nxtManager.register(piano);
-
+    
+    NXTManager.getInstance().register(piano);
     piano.open();
   }
 

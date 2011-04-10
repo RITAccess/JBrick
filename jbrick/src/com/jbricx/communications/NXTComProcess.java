@@ -3,6 +3,8 @@
  */
 package com.jbricx.communications;
 
+import org.eclipse.swt.widgets.Display;
+
 import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
@@ -12,6 +14,7 @@ import com.jbricx.communications.exceptions.UnableToCreateNXTException;
  * connected.
  * 
  * @author byktol
+ * @author Abhishek Shrestha
  */
 public class NXTComProcess {
   private static final int sleepTime = 3000;
@@ -27,37 +30,47 @@ public class NXTComProcess {
 
   /**
    * Creates a thread used for polling the port/connection status.
+   * 
    * @return a new thread that polls the connection.
    */
-  private Thread createConnectionPollingThread() {
-    return new Thread() {
+  private void createConnectionPollingThread() {
+    new Thread(new Runnable() {
+      boolean running = true;
+
       @Override
       public void run() {
-        boolean running = true;
+        System.out.println("NXTComProcess.createConnectionPollingThread():");
         while (running) {
-
           try {
             Thread.sleep(sleepTime);
-            running = connection.isConnected();
-
-            if (!running) {
-              NXTManager.getInstance().disconnect(connection.getConnectionType().getName());
-              NXTManager.getInstance().verifyLastDisconnect();
-            }
-
           } catch (InterruptedException e) {
-            // IGNORE: The disconnect() method intentionally interrupts the
+            // IGNORE. The disconnect() method intentionally interrupts the
             // thread.
           }
 
+          /*
+           * lets not hinder the event loop thread so, execute these processes in
+           * separate thread
+           */
+          Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+              running = connection.isConnected();
+              if (!running) {
+                NXTManager.getInstance().softDisconnect(
+                    connection.getConnectionType().getName());
+              }
+            }
+          });
         } // end of while
       } // end of run()
-    };
+    }).start();
   }
 
   /**
    * Creates a new connection of the specified type.
-   * @param type the type of connection to create.
+   * 
+   * @param type
+   *          the type of connection to create.
    * @return whether the connection to the brick was successful or not.
    * @see ConnectionType
    */
@@ -68,8 +81,7 @@ public class NXTComProcess {
       connection.playSound(2000, 200);
 
       if (thread == null || !thread.isAlive()) {
-        thread = createConnectionPollingThread();
-        thread.start();        
+        createConnectionPollingThread();
       }
       success = true;
 
@@ -115,9 +127,10 @@ public class NXTComProcess {
 
   /**
    * @return whether the Lego's Fantom Driver was successfully loaded. This
-   * depends on the class implementing the low-level interface.
+   *         depends on the class implementing the low-level interface.
    */
   protected static boolean isFantomDriverLoaded() {
+
     return NXTConnectionImpl.isFantomDriverLoaded();
   }
 }

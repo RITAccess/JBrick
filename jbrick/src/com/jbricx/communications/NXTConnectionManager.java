@@ -6,7 +6,7 @@ package com.jbricx.communications;
 import com.jbricx.communications.enums.ConnectionType;
 
 /**
- * Defines the methods for connecting and disconnecting to a Lego Brick. 
+ * Defines the methods for connecting and disconnecting to a Lego Brick.
  * 
  * @author byktol
  */
@@ -28,6 +28,18 @@ public interface NXTConnectionManager {
 
   void disconnect();
 
+  /**
+   * only removes the {@link NXTComProcess} from the list
+   * 
+   * @param name
+   */
+  void softDisconnect(String name);
+
+  /**
+   * does the physical disconnect and also removes from the list
+   * 
+   * @param name
+   */
   void disconnect(String name);
 
   void notifyAllObservers(boolean connected);

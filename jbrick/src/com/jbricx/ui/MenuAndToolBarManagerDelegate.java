@@ -109,7 +109,7 @@ public class MenuAndToolBarManagerDelegate {
 
     nxtManager.register(joystickAction);
     nxtManager.register(pianoAction);
-    nxtManager.register(directControlAction);
+    nxtManager.register(directControlAction);    
   }
 
   /**
