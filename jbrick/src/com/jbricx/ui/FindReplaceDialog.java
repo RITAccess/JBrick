@@ -51,7 +51,7 @@ public class FindReplaceDialog extends Dialog {
 	Display display;
 	private PersistentDocument document;
 	public static int f = -1;
-	ArrayList listValue = new ArrayList();
+	List<Integer> listValue = new ArrayList<Integer>();
 	/**
 	 * FindReplaceDialog constructor
 	 * 
@@ -148,6 +148,7 @@ public class FindReplaceDialog extends Dialog {
 					x = region.getOffset();
 					y = region.getLength();
 					z = frda.length();
+					
 					System.out.println("amount:" + frda.length());
 						valorMedio = frda.length()/2;
 						System.out.println("valorMedio" + valorMedio);

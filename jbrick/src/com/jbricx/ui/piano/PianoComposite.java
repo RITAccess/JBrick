@@ -7,6 +7,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -35,7 +36,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -478,25 +478,19 @@ public class PianoComposite extends Composite {
           double toneFreq = 0;
           int toneToPlay1 = (int) Math.round(toneFreq);
 
-          // int duration1 = (int) Math.round(toneDuration / noteLengthDiv);
-
           @Override
           public void mouseUp(MouseEvent arg0) {
-            // TODO Auto-generated method stub
-            recording.AddKey(toneToPlay1, noteLengthDiv,
+            recording.addKey(toneToPlay1, noteLengthDiv,
                 Integer.parseInt(noteLength.getText()),
                 Integer.parseInt(waitTime.getText()));
           }
 
           @Override
           public void mouseDown(MouseEvent arg0) {
-            // TODO Auto-generated method stub
-
           }
 
           @Override
           public void mouseDoubleClick(MouseEvent arg0) {
-            // TODO Auto-generated method stub
           }
         });
       }
@@ -720,7 +714,7 @@ public class PianoComposite extends Composite {
         noteDuration = 80;
         noteLength.setText("80");
       }
-      Integer waitDuration;
+      int waitDuration;
       try {
         waitDuration = Integer.parseInt(waitTime.getText());
       } catch (Exception e) {
@@ -730,7 +724,7 @@ public class PianoComposite extends Composite {
 
       PianoNote note = new PianoNote(toneToPlay, noteLengthDiv, noteDuration,
           waitDuration);
-      recording.AddKey(note);
+      recording.addKey(note);
 
       if (USE_BRICK) {
         // nxt.playTone(toneToPlay, duration);
@@ -847,7 +841,7 @@ public class PianoComposite extends Composite {
   }
 
   protected void clearButtonPressed() {
-    recording.ClearKeys();
+    recording.clearKeys();
   }
 
   protected void copyButtonPressed() {
@@ -856,7 +850,7 @@ public class PianoComposite extends Composite {
     Clipboard systemClipboard = Toolkit.getDefaultToolkit()
         .getSystemClipboard();
     Transferable transferableText = new StringSelection(recStr);
-    systemClipboard.setContents(transferableText, null);    
+    systemClipboard.setContents(transferableText, null);
   }
 
   protected void playButtonPressed() {
@@ -1037,10 +1031,12 @@ public class PianoComposite extends Composite {
           if (!overwrite) {
             fileName = null;
           } else {
-            spnf.receivingNotes(recording.getNotes(), fileName);
+            // spnf.receivingNotes(recording.getNotes(), fileName);
+            recording.saveNotesToFile(fileName);
           }
         } else {
-          spnf.receivingNotes(recording.getNotes(), fileName);
+          recording.saveNotesToFile(fileName);
+          // spnf.receivingNotes(recording.getNotes(), fileName);
         }
       }
 
@@ -1057,15 +1053,15 @@ public class PianoComposite extends Composite {
     }
 
     public void run() {
-      ArrayList<PianoNote> notes = recording.getNotes();
+      List<PianoNote> notes = recording.getNotes();
       try {
         for (PianoNote note : notes) {
           nxt.playTone(note.getTone(), note.getNoteTime());
-          Thread.sleep(note.getWaitTime());
+          System.out.println("PianoComposite.PlayThread.run()"+note.getWaitTime());
+          Thread.sleep(note.getWaitTime()* 2);
         }
       } catch (Exception e) {
       }
     }
   }
-
 }
