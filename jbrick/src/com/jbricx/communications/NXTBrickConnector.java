@@ -3,8 +3,6 @@
  */
 package com.jbricx.communications;
 
-import org.eclipse.swt.widgets.Display;
-
 import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
@@ -14,9 +12,8 @@ import com.jbricx.communications.exceptions.UnableToCreateNXTException;
  * connected.
  * 
  * @author byktol
- * @author Abhishek Shrestha
  */
-public class NXTComProcess {
+public class NXTBrickConnector {
   private static final int sleepTime = 3000;
 
   /**
@@ -33,37 +30,29 @@ public class NXTComProcess {
    * 
    * @return a new thread that polls the connection.
    */
-  private void createConnectionPollingThread() {
-    new Thread(new Runnable() {
-      boolean running = true;
-
+  private Thread createConnectionPollingThread() {
+    return new Thread() {
       @Override
       public void run() {
-        System.out.println("NXTComProcess.createConnectionPollingThread():");
+        boolean running = true;
         while (running) {
+
           try {
             Thread.sleep(sleepTime);
+            running = connection.isConnected();
+
+            if (!running) {
+              NXTManager.getInstance().disconnect(connection.getConnectionType().getName());
+            }
+
           } catch (InterruptedException e) {
-            // IGNORE. The disconnect() method intentionally interrupts the
+            // IGNORE: The disconnect() method intentionally interrupts the
             // thread.
           }
 
-          /*
-           * lets not hinder the event loop thread so, execute these processes in
-           * separate thread
-           */
-          Display.getDefault().asyncExec(new Runnable() {
-            public void run() {
-              running = connection.isConnected();
-              if (!running) {
-                NXTManager.getInstance().softDisconnect(
-                    connection.getConnectionType().getName());
-              }
-            }
-          });
         } // end of while
       } // end of run()
-    }).start();
+    };
   }
 
   /**
@@ -81,7 +70,8 @@ public class NXTComProcess {
       connection.playSound(2000, 200);
 
       if (thread == null || !thread.isAlive()) {
-        createConnectionPollingThread();
+        thread = createConnectionPollingThread();
+        thread.start();        
       }
       success = true;
 
@@ -130,7 +120,6 @@ public class NXTComProcess {
    *         depends on the class implementing the low-level interface.
    */
   protected static boolean isFantomDriverLoaded() {
-
     return NXTConnectionImpl.isFantomDriverLoaded();
   }
 }

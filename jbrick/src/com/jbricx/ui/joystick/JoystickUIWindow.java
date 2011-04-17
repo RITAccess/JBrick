@@ -24,8 +24,7 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
 
   @Override
   public void handleShellCloseEvent() {
-    NXTManager.getInstance().unregister(this);    
-    JoystickComposite.stopMotors();
+    onDisconnect();
     super.handleShellCloseEvent();
   }
 
@@ -39,16 +38,28 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
 
   @Override
   public void update(boolean isConnected) {
-    NXTManager.getInstance().unregister(this);
     if (!isConnected) {
-      JoystickComposite.stopMotors();
+      onDisconnect();
+
+      // Display an error message
+      MessageDialog.openInformation(shell, "Connection Status",
+              "JoyStick: NXTBrick has been disconnected!"
+              + " The Joystick window will be closed now!");
+
+      // Dinally close the joystick dialog
+      this.getShell().dispose();
     }
+  }
 
-    MessageDialog.openInformation(shell, "Connection Status",
-        "JoyStick: NXTBrick has been disconnected!"
-            + " The Joystick window will be closed now!");
-    this.getShell().dispose(); // finally close the joystick dialog
+  /**
+   * Unregisters this observer and stops the NXT motors.
+   */
+  protected void onDisconnect() {
+    // Unregister this observer
+    NXTManager.getInstance().unregister(this);
 
+    // Stop the motors
+    JoystickComposite.stopMotors();
   }
 
 }

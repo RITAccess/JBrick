@@ -2,7 +2,6 @@ package com.jbricx.communications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +26,11 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   /**
    * The current connections.
    */
-  private final Map<String, NXTComProcess> connections = new HashMap<String, NXTComProcess>();
+  private final Map<String, NXTBrickConnector> connections = new HashMap<String, NXTBrickConnector>();
   private final List<NXTObserver> nxtObservers = new ArrayList<NXTObserver>();
 
   private final CompilerRunner compilerRunner = new CompilerRunner();
 
-  /*
-   * FIXME: This variable is meant to be used help point the current connection,
-   * but the methods it's been used in doesn't help its cause.
-   */
   private String currentConnection;
 
   /**
@@ -53,7 +48,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
    */
   public static boolean isFantomDriverLoaded() {
     // This is done to avoid accessing this class method from outside the Façade
-    return NXTComProcess.isFantomDriverLoaded();
+    return NXTBrickConnector.isFantomDriverLoaded();
   }
 
   /**
@@ -68,7 +63,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
     if (!(connections.containsKey(currentConnection) && connections.get(
         currentConnection).isRunning())) {
-      NXTComProcess c = new NXTComProcess();
+      NXTBrickConnector c = new NXTBrickConnector();
       boolean isConnected = c.connect(connectionType);
 
       notifyAllObservers(isConnected);
@@ -80,22 +75,15 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   @Override
   public void disconnect() {
     disconnect(currentConnection);
-    verifyLastDisconnect();
-  }
-
-  @Override
-  public void softDisconnect(String name) {
-    notifyAllObservers(false);
   }
 
   @Override
   public void disconnect(final String name) {
     if (connections.containsKey(name)) {
-      NXTComProcess comProcess = connections.remove(name);
-      comProcess.disconnect();
+      NXTBrickConnector conn = connections.remove(name);
+      conn.disconnect();
     }
-    // TODO: add a way to distinguish whether the last brick is disconnected.
-    notifyAllObservers(false);
+    verifyLastDisconnect();
   }
 
   /**
@@ -109,9 +97,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   public void unregister(NXTObserver observer) {    
     synchronized (nxtObservers) {
-      if (nxtObservers.contains(observer)) {
-        nxtObservers.remove(observer);
-      }
+      nxtObservers.remove(observer);
     }
   }
 
@@ -123,21 +109,10 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
       copiedObservers.addAll(nxtObservers);
     }
 
-    Iterator<NXTObserver> iterator = copiedObservers.iterator();
-
-    while (iterator.hasNext()) {
-      NXTObserver nxtObserver = iterator.next();
+    for (NXTObserver nxtObserver : copiedObservers) {
       nxtObserver.update(isConnected);
     }
   }
-
-  /*
-   * public void notifyFantomListener(FantomListener fl, boolean
-   * isDriverAvailable) { fl.update(isDriverAvailable); }
-   * 
-   * public void notifyAllFantomListeners(boolean isDriverAvailable) { for
-   * (FantomListener fl : fantonListeners) { fl.update(isDriverAvailable); } }
-   */
 
   @Override
   public ExitStatus compile(final String filename) {
@@ -158,7 +133,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   public ExitStatus downloadFile(final String filename) {
     if (connections.containsKey(currentConnection) && isConnected()) {
 
-      NXTComProcess proc = connections.get(currentConnection);
+      NXTBrickConnector proc = connections.get(currentConnection);
 
       // This is how it works: disconnect the brick, transfer file, re-connect.
       disconnect();
@@ -320,7 +295,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   }
 
   /**
-   * Stops the threads used for polling the connection.
+   * Stops all the threads used for polling the connection.
    */
   public void stopPolling() {
     for (String name : connections.keySet()) {
@@ -332,6 +307,11 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     this.compilerRunner.setPreferences(preferences);
   }
 
+  /**
+   * Upon disconnection of a brick, sets the selected connection to the next
+   * active one. If the last brick is being disconnected, then notify the
+   * observers to disable the required features.
+   */
   public void verifyLastDisconnect() {
     // Why, yes, go through all the trouble just to find the first connection.
     for (String connection : connections.keySet()) {
@@ -346,6 +326,9 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     }
   }
 
+  /**
+   * @return The name of the currently selected connection.
+   */
   public String getCurrentConnection() {
     return currentConnection;
   }

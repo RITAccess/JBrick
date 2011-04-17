@@ -29,13 +29,6 @@ public interface NXTConnectionManager {
   void disconnect();
 
   /**
-   * only removes the {@link NXTComProcess} from the list
-   * 
-   * @param name
-   */
-  void softDisconnect(String name);
-
-  /**
    * does the physical disconnect and also removes from the list
    * 
    * @param name
