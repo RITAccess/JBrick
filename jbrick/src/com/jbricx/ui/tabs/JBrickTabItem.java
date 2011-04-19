@@ -50,7 +50,6 @@ import annotation.ErrorAnnotation;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.pjo.JBrickEditor;
 import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.source.ColorManager.ColorFor;
 import com.jbricx.source.JBrickEditorSourceViewerConfiguration;
@@ -323,7 +322,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       partitioner = new FastPartitioner(scanner, JBrickPartitionScanner.TYPES);
 
       // Connect the partitioner and document
-      document.setDocumentPartitioner(JBrickEditor.JBRICK_PARTITIONING, partitioner);
+      document.setDocumentPartitioner(JBrickEditorSourceViewerConfiguration.JBRICK_PARTITIONING, partitioner);
       partitioner.connect(document);
     } catch (IOException e) {
       JOptionPane.showMessageDialog(null, e.getMessage(), "File Not Found!", 1);

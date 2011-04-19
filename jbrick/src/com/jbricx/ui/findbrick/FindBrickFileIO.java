@@ -1,8 +1,5 @@
 package com.jbricx.ui.findbrick;
 
-/*
- * @author Michael Goldstein
- */
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,17 +9,14 @@ import java.io.IOException;
 
 import com.jbricx.communications.enums.ConnectionType;
 
+/**
+ * @author Michael Goldstein
+ */
 public class FindBrickFileIO {
 
 	private static final String file = "JBConn.properties";
 
 	/**
-	 * constructor
-	 */
-	// FindBrickFileIO() {
-	// }
-	/**
-	 * 
 	 * @return ConnectionType enum value
 	 */
 	public static ConnectionType getCT() {
@@ -55,7 +49,7 @@ public class FindBrickFileIO {
 		return ct;
 	}
 
-	public void saveCT(ConnectionType ct) {
+	public static void saveCT(ConnectionType ct) {
 		if (ct == ConnectionType.USB) {
 			saveCT("USB");
 		} else {
@@ -65,8 +59,7 @@ public class FindBrickFileIO {
 
 	public static void saveCT(String str) {
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(
-					"JBConn.properties"));
+			BufferedWriter out = new BufferedWriter(new FileWriter(file));
 			if (str.equals("USB")) {
 				out.write("USB");
 				System.out.println("Saved 'USB' to File");

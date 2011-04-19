@@ -18,9 +18,6 @@ import com.jbricx.ui.MainWindow;
  * This class demonstrates TextViewer and Document.
  */
 public class JBrickEditor {
-  // Set up the name of the partitioner
-
-  public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
 
   /**
    * Runs the application

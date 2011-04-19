@@ -14,6 +14,8 @@ import com.jbricx.pjo.JBrickEditor;
  * This class provides the source viewer configuration
  */
 public class JBrickEditorSourceViewerConfiguration extends SourceViewerConfiguration {
+  // Set up the name of the partitioner
+  public static final String JBRICK_PARTITIONING = "jbrick_partitioning";
 
   private RuleBasedScanner codeScanner;
   private RuleBasedScanner commentScanner;
@@ -51,7 +53,7 @@ public class JBrickEditorSourceViewerConfiguration extends SourceViewerConfigura
    */
   @Override
   public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
-    return JBrickEditor.JBRICK_PARTITIONING;
+    return JBRICK_PARTITIONING;
   }
 
   /**
