@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
@@ -65,12 +67,60 @@ public class JoystickComposite extends Composite {
   private static WiiMain wiiMain;
   JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
   ArrayList<Button> buttonArray = new ArrayList<Button>();
+  
+  
+  private KeyListener joystickKeyListener = new KeyListener() {
+    @Override
+    public void keyReleased(KeyEvent arg0) {
+      joystickKeyPressed(arg0.character, false);
+    }
+    @Override
+    public void keyPressed(KeyEvent arg0) {
+      joystickKeyPressed(arg0.character, true);
+    }
+  };
+
+  
+  
   /**
    * Auto-generated main method to display this
    * org.eclipse.swt.widgets.Composite inside a new Shell.
    */
   static Thread thread;
 
+  protected void joystickKeyPressed(char charIn, boolean isDown) {
+    charIn = Character.toLowerCase(charIn);
+    switch (charIn) {
+      case 'a':
+        virtualJoypad = 3;
+        break;
+      case 'w':
+        virtualJoypad = 1;
+        break;
+      case 'd':
+        virtualJoypad = 5;
+        break;
+      case 'q':
+        virtualJoypad = 0;
+        break;
+      case 'e':
+        virtualJoypad = 2;
+        break;
+      case 's':
+        virtualJoypad = 4;
+        break;
+      case 'z':
+        virtualJoypad = 6;
+        break;
+      case 'c':
+        virtualJoypad = 8;
+        break;
+      case 'x':
+        virtualJoypad = 7;
+        break;
+    }
+  }
+  
   public static void main(String[] args) {
     showGUI();
   }
@@ -149,6 +199,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 0;
             }
           });
+          UpLeft.addKeyListener(joystickKeyListener);
         }
         {
           Up = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -163,6 +214,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 1;
             }
           });
+          Up.addKeyListener(joystickKeyListener);
         }
         {
           UpRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -176,6 +228,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 2;
             }
           });
+          UpRight.addKeyListener(joystickKeyListener);
         }
         {
           Left = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -189,6 +242,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 3;
             }
           });
+          Left.addKeyListener(joystickKeyListener);
         }
         {
           centreStop = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -202,6 +256,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 4;
             }
           });
+          centreStop.addKeyListener(joystickKeyListener);
         }
         {
           right = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -215,6 +270,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 5;
             }
           });
+          right.addKeyListener(joystickKeyListener);
         }
         {
           downLeft = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -228,6 +284,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 6;
             }
           });
+          downLeft.addKeyListener(joystickKeyListener);
         }
         {
           down = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -241,6 +298,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 7;
             }
           });
+          down.addKeyListener(joystickKeyListener);
         }
         {
           downRight = new Button(Movement, SWT.PUSH | SWT.CENTER);
@@ -254,6 +312,7 @@ public class JoystickComposite extends Composite {
               virtualJoypad = 8;
             }
           });
+          downRight.addKeyListener(joystickKeyListener);
         }
       }
       {
@@ -374,6 +433,7 @@ public class JoystickComposite extends Composite {
               Motor_1_ID = Motor.MOTOR_A;
             }
           });
+          leftMotor_A.addKeyListener(joystickKeyListener);
         }
         {
           leftMotor_B = new Button(leftMotor, SWT.RADIO | SWT.LEFT);
@@ -387,6 +447,7 @@ public class JoystickComposite extends Composite {
               Motor_1_ID = Motor.MOTOR_B;
             }
           });
+          leftMotor_B.addKeyListener(joystickKeyListener);
         }
         {
           leftMotor_C = new Button(leftMotor, SWT.RADIO | SWT.LEFT);
@@ -399,6 +460,7 @@ public class JoystickComposite extends Composite {
               Motor_1_ID = Motor.MOTOR_C;
             }
           });
+          leftMotor_C.addKeyListener(joystickKeyListener);
         }
         {
           leftMotor_Reversed = new Button(leftMotor, SWT.CHECK | SWT.LEFT);
@@ -416,6 +478,7 @@ public class JoystickComposite extends Composite {
               }
             }
           });
+          leftMotor_Reversed.addKeyListener(joystickKeyListener);
         }
       }
       {
@@ -433,6 +496,7 @@ public class JoystickComposite extends Composite {
               Motor_2_ID = Motor.MOTOR_A;
             }
           });
+          rightMotor_A.addKeyListener(joystickKeyListener);
         }
         {
           rightMotor_B = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
@@ -446,6 +510,7 @@ public class JoystickComposite extends Composite {
               Motor_2_ID = Motor.MOTOR_B;
             }
           });
+          rightMotor_B.addKeyListener(joystickKeyListener);
         }
         {
           rightMotor_C = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
@@ -459,6 +524,7 @@ public class JoystickComposite extends Composite {
               Motor_2_ID = Motor.MOTOR_C;
             }
           });
+          rightMotor_C.addKeyListener(joystickKeyListener);
         }
         {
           rightMotor_Reversed = new Button(rightMotor, SWT.CHECK | SWT.LEFT);
@@ -476,6 +542,7 @@ public class JoystickComposite extends Composite {
               }
             }
           });
+          rightMotor_Reversed.addKeyListener(joystickKeyListener);
         }
       }
       {
@@ -496,6 +563,7 @@ public class JoystickComposite extends Composite {
               motorSpeed = speedBar.getSelection();
             }
           });
+          speedBar.addKeyListener(joystickKeyListener);
         }
       }
       {
@@ -532,8 +600,10 @@ public class JoystickComposite extends Composite {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    this.addKeyListener(joystickKeyListener);
   }
 
+  
   private HelpContentAction helpAction = new HelpContentAction();
   static GamePadController gpc;
   static NXTGadgetManager nxt;
