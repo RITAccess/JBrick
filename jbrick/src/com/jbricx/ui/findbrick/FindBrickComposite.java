@@ -27,11 +27,6 @@ import com.jbricx.ui.JBrickButtonUtil;
 public class FindBrickComposite extends Composite {
 
   private ConnectionType ct;
-  private Button cancel;
-  private Button bluetooth;
-  private Button usb;
-  private Button connect;
-  private Button save;
   JBrickButtonUtil buttonUtil = new JBrickButtonUtil();
 
   /**
@@ -42,7 +37,7 @@ public class FindBrickComposite extends Composite {
     Shell shell;
     Display display;
     display = Display.getDefault();
-    
+
     shell = new Shell(display);
     FindBrickComposite inst = new FindBrickComposite(shell, SWT.NULL);
     Point size = inst.getSize();
@@ -69,22 +64,23 @@ public class FindBrickComposite extends Composite {
     try {
       ct = FindBrickFileIO.getCT();
 
-      Group informationGroup = new Group(this, SWT.NONE);
-      informationGroup.setText("Information");
-      informationGroup.setBounds(19, 10, 356, 80);
+      Group driveMode = new Group(this, SWT.NONE);
+      driveMode.setText("Information");
+      driveMode.setBounds(19, 10, 356, 80);
 
-      Label info = new Label(informationGroup, SWT.WRAP);
+      Label info = new Label(driveMode, SWT.WRAP);
+      info.setBounds(3, 15, 340, 60);
 
       info.setText("To connect to the brick, select the communication method "
           + "and click Connect.  You can save your preference by clicking "
           + "the Save button so you do not need to come back to this screen "
           + "in the future.");
 
-      Group connectionStatusGroup = new Group(this, SWT.NONE);
-      connectionStatusGroup.setText("Connection satus:");
-      connectionStatusGroup.setBounds(19, 100, 356, 50);
+      Group connectionGrp = new Group(this, SWT.NONE);
+      connectionGrp.setText("Connection satus:");
+      connectionGrp.setBounds(19, 100, 356, 50);
 
-      final Label connectionInfo = new Label(connectionStatusGroup, SWT.WRAP);
+      final Label connectionInfo = new Label(connectionGrp, SWT.WRAP);
       connectionInfo.setBounds(13, 20, 340, 25);
 
       if (NXTManager.getInstance().isConnected()) {
@@ -94,11 +90,11 @@ public class FindBrickComposite extends Composite {
         connectionInfo.setText("Not Connected..!");
       }
 
-      Group connectionTypeGroup = new Group(this, SWT.NONE);
-      connectionTypeGroup.setText("Connection Type");
-      connectionTypeGroup.setBounds(19, 160, 356, 74);
+      final Group rightMotor = new Group(this, SWT.NONE);
+      rightMotor.setText("Connection Type");
+      rightMotor.setBounds(19, 160, 356, 74);
 
-      usb = new Button(connectionTypeGroup, SWT.RADIO | SWT.LEFT);
+      Button usb = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
       usb.setText("USB");
       usb.setBounds(12, 26, 65, 30);
       buttonUtil.setAccessibleString(usb, "Brick Type List");
@@ -111,7 +107,7 @@ public class FindBrickComposite extends Composite {
         }
       });
 
-      bluetooth = new Button(connectionTypeGroup, SWT.RADIO | SWT.LEFT);
+      Button bluetooth = new Button(rightMotor, SWT.RADIO | SWT.LEFT);
       bluetooth.setText("Bluetooth");
       bluetooth.setSize(60, 30);
       bluetooth.setBounds(89, 26, 69, 30);
@@ -124,7 +120,7 @@ public class FindBrickComposite extends Composite {
         }
       });
 
-      connect = new Button(this, SWT.PUSH | SWT.CENTER);
+      Button connect = new Button(this, SWT.PUSH | SWT.CENTER);
       connect.setText("Connect");
       connect.setBounds(74, 250, 60, 30);
       buttonUtil.setAccessibleString(connect, "Connect");
@@ -148,7 +144,7 @@ public class FindBrickComposite extends Composite {
         }
       });
 
-      save = new Button(this, SWT.PUSH | SWT.CENTER);
+      Button save = new Button(this, SWT.PUSH | SWT.CENTER);
       save.setText("Save");
       save.setBounds(157, 250, 60, 30);
       buttonUtil.setAccessibleString(save, "Save");
@@ -160,7 +156,7 @@ public class FindBrickComposite extends Composite {
         }
       });
 
-      cancel = new Button(this, SWT.PUSH | SWT.CENTER);
+      Button cancel = new Button(this, SWT.PUSH | SWT.CENTER);
       cancel.setText("Quit");
       cancel.setSize(60, 30);
       cancel.setBounds(237, 250, 60, 30);
