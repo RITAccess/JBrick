@@ -2,6 +2,7 @@ package com.jbricx.communications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -99,19 +100,17 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     nxtObservers.add(observer);
   }
 
-  public void unregister(NXTObserver observer) {    
-    synchronized (nxtObservers) {
-      nxtObservers.remove(observer);
-    }
+  public void unregister(NXTObserver observer) {
+    // synchronized (nxtObservers) {
+    nxtObservers.remove(observer);
+    // }
   }
 
-  public synchronized void notifyAllObservers(boolean isConnected) {
+  public void notifyAllObservers(boolean isConnected) {
     List<NXTObserver> copiedObservers = new ArrayList<NXTObserver>();
 
-    synchronized (nxtObservers) {
-      // CONCURRENCY IDIOM: copy then iterate
-      copiedObservers.addAll(nxtObservers);
-    }
+    // CONCURRENCY IDIOM: copy then iterate
+    copiedObservers.addAll(nxtObservers);
 
     for (NXTObserver nxtObserver : copiedObservers) {
       nxtObserver.update(isConnected);
