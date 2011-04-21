@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
 
 import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.communications.enums.Motor;
@@ -79,11 +80,14 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public void disconnect(final String name) {
-    if (connections.containsKey(name)) {
-      NXTBrickConnector conn = connections.remove(name);
-      conn.disconnect();
-    }
-    verifyLastDisconnect();
+    Display.getDefault().asyncExec(new Runnable() {
+      public void run() {
+        if (connections.containsKey(name)) {
+          connections.remove(name).disconnect();
+          verifyLastDisconnect();
+        }
+      }
+    });
   }
 
   /**
@@ -236,7 +240,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   public void motorOff(Motor motor) {
     connections.get(currentConnection).getConnection()
         .stopMotor(motor.getPort());
-
   }
 
   @Override
