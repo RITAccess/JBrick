@@ -44,7 +44,6 @@ import com.jbricx.actions.HelpContentAction;
 import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.pjo.FileExtensionConstants;
-import com.jbricx.ui.JBrickManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -58,37 +57,16 @@ import com.jbricx.ui.JBrickManager;
  */
 public class PianoComposite extends Composite {
 
-  private Label label1;
-  private Label label11;
   private Label waitTimeLabel;
   private Label noteLengthLabel;
   private Text noteLength;
   private Button onebysixteen;
-  private Label dash2;
-  private Label dash1;
-  private Composite composite3;
   private Button onebytwo;
   private Button onebyone;
   private Button onebyfour;
   private Button onebyeight;
-  private Button nxtMelody;
-  private Button forth;
-  private Button nxc;
-  private Composite composite2;
-  private Button nbc;
-  private Button java;
-  private Composite composite1;
-  private Button pascal;
-  private Button c;
-  private Button lasm;
-  private Button mindScript;
-  private Button nqc;
-  private Group language;
   private Button help;
-  private List list22;
   private Text waitTime;
-  private List list1;
-  private Label noteTime;
   private Button save;
   private Button play;
   private Button copy;
@@ -109,7 +87,6 @@ public class PianoComposite extends Composite {
   int noteLengthDiv = 4;
   int transposeMult = 3;
   int toneDuration = 1000;
-  private JBrickManager manager;
   public static boolean disabuttons = false;
 
   private PianoRecording recording = new PianoRecording();
@@ -255,10 +232,6 @@ public class PianoComposite extends Composite {
         help.setLayoutData(helpLData);
         help.setText("Help");
         help.addMouseListener(new MouseListener() {
-          final int keyId = 1;
-
-          // java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-
           @Override
           public void mouseUp(MouseEvent arg0) {
           }

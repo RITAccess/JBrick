@@ -11,7 +11,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -593,8 +592,6 @@ public class JoystickComposite extends Composite {
       buttonArray.add(T2);
       buttonArray.add(help);
 
-      FormLayout thisLayout = new FormLayout();
-
       this.layout();
       pack();
     } catch (Exception e) {
@@ -617,25 +614,6 @@ public class JoystickComposite extends Composite {
   static int lastVirtualJoypadValue = 4;
   static int lastGPCValue = 4;
   static boolean useGUI = false;
-  private static Runnable backupBeep = new Runnable() {
-
-    public void run() {
-      boolean playSound = false;
-      int curDir;
-      while (true) {
-        playSound = !playSound;
-        curDir = gpc.getXYStickDir();
-        if (((curDir == 7) || (curDir == 8) || (curDir == 6)) && playSound) {
-          nxt.playTone(1500, 600);
-        }
-
-        try {
-          Thread.sleep(500);
-        } catch (InterruptedException e) {
-        }
-      }
-    }
-  };
   private static Runnable pollController = new Runnable() {
 
     @Override

@@ -46,7 +46,7 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
               "JoyStick: NXTBrick has been disconnected!"
               + " The Joystick window will be closed now!");
 
-      // Dinally close the joystick dialog
+      // Dynamically close the joystick dialog
       this.getShell().dispose();
     }
   }
