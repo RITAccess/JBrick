@@ -191,8 +191,8 @@ public class JoystickComposite extends Composite {
               "/images/UpLeft.png").createImage());
 
           UpLeft.setBounds(18, 36, 26, 26);
+          UpLeft.setToolTipText("Q");
           buttonUtil.setAccessibleString(UpLeft, "Up Left Arrow");
-
           UpLeft.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
               virtualJoypad = 0;
@@ -205,6 +205,7 @@ public class JoystickComposite extends Composite {
           Up.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/Up.png").createImage());
           Up.setBounds(42, 36, 27, 26);
+          Up.setToolTipText("W");
           buttonUtil.setAccessibleString(Up, "Up Arrow");
 
           Up.addSelectionListener(new SelectionAdapter() {
@@ -220,6 +221,7 @@ public class JoystickComposite extends Composite {
           UpRight.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/UpRight.png").createImage());
           UpRight.setBounds(67, 37, 27, 26);
+          UpRight.setToolTipText("E");
           buttonUtil.setAccessibleString(UpRight, "Up Right Arrow");
           UpRight.addSelectionListener(new SelectionAdapter() {
 
@@ -234,6 +236,7 @@ public class JoystickComposite extends Composite {
           Left.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/left.png").createImage());
           Left.setBounds(18, 59, 24, 30);
+          Left.setToolTipText("A");
           buttonUtil.setAccessibleString(Left, "Left Arrow");
           Left.addSelectionListener(new SelectionAdapter() {
 
@@ -248,6 +251,7 @@ public class JoystickComposite extends Composite {
           centreStop.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/centreStop.png").createImage());
           centreStop.setBounds(41, 62, 27, 26);
+          centreStop.setToolTipText("S");
           buttonUtil.setAccessibleString(centreStop, "Stop");
           centreStop.addSelectionListener(new SelectionAdapter() {
 
@@ -262,6 +266,7 @@ public class JoystickComposite extends Composite {
           right.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/right.png").createImage());
           right.setBounds(66, 59, 28, 30);
+          right.setToolTipText("D");
           buttonUtil.setAccessibleString(right, "Right Arrow");
           right.addSelectionListener(new SelectionAdapter() {
 
@@ -276,6 +281,7 @@ public class JoystickComposite extends Composite {
           downLeft.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/downLeft.png").createImage());
           downLeft.setBounds(18, 84, 24, 28);
+          downLeft.setToolTipText("Z");
           buttonUtil.setAccessibleString(downLeft, "Down Left Arrow");
           downLeft.addSelectionListener(new SelectionAdapter() {
 
@@ -290,6 +296,7 @@ public class JoystickComposite extends Composite {
           down.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/down.png").createImage());
           down.setBounds(43, 87, 25, 24);
+          down.setToolTipText("X");
           buttonUtil.setAccessibleString(down, "Down Arrow");
           down.addSelectionListener(new SelectionAdapter() {
 
@@ -304,6 +311,7 @@ public class JoystickComposite extends Composite {
           downRight.setImage(ImageDescriptor.createFromFile(getClass(),
               "/images/downRight.png").createImage());
           downRight.setBounds(68, 86, 25, 26);
+          downRight.setToolTipText("C");
           buttonUtil.setAccessibleString(downRight, "Down Right Arrow");
           downRight.addSelectionListener(new SelectionAdapter() {
 
