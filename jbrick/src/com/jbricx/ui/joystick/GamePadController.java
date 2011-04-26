@@ -56,7 +56,13 @@ public class GamePadController {
     // get the controllers
     ControllerEnvironment ce =
             ControllerEnvironment.getDefaultEnvironment();
+    
+    //If you receive java.lang.UnsatisfiedLinkError: no jinput-dx8 in java.library.path at this line then
+    //you need to add a run argument to your run configuration to do this:
+    //Click the run or debug drop down, select run/debug configurations, click the arguments tab
+    //Add this line to VM arguments -Djava.library.path="lib"
     Controller[] cs = ce.getControllers();
+    
     if (cs.length == 0) {
       System.out.println("No controllers found");
       return;
