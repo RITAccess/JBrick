@@ -61,7 +61,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
   }
 
   public NXTManager connect(final ConnectionType connectionType) {
-    currentConnection = connectionType.getName();
+    currentConnection = connectionType.toString();
 
     if (!(connections.containsKey(currentConnection) && connections.get(
         currentConnection).isRunning())) {

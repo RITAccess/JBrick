@@ -42,7 +42,7 @@ public class NXTBrickConnector {
             running = connection.isConnected();
 
             if (!running) {
-              NXTManager.getInstance().disconnect(connection.getConnectionType().getName());
+              NXTManager.getInstance().disconnect(connection.getConnectionType().toString());
             }
 
           } catch (InterruptedException e) {
@@ -66,7 +66,7 @@ public class NXTBrickConnector {
   public boolean connect(final ConnectionType type) {
     boolean success = false;
     try {
-      connection = new NXTConnectionImpl(type.getName());
+      connection = new NXTConnectionImpl(type.toString());
       connection.playSound(2000, 200);
 
       if (thread == null || !thread.isAlive()) {

@@ -115,7 +115,7 @@ public class FindBrickComposite extends Composite {
 
       bluetooth.addListener(SWT.Selection, new Listener() {
         public void handleEvent(Event event) {
-          ct = ConnectionType.BLUETOOTH;
+          ct = ConnectionType.BTH;
           System.out.println("BT selected");
         }
       });
@@ -167,7 +167,7 @@ public class FindBrickComposite extends Composite {
         }
       });
 
-      if (ct == ConnectionType.BLUETOOTH) {
+      if (ct == ConnectionType.BTH) {
         bluetooth.setSelection(true);
       } else {
         usb.setSelection(true);

@@ -9,16 +9,8 @@ package com.jbricx.communications.enums;
  */
 public enum ConnectionType {
 
-  USB("USB"), BLUETOOTH("BTH");
-  private String name;
-
-  ConnectionType(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return this.name;
-  }
+  USB, BTH;
+ 
 
   /**
    * No matter what you believe, I think there's a better way of doing this.
@@ -30,7 +22,7 @@ public enum ConnectionType {
       case USB:
         port = "-S=usb";
         break;
-      case BLUETOOTH:
+      case BTH:
         port = "-BT";
         break;
       default:

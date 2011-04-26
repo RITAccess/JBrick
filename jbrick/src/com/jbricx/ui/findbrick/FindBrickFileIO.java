@@ -30,7 +30,7 @@ public class FindBrickFileIO {
 				str = in.readLine();
 
 				if (str.equals("BT")) {
-					ct = ConnectionType.BLUETOOTH;
+					ct = ConnectionType.BTH;
 				} else {
 					ct = ConnectionType.USB;
 				}
