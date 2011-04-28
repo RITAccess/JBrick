@@ -235,7 +235,7 @@ public class MenuAndToolBarManagerDelegate {
       add(aboutAction);
 
       add(new Separator());
-      add(directControlAction);
+      //add(directControlAction); Removed DirectControl until we know what we want to do with it, disabled for imagine RIT
       add(joystickAction);
       add(pianoAction);
 
