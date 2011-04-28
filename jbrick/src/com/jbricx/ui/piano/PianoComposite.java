@@ -991,7 +991,6 @@ public class PianoComposite extends Composite {
       dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
       dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
       fileName = dlg.open();
-      savingPianoNotesFile spnf = new savingPianoNotesFile();
 
       if (fileName == null) {
         done = true;
@@ -1030,8 +1029,9 @@ public class PianoComposite extends Composite {
       try {
         for (PianoNote note : notes) {
           nxt.playTone(note.getTone(), note.getNoteTime());
-          System.out.println("PianoComposite.PlayThread.run()"+note.getWaitTime());
-          Thread.sleep(note.getWaitTime()* 2);
+          System.out.println("PianoComposite.PlayThread.run()"
+              + note.getWaitTime());
+          Thread.sleep(note.getWaitTime() * 2);
         }
       } catch (Exception e) {
       }
