@@ -1,5 +1,7 @@
 package com.jbricx.ui;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -102,6 +105,14 @@ public class MainWindow extends ApplicationWindow implements
   protected void configureShell(Shell shell) {
     super.configureShell(shell);
     shell.setText("JBrick Editor");
+    
+    // locate the app window at the center of the screen
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Point windowSize = shell.getSize();
+    int x = (screenSize.width - windowSize.x) / 2;
+    int y = (screenSize.height - windowSize.y) / 2;
+
+    shell.setLocation(x, y);
   }
 
   public void registerObserver(final JBrickObserver observer) {

@@ -1,18 +1,21 @@
 package com.jbricx.ui;
 
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -20,33 +23,29 @@ import org.eclipse.swt.widgets.Text;
 import com.jbricx.model.PersistentDocument;
 
 /**
- * This class displays a find/replace dialog
+ * This class displays a Goto line number dialog
+ * 
+ * @author Abhishek Shrestha
  */
 public class GotoDialog extends Dialog {
-  // The adapter that does the finding/replacing
-
   // The associated viewer
   private ITextViewer viewer;
-
-  // The find and replace buttons
-  private Button doGoto;
-
   private PersistentDocument document;
-  
-  
+  private Button doGoto;
   private Shell myShell;
-  
+
   /**
-   * FindReplaceDialog constructor
+   * GotoDialog constructor
    * 
-   * @param shell the parent shell
-   * @param document the associated document
-   * @param viewer the associated viewer
+   * @param shell
+   *          the parent shell
+   * @param document
+   *          the associated document
+   * @param viewer
+   *          the associated viewer
    */
   public GotoDialog(Shell shell, IDocument document, ITextViewer viewer) {
     super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
-    //frda = new FindReplaceDocumentAdapter(document);
-    //da = new ID()
     this.document = (PersistentDocument) document;
     this.viewer = viewer;
   }
@@ -58,98 +57,31 @@ public class GotoDialog extends Dialog {
     Shell shell = new Shell(getParent(), getStyle());
     shell.setText("Goto Line Number");
     createContents(shell);
-    shell.pack();
+    int WIDTH = 200;
+    int HEIGHT = 140;
+
+    // locate the window at the center of the parent screen
+    Point parentWindowLocation = shell.getParent().getLocation();
+    Point parentWindowSize = shell.getParent().getSize();
+
+    int x = ((parentWindowSize.x - WIDTH) / 2) + parentWindowLocation.x;
+    int y = ((parentWindowSize.y - WIDTH) / 2) + parentWindowLocation.y;
+
+    shell.setBounds(x, y, WIDTH, HEIGHT);
     shell.open();
-    Display display = getParent().getDisplay();
-    while (!shell.isDisposed()) {
-      if (!display.readAndDispatch()) {
-        display.sleep();
-      }
-    }
   }
 
-  
-  protected void doGoto(String find){
-	  
-	  try {
-		int ln = document.getLineOffset(Integer.parseInt(find)-1);
-		viewer.setSelectedRange(ln, 0);
-	} catch (Exception e) {
-		//e.printStackTrace();
-	}
-	  
-	myShell.close();
-	  
+  protected void doGoto(String find) {
+    try {
+      int ln = document.getLineOffset(Integer.parseInt(find) - 1);
+      viewer.setSelectedRange(ln, 0);
+    } catch (NumberFormatException e) {
+      showError("Invalid/ Not a number!");
+    } catch (BadLocationException e) {
+      showError("Invalid location!");
+    }
+    myShell.close();
   }
-		  
-  
-  
-//  /**
-//   * Performs a find
-//   * 
-//   * @param find the find string
-//   * @param forward whether to search forward
-//   * @param matchCase whether to match case
-//   * @param wholeWord whether to search on whole word
-//   * @param regexp whether find string is a regular expression
-//   */
-//  protected void doFind(String find, boolean forward, boolean matchCase, 
-//      boolean wholeWord, boolean regexp) {
-//    // You can't mix whole word and regexp
-//    if (wholeWord && regexp) {
-//      showError("You can't search on both Whole Words and Regular Expressions");
-//    } else {
-//      IRegion region = null;
-//      try {
-//        // Get the current offset
-//        int offset = viewer.getTextWidget().getCaretOffset();
-//        
-//        // If something is currently selected, and they're searching backwards,
-//        // move offset to beginning of selection. Otherwise, repeated backwards
-//        // finds will only find the same text
-//        if (!forward) {
-//          Point pt = viewer.getSelectedRange();
-//          if (pt.x != pt.y) {
-//            offset = pt.x - 1;
-//          }
-//        }
-//
-//        // Make sure we're in the document
-//        if (offset >= frda.length()) offset = frda.length() - 1;
-//        if (offset < 0) offset = 0;
-//
-//        // Perform the find
-//        region = frda.find(offset, find, forward, matchCase, wholeWord, regexp);
-//
-//        // Update the viewer with found selection
-//        if (region != null) {
-//          viewer.setSelectedRange(region.getOffset(), region.getLength());
-//        }
-//
-//        // If find succeeded, enable Replace buttons.
-//        // Otherwise, disable Replace buttons.
-//        // We know find succeeded if region is not null
-//        enableReplaceButtons(region != null);
-//      } catch (BadLocationException e) {
-//        // Ignore
-//      } catch (PatternSyntaxException e) {
-//        // Show the error to the user
-//        showError(e.getMessage());
-//      }
-//    }
-//  }
-//  
-//  /**
-//   * Performs a replace
-//   * @param replaceText the replacement text
-//   */
-//  protected void doReplace(String replaceText) {
-//    try {
-//      frda.replace(replaceText, false);
-//    } catch (BadLocationException e) {
-//      // Ignore
-//    }
-//  }
 
   /**
    * Creates the dialog's contents
@@ -157,62 +89,47 @@ public class GotoDialog extends Dialog {
    * @param shell
    */
   protected void createContents(final Shell shell) {
-    shell.setLayout(new GridLayout(2, false));
     myShell = shell;
 
-    // Add the text input fields
-    Composite text = new Composite(shell, SWT.NONE);
-    text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    text.setLayout(new GridLayout(3, true));
+    GridData layoutDataOneCol = new GridData(GridData.FILL_HORIZONTAL);
+    GridData layoutDataTwoCol = new GridData();
 
-    new Label(text, SWT.LEFT).setText("&Goto:");
-    final Text findText = new Text(text, SWT.BORDER);
-    GridData data = new GridData(GridData.FILL_HORIZONTAL);
-    data.horizontalSpan = 2;
-    findText.setLayoutData(data);
-  
-   
+    layoutDataOneCol.horizontalSpan = 2;
+    layoutDataTwoCol.horizontalAlignment = GridData.FILL;
+    layoutDataTwoCol.grabExcessHorizontalSpace = true;
 
-    // Add the buttons
-    Composite buttons = new Composite(shell, SWT.NONE);
-    buttons.setLayout(new GridLayout());
+    GridLayout layout = new GridLayout();
+    layout.numColumns = 2;
+    myShell.setLayout(layout);
+
+    // goto label
+    Label labelGoto = new Label(shell, SWT.LEFT);
+    labelGoto.setText("Goto Line Number:");
+    labelGoto.setLayoutData(layoutDataOneCol);
+
+    // goto text
+    final Text findText = new Text(myShell, SWT.BORDER);
+    findText.setLayoutData(layoutDataTwoCol);
+
+    // notification label
+    final Label inputNotifier = new Label(shell, SWT.LEFT);
+    inputNotifier.setLayoutData(layoutDataOneCol);
 
     // Create the Goto button
-    doGoto = new Button(buttons, SWT.PUSH);
+    doGoto = new Button(myShell, SWT.PUSH);
     doGoto.setText("Goto");
-    doGoto.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-//    // Set the initial find operation to FIND_FIRST
-//    //doFind.setData(FindReplaceOperationCode.FIND_FIRST);
-//
-//    // Create the Replace button
-//    doReplace = new Button(buttons, SWT.PUSH);
-//    doReplace.setText("&Replace");
-//    doReplace.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//
-//    // Create the Replace/Find button
-//    doReplaceFind = new Button(buttons, SWT.PUSH);
-//    doReplaceFind.setText("Replace/Fin&d");
-//    doReplaceFind.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//    doReplaceFind.addSelectionListener(new SelectionAdapter() {
-//      public void widgetSelected(SelectionEvent event) {
-//        doReplace(replaceText.getText());
-//        doFind(findText.getText(), down.getSelection(), match.getSelection(),
-//            wholeWord.getSelection(), regexp.getSelection());
-//      }
-//    });
+    doGoto.setLayoutData(layoutDataTwoCol);
+    doGoto.setEnabled(false);
 
     // Create the Close button
-    Button close = new Button(buttons, SWT.PUSH);
+    Button close = new Button(myShell, SWT.PUSH);
     close.setText("Close");
-    close.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    close.setLayoutData(layoutDataTwoCol);
     close.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent event) {
         shell.close();
       }
     });
-
-   
 
     // Do a goto
     doGoto.addSelectionListener(new SelectionAdapter() {
@@ -221,20 +138,46 @@ public class GotoDialog extends Dialog {
       }
     });
 
-   
+    findText.addKeyListener(new KeyListener() {
+      @Override
+      public void keyReleased(KeyEvent ke) {
+        String inputText = findText.getText();
 
-    // Set defaults
-    //down.setSelection(true);
+        if (!inputText.equals("")) {
+          boolean isInteger = Pattern.matches("\\d+$", inputText);
+          if (!isInteger) {
+            inputNotifier.setText("Invalid/ Not a number!");
+            doGoto.setEnabled(false);
+          } else {
+            int gotoLine = Integer.parseInt(inputText);
+            if (gotoLine > 0 && gotoLine <= document.getNumberOfLines()) {
+              inputNotifier.setText("");
+              doGoto.setEnabled(true);
+            } else {
+              inputNotifier.setText("Line number out of range!");
+              doGoto.setEnabled(false);
+            }
+          }
+        } else {
+          inputNotifier.setText("");
+          doGoto.setEnabled(false);
+        }
+      }
+
+      @Override
+      public void keyPressed(KeyEvent ke) {
+      }
+    });
+
     findText.setFocus();
     shell.setDefaultButton(doGoto);
   }
 
-  
-
   /**
    * Shows an error
    * 
-   * @param message the error message
+   * @param message
+   *          the error message
    */
   protected void showError(String message) {
     MessageDialog.openError(getParent(), "Error", message);
