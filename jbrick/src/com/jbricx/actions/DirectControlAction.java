@@ -36,7 +36,7 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
 
   public void update(boolean isConnected) {
     if (isEnabled() != isConnected) {
-      setEnabled(isConnected);
+//      setEnabled(isConnected);
     }
   }
 }
