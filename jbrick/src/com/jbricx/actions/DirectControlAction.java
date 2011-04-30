@@ -19,7 +19,8 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
     super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(
         AboutAction.class, "/images/direct_controller.png"), manager);
     setToolTipText("Direct Control");
-    setEnabled(NXTManager.isFantomDriverLoaded());
+//    setEnabled(NXTManager.isFantomDriverLoaded());
+    setEnabled(false);
   }
 
   /**

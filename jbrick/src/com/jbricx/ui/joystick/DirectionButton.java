@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 
 /**
+ * Button used to move in a specific direction.
+ * 
  * @author byktol
  */
 public class DirectionButton extends Button {
@@ -31,6 +33,7 @@ public class DirectionButton extends Button {
 
       @Override
       public void mouseUp(MouseEvent e) {
+        // only the normal click catches this event
         if (e.button == 1) {
           onClickUp(e);
         }

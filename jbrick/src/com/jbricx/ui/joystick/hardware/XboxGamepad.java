@@ -4,7 +4,8 @@
 package com.jbricx.ui.joystick.hardware;
 
 /**
- * Handles the interaction with an Xbox Controller.
+ * Handles the interaction with an Xbox Controller. There might be the case that
+ * some other controllers work with this implementation.
  * 
  * @see GamepadController
  * @see GamepadConnector

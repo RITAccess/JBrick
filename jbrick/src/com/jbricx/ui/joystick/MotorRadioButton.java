@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Group;
 import com.jbricx.communications.enums.Motor;
 
 /**
+ * Radio button used to select one of the three motor ports available on a Brick
+ * 
  * @author byktol
  */
 public class MotorRadioButton extends Button {

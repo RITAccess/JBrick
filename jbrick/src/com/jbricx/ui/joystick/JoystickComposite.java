@@ -23,6 +23,9 @@ import com.jbricx.ui.joystick.hardware.GamepadControllerObserver;
 import com.jbricx.ui.joystick.hardware.GamepadType;
 
 /**
+ * Graphical interface for manipulating an NXT Brick. It is supposed to contain
+ * only the objects for display without any Brick manipulation logic.
+ * 
  * @author byktol
  */
 public class JoystickComposite extends Composite implements GamepadControllerObserver {
@@ -44,7 +47,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
     movementGrp.setText("Movement");
     movementGrp.setBounds(14, 10, 115, 154);
 
-    new DirectionButton(movementGrp, "/images/UpLeft.png", new int[] {18, 36, 26, 26}, "Q") {
+    new DirectionButton(movementGrp, "/images/UpLeft.png",
+            new int[] {18, 36, 26, 26}, "Q") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.turnForwardCCW();
@@ -54,7 +58,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/Up.png", new int[] {42, 36, 27, 26}, "W") {
+    new DirectionButton(movementGrp, "/images/Up.png",
+            new int[] {42, 36, 27, 26}, "W") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.forward();
@@ -64,7 +69,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/UpRight.png", new int[] {67, 37, 27, 26}, "E") {
+    new DirectionButton(movementGrp, "/images/UpRight.png",
+            new int[] {67, 37, 27, 26}, "E") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.turnForwardCW();
@@ -74,7 +80,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/left.png", new int[] {18, 59, 24, 30}, "A") {
+    new DirectionButton(movementGrp, "/images/left.png",
+            new int[] {18, 59, 24, 30}, "A") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.rotateCCW();
@@ -84,13 +91,15 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/centreStop.png", new int[] {41, 62, 27, 26}, "S") {
+    new DirectionButton(movementGrp, "/images/centreStop.png",
+            new int[] {41, 62, 27, 26}, "S") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/right.png", new int[] {66, 59, 28, 30}, "D") {
+    new DirectionButton(movementGrp, "/images/right.png",
+            new int[] {66, 59, 28, 30}, "D") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.rotateCW();
@@ -100,7 +109,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/downLeft.png", new int[] {18, 84, 24, 28}, "Z") {
+    new DirectionButton(movementGrp, "/images/downLeft.png",
+            new int[] {18, 84, 24, 28}, "Z") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.turnBackwardsCCW();
@@ -110,7 +120,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/down.png", new int[] {43, 87, 25, 24}, "X") {
+    new DirectionButton(movementGrp, "/images/down.png",
+            new int[] {43, 87, 25, 24}, "X") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.backwards();
@@ -120,7 +131,8 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
         gamepadController.stop();
       }
     };
-    new DirectionButton(movementGrp, "/images/downRight.png", new int[] {68, 86, 25, 26}, "C") {
+    new DirectionButton(movementGrp, "/images/downRight.png",
+            new int[] {68, 86, 25, 26}, "C") {
       @Override
       protected void onClick(MouseEvent e) {
         gamepadController.turnBackwardsCW();
@@ -153,11 +165,14 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
     controllerGrp.setBounds(141, 15, 115, 110);
 
     Button gpRadio;
-    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "None", new int[] {12, 21, 73, 30});
+    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "None",
+            new int[] {12, 21, 73, 30});
     gamepads.put(GamepadType.NONE, gpRadio);
-    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "Xbox", new int[] {12, 44, 73, 30});
+    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "Xbox",
+            new int[] {12, 44, 73, 30});
     gamepads.put(GamepadType.XBOX, gpRadio);
-    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "Wii", new int[] {12, 70, 80, 30});
+    gpRadio = new GamepadRadioButton(gamepadController, controllerGrp, "Wii",
+            new int[] {12, 70, 80, 30});
     gamepads.put(GamepadType.WII, gpRadio);
 
     Button motorRadio;
@@ -166,28 +181,32 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
     leftMotorGrp.setText("Left Motor");
     leftMotorGrp.setBounds(12, 176, 115, 74);
 
-    motorRadio = new MotorRadioButton(leftMotorGrp, "A", new int[] {12, 22, 30, 24}) {
+    motorRadio = new MotorRadioButton(leftMotorGrp, "A",
+            new int[] {12, 22, 30, 24}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorLeft(m);
       }
     };
     leftMotors.put(Motor.MOTOR_A, motorRadio);
-    motorRadio = new MotorRadioButton(leftMotorGrp, "B", new int[] {47, 22, 29, 24}) {
+    motorRadio = new MotorRadioButton(leftMotorGrp, "B",
+            new int[] {47, 22, 29, 24}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorLeft(m);
       }
     };
     leftMotors.put(Motor.MOTOR_B, motorRadio);
-    motorRadio = new MotorRadioButton(leftMotorGrp, "C", new int[] {81, 22, 26, 24}) {
+    motorRadio = new MotorRadioButton(leftMotorGrp, "C",
+            new int[] {81, 22, 26, 24}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorLeft(m);
       }
     };
     leftMotors.put(Motor.MOTOR_C, motorRadio);
-    reversedLeftMotorCheck = new MotorCheckBox(leftMotorGrp, "Reversed", new int[] {12, 48, 80, 20}) {
+    reversedLeftMotorCheck = new MotorCheckBox(leftMotorGrp, "Reversed",
+            new int[] {12, 48, 80, 20}) {
       @Override
       protected void onCheck(boolean checked) {
         gamepadController.setReversedMotorLeft(checked);
@@ -199,28 +218,32 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
     rightMotorGrp.setText("Right Motor");
     rightMotorGrp.setBounds(141, 176, 115, 74);
 
-    motorRadio = new MotorRadioButton(rightMotorGrp, "A", new int[] {12, 20, 27, 23}) {
+    motorRadio = new MotorRadioButton(rightMotorGrp, "A",
+            new int[] {12, 20, 27, 23}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorRight(m);
       }
     };
     rightMotors.put(Motor.MOTOR_A, motorRadio);
-    motorRadio = new MotorRadioButton(rightMotorGrp, "B", new int[] {48, 20, 26, 23}) {
+    motorRadio = new MotorRadioButton(rightMotorGrp, "B",
+            new int[] {48, 20, 26, 23}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorRight(m);
       }
     };
     rightMotors.put(Motor.MOTOR_B, motorRadio);
-    motorRadio = new MotorRadioButton(rightMotorGrp, "C", new int[] {82, 19, 24, 23}) {
+    motorRadio = new MotorRadioButton(rightMotorGrp, "C",
+            new int[] {82, 19, 24, 23}) {
       @Override
       protected void onSelect(final Motor m) {
         gamepadController.setMotorRight(m);
       }
     };
     rightMotors.put(Motor.MOTOR_C, motorRadio);
-    reversedRightMotorCheck = new MotorCheckBox(rightMotorGrp, "Reversed", new int[] {12, 45, 70, 24}) {
+    reversedRightMotorCheck = new MotorCheckBox(rightMotorGrp, "Reversed",
+            new int[] {12, 45, 70, 24}) {
       @Override
       protected void onCheck(boolean checked) {
         gamepadController.setReversedMotorRight(checked);

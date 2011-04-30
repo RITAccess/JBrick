@@ -6,6 +6,8 @@ package com.jbricx.ui.joystick.hardware;
 import net.java.games.input.Component.POV;
 
 /**
+ * The different directions a gamepad can by intented to go to.
+ * 
  * @author byktol
  */
 public enum GamepadDirection {
@@ -30,14 +32,14 @@ public enum GamepadDirection {
   }
 
   /**
-   * 
-   * @param povDir
-   * @return
+   * @param povDirection
+   * @return the direction based on a numerical value
+   * @see POV
    */
-  public static GamepadDirection getDirection(float povDir) {
+  public static GamepadDirection getDirection(float povDirection) {
 
     for (GamepadDirection direction : values()) {
-      if ((direction.pov == povDir)) {
+      if ((direction.pov == povDirection)) {
         return direction;
       }
     }
@@ -49,7 +51,7 @@ public enum GamepadDirection {
   /**
    * @param x
    * @param y
-   * @return
+   * @return the direction based on the x and y coordinates.
    */
   public static GamepadDirection getDirection(int x, int y) {
     for (GamepadDirection direction : values()) {

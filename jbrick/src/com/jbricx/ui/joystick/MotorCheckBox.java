@@ -10,6 +10,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Group;
 
 /**
+ * Displays a checkbox for selecting whether the associated motor is going to
+ * work in reverse.
+ * 
  * @author byktol
  */
 public class MotorCheckBox extends Button {
