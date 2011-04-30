@@ -1,7 +1,5 @@
 package com.jbricx.ui;
 
-import java.util.regex.Pattern;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -33,6 +31,7 @@ public class GotoDialog extends Dialog {
   private PersistentDocument document;
   private Button doGoto;
   private Shell myShell;
+  private int lineNumber;
 
   /**
    * GotoDialog constructor
@@ -48,6 +47,7 @@ public class GotoDialog extends Dialog {
     super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
     this.document = (PersistentDocument) document;
     this.viewer = viewer;
+    lineNumber = 1;
   }
 
   /**
@@ -71,15 +71,8 @@ public class GotoDialog extends Dialog {
     shell.open();
   }
 
-  protected void doGoto(String find) {
-    try {
-      int ln = document.getLineOffset(Integer.parseInt(find) - 1);
-      viewer.setSelectedRange(ln, 0);
-    } catch (NumberFormatException e) {
-      showError("Invalid/ Not a number!");
-    } catch (BadLocationException e) {
-      showError("Invalid location!");
-    }
+  protected void doGoto() {
+    viewer.setSelectedRange(lineNumber, 0);
     myShell.close();
   }
 
@@ -134,7 +127,7 @@ public class GotoDialog extends Dialog {
     // Do a goto
     doGoto.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent event) {
-        doGoto(findText.getText());
+        doGoto();
       }
     });
 
@@ -144,19 +137,16 @@ public class GotoDialog extends Dialog {
         String inputText = findText.getText();
 
         if (!inputText.equals("")) {
-          boolean isInteger = Pattern.matches("\\d+$", inputText);
-          if (!isInteger) {
+          try {
+            lineNumber = document.getLineOffset(Integer.parseInt(inputText) - 1);
+            inputNotifier.setText("");
+            doGoto.setEnabled(true);
+          } catch (NumberFormatException e) {
             inputNotifier.setText("Invalid/ Not a number!");
             doGoto.setEnabled(false);
-          } else {
-            int gotoLine = Integer.parseInt(inputText);
-            if (gotoLine > 0 && gotoLine <= document.getNumberOfLines()) {
-              inputNotifier.setText("");
-              doGoto.setEnabled(true);
-            } else {
-              inputNotifier.setText("Line number out of range!");
-              doGoto.setEnabled(false);
-            }
+          } catch (BadLocationException e) {
+            inputNotifier.setText("Line number out of range!");
+            doGoto.setEnabled(false);
           }
         } else {
           inputNotifier.setText("");
