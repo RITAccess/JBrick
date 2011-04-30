@@ -1,17 +1,17 @@
 package com.jbricx.ui.joystick.wii;
 
 import com.jbricx.communications.NXTGadgetManager;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.enums.Motor;
 /**
  * @author Mike Goldstein
  */
 public class WiiMain implements WiiPacketEvent, Runnable {
 	NunchuckConnection NCC;
-	static NXTGadgetManager nxt;
+	static NXTGadgetManager nxt = NXTManager.getInstance();
 	boolean running = true;
 	private static final boolean debug=true;
-public WiiMain(NXTGadgetManager x){
-	nxt=x;
+public WiiMain(){
 	running = true;
 }
 	/**

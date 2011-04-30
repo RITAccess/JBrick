@@ -13,9 +13,11 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
+import com.jbricx.ui.joystick.hardware.GamepadController;
 
 public class JoystickUIWindow extends TrayDialog implements NXTObserver {
   private Shell shell;
+  private final GamepadController gamepadController = new GamepadController();
 
   public JoystickUIWindow(Shell parentShell) {
     super(parentShell);
@@ -33,7 +35,7 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
     getShell().setText("Joystick");
     parent.setSize(300, 410);
 
-    return new JoystickComposite(parent, SWT.NULL);
+    return new JoystickComposite(parent, SWT.NULL, gamepadController);
   }
 
   @Override
@@ -59,7 +61,8 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
     NXTManager.getInstance().unregister(this);
 
     // Stop the motors
-    JoystickComposite.stopMotors();
+    gamepadController.stop();
+    gamepadController.stopGamepadPolling();
   }
 
 }
