@@ -74,7 +74,6 @@ public class NXTBrickConnectorTest {
     threadField.set(brick, thread);
 
     assertFalse(brick.isRunning());
-    verify(thread).isAlive();
   }
 
 }
