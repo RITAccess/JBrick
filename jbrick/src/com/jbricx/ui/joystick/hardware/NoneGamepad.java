@@ -23,4 +23,8 @@ public class NoneGamepad implements Gamepad {
   public GamepadType getGamepadType() {
     return GamepadType.NONE;
   }
+
+  @Override
+  public void initialize() throws NoControllerFoundException {
+  }
 }

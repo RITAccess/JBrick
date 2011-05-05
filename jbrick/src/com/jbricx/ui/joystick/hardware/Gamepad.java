@@ -18,4 +18,5 @@ public interface Gamepad {
    * @return the type of gamepad it's being implemented.
    */
   GamepadType getGamepadType();
+  void initialize() throws NoControllerFoundException;
 }

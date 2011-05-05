@@ -12,8 +12,6 @@ public class WiiGamepad implements Gamepad {
   private WiiMain wiiMain;
 
   public WiiGamepad(final GamepadController gc) {
-    wiiMain = new WiiMain();
-    new Thread(wiiMain).start();
   }
 
   @Override
@@ -25,5 +23,10 @@ public class WiiGamepad implements Gamepad {
   public GamepadType getGamepadType() {
     return GamepadType.WII;
   }
-  
+
+  @Override
+  public void initialize() throws NoControllerFoundException {
+    wiiMain = new WiiMain();
+    new Thread(wiiMain).start();
+  }
 }

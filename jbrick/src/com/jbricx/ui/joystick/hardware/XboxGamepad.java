@@ -14,9 +14,23 @@ package com.jbricx.ui.joystick.hardware;
  */
 public class XboxGamepad implements Gamepad {
   private volatile boolean run = true;
+  private GamepadConnector gamepad;
+  private GamepadController gc;
 
-  public XboxGamepad(final GamepadController gc) throws NoControllerFoundException {
-    final GamepadConnector gamepad = new GamepadConnector();
+  public XboxGamepad(final GamepadController gc) {
+    this.gc = gc;
+  }
+
+  public void setGamepad(GamepadConnector connector) {
+    this.gamepad = connector;
+  }
+
+  @Override
+  public void initialize() throws NoControllerFoundException {
+    if (gamepad == null) {
+      gamepad = new GamepadConnector();
+    }
+
     new Thread() {
       @Override
       public void run() {

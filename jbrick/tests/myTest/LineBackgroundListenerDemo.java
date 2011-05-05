@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * This class demonstrates LineBackgroundListeners
  */
-public class LineBackgroundListenerTest {
+public class LineBackgroundListenerDemo {
   // The color to use for backgrounds
   Color red;
 
@@ -64,7 +64,7 @@ public class LineBackgroundListenerTest {
    * @param args the command line arguments
    */
   public static void main(String[] args) {
-    new LineBackgroundListenerTest().run();
+    new LineBackgroundListenerDemo().run();
   }
 }
   

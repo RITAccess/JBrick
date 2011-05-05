@@ -176,6 +176,7 @@ public class GamepadController {
         case XBOX:
           try {
             gamepad = new XboxGamepad(this);
+            gamepad.initialize();
           } catch (NoControllerFoundException e) {
             e.printStackTrace();
             setGamepadType(GamepadType.NONE);
@@ -240,7 +241,14 @@ public class GamepadController {
    * @param speed The velocity the motors will move.
    */
   public void setSpeed(final int speed) {
-    this.speed = speed;
+    if (speed > 100) {
+      this.speed = 100;
+    } else if (speed < 60) {
+      this.speed = 60;
+    } else {
+      this.speed = speed;
+    }
+
     move();
   }
 

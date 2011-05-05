@@ -7,20 +7,23 @@
   <property name="workDir" value="${basedir}/target" />
   <property name="libsDir" value="${basedir}/lib" />
 	<property name="srcDir" value="${basedir}/src" />
+	<property name="testSrcDir" value="${basedir}/tests" />
+	<property name="testDir" value="${workDir}/tests" />
 	<property name="configDirDest" value="${workDir}/config" />
 	<property name="configDirSrc" value="${basedir}/resources/config" />
 	<property name="imageDirDest" value="${workDir}/images/" />
 	<property name="imageDirSrc" value="${basedir}/resources/images/" />
+	<property name="javaVersion" value="1.6" />
 
 	<!-- Compiles the source code, no Eclipse required -->
   <target name="compile" depends="prepare">
-    <javac target="1.6" source="1.6" destdir="${workDir}" classpath="${libsDir}">
-      <src path="${srcDir}" /> 
+    <javac target="${javaVersion}" source="${javaVersion}" destdir="${workDir}" classpath="${libsDir}">
+      <src path="${srcDir}" />
       <classpath>
-        <fileset dir="${libsDir}"> 
-          <include name="**/*.jar"/> 
-        </fileset>  
-      </classpath>  
+        <fileset dir="${libsDir}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
     </javac>
   </target>
 
@@ -46,12 +49,18 @@
 
 	<!-- Create the runnable JAR file -->
   <target name="create_jar" depends="test">
+  	<!-- Delete the tests directory to avoid its inclusion in the JAR -->
+  	<delete dir="${testDir}" />
+
     <tstamp>
   	  <!-- The format for the JAR file. -->
       <format property="archive.name" pattern="'jbrick-'yyyyMMdd'.jar'" />
     </tstamp>
 
-  	<!-- We haven't run this on a non-Windows machine. Check for the property ${os.name}. -->
+  	<!-- We haven't run this on a non-Windows machine.
+  	Check for the property ${os.name} and modify the script in order to create
+  	different versions of the JAR, assuming the libraries are different.
+  	-->
     <jar destfile="${basedir}/${archive.name}">
       <manifest>
         <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />
@@ -81,11 +90,44 @@
       <zipfileset dir="${libsDir}/comm2.0.3" includes="comm.jar" />
     </jar>
 
+  	<!-- Delete the temporary directory -->
     <delete dir="${workDir}" />
   </target>
 
-	<!-- A unit test target is missing, the application is packaged untested. -->
-	<target name="test" depends="compile">
-		<echo>MISSING TESTS!!1</echo>
+	<!-- The application is packaged even if one of the tests fail -->
+	<target name="test" depends="compile-test">
+		<junit printsummary="false" fork="false" haltonfailure="false">
+			<classpath> 
+			  <pathelement path="${testDir}"/>
+				<fileset dir="${libsDir}">
+				  <include name="**/*.jar" />
+				</fileset>
+      </classpath>
+      <formatter type="brief" usefile="false" />
+			<batchtest todir="${testDir}">
+        <fileset dir="${testSrcDir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
 	</target>
+
+	<!-- Compile the tests from the specified directory -->
+	<target name="compile-test" depends="compile">
+		<delete dir="${testDir}" />
+    <mkdir  dir="${testDir}" />
+    <copy todir="${testDir}">
+      <fileset dir="${workDir}">
+        <include name="**/*.class" />
+      </fileset>
+    </copy>
+    <javac target="${javaVersion}" source="${javaVersion}" destdir="${testDir}" classpath="${libsDir}">
+      <src path="${testSrcDir}" />
+      <classpath>
+        <fileset dir="${libsDir}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </javac>
+  </target>
 </project>
