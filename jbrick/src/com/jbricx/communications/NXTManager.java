@@ -65,7 +65,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     if (!(connections.containsKey(currentConnection) && connections.get(
         currentConnection).isRunning())) {
       NXTBrickConnector c = new NXTBrickConnector();
-      boolean isConnected = c.connect(connectionType);
+      boolean isConnected = c.connect(connectionType);      
 
       notifyAllObservers(isConnected);
       connections.put(currentConnection, c);
@@ -80,7 +80,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public void disconnect(final String name) {
-    Display.getDefault().asyncExec(new Runnable() {
+    Display.getDefault().syncExec(new Runnable() {
       public void run() {
         if (connections.containsKey(name)) {
           connections.remove(name).disconnect();
