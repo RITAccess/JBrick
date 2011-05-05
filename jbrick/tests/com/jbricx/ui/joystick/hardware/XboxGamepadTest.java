@@ -49,7 +49,7 @@ public class XboxGamepadTest {
     // Start the actual polling
     xbox.initialize();
     // Let the XboxGamepad class poll the mock GamepadConnector
-    Thread.sleep(200);
+    Thread.sleep(210);
     // Verify the gamepad's response. The polling is an infinite loop thread.
     verify(gc, new AtLeast(1)).turnForwardCCW();
   }
@@ -59,7 +59,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NORTH);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).forward();
   }
   
@@ -68,7 +68,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NE);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).turnForwardCW();
   }
   
@@ -77,7 +77,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.EAST);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).rotateCW();
   }
   
@@ -86,7 +86,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.SE);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).turnBackwardsCW();
   }
   
@@ -95,7 +95,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.SOUTH);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).backwards();
   }
   
@@ -104,7 +104,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.SW);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).turnBackwardsCCW();
   }
   
@@ -113,7 +113,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.WEST);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).rotateCCW();
   }
 
@@ -122,7 +122,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[0]);
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).stop();
   }
 
@@ -131,7 +131,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).honk();
   }
 
@@ -140,7 +140,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {false, true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).honk2();
   }
 
@@ -149,7 +149,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {false, false, true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).honk3();
   }
   
@@ -158,7 +158,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {false, false, false, true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).honk4();
   }
 
@@ -167,7 +167,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {false, false, false, false, true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).decreaseSpeed();
   }
 
@@ -176,7 +176,7 @@ public class XboxGamepadTest {
     when(conn.getXYStickDirection()).thenReturn(GamepadDirection.NONE);
     when(conn.getButtons()).thenReturn(new boolean[] {false, false, false, false, false, true});
     xbox.initialize();
-    Thread.sleep(200);
+    Thread.sleep(210);
     verify(gc, new AtLeast(1)).increaseSpeed();
   }
 

@@ -3,6 +3,7 @@ package com.jbricx.ui.joystick.hardware;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 
@@ -282,6 +283,7 @@ public class GamepadControllerTest {
     Field directionRight = gc.getClass().getDeclaredField(DIRECTION_RIGHT_PROPERTY);
     directionRight.setAccessible(true);
 
+    when(nxt.isConnected()).thenReturn(true);
     gc.stop();
     assertEquals(0, directionLeft.getInt(gc));
     assertEquals(0, directionRight.getInt(gc));

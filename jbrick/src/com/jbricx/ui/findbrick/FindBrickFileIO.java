@@ -44,7 +44,6 @@ public class FindBrickFileIO {
 			if (ct == null) {
 				ct = ConnectionType.USB;
 			}
-			System.err.println("sdfsdf");
 		}
 		return ct;
 	}

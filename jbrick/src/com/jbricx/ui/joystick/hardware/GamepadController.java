@@ -198,8 +198,10 @@ public class GamepadController {
   public void stop() {
     directionLeft = 0;
     directionRight = 0;
-    nxt.motorOff(motorLeft);
-    nxt.motorOff(motorRight);
+    if (nxt.isConnected()) {
+      nxt.motorOff(motorLeft);
+      nxt.motorOff(motorRight);
+    }
   }
 
   /**

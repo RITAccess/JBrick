@@ -33,7 +33,7 @@ public class JoyStickAction extends AbstractAction implements NXTObserver {
     joystick.setBlockOnOpen(true);
     
     NXTManager.getInstance().register(joystick);    
-    joystick.open();    
+    joystick.open();
   }
 
   public void update(boolean isConnected) {
