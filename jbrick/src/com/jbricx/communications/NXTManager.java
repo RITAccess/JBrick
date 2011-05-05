@@ -68,7 +68,9 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
       boolean isConnected = c.connect(connectionType);      
 
       notifyAllObservers(isConnected);
-      connections.put(currentConnection, c);
+      if (isConnected) {
+        connections.put(currentConnection, c);
+      }
     }
     return this;
   }
