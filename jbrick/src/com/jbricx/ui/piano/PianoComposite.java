@@ -755,11 +755,11 @@ public class PianoComposite extends Composite {
       case ']':
         keyId = 11;
         break;
-      // two new black key
-      case 'z':
+      // two new white key
+      case 'x':
         keyId = 12;
         break;
-      case 'x':
+      case 'c':
         keyId = 13;
         break;
 
