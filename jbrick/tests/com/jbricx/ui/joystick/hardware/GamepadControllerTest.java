@@ -2,6 +2,7 @@ package com.jbricx.ui.joystick.hardware;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -289,6 +290,27 @@ public class GamepadControllerTest {
     assertEquals(0, directionRight.getInt(gc));
     verify(nxt).motorOff(gc.getMotorLeft());
     verify(nxt).motorOff(gc.getMotorRight());
+  }
+
+  /**
+   * @throws Exception
+   */
+  @Test
+  public void testStopWhenNotConnected() throws Exception {
+    Field directionLeft = gc.getClass().getDeclaredField(DIRECTION_LEFT_PROPERTY);
+    directionLeft.setAccessible(true);
+    
+    Field directionRight = gc.getClass().getDeclaredField(DIRECTION_RIGHT_PROPERTY);
+    directionRight.setAccessible(true);
+
+    /* When physically disconnecting a brick, the methods to stop the motors
+     * shouldn't be invoked because there's no active connection. */
+    when(nxt.isConnected()).thenReturn(false);
+    gc.stop();
+    assertEquals(0, directionLeft.getInt(gc));
+    assertEquals(0, directionRight.getInt(gc));
+    verify(nxt, never()).motorOff(gc.getMotorLeft());
+    verify(nxt, never()).motorOff(gc.getMotorRight());
   }
 
   @Test
