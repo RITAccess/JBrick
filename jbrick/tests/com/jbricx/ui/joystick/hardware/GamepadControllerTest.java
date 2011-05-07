@@ -76,7 +76,7 @@ public class GamepadControllerTest {
     gc.setSpeed(999);
     // The upper (maximum) limit is 100
     assertEquals(100, gc.getSpeed());
-    // he number of actual invocations is 2.
+    // The number of actual invocations is 2.
     // Notice a call to setSpeed() at the top of this test. That's why.
     verify(nxt, new Times(2)).motorOn(gc.getMotorLeft(), 0);
     verify(nxt, new Times(2)).motorOn(gc.getMotorRight(), 0);
