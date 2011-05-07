@@ -229,13 +229,13 @@ public class MenuAndToolBarManagerDelegate {
       add(compileAction);
 
       add(new Separator());
-      add(downloadAction);
+      //add(downloadAction);
 
       add(new Separator());
       add(aboutAction);
 
       add(new Separator());
-      add(directControlAction);
+      //add(directControlAction);
       add(joystickAction);
       add(pianoAction);
 
