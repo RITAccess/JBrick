@@ -23,15 +23,22 @@ public class PianoUIWindow extends TrayDialog implements NXTObserver {
   }
 
   PianoComposite pianoComposite;
+  PianoController pianoController;
 
   @Override
   protected Control createContents(Composite parent) {
     getShell().setText("Piano");
-    pianoComposite = new PianoComposite(parent, SWT.NULL);
+    pianoComposite = null;
+    try {
+      pianoController = new PianoController(shell, "C", true);
+      pianoComposite = new PianoComposite(parent, SWT.NULL, pianoController);
+    } catch (NoteNotFoundException e) {
+      e.printStackTrace();
+    }
     return pianoComposite;
   }
-  
-  public void handleShellCloseEvent(){
+
+  public void handleShellCloseEvent() {
     onDisconnect();
     super.handleShellCloseEvent();
   }
@@ -41,14 +48,13 @@ public class PianoUIWindow extends TrayDialog implements NXTObserver {
     if (!isConnected) {
       onDisconnect();
 
-      // save the notes that have been played
-      pianoComposite.copyButtonPressed();
-
+      /* save the notes that have been played */
+      pianoController.saveNotes();
       MessageDialog.openInformation(shell, "Connection Status",
           "Piano: NXTBrick has been disconnected!"
               + " The notes (if played) have been copied to clipboard.\r\n"
               + " The paino window will be closed now!");
-      this.getShell().dispose(); // finally close the piano dialog
+      this.getShell().dispose(); /* finally close the piano dialog */
     }
   }
 

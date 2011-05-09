@@ -1,15 +1,8 @@
 package com.jbricx.ui.piano;
 
-//import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -18,13 +11,9 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -33,29 +22,19 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.jbricx.actions.HelpContentAction;
-import com.jbricx.communications.NXTGadgetManager;
-import com.jbricx.communications.NXTManager;
-import com.jbricx.pjo.FileExtensionConstants;
 
 /**
- * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
- * Builder, which is free for non-commercial use. If Jigloo is being used
- * commercially (ie, by a corporation, company or business for any purpose
- * whatever) then you should purchase a license for each developer using Jigloo.
- * Please visit www.cloudgarden.com for details. Use of Jigloo implies
- * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
- * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
- * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ * The GUI for Piano.
+ * 
+ * @author Abhishek Shrestha
  */
-public class PianoComposite extends Composite {
+class PianoComposite extends Composite {
 
   private Label waitTimeLabel;
   private Label noteLengthLabel;
@@ -75,44 +54,37 @@ public class PianoComposite extends Composite {
   private Button rest;
   private Label transpose_label;
   private Scale transpose;
-  private static Shell shell;
   private static Display display;
-  private ArrayList<Label> whiteKeysArray = new ArrayList<Label>();
-  private ArrayList<Label> blackKeysArray = new ArrayList<Label>();
-  private ArrayList<Label> whiteKeyLabelArray = new ArrayList<Label>();
-  private ArrayList<Label> blackKeyLabelsArray = new ArrayList<Label>();
+
+  private ArrayList<Label> keyLabelsArray = new ArrayList<Label>();
+  private ArrayList<Label> keyArray = new ArrayList<Label>();
+
   private static final boolean USE_BRICK = true;
-  private static NXTGadgetManager nxt;
-  private static PianoComposite myPianoComp;
-  int noteLengthDiv = 4;
-  int transposeMult = 3;
-  int toneDuration = 1000;
   public static boolean disabuttons = false;
-
-  private PianoRecording recording = new PianoRecording();
-
+  private PianoController pianoController;
   private HelpContentAction helpAction = new HelpContentAction();
-
   private KeyListener pianoKeyListener = new KeyListener() {
 
+    int keyIndex;
+
     @Override
-    public void keyReleased(KeyEvent arg0) {
-      pianoKeyPressed(arg0.character, false);
+    public void keyPressed(KeyEvent key) {
+      try {
+        hideAllLabels();
+        keyIndex = pianoController.play(key.character);
+        keyLabelsArray.get(keyIndex).moveAbove(keyArray.get(keyIndex));
+        showHideLabel(keyIndex, true);
+      } catch (KeyNotMappedExeption k) {
+      } catch (OctaveNotMappedException o) {
+      } catch (KeyIndexNotMappedException ki) {
+      }
     }
 
     @Override
-    public void keyPressed(KeyEvent arg0) {
-      pianoKeyPressed(arg0.character, true);
+    public void keyReleased(KeyEvent k) {
+      showHideLabel(keyIndex, false);
     }
   };
-
-  /**
-   * Auto-generated main method to display this
-   * org.eclipse.swt.widgets.Composite inside a new Shell.
-   */
-  public static void main(String[] args) {
-    showGUI();
-  }
 
   /**
    * Overriding checkSubclass allows this class to extend
@@ -125,7 +97,6 @@ public class PianoComposite extends Composite {
    * Auto-generated method to display this org.eclipse.swt.widgets.Composite
    * inside a new Shell.
    */
-
   public static void disableButtons() {
     System.out.println("====== disableButtons =======");
     disabuttons = true;
@@ -136,40 +107,15 @@ public class PianoComposite extends Composite {
     disabuttons = false;
   }
 
-  public static void showGUI() {
-    display = Display.getDefault();
-    shell = new Shell(display);
-    PianoComposite inst = new PianoComposite(shell, SWT.NULL);
-    Point size = inst.getSize();
-    shell.setLayout(new FillLayout());
-    shell.layout();
-    if (size.x == 0 && size.y == 0) {
-      inst.pack();
-      shell.pack();
-    } else {
-      Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
-      shell.setSize(shellBounds.width + 10, shellBounds.height + 10);
-    }
-
-    shell.open();
-    while (!shell.isDisposed()) {
-      if (!display.readAndDispatch()) {
-        display.sleep();
-      }
-    }
-  }
-
-  public PianoComposite(org.eclipse.swt.widgets.Composite parent, int style) {
+  public PianoComposite(Composite parent, int style,
+      final PianoController pianoController) {
     super(parent, style);
+    this.pianoController = pianoController;
     initGUI();
-
-    nxt = NXTManager.getInstance();
   }
 
   private void initGUI() {
-    myPianoComp = this;
     display = Display.getDefault();
-    shell = new Shell(display);
 
     {
       waitTime = new Text(this, SWT.NONE);
@@ -231,21 +177,11 @@ public class PianoComposite extends Composite {
         helpLData.height = 27;
         help.setLayoutData(helpLData);
         help.setText("Help");
-        help.addMouseListener(new MouseListener() {
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-            help();
-          }
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
+        help.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent e) {
+            helpAction.runPianoLink();
           }
         });
-
       }
 
       {
@@ -257,29 +193,11 @@ public class PianoComposite extends Composite {
         saveLData.height = 30;
         save.setLayoutData(saveLData);
         save.setText("Save");
-        save.addMouseListener(new MouseListener() {
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-            // TODO Auto-generated method stub
-            // savingPianoNotesFile spnf = new savingPianoNotesFile();
-            // spnf.receivingNotes(recording.getNotes());
-            creatingSavingInterface();
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-            // TODO Auto-generated method stub
-            // JOptionPane.showMessageDialog(null,
-            // "it is saving the file on C:");
-            // save.setEnabled(false);
-          }
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
-            // TODO Auto-generated method stub
+        save.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent e) {
+            pianoController.saveNotes();
           }
         });
-
       }
 
       {
@@ -291,19 +209,9 @@ public class PianoComposite extends Composite {
         playLData.height = 30;
         play.setLayoutData(playLData);
         play.setText("Play");
-        play.addMouseListener(new MouseListener() {
-
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-            playButtonPressed();
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-          }
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
+        play.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent e) {
+            pianoController.playRecords();
           }
         });
       }
@@ -316,19 +224,9 @@ public class PianoComposite extends Composite {
         copyLData.height = 31;
         copy.setLayoutData(copyLData);
         copy.setText("Copy");
-        copy.addMouseListener(new MouseListener() {
-
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-            copyButtonPressed();
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-          }
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
+        copy.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent e) {
+            pianoController.copyRecords();
           }
         });
       }
@@ -341,19 +239,9 @@ public class PianoComposite extends Composite {
         clearLData.height = 31;
         clear.setLayoutData(clearLData);
         clear.setText("Clear");
-        clear.addMouseListener(new MouseListener() {
-
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-            clearButtonPressed();
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-          }
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
+        clear.addSelectionListener(new SelectionAdapter() {
+          public void widgetSelected(SelectionEvent e) {
+            pianoController.clearRecords();
           }
         });
       }
@@ -377,7 +265,7 @@ public class PianoComposite extends Composite {
           onebyone.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              noteLengthDiv = 1;
+              pianoController.setToneDuration(1000);
             }
           });
           onebyone.addKeyListener(pianoKeyListener);
@@ -389,9 +277,8 @@ public class PianoComposite extends Composite {
           onebytwo.setLayoutData(onebytwoLData);
           onebytwo.setText("1/2");
           onebytwo.addSelectionListener(new SelectionAdapter() {
-
             public void widgetSelected(SelectionEvent evt) {
-              noteLengthDiv = 2;
+              pianoController.setToneDuration(500);
             }
           });
           onebytwo.addKeyListener(pianoKeyListener);
@@ -405,7 +292,7 @@ public class PianoComposite extends Composite {
           onebyfour.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              noteLengthDiv = 4;
+              pianoController.setToneDuration(250);
             }
           });
           onebyfour.addKeyListener(pianoKeyListener);
@@ -418,7 +305,7 @@ public class PianoComposite extends Composite {
           onebyeight.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              noteLengthDiv = 8;
+              pianoController.setToneDuration(125);
             }
           });
           onebyeight.addKeyListener(pianoKeyListener);
@@ -431,7 +318,7 @@ public class PianoComposite extends Composite {
           onebysixteen.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              noteLengthDiv = 16;
+              pianoController.setToneDuration(62.5f);
             }
           });
           onebysixteen.addKeyListener(pianoKeyListener);
@@ -445,17 +332,12 @@ public class PianoComposite extends Composite {
         restLData.width = 50;
         restLData.height = 80;
         rest.setLayoutData(restLData);
-        rest.setText("Rest");
-        // rest.addKeyListener(pianoKeyListener);
+        rest.setText("Rest");        
         rest.addMouseListener(new MouseListener() {
-          double toneFreq = 0;
-          int toneToPlay1 = (int) Math.round(toneFreq);
 
           @Override
           public void mouseUp(MouseEvent arg0) {
-            recording.addKey(toneToPlay1, noteLengthDiv,
-                Integer.parseInt(noteLength.getText()),
-                Integer.parseInt(waitTime.getText()));
+            pianoController.playRest();
           }
 
           @Override
@@ -469,10 +351,7 @@ public class PianoComposite extends Composite {
       }
       {
         transpose_label = new Label(this, SWT.NONE);
-        FormData transpose_labelLData = new FormData();
-        transpose_labelLData.width = 98;
-        transpose_labelLData.height = 22;
-        // transpose_labelLData.right = new FormAttachment(1000, 1000, -580);
+        FormData transpose_labelLData = new FormData(98, 22);
         transpose_labelLData.left = new FormAttachment(0, 1000, 32);
         transpose_labelLData.top = new FormAttachment(0, 1000, 200);
         transpose_label.setLayoutData(transpose_labelLData);
@@ -482,45 +361,96 @@ public class PianoComposite extends Composite {
 
       {
         FormData transposeLData = new FormData();
-        transposeLData.left = new FormAttachment(0, 1000, 32);
-        transposeLData.top = new FormAttachment(0, 1000, 225);
+        transposeLData.left = new FormAttachment(0, 1000, 10);
+        transposeLData.top = new FormAttachment(0, 1000, 235);
         transposeLData.width = 652;
-        transposeLData.height = 34;
+        transposeLData.height = 50;
         transpose = new Scale(this, SWT.NONE);
-        transpose.setMinimum(1);
-        transpose.setMaximum(6);
+        transpose.setMinimum(pianoController.getOctaveSlideStart());
+        transpose.setMaximum(pianoController.getOctaveSlideLimit());
         transpose.setIncrement(1);
-        transpose.setSelection(3);
+        transpose.setSelection(pianoController.getStartOctave());
         transpose.setLayoutData(transposeLData);
-        transpose.addSelectionListener(new SelectionListener() {
+        transpose.addSelectionListener(new SelectionAdapter() {
 
           @Override
-          public void widgetSelected(SelectionEvent arg0) {
-            transposeMult = transpose.getSelection();
-          }
-
-          @Override
-          public void widgetDefaultSelected(SelectionEvent arg0) {
+          public void widgetSelected(SelectionEvent s) {
+            try {
+              pianoController.setStartOctave(transpose.getSelection());
+            } catch (OctaveScaleOutofBoundsException e) {
+              e.printStackTrace();
+            }
           }
         });
         transpose.addKeyListener(pianoKeyListener);
       }
-      Label myLabel;
-      int leftValue = 64;
+      int leftValue = 14;
 
-      for (int x = 0; x < 13; x++) {
-        if (x == 3 || x == 6 || x == 10) {
-          blackKeysArray.add(x, null);
-        } else {
-          myLabel = new Label(this, SWT.NONE);
-          myLabel.setText("label1");
-          final int keyId = x;
+      List<PianoKey> pianoKeys = pianoController.getKeys();
+      int startOctave = pianoController.getStartOctave();
+      int cnt = 0;
+      for (int o = startOctave; o <= pianoController.getEndOctave(); o++) {
+        final int octaveIndex = o % startOctave;
+        for (int i = 0; i < pianoKeys.size(); i++) {
+          final PianoKey pianoKey = pianoKeys.get(i);
+          final Label myLabel = new Label(this, SWT.NONE);
+
           FormData label1LData = new FormData();
+          label1LData.height = 94;
+
+          final String keyLabel = pianoKey.getName();
+          final int keyIndex = cnt;
+
+          myLabel.setLayoutData(label1LData);
           label1LData.left = new FormAttachment(0, 1000, leftValue);
           label1LData.top = new FormAttachment(0, 1000, 41);
-          label1LData.width = 28;
-          label1LData.height = 94;
-          myLabel.setLayoutData(label1LData);
+
+          /* these are the labels that display the name of the key when pressed */
+          FormData label2LData = new FormData();
+          label2LData.top = new FormAttachment(0, 1000, 100);
+          Label myLabel2 = new Label(this, SWT.None);
+          myLabel2.setText(keyLabel);
+          myLabel2.setLayoutData(label2LData);
+          FontData[] fD = myLabel.getFont().getFontData();
+          fD[0].setHeight(16);
+          myLabel2.setFont(new Font(Display.getCurrent(), fD[0]));
+
+          if (pianoKey.isBlack()) {
+            label2LData.left = new FormAttachment(0, 1000, leftValue + 1);
+            myLabel2.setBackground(new Color(display, 0, 0, 0));
+            myLabel2.setForeground(new Color(display, 255, 255, 255));
+
+            label1LData.width = 28;
+            label1LData.height = 94;
+            leftValue += 14;
+            myLabel.setBackground(new Color(display, 0, 0, 0));
+          } else {
+            label2LData.left = new FormAttachment(0, 1000, leftValue + 15);
+            myLabel2.setBackground(new Color(display, 255, 255, 255));
+
+            leftValue += 46;
+            label1LData.width = 47;
+            label1LData.height = 138;
+            myLabel.setForeground(new Color(display, 0, 0, 0));
+            myLabel.setBackground(new Color(display, 255, 255, 255));
+            myLabel.setImage(ImageDescriptor.createFromFile(getClass(),
+                "/images/white_key.PNG").createImage());
+          }
+          keyArray.add(keyIndex, myLabel);
+          keyLabelsArray.add(keyIndex, myLabel2);
+
+          /* also move the black key above the previous white key */
+          if (pianoKey.isBlack()) {
+            keyArray.get(keyIndex).moveAbove(keyArray.get(keyIndex - 1));
+          }
+
+          /* decrease the position if the next key is black */
+          if (i < pianoKeys.size() - 1) {
+            if (pianoKeys.get(i + 1).isBlack()) {
+              leftValue -= 14;
+            }
+          }
+
           myLabel.addMouseListener(new MouseListener() {
 
             @Override
@@ -529,512 +459,40 @@ public class PianoComposite extends Composite {
 
             @Override
             public void mouseUp(MouseEvent arg0) {
-              pianoClicked(false, keyId, false);
+              /* as soon as the mouse is up move the label below */
+              showHideLabel(keyIndex, false);
             }
 
             @Override
             public void mouseDown(MouseEvent arg0) {
-              pianoClicked(false, keyId, true);
+              if (USE_BRICK) {
+                pianoController.play(pianoKey, octaveIndex);
+              }
+              keyLabelsArray.get(keyIndex).moveAbove(keyArray.get(keyIndex));
+              showHideLabel(keyIndex, true);
             }
           });
-          myLabel.setImage(ImageDescriptor.createFromFile(getClass(),
-              "/images/black_key.PNG").createImage());
-          blackKeysArray.add(x, myLabel);
+          cnt++;
         }
-        leftValue += 46;
       }
-
-      leftValue = 32;
-      for (int x = 0; x < 14; x++) {
-
-        myLabel = new Label(this, SWT.NONE);
-        myLabel.setText("label1");
-        final int keyId = x;
-        FormData label1LData = new FormData();
-        label1LData.left = new FormAttachment(0, 1000, leftValue);
-        label1LData.top = new FormAttachment(0, 1000, 41);
-        label1LData.width = 47;
-        label1LData.height = 138;
-        myLabel.setLayoutData(label1LData);
-        myLabel.addMouseListener(new MouseListener() {
-
-          @Override
-          public void mouseDoubleClick(MouseEvent arg0) {
-          }
-
-          @Override
-          public void mouseUp(MouseEvent arg0) {
-            pianoClicked(true, keyId, false);
-          }
-
-          @Override
-          public void mouseDown(MouseEvent arg0) {
-            pianoClicked(true, keyId, true);
-          }
-        });
-        myLabel.setImage(ImageDescriptor.createFromFile(getClass(),
-            "/images/white_key.PNG").createImage());
-        whiteKeysArray.add(x, myLabel);
-        leftValue += 46;
-      }
-
       this.layout();
       pack();
-
-      buildKeyLabels();
-
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * Invokes the help contents Window.
-   */
-  protected void help() {
-    helpAction.runPianoLink();
-  }
-
-  protected void pianoClicked(boolean whiteKeys, int keyId, boolean isDown) {
-    if (isDown) {
-
-      double toneFreq = 0;
-      boolean toneDouble = false;
-      int toneId = keyId;
-
-      if (whiteKeys) {
-        System.out.println("White Key: " + keyId);
-        if (toneId > 6) {
-          toneId -= 7;
-          toneDouble = true;
-        }
-        switch (toneId) {
-          // F
-          case 0:
-            toneFreq = 43.65;
-            break;
-          // G
-          case 1:
-            toneFreq = 48.99;
-            break;
-          // A
-          case 2:
-            toneFreq = 55;
-            break;
-          // B
-          case 3:
-            toneFreq = 61.74;
-            break;
-          // C
-          case 4:
-            toneFreq = 65.41;
-            break;
-          // D
-          case 5:
-            toneFreq = 73.42;
-            break;
-          // E
-          case 6:
-            toneFreq = 82.41;
-            break;
-        }
-      } else {
-        System.out.println("Black Key: " + keyId);
-        if (toneId > 6) {
-          toneId -= 7;
-          toneDouble = true;
-        }
-        switch (toneId) {
-          // F#
-          case 0:
-            toneFreq = 46.25;
-            break;
-          // G#
-          case 1:
-            toneFreq = 51.91;
-            break;
-          // A#
-          case 2:
-            toneFreq = 58.27;
-            break;
-          // C#
-          case 4:
-            toneFreq = 69.30;
-            break;
-          // D#
-          case 5:
-            toneFreq = 77.78;
-            break;
-
-          default:
-            toneFreq = 0;
-        }
-      }
-
-      if (toneDouble) {
-        toneFreq = toneFreq * 2;
-      }
-      toneFreq *= transposeMult * 2;
-      int toneToPlay = (int) Math.round(toneFreq);
-
-      // int duration = (int) Math.round(toneDuration / noteLengthDiv);
-
-      System.out.println("Playing Tone: " + toneToPlay);
-      Integer noteDuration;
-      try {
-        noteDuration = Integer.parseInt(noteLength.getText());
-      } catch (Exception e) {
-        noteDuration = 80;
-        noteLength.setText("80");
-      }
-      int waitDuration;
-      try {
-        waitDuration = Integer.parseInt(waitTime.getText());
-      } catch (Exception e) {
-        waitDuration = 40;
-        waitTime.setText("40");
-      }
-
-      PianoNote note = new PianoNote(toneToPlay, noteLengthDiv, noteDuration,
-          waitDuration);
-      recording.addKey(note);
-
-      if (USE_BRICK) {
-        // nxt.playTone(toneToPlay, duration);
-        nxt.playTone(note.getTone(), note.getNoteTime());
-      }
-      if (noteLength.isFocusControl() || waitTime.isFocusControl())
-        this.length.setFocus();
-      highlightKey(whiteKeys, keyId);
+  private void showHideLabel(int labelIndex, boolean show) {
+    if (show) {
+      keyLabelsArray.get(labelIndex).moveAbove(keyArray.get(labelIndex));
     } else {
-      unHighlightKey(whiteKeys, keyId);
+      keyLabelsArray.get(labelIndex).moveBelow(keyArray.get(labelIndex));
     }
   }
 
-  protected void pianoKeyPressed(char charIn, boolean isDown) {
-    charIn = Character.toLowerCase(charIn);
-    System.out.println("Key pressed: " + charIn);
-
-    int keyId = -1;
-    boolean whiteKeys = true;
-
-    switch (charIn) {
-      case 'q':
-        keyId = 0;
-        break;
-      case 'w':
-        keyId = 1;
-        break;
-      case 'e':
-        keyId = 2;
-        break;
-      case 'r':
-        keyId = 3;
-        break;
-      case 't':
-        keyId = 4;
-        break;
-      case 'y':
-        keyId = 5;
-        break;
-      case 'u':
-        keyId = 6;
-        break;
-      case 'i':
-        keyId = 7;
-        break;
-      case 'o':
-        keyId = 8;
-        break;
-      case 'p':
-        keyId = 9;
-        break;
-      case '[':
-        keyId = 10;
-        break;
-      case ']':
-        keyId = 11;
-        break;
-      // two new white key
-      case 'x':
-        keyId = 12;
-        break;
-      case 'c':
-        keyId = 13;
-        break;
-
-      case '2':
-        keyId = 0;
-        whiteKeys = false;
-        break;
-      case '3':
-        keyId = 1;
-        whiteKeys = false;
-        break;
-      case '4':
-        keyId = 2;
-        whiteKeys = false;
-        break;
-      case '6':
-        keyId = 4;
-        whiteKeys = false;
-        break;
-      case '7':
-        keyId = 5;
-        whiteKeys = false;
-        break;
-      case '9':
-        keyId = 7;
-        whiteKeys = false;
-        break;
-      case '0':
-        keyId = 8;
-        whiteKeys = false;
-        break;
-      case '-':
-        keyId = 9;
-        whiteKeys = false;
-        break;
-
-      // two new black key
-      case 's':
-        keyId = 11;
-        whiteKeys = false;
-        break;
-      case 'd':
-        keyId = 12;
-        whiteKeys = false;
-        break;
-    }
-
-    if (keyId > -1) {
-      pianoClicked(whiteKeys, keyId, isDown);
-    }
-
-  }
-
-  protected void clearButtonPressed() {
-    recording.clearKeys();
-  }
-
-  protected void copyButtonPressed() {
-    String recStr = recording.getRecordingStr();
-
-    Clipboard systemClipboard = Toolkit.getDefaultToolkit()
-        .getSystemClipboard();
-    Transferable transferableText = new StringSelection(recStr);
-    systemClipboard.setContents(transferableText, null);
-  }
-
-  protected void playButtonPressed() {
-    PlayThread thread = new PlayThread();
-    thread.start();
-  }
-
-  protected void unHighlightKey(boolean whiteKeys, int keyId) {
-    if (whiteKeys) {
-      whiteKeyLabelArray.get(keyId).moveBelow(whiteKeysArray.get(keyId));
-    } else {
-      blackKeyLabelsArray.get(keyId).moveBelow(blackKeysArray.get(keyId));
-    }
-
-    this.layout();
-    pack();
-  }
-
-  protected void highlightKey(boolean whiteKeys, int keyId) {
-
-    cleanKeys();
-
-    if (whiteKeys) {
-      whiteKeyLabelArray.get(keyId).moveAbove(whiteKeysArray.get(keyId));
-    } else {
-      blackKeyLabelsArray.get(keyId).moveAbove(blackKeysArray.get(keyId));
-    }
-    this.layout();
-    pack();
-    this.setSize(1307, 453);
-  }
-
-  private void buildKeyLabels() {
-
-    for (int x = 0; x < whiteKeysArray.size(); x++) {
-      FormData label1LData = new FormData();
-
-      label1LData.left = new FormAttachment(0, 1000, whiteKeysArray.get(x)
-          .getLocation().x + 15);
-      label1LData.top = new FormAttachment(0, 1000, 140);
-
-      Label myLabel = new Label(this, SWT.None);
-      myLabel.setLayoutData(label1LData);
-
-      myLabel.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-      FontData[] fD = myLabel.getFont().getFontData();
-      fD[0].setHeight(18);
-      myLabel.setFont(new Font(Display.getCurrent(), fD[0]));
-      myLabel.setText(getKeyName(true, x));
-      whiteKeyLabelArray.add(x, myLabel);
-    }
-
-    for (int x = 0; x < blackKeysArray.size(); x++) {
-      if (x == 3 || x == 6 || x == 10) {
-        blackKeyLabelsArray.add(x, null);
-      } else {
-        FormData label1LData = new FormData();
-
-        label1LData.left = new FormAttachment(0, 1000, blackKeysArray.get(x)
-            .getLocation().x + 1);
-        label1LData.top = new FormAttachment(0, 1000, 100);
-
-        Label myLabel = new Label(this, SWT.None);
-        myLabel.setLayoutData(label1LData);
-
-        myLabel.setBackground(new Color(Display.getCurrent(), 0, 0, 0));
-        myLabel.setForeground(new Color(Display.getCurrent(), 255, 255, 255));
-
-        FontData[] fD = myLabel.getFont().getFontData();
-        fD[0].setHeight(16);
-        myLabel.setFont(new Font(Display.getCurrent(), fD[0]));
-        myLabel.setText(getKeyName(false, x));
-        blackKeyLabelsArray.add(x, myLabel);
-      }
-    }
-
-  }
-
-  private String getKeyName(boolean whiteKeys, int keyId) {
-    String ret = "";
-    int toneId = keyId;
-    if (whiteKeys) {
-      if (toneId > 6) {
-        toneId -= 7;
-      }
-      switch (toneId) {
-        // F
-        case 0:
-          ret = "F";
-          break;
-        // G
-        case 1:
-          ret = "G";
-          break;
-        // A
-        case 2:
-          ret = "A";
-          break;
-        // B
-        case 3:
-          ret = "B";
-          break;
-        // C
-        case 4:
-          ret = "C";
-          break;
-        // D
-        case 5:
-          ret = "D";
-          break;
-        // E
-        case 6:
-          ret = "E";
-          break;
-      }
-    } else {
-      if (toneId > 6) {
-        toneId -= 7;
-      }
-      switch (toneId) {
-        // F#
-        case 0:
-          ret = "F#";
-          break;
-        // G#
-        case 1:
-          ret = "G#";
-          break;
-        // A#
-        case 2:
-          ret = "A#";
-          break;
-        // C#
-        case 4:
-          ret = "C#";
-          break;
-        // D#
-        case 5:
-          ret = "D#";
-          break;
-      }
-
-    }
-    return ret;
-  }
-
-  private void cleanKeys() {
-    for (int x = 0; x < whiteKeysArray.size(); x++) {
-      whiteKeyLabelArray.get(x).moveBelow(whiteKeysArray.get(x));
-    }
-    for (int x = 0; x < blackKeysArray.size(); x++) {
-      if (x == 3 || x == 6 || x == 10) {
-      } else {
-        blackKeyLabelsArray.get(x).moveBelow(blackKeysArray.get(x));
-      }
-    }
-
-  }
-
-  public void creatingSavingInterface() {
-    String fileName = null;
-    boolean done = false;
-    try {
-      FileDialog dlg = new FileDialog(shell, SWT.SAVE);
-      dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-      dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-      fileName = dlg.open();
-
-      if (fileName == null) {
-        done = true;
-      } else {
-        File file = new File(fileName);
-        if (file.exists()) {
-          boolean overwrite = MessageDialog.openQuestion(shell,
-              "Confirm over write", fileName
-                  + " already exists. Do you want to replace it?");
-          if (!overwrite) {
-            fileName = null;
-          } else {
-            // spnf.receivingNotes(recording.getNotes(), fileName);
-            recording.saveNotesToFile(fileName);
-          }
-        } else {
-          recording.saveNotesToFile(fileName);
-          // spnf.receivingNotes(recording.getNotes(), fileName);
-        }
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  // Thread for playing back the recording, needs to be a thread since we sleep
-  // the thread for the
-  // wait times between notes and this would cause the window to stop responding
-  class PlayThread extends Thread {
-    PlayThread() {
-    }
-
-    public void run() {
-      List<PianoNote> notes = recording.getNotes();
-      try {
-        for (PianoNote note : notes) {
-          nxt.playTone(note.getTone(), note.getNoteTime());
-          System.out.println("PianoComposite.PlayThread.run()"
-              + note.getWaitTime());
-          Thread.sleep(note.getWaitTime() * 2);
-        }
-      } catch (Exception e) {
-      }
+  private void hideAllLabels() {
+    for (int i = 0; i < keyLabelsArray.size(); i++) {
+      keyLabelsArray.get(i).moveBelow(keyArray.get(i));
     }
   }
 }
