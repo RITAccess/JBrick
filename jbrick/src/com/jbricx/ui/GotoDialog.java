@@ -65,7 +65,7 @@ public class GotoDialog extends Dialog {
     Point parentWindowSize = shell.getParent().getSize();
 
     int x = ((parentWindowSize.x - WIDTH) / 2) + parentWindowLocation.x;
-    int y = ((parentWindowSize.y - WIDTH) / 2) + parentWindowLocation.y;
+    int y = ((parentWindowSize.y - HEIGHT) / 2) + parentWindowLocation.y;
 
     shell.setBounds(x, y, WIDTH, HEIGHT);
     shell.open();
