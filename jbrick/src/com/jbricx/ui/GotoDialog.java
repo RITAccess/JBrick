@@ -1,6 +1,7 @@
 package com.jbricx.ui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -13,7 +14,10 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -25,13 +29,15 @@ import com.jbricx.model.PersistentDocument;
  * 
  * @author Abhishek Shrestha
  */
-public class GotoDialog extends Dialog {
+public class GotoDialog extends TrayDialog{
   // The associated viewer
   private ITextViewer viewer;
   private PersistentDocument document;
   private Button doGoto;
-  private Shell myShell;
+  private Shell parentShell;
   private int lineNumber;
+  private static GotoDialog instance = null;
+  private  boolean isOpen = false;
 
   /**
    * GotoDialog constructor
@@ -44,45 +50,42 @@ public class GotoDialog extends Dialog {
    *          the associated viewer
    */
   public GotoDialog(Shell shell, IDocument document, ITextViewer viewer) {
-    super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
+    super(shell);
+    parentShell = shell;
     this.document = (PersistentDocument) document;
     this.viewer = viewer;
     lineNumber = 1;
   }
 
+
+  //private void addToolBar(int i) {
+    // TODO Auto-generated method stub  
+  //}
+
   /**
    * Opens the dialog box
    */
-  public void open() {
-    Shell shell = new Shell(getParent(), getStyle());
-    shell.setText("Goto Line Number");
-    createContents(shell);
-    int WIDTH = 200;
+  public void openUp() {
+    
+    int WIDTH = 300;
     int HEIGHT = 140;
-
-    // locate the window at the center of the parent screen
-    Point parentWindowLocation = shell.getParent().getLocation();
-    Point parentWindowSize = shell.getParent().getSize();
-
-    int x = ((parentWindowSize.x - WIDTH) / 2) + parentWindowLocation.x;
-    int y = ((parentWindowSize.y - HEIGHT) / 2) + parentWindowLocation.y;
-
-    shell.setBounds(x, y, WIDTH, HEIGHT);
-    shell.open();
+      // locate the window at the center of the parent screen
+      Point parentWindowLocation = parentShell.getLocation();
+      Point parentWindowSize = parentShell.getSize();
+      int x = ((parentWindowSize.x - WIDTH) / 2) + parentWindowLocation.x;
+      int y = ((parentWindowSize.y - WIDTH) / 2) + parentWindowLocation.y;
+      open();
   }
 
   protected void doGoto() {
     viewer.setSelectedRange(lineNumber, 0);
-    myShell.close();
+    close();
   }
-
-  /**
-   * Creates the dialog's contents
-   * 
-   * @param shell
-   */
-  protected void createContents(final Shell shell) {
-    myShell = shell;
+  
+  @Override
+  protected Control createContents(Composite parent) {
+    Composite composite = new Composite(parent, SWT.NONE);
+    //new Text(composite, SWT.ABORT);
 
     GridData layoutDataOneCol = new GridData(GridData.FILL_HORIZONTAL);
     GridData layoutDataTwoCol = new GridData();
@@ -93,37 +96,36 @@ public class GotoDialog extends Dialog {
 
     GridLayout layout = new GridLayout();
     layout.numColumns = 2;
-    myShell.setLayout(layout);
-
+    composite.setLayout(layout);
+    
     // goto label
-    Label labelGoto = new Label(shell, SWT.LEFT);
-    labelGoto.setText("Goto Line Number:");
+    Label labelGoto = new Label(composite, SWT.LEFT);
+    labelGoto.setText("Goto Line:");
     labelGoto.setLayoutData(layoutDataOneCol);
 
     // goto text
-    final Text findText = new Text(myShell, SWT.BORDER);
+    final Text findText = new Text(composite, SWT.BORDER);
     findText.setLayoutData(layoutDataTwoCol);
 
     // notification label
-    final Label inputNotifier = new Label(shell, SWT.LEFT);
+    final Label inputNotifier = new Label(composite, SWT.LEFT);
     inputNotifier.setLayoutData(layoutDataOneCol);
 
     // Create the Goto button
-    doGoto = new Button(myShell, SWT.PUSH);
+    doGoto = new Button(composite, SWT.PUSH);
     doGoto.setText("Goto");
     doGoto.setLayoutData(layoutDataTwoCol);
     doGoto.setEnabled(false);
-
+    
     // Create the Close button
-    Button close = new Button(myShell, SWT.PUSH);
+    Button close = new Button(composite, SWT.PUSH);
     close.setText("Close");
     close.setLayoutData(layoutDataTwoCol);
     close.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent event) {
-        shell.close();
+        close();
       }
     });
-
     // Do a goto
     doGoto.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent event) {
@@ -142,10 +144,12 @@ public class GotoDialog extends Dialog {
             inputNotifier.setText("");
             doGoto.setEnabled(true);
           } catch (NumberFormatException e) {
-            inputNotifier.setText("Invalid/ Not a number!");
+            //inputNotifier.setText("Invalid/ Not a number!");
+            inputNotifier.setText("Not a number!");
             doGoto.setEnabled(false);
           } catch (BadLocationException e) {
-            inputNotifier.setText("Line number out of range!");
+            //inputNotifier.setText("Line number out of range!");
+            inputNotifier.setText("Out of range!");
             doGoto.setEnabled(false);
           }
         } else {
@@ -160,7 +164,8 @@ public class GotoDialog extends Dialog {
     });
 
     findText.setFocus();
-    shell.setDefaultButton(doGoto);
+    //composite.setDefaultButton(doGoto);
+    return composite;
   }
 
   /**
@@ -170,6 +175,14 @@ public class GotoDialog extends Dialog {
    *          the error message
    */
   protected void showError(String message) {
-    MessageDialog.openError(getParent(), "Error", message);
+    MessageDialog.openError(parentShell, "Error", message);
+  }
+  
+
+  public static GotoDialog getInstance(Shell shell, IDocument document, ITextViewer viewer) {
+    if (instance == null) {
+      instance = new GotoDialog(shell, document, viewer);
+    }
+    return instance;
   }
 }
