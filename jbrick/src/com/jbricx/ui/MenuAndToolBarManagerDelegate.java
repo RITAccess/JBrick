@@ -183,10 +183,10 @@ public class MenuAndToolBarManagerDelegate {
       editMenu.add(methodTemplateAction);
 
       compileMenu.add(compileAction);
-      compileMenu.add(downloadAction);
+//      compileMenu.add(downloadAction);
       compileMenu.add(findBrickAction);
 
-      toolMenu.add(directControlAction);
+//      toolMenu.add(directControlAction);
       toolMenu.add(joystickAction);
       toolMenu.add(pianoAction);
 
@@ -229,13 +229,13 @@ public class MenuAndToolBarManagerDelegate {
       add(compileAction);
 
       add(new Separator());
-      add(downloadAction);
+      //add(downloadAction);
 
       add(new Separator());
       add(aboutAction);
 
       add(new Separator());
-      add(directControlAction);
+      //add(directControlAction);
       add(joystickAction);
       add(pianoAction);
 
