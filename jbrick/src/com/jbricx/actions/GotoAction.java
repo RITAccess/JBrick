@@ -13,7 +13,8 @@ public class GotoAction extends AbstractAction {
    * FindAction constructor
    */
   public GotoAction(final JBrickManager manager) {
-    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class, "/images/edit-find.png"), manager);
+    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class,
+        "/images/edit-find.png"), manager);
     setToolTipText("Goto");
   }
 
@@ -21,8 +22,9 @@ public class GotoAction extends AbstractAction {
    * Runs the action
    */
   public void run() {
-    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager().getTabFolder().getSelection().getDocument(),
-        getManager().getTabFolder().getSourceViewer());
-    dlg.open();
+    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager()
+        .getTabFolder().getSelection().getDocument(), getManager()
+        .getTabFolder().getSourceViewer());
+    dlg.openUp();
   }
 }
