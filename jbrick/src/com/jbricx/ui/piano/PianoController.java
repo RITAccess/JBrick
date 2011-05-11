@@ -18,6 +18,7 @@ import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
 
 /**
+ * Handles the overall interaction of the GUI with the model classes
  * 
  * @author Abhishek Shrestha
  * 

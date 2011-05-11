@@ -6,12 +6,13 @@ package com.jbricx.ui.piano;
 import java.text.DecimalFormat;
 
 /**
- * For better modeling of piano, instead of having to directly expose the
- * {@link MusicNote} and its properties like "sharp" represent it in the way
- * keys appear in real piano (white and balck).
+ * A concrete Flyweight implementation of {@link Key}. {@link MusicNote} is the
+ * intrinsic state while {@link Octave} is the extrinsic object
  * 
  * @see KeyFactory
  * @see Piano
+ * @see MusicNote
+ * @see Octave
  * 
  * @author Abhishek Shrestha
  */

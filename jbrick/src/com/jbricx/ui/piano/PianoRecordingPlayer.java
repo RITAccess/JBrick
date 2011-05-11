@@ -4,7 +4,11 @@ import java.util.List;
 
 import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
-
+/**
+ * 
+ * @author Abhishek Shrestha
+ *
+ */
 public class PianoRecordingPlayer implements Runnable {
 
   private PianoRecording records;

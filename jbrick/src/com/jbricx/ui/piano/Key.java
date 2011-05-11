@@ -1,7 +1,7 @@
 package com.jbricx.ui.piano;
 
 /**
- * An abstract Flyweight to represent a music note.
+ * An abstract Flyweight to represent key.
  * 
  * @author Abhishek Shrestha
  * 

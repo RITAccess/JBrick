@@ -1,14 +1,19 @@
 package com.jbricx.ui.piano;
 
-
 /**
- * A concrete Flyweight implementation of {@link MusicNote}.
+ * A class that represents the real world music note.
  * 
  * @author Abhishek Shrestha
  * 
  */
 public class MusicNote {
   private String name;
+  /*
+   * represent how far this note is from the A note. E.g. B is 2 notes away from
+   * A note (in the same octave) hence its step is 2 whereas C is 3 notes away
+   * in the next octave as well as -9 notes in an octave before see
+   * http://en.wikipedia.org/wiki/Note
+   */
   private int step;
   private boolean isSharp;
 
