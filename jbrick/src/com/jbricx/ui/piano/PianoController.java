@@ -69,8 +69,8 @@ public class PianoController {
     systemClipboard.setContents(transferableText, null);
   }
 
-  private void play(MusicNote musicNote, Octave octave) {
-    int frequency = (int) musicNote.getFrequency(octave);
+  private void play(Key key, Octave octave) {
+    int frequency = (int) key.getFrequency(octave);
 
     PianoTone tone = new PianoTone(frequency, toneDuration);
     records.addKey(tone, waitDuration);
@@ -82,7 +82,7 @@ public class PianoController {
    * 
    * @param pianoKey
    */
-  public void play(PianoKey pianoKey, int oldOctaveIndex) {
+  public void play(Key pianoKey, int oldOctaveIndex) {
     int o = piano.getStartOctave() + oldOctaveIndex;
     Octave octave = new Octave(o);
     play(pianoKey, octave);
@@ -120,7 +120,7 @@ public class PianoController {
    */
   public void playRest() {
     /* doesn't really matter what octave play a dead note! Its FOREVER dead! ;) */
-    play(new DeadNote(), new Octave());
+    play(piano.getRestKey(), new Octave());
   }
 
   public void saveNotes() {
@@ -134,7 +134,7 @@ public class PianoController {
   public void setStartOctave(int octave) throws OctaveScaleOutofBoundsException {
     int pianoMaxOctave = piano.getMaxOctave().getValue();
     int pianoMinOctave = piano.getMinOctave().getValue();
-    
+
     if ((octave + piano.getOctaveScaleBlock()) > pianoMaxOctave
         || (octave - piano.getOctaveScaleBlock()) < (pianoMinOctave - 1)) {
       throw new OctaveScaleOutofBoundsException(octave + " Octave Scale Range("
@@ -241,7 +241,7 @@ public class PianoController {
           }
 
           /* check if this note has sharp note */
-          if (!pianoKeys.get((key + 1) % limit).isSharp()) {
+          if (!pianoKeys.get((key + 1) % limit).isBlack()) {
             /*
              * since it does not have a sharp note (like B and E notes) we have
              * increment the count to the next character for blackNotesChar

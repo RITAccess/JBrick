@@ -16,7 +16,7 @@ public class Piano {
   private Octave startOctave;
   private Octave endOctave;
   private String startNote;
-  private PianoKeyFactory pianoKeyFactory;
+  private KeyFactory pianoKeyFactory;
 
   public Piano() throws NoteNotFoundException {
     this(4);
@@ -28,11 +28,12 @@ public class Piano {
 
   public Piano(int fromOctave, int toOctave, String startNote)
       throws NoteNotFoundException {
-    pianoKeyFactory = new PianoKeyFactory();
+    pianoKeyFactory = new KeyFactory();
     if (pianoKeyFactory.isValidNote(startNote)) {
       setMinOctave(new Octave(Octave.MIN_OCTAVE));
       setMaxOctave(new Octave(Octave.MAX_OCTAVE));
       setStartOctave(fromOctave);
+
       setEndOctave(toOctave);
       setStartNote(startNote);
       setOctaveScaleBlock(endOctave.getValue() - startOctave.getValue());
@@ -66,7 +67,7 @@ public class Piano {
   }
 
   public List<PianoKey> getKeys() {
-    List<PianoKey> pianoKeys = pianoKeyFactory.getKeys();
+    List<PianoKey> pianoKeys = pianoKeyFactory.getPianoKeys();
 
     if (!startNote.equals("A")) {
       List<PianoKey> pianoKeys1 = new ArrayList<PianoKey>();
@@ -78,7 +79,8 @@ public class Piano {
        * been specified
        */
       for (PianoKey pianoKey : pianoKeys) {
-        if (pianoKey.getName().equals(startNote) || isStartKeyFound) {
+        if (pianoKey.getName().equals(startNote)
+            || isStartKeyFound) {
           isStartKeyFound = true;
           pianoKeys1.add(pianoKey);
         } else {
@@ -90,6 +92,10 @@ public class Piano {
       pianoKeys.addAll(pianoKeys2);
     }
     return pianoKeys;
+  }
+
+  public RestKey getRestKey() {
+    return pianoKeyFactory.createRestKey();
   }
 
   public void setStartNote(String startNote) {

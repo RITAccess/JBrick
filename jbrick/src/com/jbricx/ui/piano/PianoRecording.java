@@ -109,8 +109,7 @@ public class PianoRecording {
   protected String getConvertedTone(PianoTone tone) {
     StringBuilder convertedTone = new StringBuilder();
 
-    if (tone.getFrequency() != 0) {
-      System.out.println("f:" + tone.getFrequency());
+    if (tone.getFrequency() != 0) {      
       convertedTone.append(PLAY_TONE + tone.getFrequency() + TONE_SEPARATOR
           + tone.getDuration() + END_OF_LINE + LINE_SEPARATOR);
     } else {
@@ -118,7 +117,6 @@ public class PianoRecording {
       convertedTone.append(WAIT + tone.getDuration() + END_OF_LINE
           + LINE_SEPARATOR);
     }
-
     return convertedTone.toString();
   }
 }
