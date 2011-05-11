@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -33,22 +34,20 @@ import com.jbricx.model.PersistentDocument;
 /**
  * This class displays a find/replace dialog
  */
-public class FindReplaceDialog extends Dialog {
+public class FindReplaceDialog extends TrayDialog {
 
 	// The adapter that does the finding/replacing
 	private FindReplaceDocumentAdapter frda;
-
 	private static List<Control> changableComponentList = new ArrayList<Control>();
-
 	// The associated viewer
 	private ITextViewer viewer;
 	private ScrollBar scroll; 
-
-	// The find and replace buttons
+  // The find and replace buttons
 	private Button doFind;
 	private Button doReplace;
 	private Button doReplaceFind;
 	Display display;
+  private Shell parentShell;
 	private PersistentDocument document;
 	public static int f = -1;
 	List<Integer> listValue = new ArrayList<Integer>();
@@ -63,7 +62,8 @@ public class FindReplaceDialog extends Dialog {
 	 *            the associated viewer
 	 */
 	public FindReplaceDialog(Shell shell, IDocument document, ITextViewer viewer) {
-		super(shell, SWT.DIALOG_TRIM | SWT.MODELESS);
+		super(shell);
+		parentShell = shell;
 		frda = new FindReplaceDocumentAdapter(document);
 		this.document = (PersistentDocument)document;
 		this.viewer = viewer;
@@ -72,20 +72,22 @@ public class FindReplaceDialog extends Dialog {
 	/**
 	 * Opens the dialog box
 	 */
-	public void open() {
+	public void openUp() {
 		System.out.println("Find/Replace");
-		
-		Shell shell = new Shell(getParent(), getStyle());
+		Shell shell = new Shell(parentShell);
 		shell.setText("Find/Replace");
 		createContents(shell);
 		shell.pack();
 		shell.open();
-		display = getParent().getDisplay();
+		shell.setDefaultButton(doFind);
+		
+		display = shell.getDisplay();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
 		}
+		open();
 	}
 
 	/**
@@ -227,6 +229,7 @@ public class FindReplaceDialog extends Dialog {
 	 */
 	protected void doReplace(String replaceText) {
 		try {
+		  System.out.println("replace::");
 			frda.replace(replaceText, false);
 		} catch (BadLocationException e) {
 			// Ignore
@@ -238,11 +241,12 @@ public class FindReplaceDialog extends Dialog {
 	 * 
 	 * @param shell
 	 */
-	protected void createContents(final Shell shell) {
-		shell.setLayout(new GridLayout(2, false));
-
-		// Add the text input fields
-		Composite text = new Composite(shell, SWT.NONE);
+	protected Control createContents(Composite parent) {
+	  Composite composite = new Composite(parent, SWT.NONE);
+	  
+	  composite.setLayout(new GridLayout(2, false));
+	  // Add the text input fields
+		Composite text = new Composite(composite, SWT.NONE);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		text.setLayout(new GridLayout(3, true));
 		changableComponentList.add(text);
@@ -282,22 +286,20 @@ public class FindReplaceDialog extends Dialog {
 		wrap.setText("Wrap the &Search");
 
 		// Add the buttons
-		Composite buttons = new Composite(shell, SWT.NONE);
+		Composite buttons = new Composite(composite, SWT.NONE);
 		buttons.setLayout(new GridLayout());
 
 		// Create the Find button
 		doFind = new Button(buttons, SWT.PUSH);
 		doFind.setText("Fi&nd");
 		doFind.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
 		// Set the initial find operation to FIND_FIRST
 		// doFind.setData(FindReplaceOperationCode.FIND_FIRST);
-
 		// Create the Replace button
 		doReplace = new Button(buttons, SWT.PUSH);
 		doReplace.setText("&Replace");
 		doReplace.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
+		
 		// Create the Replace/Find button
 		doReplaceFind = new Button(buttons, SWT.PUSH);
 		doReplaceFind.setText("Replace/Fin&d");
@@ -318,7 +320,7 @@ public class FindReplaceDialog extends Dialog {
 		close.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		close.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
-				shell.close();
+			  close();
 			}
 		});
 
@@ -357,7 +359,8 @@ public class FindReplaceDialog extends Dialog {
 		down.setSelection(true);
 		findText.setFocus();
 		enableReplaceButtons(false);
-		shell.setDefaultButton(doFind);
+		//setDefaultButton(doFind);
+		return composite;
 	}
 
 	/**
@@ -367,8 +370,8 @@ public class FindReplaceDialog extends Dialog {
 	 *            whether to enable or disable
 	 */
 	protected void enableReplaceButtons(boolean enable) {
-		doReplace.setEnabled(enable);
-		doReplaceFind.setEnabled(enable);
+		  doReplace.setEnabled(enable);
+		  doReplaceFind.setEnabled(enable);
 	}
 
 	/**
@@ -378,6 +381,6 @@ public class FindReplaceDialog extends Dialog {
 	 *            the error message
 	 */
 	protected void showError(String message) {
-		MessageDialog.openError(getParent(), "Error", message);
+		  MessageDialog.openError(parentShell, "Error", message);
 	}
 }
