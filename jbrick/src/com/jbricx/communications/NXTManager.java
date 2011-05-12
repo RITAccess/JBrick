@@ -65,7 +65,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
     if (!(connections.containsKey(currentConnection) && connections.get(
         currentConnection).isRunning())) {
       NXTBrickConnector c = new NXTBrickConnector();
-      boolean isConnected = c.connect(connectionType);      
+      boolean isConnected = c.connect(connectionType);
 
       notifyAllObservers(isConnected);
       if (isConnected) {

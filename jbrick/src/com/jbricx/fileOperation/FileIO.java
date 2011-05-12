@@ -32,7 +32,8 @@ public class FileIO {
 		    while ((strLine = br.readLine()) != null)   {
 		      codeFile.append(strLine);
 		      codeFile.append("\n");		      
-		    }		   
+		    }
+		    br.close();
 		    //Close the input stream
 		    in.close();
 		   

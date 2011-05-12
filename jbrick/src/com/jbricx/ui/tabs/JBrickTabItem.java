@@ -72,7 +72,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   // The current document
   private PersistentDocument document;
   // error identifiers, images and colors
-  public static String ERROR_TYPE = "error.type";
+  public static final String ERROR_TYPE = "error.type";
   public static ImageDescriptor ERROR_IMAGE;
   public static final RGB ERROR_RGB = new RGB(255, 0, 0);
   // amarillo
@@ -87,7 +87,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
    * @param style
    * @param file
    */
-  public JBrickTabItem(CTabFolder parent, int style, File file, final JBrickStatusUpdater statusUpdater, final JBrickEditorSourceViewerConfiguration configuration) {
+  public JBrickTabItem(CTabFolder parent, int style, File file,
+      final JBrickStatusUpdater statusUpdater,
+      final JBrickEditorSourceViewerConfiguration configuration) {
     super(parent, style);
     setFile(file);
     setUpDocument(file);
@@ -98,7 +100,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     // annotation ruler to view annotation
 
-    ERROR_IMAGE = ImageDescriptor.createFromFile(JBrickTabItem.class, "src/images/error_ovr.gif");
+    ERROR_IMAGE = ImageDescriptor.createFromFile(JBrickTabItem.class,
+        "src/images/error_ovr.gif");
 
     IAnnotationAccess fAnnotationAccess = new AnnotationMarkerAccess();
 
@@ -107,7 +110,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     // rulers
     CompositeRuler fCompositeRuler = new CompositeRuler();
     OverviewRuler fOverviewRuler = new OverviewRuler(fAnnotationAccess, 12, cc);
-    AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(fAnnotationModel, 16, fAnnotationAccess);
+    AnnotationRulerColumn annotationRuler = new AnnotationRulerColumn(
+        fAnnotationModel, 16, fAnnotationAccess);
 
     fCompositeRuler.setModel(fAnnotationModel);
     fOverviewRuler.setModel(fAnnotationModel);
@@ -124,10 +128,12 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     fOverviewRuler.setAnnotationTypeLayer(ERROR_TYPE, 3);
 
     // set what color is used on the overview ruler for the type
-    fOverviewRuler.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(), ERROR_RGB));
+    fOverviewRuler.setAnnotationTypeColor(ERROR_TYPE,
+        new Color(Display.getDefault(), ERROR_RGB));
 
     // source viewer
-    viewer = new SourceViewer(parent, ruler, fOverviewRuler, true, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+    viewer = new SourceViewer(parent, ruler, fOverviewRuler, true, SWT.MULTI
+        | SWT.V_SCROLL | SWT.H_SCROLL);
 
     // Configure it and set the document
     undoManager = new TextViewerUndoManager(100);
@@ -140,16 +146,19 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     viewer.configure(configuration);
 
     // hover manager that shows text when we hover
-    AnnotationBarHoverManager fAnnotationHoverManager = new AnnotationBarHoverManager(fCompositeRuler, viewer,
-            new AnnotationHover(), new AnnotationConfiguration());
+    AnnotationBarHoverManager fAnnotationHoverManager = new AnnotationBarHoverManager(
+        fCompositeRuler, viewer, new AnnotationHover(),
+        new AnnotationConfiguration());
     fAnnotationHoverManager.install(annotationRuler.getControl());
 
     // to paint the annotations
     AnnotationPainter ap = new AnnotationPainter(viewer, fAnnotationAccess);
     ap.addAnnotationType(ERROR_TYPE);
     // ap.addAnnotationType(ERROR_RGB2);
-    // ap.setAnnotationTypeColor(ERROR_RGB2, new Color(Display.getDefault(),ERROR_RGB2));
-    ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(), ERROR_RGB));
+    // ap.setAnnotationTypeColor(ERROR_RGB2, new
+    // Color(Display.getDefault(),ERROR_RGB2));
+    ap.setAnnotationTypeColor(ERROR_TYPE, new Color(Display.getDefault(),
+        ERROR_RGB));
 
     // this will draw the squigglies under the text
     viewer.addPainter(ap);
@@ -217,19 +226,20 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
     // Menu manager initialize
     // menuManager = createRightClickMenuManager(this.viewer.getTextWidget());
-    //TODO: this looks important
-//    update(null);
+    // TODO: this looks important
+    // update(null);
   }
 
   /**
-   * Returns the offset of the given source viewer's document that corresponds to the given widget offset or
-   * <code>-1</code> if there is no such offset.
+   * Returns the offset of the given source viewer's document that corresponds
+   * to the given widget offset or <code>-1</code> if there is no such offset.
    * 
    * @param viewer
    *          the source viewer
    * @param widgetOffset
    *          the widget offset
-   * @return the corresponding offset in the source viewer's document or <code>-1</code>
+   * @return the corresponding offset in the source viewer's document or
+   *         <code>-1</code>
    * @since 2.1
    */
   public int getCursorLocation() {
@@ -322,7 +332,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       partitioner = new FastPartitioner(scanner, JBrickPartitionScanner.TYPES);
 
       // Connect the partitioner and document
-      document.setDocumentPartitioner(JBrickEditorSourceViewerConfiguration.JBRICK_PARTITIONING, partitioner);
+      document.setDocumentPartitioner(
+          JBrickEditorSourceViewerConfiguration.JBRICK_PARTITIONING,
+          partitioner);
       partitioner.connect(document);
     } catch (IOException e) {
       JOptionPane.showMessageDialog(null, e.getMessage(), "File Not Found!", 1);
@@ -345,7 +357,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
   // parent.setMenu(menu);
   // return rightMenuBar;
   // }
-  class ColorCache implements ISharedTextColors {
+  static class ColorCache implements ISharedTextColors {
 
     public Color getColor(RGB rgb) {
       return new Color(Display.getDefault(), rgb);
@@ -357,9 +369,12 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   @Override
   public void update(final IPreferenceStore store) {
-    //TODO: even though this works, why is it been read from the preference store?
-    RGB bgRBG = PreferenceConverter.getColor(store, ColorFor.BACKGROUND.property());
-    RGB fgRBG = PreferenceConverter.getColor(store, ColorFor.FOREGROUND.property());
+    // TODO: even though this works, why is it been read from the preference
+    // store?
+    RGB bgRBG = PreferenceConverter.getColor(store,
+        ColorFor.BACKGROUND.property());
+    RGB fgRBG = PreferenceConverter.getColor(store,
+        ColorFor.FOREGROUND.property());
 
     String fontProp = store.getString(FileExtensionConstants.FONT);
     if (fontProp.length() > 0) { /* Check if the font is available */
@@ -370,8 +385,10 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     if (bgRBG != fgRBG) {/* Check if the colors are available */
 
       Color bgColor = new Color(getDisplay(), bgRBG);
-      lnrc.setForeground(new Color(getDisplay(), PreferenceConverter.getColor(store, ColorFor.LINENUMBERFG.property())));
-      lnrc.setBackground(new Color(getDisplay(), PreferenceConverter.getColor(store, ColorFor.LINENUMBERBG.property())));
+      lnrc.setForeground(new Color(getDisplay(), PreferenceConverter.getColor(
+          store, ColorFor.LINENUMBERFG.property())));
+      lnrc.setBackground(new Color(getDisplay(), PreferenceConverter.getColor(
+          store, ColorFor.LINENUMBERBG.property())));
 
       // Color fgColor = new
       // Color(JBrickEditor.getMainWindow().getShell().getDisplay(),fgRBG);
@@ -396,8 +413,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
 
   public void addAnnotation(int intLineNumber, String message) {
     // add an annotation
-    ErrorAnnotation errorAnnotation = new ErrorAnnotation(
-        intLineNumber, message);
+    ErrorAnnotation errorAnnotation = new ErrorAnnotation(intLineNumber,
+        message);
 
     try {
       int offset = getDocument().getLineOffset(intLineNumber - 1);
@@ -406,9 +423,8 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       // new
       // Position(offset,
       // tab.getDocument().getLineLength(intLineNumber)));
-      fAnnotationModel.addAnnotation(errorAnnotation,
-          new Position(offset, getDocument()
-              .getLineLength(intLineNumber - 1)));
+      fAnnotationModel.addAnnotation(errorAnnotation, new Position(offset,
+          getDocument().getLineLength(intLineNumber - 1)));
     } catch (BadLocationException e) {
       e.printStackTrace();
     }

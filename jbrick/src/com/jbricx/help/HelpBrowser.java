@@ -33,16 +33,16 @@ import org.eclipse.swt.widgets.Text;
 
 public class HelpBrowser extends ApplicationWindow {
 
-	private Browser browser;
-	private ArrayList<String> urls = new ArrayList<String>();
-	private int x = 0;
-	private boolean flag = false;
-	private Label labelStatus;
-	private Text textLocation;
-	private CustomTree tree;
+  private Browser browser;
+  private ArrayList<String> urls = new ArrayList<String>();
+  private int x = 0;
+  private boolean flag = false;
+  private Label labelStatus;
+  private Text textLocation;
+  private CustomTree tree;
 
-	/** There can be only one Help window opened. */
-	private static HelpBrowser instance = null;
+  /** There can be only one Help window opened. */
+  private static HelpBrowser instance = null;
 
   public static HelpBrowser getInstance() {
     if (instance == null) {
@@ -52,85 +52,81 @@ public class HelpBrowser extends ApplicationWindow {
     return instance;
   }
 
-	private HelpBrowser() {
-		super(Display.getCurrent().getActiveShell());
-		addToolBar(0);
-	}
+  private HelpBrowser() {
+    super(Display.getCurrent().getActiveShell());
+    addToolBar(0);
+  }
 
-	ArrayList<String> urlList = new ArrayList<String>();
+  ArrayList<String> urlList = new ArrayList<String>();
 
-	@SuppressWarnings("deprecation")
-	private void buildUrls() {
-		
-		System.out.println("build Url");
-		
-		if (!flag) {
-			urls.add("www.google.com");
-			urlList.add("www.google.com");
-			DirectoryDialog dialog = new DirectoryDialog(getShell());
-			// String folder =
-			// "C:\\Users\\spencer\\workspace\\jbrick\\help\\html";//dialog.open();
-			String folder = "help\\html";// dialog.open();
-			// System.out.println(folder);
-			if (folder == null)
-				return;
-			File file = new File(folder);
-			File[] files = file.listFiles(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".html");
-				}
-			});
+  @SuppressWarnings("deprecation")
+  private void buildUrls() {
 
-			for (int i = 0; i < files.length; i++) {
-				try {
-					String url = files[i].toURL().toString();
-					urls.add(url);
-					urlList.add(url);
-				} catch (MalformedURLException ex) {
-				}
-			}
-			flag = true;
-		}
-	}
+    System.out.println("build Url");
 
-	@Override
-	protected ToolBarManager createToolBarManager(int style) {
-	  final ToolBarManager manager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-	  // Adds tool bar items using actions.
-    final Action actionBackward = new Action("&Back", ImageDescriptor
-        .createFromFile(HelpBrowser.class, "/images/go-previous.png")) {
+    if (!flag) {
+      urls.add("www.google.com");
+      urlList.add("www.google.com");
+
+      String folder = "help\\html";// dialog.open();
+      File file = new File(folder);
+      File[] files = file.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+          return name.endsWith(".html");
+        }
+      });
+
+      for (int i = 0; i < files.length; i++) {
+        try {
+          String url = files[i].toURL().toString();
+          urls.add(url);
+          urlList.add(url);
+        } catch (MalformedURLException ex) {
+        }
+      }
+      flag = true;
+    }
+  }
+
+  @Override
+  protected ToolBarManager createToolBarManager(int style) {
+    final ToolBarManager manager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
+    // Adds tool bar items using actions.
+    final Action actionBackward = new Action("&Back",
+        ImageDescriptor.createFromFile(HelpBrowser.class,
+            "/images/go-previous.png")) {
       public void run() {
         browser.back();
       }
     };
     actionBackward.setEnabled(true); // action is disabled at start up.
 
-    final Action actionForward = new Action("&Forward", ImageDescriptor
-        .createFromFile(HelpBrowser.class, "/images/go-next.png")) {
+    final Action actionForward = new Action("&Forward",
+        ImageDescriptor
+            .createFromFile(HelpBrowser.class, "/images/go-next.png")) {
       public void run() {
         browser.forward();
       }
     };
     actionForward.setEnabled(true); // action is disabled at start up.
 
-    
-    
     Action actionStop = new Action("&Stop", ImageDescriptor.createFromFile(
-      HelpBrowser.class, "/images/process-stop.png")) {
+        HelpBrowser.class, "/images/process-stop.png")) {
       public void run() {
-          browser.stop();
-          x = 1;
+        browser.stop();
+        x = 1;
       }
     };
 
-    Action actionRefresh = new Action("&Refresh", ImageDescriptor
-        .createFromFile(HelpBrowser.class, "/images/view-refresh.png")) {
+    Action actionRefresh = new Action("&Refresh",
+        ImageDescriptor.createFromFile(HelpBrowser.class,
+            "/images/view-refresh.png")) {
       public void run() {
-        if (x==1){
-            browser.back();
-        }else{
-            browser.refresh();  
-           }
+        if (x == 1) {
+          browser.back();
+        } else {
+          browser.refresh();
+        }
       }
     };
 
@@ -147,44 +143,42 @@ public class HelpBrowser extends ApplicationWindow {
     manager.add(actionRefresh);
     manager.add(actionHome);
     manager.update(true);
-	  
-	  return manager;
-	}
 
-	@Override
-	protected Control createContents(final Composite parent) {
-	  buildUrls();
-	  getShell().setText("Jbricx Help Browser");
-	  getShell().setLayout(new GridLayout());
+    return manager;
+  }
 
+  @Override
+  protected Control createContents(final Composite parent) {
+    buildUrls();
+    getShell().setText("Jbricx Help Browser");
+    getShell().setLayout(new GridLayout());
 
-		Composite compTools = new Composite(parent, SWT.NONE);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		compTools.setLayoutData(data);
-		compTools.setLayout(new GridLayout(2, false));
+    Composite compTools = new Composite(parent, SWT.NONE);
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    compTools.setLayoutData(data);
+    compTools.setLayout(new GridLayout(2, false));
 
-		Composite compWin = new Composite(compTools, SWT.NONE);
-		data = new GridData(GridData.FILL_BOTH);
+    Composite compWin = new Composite(compTools, SWT.NONE);
+    data = new GridData(GridData.FILL_BOTH);
 
-		compWin.setLayoutData(data);
-		compWin.setLayout(new FillLayout());
-		final SashForm form = new SashForm(compWin, SWT.HORIZONTAL);
+    compWin.setLayoutData(data);
+    compWin.setLayout(new FillLayout());
+    final SashForm form = new SashForm(compWin, SWT.HORIZONTAL);
 
-		form.setLayout(new FillLayout());
+    form.setLayout(new FillLayout());
 
-		tree = new CustomTree(form, this);
-		browser = new Browser(form, SWT.NONE);
+    tree = new CustomTree(form, this);
+    browser = new Browser(form, SWT.NONE);
 
-		Composite compositeStatus = new Composite(parent, SWT.NULL);
-		compositeStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		compositeStatus.setLayout(new GridLayout(2, false));
+    Composite compositeStatus = new Composite(parent, SWT.NULL);
+    compositeStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    compositeStatus.setLayout(new GridLayout(2, false));
 
-		labelStatus = new Label(compositeStatus, SWT.NULL);
-		labelStatus.setText("Ready");
-		labelStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    labelStatus = new Label(compositeStatus, SWT.NULL);
+    labelStatus.setText("Ready");
+    labelStatus.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final ProgressBar progressBar = new ProgressBar(compositeStatus, SWT.SMOOTH);
-
+    final ProgressBar progressBar = new ProgressBar(compositeStatus, SWT.SMOOTH);
 
     browser.addProgressListener(new ProgressListener() {
       public void changed(ProgressEvent event) {
@@ -205,7 +199,7 @@ public class HelpBrowser extends ApplicationWindow {
 
     browser.addTitleListener(new TitleListener() {
       public void changed(TitleEvent event) {
-//        HelpBrowser.this.shell.setText(event.title + " - powered by SWT");
+        // HelpBrowser.this.shell.setText(event.title + " - powered by SWT");
       }
     });
 
@@ -219,29 +213,29 @@ public class HelpBrowser extends ApplicationWindow {
     form.setWeights(new int[] { 15, 85 });
     form.setSize(750, 500);
     tree.clearNodes();
-	  return compTools;
-	}
-
-	public void setUrl(String url) {
-		browser.setUrl(url);
-	}
-
-	@Override
-	public boolean close() {
-	  instance = null;
-	  return super.close();
-	}
-	
-	public void getPianoHelpLink(){
-     String val = "help\\html\\Piano Composer.html";
-     File file = new File(val);
-     browser.setUrl(file.getAbsolutePath());
+    return compTools;
   }
-	
-	public void runJoistickLink(){
+
+  public void setUrl(String url) {
+    browser.setUrl(url);
+  }
+
+  @Override
+  public boolean close() {
+    instance = null;
+    return super.close();
+  }
+
+  public void getPianoHelpLink() {
+    String val = "help\\html\\Piano Composer.html";
+    File file = new File(val);
+    browser.setUrl(file.getAbsolutePath());
+  }
+
+  public void runJoistickLink() {
     String val = "help\\html\\Joistick Composer.html";
     File file = new File(val);
     browser.setUrl(file.getAbsolutePath());
   }
-	
+
 }

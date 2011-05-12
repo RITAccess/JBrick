@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ExitStatus {
 
-	public static int OK = 0;
-	public static int ERROR = 1;
+	public static final int OK = 0;
+	public static final int ERROR = 1;
 	
 	private int status;
 	private List<CompilerError> compilerErrors;

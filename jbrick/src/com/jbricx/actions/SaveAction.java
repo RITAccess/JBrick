@@ -18,7 +18,7 @@ public class SaveAction extends AbstractAction {
    */
   public SaveAction(final JBrickManager manager) {
     super("&Save@Ctrl+S", ImageDescriptor.createFromFile(SaveAction.class,
-            "/images/document-save.png"), manager);
+        "/images/document-save.png"), manager);
 
     setToolTipText("Save");
     // setAccelerator(SWT.CTRL + 's');
@@ -30,20 +30,23 @@ public class SaveAction extends AbstractAction {
   @Override
   public void run() {
     getManager().setStatus("Saving File . . .");
-    PersistentDocument currDoc = getManager().getTabFolder().getSelection().getDocument();
+    PersistentDocument currDoc = getManager().getTabFolder().getSelection()
+        .getDocument();
 
     // Check and see if it was previously saved as a backup
     if (currDoc.getFileName() != null
-            && currDoc.getFileName().endsWith(".bak.nxc")) {
+        && currDoc.getFileName().endsWith(".bak.nxc")) {
       String fname = currDoc.getFileName();
-      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(), true, getManager(), getManager().getWorkspacePath());
+      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
+          true, getManager(), getManager().getWorkspacePath());
       if (!currDoc.getFileName().endsWith(".bak.nxc")) {
-        //File was successfully saved, cleanup the temporary file
+        // File was successfully saved, cleanup the temporary file
         File f = new File(fname);
         f.delete();
       }
     } else {
-      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(), false, getManager(), getManager().getWorkspacePath());
+      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
+          false, getManager(), getManager().getWorkspacePath());
     }
 
     if (getManager().isAutoCompile()) {

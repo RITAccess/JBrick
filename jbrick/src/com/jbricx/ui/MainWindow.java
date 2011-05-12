@@ -24,7 +24,6 @@ import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -54,8 +53,6 @@ import com.jbricx.ui.tabs.ToolBarizeEditTabFolderAdapter;
 public class MainWindow extends ApplicationWindow implements
     IPropertyChangeListener, JBrickManager {
 
-  // The font
-  private Font font;
   private MenuAndToolBarManagerDelegate menuAndToolbarManagerDelegate;
   private File treeRootFile;
   private TabFolder tabFolder;
@@ -105,7 +102,7 @@ public class MainWindow extends ApplicationWindow implements
   protected void configureShell(Shell shell) {
     super.configureShell(shell);
     shell.setText("JBrick Editor");
-    
+
     // locate the app window at the center of the screen
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Point windowSize = shell.getSize();
@@ -228,12 +225,6 @@ public class MainWindow extends ApplicationWindow implements
     return sashForm1; // return the created Composite.
   }
 
-  public void TabItemClosed(CTabFolderEvent event) {
-    if (event.item.equals(this)) {
-      event.doit = false;
-    }
-  }
-
   /**
    * Updates the view with the preferences
    */
@@ -289,10 +280,6 @@ public class MainWindow extends ApplicationWindow implements
     if (getTabFolder().checkOverwrite()) {
       close = super.close();
       if (close) {
-        if (font != null) {
-          font.dispose();
-        }
-
         StringBuilder recentfiles = new StringBuilder();
         for (CTabItem t : tabFolder.getItems()) {
           JBrickTabItem i = (JBrickTabItem) t;

@@ -8,7 +8,7 @@ import org.eclipse.jface.text.source.Annotation;
 // one error annotation
 public class ErrorAnnotation extends Annotation {
 	// error identifiers, images and colors
-	public static String ERROR_TYPE = "error.type";
+	public static final String ERROR_TYPE = "error.type";
 	public static ImageDescriptor ERROR_IMAGE;
 	private IMarker marker;
 	private String text;
