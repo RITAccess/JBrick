@@ -61,13 +61,19 @@ public class KeyFactory {
    */
   private PianoKey createPianoKey(String keyLabel, int step, boolean isBlack) {
     PianoKey pianoKey = null;
-    for (PianoKey p : pianoKeys) {
-      if (!p.getName().equals(keyLabel)) {
-        pianoKey = new PianoKey(keyLabel, step, isBlack);
-        pianoKeys.add(pianoKey);
-        break;
-      } else {
-        pianoKey = p;
+    if (pianoKeys.size() == 0) {
+      pianoKey = new PianoKey(keyLabel, step, isBlack);
+      pianoKeys.add(pianoKey);
+    } else {
+      for (PianoKey p : pianoKeys) {        
+        if (!p.getName().equals(keyLabel)) {
+          pianoKey = new PianoKey(keyLabel, step, isBlack);
+          pianoKeys.add(pianoKey);
+          
+          break;
+        } else {
+          pianoKey = p;
+        }
       }
     }
     return pianoKey;

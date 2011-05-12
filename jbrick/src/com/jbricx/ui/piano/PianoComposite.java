@@ -75,8 +75,11 @@ class PianoComposite extends Composite {
         keyLabelsArray.get(keyIndex).moveAbove(keyArray.get(keyIndex));
         showHideLabel(keyIndex, true);
       } catch (KeyNotMappedExeption k) {
+        /* check if you intend to map this key */
       } catch (OctaveNotMappedException o) {
+        /* check if you intend to map this octave */
       } catch (KeyIndexNotMappedException ki) {
+        /* check if you intend to map this keyIndex */
       }
     }
 
@@ -332,7 +335,7 @@ class PianoComposite extends Composite {
         restLData.width = 50;
         restLData.height = 80;
         rest.setLayoutData(restLData);
-        rest.setText("Rest");        
+        rest.setText("Rest");
         rest.addMouseListener(new MouseListener() {
 
           @Override

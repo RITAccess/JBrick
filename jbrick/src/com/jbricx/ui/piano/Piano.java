@@ -79,8 +79,7 @@ public class Piano {
        * been specified
        */
       for (PianoKey pianoKey : pianoKeys) {
-        if (pianoKey.getName().equals(startNote)
-            || isStartKeyFound) {
+        if (pianoKey.getName().equals(startNote) || isStartKeyFound) {
           isStartKeyFound = true;
           pianoKeys1.add(pianoKey);
         } else {
