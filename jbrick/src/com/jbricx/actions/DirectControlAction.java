@@ -19,7 +19,7 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
     super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(
         AboutAction.class, "/images/direct_controller.png"), manager);
     setToolTipText("Direct Control");
-//    setEnabled(NXTManager.isFantomDriverLoaded());
+    setEnabled(NXTManager.isFantomDriverLoaded());
     setEnabled(false);
   }
 
@@ -36,7 +36,7 @@ public class DirectControlAction extends AbstractAction implements NXTObserver {
 
   public void update(boolean isConnected) {
     if (isEnabled() != isConnected) {
-//      setEnabled(isConnected);
+      setEnabled(isConnected);
     }
   }
 }
