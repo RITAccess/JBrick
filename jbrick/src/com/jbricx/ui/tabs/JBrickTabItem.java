@@ -168,7 +168,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       @Override
       public void keyPressed(KeyEvent e) {
         int code = e.keyCode;
-        if (code == 13) {
+        if (code == 32) {
           getUndoManager().undo();
           getUndoManager().redo();
 
