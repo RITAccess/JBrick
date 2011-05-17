@@ -75,10 +75,11 @@ public class PianoController {
   private void play(Key key, Octave octave) {
     int frequency = (int) key.getFrequency(octave);
     int duration = (int) (toneDuration * getNoteLengthFactor());
+    
     int waitDur = (int) (waitDuration * getNoteLengthFactor());
     PianoTone tone = new PianoTone(frequency, duration);
     records.addKey(tone, waitDur);
-    nxt.playTone(frequency, toneDuration);
+    nxt.playTone(frequency, duration);
   }
 
   /**
