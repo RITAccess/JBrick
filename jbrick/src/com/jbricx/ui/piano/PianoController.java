@@ -34,7 +34,8 @@ public class PianoController {
   private Map<String, Integer> kbToKeyIndexMap = new HashMap<String, Integer>();
 
   private int waitDuration = 500;
-  private int toneDuration = 250;
+  private float noteLengthFactor = 0.25f;
+  private int toneDuration = 1000;
 
   public PianoController(Shell shell, String startKey, boolean isContinuous)
       throws NoteNotFoundException {
@@ -45,6 +46,7 @@ public class PianoController {
     mapKeyboardNotesTo(isContinuous);
     setToneDuration(toneDuration);
     setWaitDuration(waitDuration);
+    setNoteLengthFactor(noteLengthFactor);
   }
 
   public void performAction(AbstractAction action) {
@@ -72,9 +74,10 @@ public class PianoController {
 
   private void play(Key key, Octave octave) {
     int frequency = (int) key.getFrequency(octave);
-
-    PianoTone tone = new PianoTone(frequency, toneDuration);
-    records.addKey(tone, waitDuration);
+    int duration = (int) (toneDuration * getNoteLengthFactor());
+    int waitDur = (int) (waitDuration * getNoteLengthFactor());
+    PianoTone tone = new PianoTone(frequency, duration);
+    records.addKey(tone, waitDur);
     nxt.playTone(frequency, toneDuration);
   }
 
@@ -85,8 +88,12 @@ public class PianoController {
    */
   public void play(Key pianoKey, int oldOctaveIndex) {
     int o = piano.getStartOctave() + oldOctaveIndex;
-    Octave octave = new Octave(o);
-    play(pianoKey, octave);
+    try {
+      Octave octave = new Octave(o);
+      play(pianoKey, octave);
+    } catch (OctaveScaleOutofBoundsException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -121,7 +128,11 @@ public class PianoController {
    */
   public void playRest() {
     /* doesn't really matter what octave play a dead note! Its FOREVER dead! ;) */
-    play(piano.getRestKey(), new Octave());
+    try {
+      play(piano.getRestKey(), new Octave());
+    } catch (OctaveScaleOutofBoundsException e) {
+      e.printStackTrace();
+    }
   }
 
   public void saveNotes() {
@@ -187,6 +198,14 @@ public class PianoController {
     return this.toneDuration;
   }
 
+  public void setNoteLengthFactor(float lenFactor) {
+    noteLengthFactor = lenFactor;
+  }
+
+  public float getNoteLengthFactor() {
+    return noteLengthFactor;
+  }
+
   /**
    * maps the keyboard keys to particular music note
    * 
@@ -218,50 +237,56 @@ public class PianoController {
     int startOctave = piano.getStartOctave();
 
     for (int octave = startOctave; octave <= piano.getEndOctave(); octave++) {
-      Octave o = new Octave(octave);
-      for (int key = 0; key < limit; key++) {
-        PianoKey pianoKey = pianoKeys.get(key);
-        /* lets process both the white and black notes */
-        if (pianoKey.isBlack()) {
-          b++; /* simply go to the next blackNoteChar */
+      try {
+        Octave o = new Octave(octave);
+        for (int key = 0; key < limit; key++) {
+          PianoKey pianoKey = pianoKeys.get(key);
+          /* lets process both the white and black notes */
+          if (pianoKey.isBlack()) {
+            b++; /* simply go to the next blackNoteChar */
 
-          /* ensures the fail-safeness of algorithm */
-          if (b < blackNotesChars[arrayIndex].length) {
-            /* keyboard character mapped to piano key and so on... */
-            kbToNoteMap.put("" + blackNotesChars[arrayIndex][b], pianoKey);
-            kbToOctaveMap.put("" + blackNotesChars[arrayIndex][b], o);
-            kbToKeyIndexMap.put("" + blackNotesChars[arrayIndex][b], keyIndex);
-          }
-        } else { /* white note */
-          /* ensures the fail-safeness of algorithm */
-          if (w < whiteNoteChars[arrayIndex].length) {
-            /* keyboard character mapped to piano key */
-            kbToNoteMap.put("" + whiteNoteChars[arrayIndex][w], pianoKey);
-            kbToOctaveMap.put("" + whiteNoteChars[arrayIndex][w], o);
-            kbToKeyIndexMap.put("" + whiteNoteChars[arrayIndex][w], keyIndex);
-          }
+            /* ensures the fail-safeness of algorithm */
+            if (b < blackNotesChars[arrayIndex].length) {
+              /* keyboard character mapped to piano key and so on... */
+              kbToNoteMap.put("" + blackNotesChars[arrayIndex][b], pianoKey);
+              kbToOctaveMap.put("" + blackNotesChars[arrayIndex][b], o);
+              kbToKeyIndexMap
+                  .put("" + blackNotesChars[arrayIndex][b], keyIndex);
+            }
+          } else { /* white note */
+            /* ensures the fail-safeness of algorithm */
+            if (w < whiteNoteChars[arrayIndex].length) {
+              /* keyboard character mapped to piano key */
+              kbToNoteMap.put("" + whiteNoteChars[arrayIndex][w], pianoKey);
+              kbToOctaveMap.put("" + whiteNoteChars[arrayIndex][w], o);
+              kbToKeyIndexMap.put("" + whiteNoteChars[arrayIndex][w], keyIndex);
+            }
 
-          /* check if this note has sharp note */
-          if (!pianoKeys.get((key + 1) % limit).isBlack()) {
-            /*
-             * since it does not have a sharp note (like B and E notes) we have
-             * increment the count to the next character for blackNotesChar
-             */
-            b++;
+            /* check if this note has sharp note */
+            if (!pianoKeys.get((key + 1) % limit).isBlack()) {
+              /*
+               * since it does not have a sharp note (like B and E notes) we
+               * have increment the count to the next character for
+               * blackNotesChar
+               */
+              b++;
+            }
+            w++; /* simply go to the next whiteNoteChar */
           }
-          w++; /* simply go to the next whiteNoteChar */
+          keyIndex++;
         }
-        keyIndex++;
-      }
-      /*
-       * if continuous scale is not used then after each octave we have to reset
-       * the counters for the positions of characters for black and white keys
-       * as well as the array index
-       */
-      if (!continueScale) {
-        arrayIndex++;
-        w = 0;
-        b = 0;
+        /*
+         * if continuous scale is not used then after each octave we have to
+         * reset the counters for the positions of characters for black and
+         * white keys as well as the array index
+         */
+        if (!continueScale) {
+          arrayIndex++;
+          w = 0;
+          b = 0;
+        }
+      } catch (OctaveScaleOutofBoundsException e) {
+        e.printStackTrace();
       }
     }
   }
@@ -299,7 +324,11 @@ public class PianoController {
     while (keys.hasNext()) {
       String key = keys.next();
       int oldOctave = kbToOctaveMap.get(key).getValue();
-      kbToOctaveMap.put(key, new Octave(oldOctave + changeInOctave));
+      try {
+        kbToOctaveMap.put(key, new Octave(oldOctave + changeInOctave));
+      } catch (OctaveScaleOutofBoundsException e) {
+        e.printStackTrace();
+      }
     }
   }
 }

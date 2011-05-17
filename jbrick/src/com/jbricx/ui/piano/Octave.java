@@ -20,12 +20,16 @@ public class Octave {
 
   private int value;
 
-  public Octave() {
+  public Octave() throws OctaveScaleOutofBoundsException {
     this(1);
   }
 
-  public Octave(int value) {
-    this.setValue(value);
+  public Octave(int value) throws OctaveScaleOutofBoundsException {
+    if (value > MAX_OCTAVE || value < MIN_OCTAVE) {
+      throw new OctaveScaleOutofBoundsException(value + "");
+    } else {
+      this.setValue(value);
+    }
   }
 
   public void setValue(int value) {

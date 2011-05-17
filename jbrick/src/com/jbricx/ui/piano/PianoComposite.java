@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Spinner;
 
 import com.jbricx.actions.HelpContentAction;
 
 /**
- * The GUI for Piano.
+ * The GUI for Piano Composer.
  * 
  * @author Abhishek Shrestha
  */
@@ -38,14 +38,14 @@ class PianoComposite extends Composite {
 
   private Label waitTimeLabel;
   private Label noteLengthLabel;
-  private Text noteLength;
+  private Spinner noteLength;
+  private Spinner waitTime;
   private Button onebysixteen;
   private Button onebytwo;
   private Button onebyone;
   private Button onebyfour;
   private Button onebyeight;
   private Button help;
-  private Text waitTime;
   private Button save;
   private Button play;
   private Button copy;
@@ -101,12 +101,10 @@ class PianoComposite extends Composite {
    * inside a new Shell.
    */
   public static void disableButtons() {
-    System.out.println("====== disableButtons =======");
     disabuttons = true;
   }
 
   public static void enableButtons() {
-    System.out.println("====== enableButtons =======");
     disabuttons = false;
   }
 
@@ -121,48 +119,78 @@ class PianoComposite extends Composite {
     display = Display.getDefault();
 
     {
-      waitTime = new Text(this, SWT.NONE);
+      waitTime = new Spinner(this, SWT.BORDER);
       FormData waitTimeLData = new FormData();
-      waitTimeLData.left = new FormAttachment(0, 1000, 227);
+      waitTimeLData.left = new FormAttachment(0, 1000, 280);
       waitTimeLData.top = new FormAttachment(0, 1000, 404);
-      waitTimeLData.width = 24;
-      waitTimeLData.height = 15;
       waitTime.setLayoutData(waitTimeLData);
-      waitTime.setText("40");
+      waitTime.setIncrement(1);
+      waitTime.setMinimum(1);
+      waitTime.setMaximum(1000);
+      waitTime.setTextLimit(4);
+      waitTime.setSelection(pianoController.getToneDuration());
+      waitTime.addKeyListener(new KeyListener() {
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+          if (validateSelection(waitTime.getText(), waitTime)) {
+            pianoController.setWaitDuration(waitTime.getSelection());
+          }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+          if (validateSelection(waitTime.getText(), waitTime)) {
+            pianoController.setWaitDuration(waitTime.getSelection());
+          }
+        }
+      });
     }
     {
       waitTimeLabel = new Label(this, SWT.NONE);
       FormData waitTimeLabelLData = new FormData();
-      waitTimeLabelLData.left = new FormAttachment(0, 1000, 164);
+      waitTimeLabelLData.left = new FormAttachment(0, 1000, 190);
       waitTimeLabelLData.top = new FormAttachment(0, 1000, 404);
-      waitTimeLabelLData.width = 57;
-      waitTimeLabelLData.height = 15;
       waitTimeLabel.setLayoutData(waitTimeLabelLData);
-      waitTimeLabel.setText("Wait Time:");
+      waitTimeLabel.setText("Wait Time (ms): ");
     }
     {
       noteLengthLabel = new Label(this, SWT.NONE);
       FormData noteLengthLabelLData = new FormData();
-      noteLengthLabelLData.left = new FormAttachment(0, 1000, 62);
+      noteLengthLabelLData.left = new FormAttachment(0, 1000, 30);
       noteLengthLabelLData.top = new FormAttachment(0, 1000, 404);
-      noteLengthLabelLData.width = 62;
-      noteLengthLabelLData.height = 15;
       noteLengthLabel.setLayoutData(noteLengthLabelLData);
-      noteLengthLabel.setText("Note Time:");
+      noteLengthLabel.setText("Note Time (ms): ");
     }
     {
-      noteLength = new Text(this, SWT.NONE);
+      noteLength = new Spinner(this, SWT.BORDER);
       FormData noteLengthLData = new FormData();
       noteLengthLData.left = new FormAttachment(0, 1000, 124);
       noteLengthLData.top = new FormAttachment(0, 1000, 404);
-      noteLengthLData.width = 28;
-      noteLengthLData.height = 15;
       noteLength.setLayoutData(noteLengthLData);
-      noteLength.setText("80");
+      noteLength.setIncrement(1);
+      noteLength.setMinimum(1);
+      noteLength.setMaximum(1000);
+      noteLength.setTextLimit(4);
+      noteLength.setSelection(pianoController.getToneDuration());
+
+      noteLength.addKeyListener(new KeyListener() {
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+          if (validateSelection(noteLength.getText(), noteLength)) {
+            pianoController.setToneDuration(noteLength.getSelection());
+          }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+          if (validateSelection(noteLength.getText(), noteLength)) {
+            pianoController.setToneDuration(noteLength.getSelection());
+          }
+        }
+      });
     }
 
     layoutComponents();
-
     this.addKeyListener(pianoKeyListener);
   }
 
@@ -266,13 +294,11 @@ class PianoComposite extends Composite {
           onebyone.setLayoutData(onebyoneLData);
           onebyone.setText("1/1");
           onebyone.addSelectionListener(new SelectionAdapter() {
-
             public void widgetSelected(SelectionEvent evt) {
-              pianoController.setToneDuration(1000);
+              pianoController.setNoteLengthFactor(1);
             }
           });
           onebyone.addKeyListener(pianoKeyListener);
-
         }
         {
           onebytwo = new Button(length, SWT.RADIO | SWT.LEFT);
@@ -281,7 +307,7 @@ class PianoComposite extends Composite {
           onebytwo.setText("1/2");
           onebytwo.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
-              pianoController.setToneDuration(500);
+              pianoController.setNoteLengthFactor(0.5f);
             }
           });
           onebytwo.addKeyListener(pianoKeyListener);
@@ -295,7 +321,7 @@ class PianoComposite extends Composite {
           onebyfour.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              pianoController.setToneDuration(250);
+              pianoController.setNoteLengthFactor(0.25f);
             }
           });
           onebyfour.addKeyListener(pianoKeyListener);
@@ -308,7 +334,7 @@ class PianoComposite extends Composite {
           onebyeight.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              pianoController.setToneDuration(125);
+              pianoController.setNoteLengthFactor(0.125f);
             }
           });
           onebyeight.addKeyListener(pianoKeyListener);
@@ -321,7 +347,7 @@ class PianoComposite extends Composite {
           onebysixteen.addSelectionListener(new SelectionAdapter() {
 
             public void widgetSelected(SelectionEvent evt) {
-              pianoController.setToneDuration(62.5f);
+              pianoController.setNoteLengthFactor(0.0625f); // actually 62.5
             }
           });
           onebysixteen.addKeyListener(pianoKeyListener);
@@ -361,13 +387,12 @@ class PianoComposite extends Composite {
         transpose_label.setText("Transpose");
         transpose_label.addKeyListener(pianoKeyListener);
       }
-
       {
         FormData transposeLData = new FormData();
         transposeLData.left = new FormAttachment(0, 1000, 10);
-        transposeLData.top = new FormAttachment(0, 1000, 235);
+        transposeLData.top = new FormAttachment(0, 1000, 225);
         transposeLData.width = 652;
-        transposeLData.height = 50;
+        /* TODO: donno why the tickers are not showing */
         transpose = new Scale(this, SWT.NONE);
         transpose.setMinimum(pianoController.getOctaveSlideStart());
         transpose.setMaximum(pianoController.getOctaveSlideLimit());
@@ -469,6 +494,7 @@ class PianoComposite extends Composite {
             @Override
             public void mouseDown(MouseEvent arg0) {
               if (USE_BRICK) {
+                /* */
                 pianoController.play(pianoKey, octaveIndex);
               }
               keyLabelsArray.get(keyIndex).moveAbove(keyArray.get(keyIndex));
@@ -496,6 +522,23 @@ class PianoComposite extends Composite {
   private void hideAllLabels() {
     for (int i = 0; i < keyLabelsArray.size(); i++) {
       keyLabelsArray.get(i).moveBelow(keyArray.get(i));
+    }
+  }
+
+  private boolean validateSelection(String text, Spinner spinner) {
+    if (!text.equals("")) {
+      int selection = Integer.parseInt(text);
+      if (selection < 1) {
+        spinner.setSelection(1);
+        return false;
+      } else if (selection > 1000) {
+        spinner.setSelection(1000);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
     }
   }
 }

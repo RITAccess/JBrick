@@ -17,6 +17,13 @@ public class Piano {
   private Octave endOctave;
   private String startNote;
   private KeyFactory pianoKeyFactory;
+  /* notes below 2 sound all the same */
+  public static final int MIN_OCTAVE = 3;
+  /*
+   * notes above 8 are too shrill for your ears! also make sure this value is
+   * smaller than Octave.MAX_OCTAVE
+   */
+  public static final int MAX_OCTAVE = 8;
 
   public Piano() throws NoteNotFoundException {
     this(4);
@@ -30,13 +37,18 @@ public class Piano {
       throws NoteNotFoundException {
     pianoKeyFactory = new KeyFactory();
     if (pianoKeyFactory.isValidNote(startNote)) {
-      setMinOctave(new Octave(Octave.MIN_OCTAVE));
-      setMaxOctave(new Octave(Octave.MAX_OCTAVE));
-      setStartOctave(fromOctave);
+      try {
+        setMinOctave(new Octave(MIN_OCTAVE));
+        setMaxOctave(new Octave(MAX_OCTAVE));
 
-      setEndOctave(toOctave);
-      setStartNote(startNote);
-      setOctaveScaleBlock(endOctave.getValue() - startOctave.getValue());
+        setStartOctave(fromOctave);
+
+        setEndOctave(toOctave);
+        setStartNote(startNote);
+        setOctaveScaleBlock(endOctave.getValue() - startOctave.getValue());
+      } catch (OctaveScaleOutofBoundsException e) {
+        e.printStackTrace();
+      }
     } else {
       throw new NoteNotFoundException(startNote);
     }
@@ -47,7 +59,11 @@ public class Piano {
   }
 
   public void setStartOctave(int startOctave) {
-    this.startOctave = new Octave(startOctave);
+    try {
+      this.startOctave = new Octave(startOctave);
+    } catch (OctaveScaleOutofBoundsException e) {
+      e.printStackTrace();
+    }
   }
 
   public int getEndOctave() {
@@ -55,7 +71,11 @@ public class Piano {
   }
 
   public void setEndOctave(int endOctave) {
-    this.endOctave = new Octave(endOctave);
+    try {
+      this.endOctave = new Octave(endOctave);
+    } catch (OctaveScaleOutofBoundsException e) {
+      e.printStackTrace();
+    }
   }
 
   public void setOctaveScaleBlock(int octaveScaleBlock) {
