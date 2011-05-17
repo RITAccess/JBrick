@@ -59,13 +59,13 @@ public class PianoCompositeTest extends TestCase {
 		{
 			if(c.getClass() == Class.forName("org.eclipse.swt.widgets.Button"))
 			{
-				System.out.println("I'm a button");
+				//System.out.println("I'm a button");
 				Button btn = (Button)c;
-				System.out.println(btn.getText());
+				//System.out.println(btn.getText());
 				Point screenPoint = btn.getLocation();
-				robot.mouseMove(screenPoint.x, screenPoint.y);
-				robot.mousePress(InputEvent.BUTTON1_MASK);
-	            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+				//robot.mouseMove(screenPoint.x, screenPoint.y);
+				//robot.mousePress(InputEvent.BUTTON1_MASK);
+	            //robot.mouseRelease(InputEvent.BUTTON1_MASK);
 			}	
 		}
 		
