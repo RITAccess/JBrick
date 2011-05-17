@@ -1,9 +1,5 @@
 package com.jbricx.ui.joystick;
 
-/**
- * @author Priya Sankaran
- * @author Abhishek Shrestha
- */
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
@@ -15,6 +11,10 @@ import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
 import com.jbricx.ui.joystick.hardware.GamepadController;
 
+/**
+ * @author Priya Sankaran
+ * @author Abhishek Shrestha
+ */
 public class JoystickUIWindow extends TrayDialog implements NXTObserver {
   private Shell shell;
   private final GamepadController gamepadController = new GamepadController();
