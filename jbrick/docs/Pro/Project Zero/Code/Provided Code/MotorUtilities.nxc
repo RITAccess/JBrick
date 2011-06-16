@@ -1,0 +1,181 @@
+#ifndef MOTORUTILITIES_NXC_
+#define MOTORUTILITIES_NXC_
+
+/* Arrays for passing a single motor,
+ * either A, B, or C */
+const byte MOTOR_A[] = {OUT_A};
+const byte MOTOR_B[] = {OUT_B};
+const byte MOTOR_C[] = {OUT_C};
+
+/* Arrays for passing a combination of motors:
+ * AB, AC, BC */
+const byte MOTOR_AB[] = {OUT_A, OUT_B};
+const byte MOTOR_AC[] = {OUT_A, OUT_C};
+const byte MOTOR_BC[] = {OUT_B, OUT_C};
+
+// Array for passing all motors: ABC
+const byte MOTOR_ABC[] = {OUT_A, OUT_B, OUT_C};
+
+/**
+ ClearMotors - Clears the motors given of rotation and
+               similar values.
+
+ @param p_Motors - The motors to clear.
+**/
+void ClearMotors(byte p_Motors[])
+{
+   // Clears the motors completely
+   RotateMotorEx(p_Motors, 0, 0, 0, false, false);
+   Off(p_Motors);
+}
+
+/**
+MotorForwardSingle - Moves a single motor
+                     forward with a given
+                     power.
+
+@param p_Motors - The motors to have
+                  powered forward.
+@param p_Power - The power to apply to
+                 the motors.
+**/
+void MotorForwardSingle(byte p_Motors[],
+                 int p_Power)
+{
+   // Set the motor to go forward
+   OnFwd(p_Motors, p_Power);
+}
+
+/**
+MotorsForward - Moves the given motors
+                forward with a given
+                power.
+
+@param p_Motors - The motors to have
+                  powered forward.
+@param p_Power - The power to apply to
+                 the motors.
+@param p_TurnRatio - The ratio to turn
+                     the motors based on
+                     the power distribution.
+**/
+void MotorsForward(byte p_Motors[],
+                   int p_Power,
+                   int p_TurnRatio = 0,
+                   byte p_Resets = RESET_NONE)
+{
+   // If the number of motors is 1
+   if(ArrayLen(p_Motors) == 1)
+   {
+      // Run just the one motor
+      MotorForwardSingle(p_Motors, p_Power);
+   }
+   // Or 2 or more
+   else if(ArrayLen(p_Motors) > 1)
+   {
+      // If we have a turn ratio
+      if(abs(p_TurnRatio) > 0)
+      {
+         // Set output correctly for turning
+         SetOutput(
+            p_Motors,
+            Power, p_Power,
+            OutputMode, OUT_MODE_MOTORON +
+                        OUT_MODE_REGULATED +
+                        OUT_MODE_BRAKE,
+            RegMode, OUT_REGMODE_SYNC,
+            RunState, OUT_RUNSTATE_RUNNING,
+            TurnRatio, p_TurnRatio,
+            TachoLimit, 0,
+            UpdateFlags, UF_UPDATE_TACHO_LIMIT +
+                         UF_UPDATE_MODE +
+                         UF_UPDATE_SPEED +
+                         RESET_BLOCKANDTACHO +
+                         p_Resets);
+      }
+      // Otherwise...
+      else
+      {
+         // Move straight ahead, synched
+         SetOutput(
+            p_Motors,
+            Power, p_Power,
+            OutputMode, OUT_MODE_MOTORON +
+                        OUT_MODE_REGULATED +
+                        OUT_MODE_BRAKE,
+            RegMode, OUT_REGMODE_SYNC,
+            RunState, OUT_RUNSTATE_RUNNING,
+            TurnRatio, p_TurnRatio,
+            TachoLimit, 0,
+            UpdateFlags, UF_UPDATE_TACHO_LIMIT +
+                         UF_UPDATE_MODE +
+                         UF_UPDATE_SPEED +
+                         p_Resets);
+      }
+   }
+}
+
+/**
+MotorsReverse - Moves the given motors
+                reversed with a given
+                power.
+
+@param p_Motors - The motors to have
+                  powered reversed.
+@param p_Power - The power to apply to
+                 the motors.
+@param p_TurnRatio - The ratio to turn
+                     the motors based on
+                     the power distribution.
+**/
+void MotorsReverse(byte p_Motors[],
+                   int p_Power,
+                   int p_TurnRatio = 0,
+                   byte p_Resets = RESET_NONE)
+{
+   // Put us forward with negative power
+   MotorsForward(p_Motors, -p_Power, p_TurnRatio,
+                 p_Resets);
+}
+
+/**
+RotateMotors - Rotates the motors a given
+               direction, by the specific
+               number of degrees.
+
+@param p_Motors - The motors to have
+                  powered reversed.
+@param p_Power - The power to apply to
+                 the motors.
+@param p_Degrees - The number of degrees
+                   to rotate the motors
+                   by.
+@param p_TurnRatio - The ratio to turn
+                     the motors based on
+                     the power distribution.
+**/
+void RotateMotors(byte p_Motors[],
+                  int p_Power,
+                  int p_Degrees,
+                  int p_TurnRatio = 0)
+{
+   // If the number of motors is 1
+   if(ArrayLen(p_Motors) == 1)
+   {
+      // Run just the one motor
+      RotateMotor(p_Motors, p_Power, p_Degrees);
+   }
+   // Or 2 or more
+   else if(ArrayLen(p_Motors) > 1)
+   {
+      // Rotate the motors
+      RotateMotorEx(p_Motors, p_Power,
+                    p_Degrees, p_TurnRatio,
+                    true, true);
+   }
+   
+   // Clear the motors
+   ClearMotors(p_Motors);
+}
+
+#endif

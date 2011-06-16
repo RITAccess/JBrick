@@ -1,0 +1,41 @@
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+#define THRESHOLD 50
+
+// Main task
+task main()
+{
+   // Configure the ultrasonic sensor
+   ConfigSensor(S1, SENSOR_TYPE_LOWSPEED_9V, SENSOR_MODE_RAW);
+   
+   // Initialize variables for storing sensor values
+   int ultraValue = 255;
+   int turnRatio = 0;
+   
+   // In a continuous loop
+   while(true)
+   {
+      // Read sensor values
+      ultraValue = CheckSensor(S1);
+      
+      // If we see something, turn until we don't anymore
+      if(ultraValue <= THRESHOLD)
+      {
+         // Halt
+         Off(MOTOR_AC);
+         
+         // Turn
+         RotateMotors(MOTOR_AC, -75, 23, 100);
+
+         // Clear the motors
+         Coast(MOTOR_AC);
+      }
+      // Otherwise, move forward
+      else
+      {
+         // Go forward
+         MotorsForward(MOTOR_AC, -75);
+      }
+   }
+}

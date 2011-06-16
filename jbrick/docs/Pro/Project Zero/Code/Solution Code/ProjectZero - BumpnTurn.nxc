@@ -1,0 +1,44 @@
+/* BumpnTurn.nxc */
+
+// Include utilities for motors and sensors
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+// The entry point for your program
+task main()
+{
+   // Configure the touch sensor
+   ConfigSensor(S1, SENSOR_TYPE_TOUCH, SENSOR_MODE_BOOL);
+
+   // Initialize variables for storing sensor values
+   bool sensorValue = false;
+
+   // In a continuous loop
+   while(true)
+   {
+      // Read sensor values
+      sensorValue = CheckSensor(S1);
+
+      // If we touch something, move backwards and turn
+      if(sensorValue)
+      {
+         // Coast
+         Off(MOTOR_AC);
+
+         // Go backwards
+         RotateMotors(MOTOR_AC, 60, 90);
+
+         // Turn 90 degrees
+         RotateMotors(MOTOR_AC, 60, 180, -100);
+
+         // Clear the outputs
+         Coast(MOTOR_AC);
+
+         // Clear the value
+         sensorValue = false;
+      }
+
+      // Move forward
+      MotorsForward(MOTOR_AC, -75);
+   }
+}

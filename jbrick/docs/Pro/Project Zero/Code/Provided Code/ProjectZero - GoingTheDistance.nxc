@@ -1,0 +1,42 @@
+/* GoingTheDistance */
+
+// Include utilities for motors and sensors
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+// Any defines you need
+
+// Entry point to your program
+task main()
+{
+   // Reset the rotation counters on the motors
+   ResetRotationCount(MOTOR_AC);
+
+   // Configure the sensors
+
+   // Declare variables for the sensors and motors
+   int numRotations = 0;
+
+   // In a continuous loop
+
+      // Get the current rotation count
+      rotationCount = -MotorRotationCount(OUT_A);
+
+      // Read the sensor values
+
+      /* If the number of rotated degrees is
+         greater than a new rotation, signal
+         that we've rotated and reset the
+         rotation. */
+      if(/* your statement */)
+      {
+         // Reset the rotation count
+         ResetRotationCount(OUT_AC);
+      }
+
+      /* If the touch sensor is hitting something,
+         stop the motors and exit the program.*/
+
+      // Move forward
+   }
+}

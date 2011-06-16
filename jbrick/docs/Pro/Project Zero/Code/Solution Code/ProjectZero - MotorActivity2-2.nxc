@@ -1,0 +1,54 @@
+/* SensorActivity2-2.nxc */
+
+// Import the sensor utilities
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+/**
+* outputSensorValues –
+*   Outputs the sensor values to the
+*   screen and audibly.
+*
+* @param p_SensorValue -
+*   Parameter with the sensor's checked
+*   value.
+*/
+void outputSensorValues(bool p_SensorValue)
+{
+   // Display the sensor value to the screen
+   TextOut(0, LCD_LINE3, "Sensor Value: ", true);
+   NumOut(80, LCD_LINE3, p_SensorValue, false);
+
+   // If the sensor value is great enough
+   if(!p_SensorValue)
+   {
+      // Play a tone based on the sensor's value
+      PlayTone(p_SensorValue, 1);
+
+      // Move the motors forward
+      MotorsForward(MOTOR_AC, 75);
+   }
+   else
+   {
+      // Make the motors turn off
+      Off(MOTOR_AC);
+   }
+}
+
+// The entry point for your program
+task main()
+{
+   // Setup the sensor to be a touch sensor
+   ConfigSensor(S1, SENSOR_TYPE_TOUCH,
+                    SENSOR_MODE_BOOL);
+
+   // Now, loop forever, because this is always true
+   while(true)
+   {
+      // Store the value read from the sensor
+      bool sensorValue = CheckSensor(S1);
+
+      // Do something else with the data
+      outputSensorValues(sensorValue);
+   }
+}

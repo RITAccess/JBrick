@@ -1,0 +1,56 @@
+/* GoingTheDistance */
+
+// Include utilities for motors and sensors
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+// Any defines you need
+
+// Entry point to your program
+task main()
+{
+   // Configure the sensors
+   ConfigSensor(S1, SENSOR_TYPE_TOUCH,
+                    SENSOR_MODE_BOOL);
+                    
+   // Declare variables for the sensors and motors
+   bool touchValue = false;
+   int numRotations = 0;
+   int rotationCount = 0;
+   
+   // In a continuous loop
+   while(true)
+   {
+      // Get the current rotation count
+      rotationCount = -MotorRotationCount(OUT_A);
+      
+      // Read the sensor values
+      touchValue = CheckSensor(S1);
+      
+      // If we've gone a new rotation
+      if(rotationCount >= 360)
+      {
+         // Increment the number of rotations
+         numRotations++;
+         
+         // Reset the rotation count
+         ResetRotationCount(OUT_AC);
+         
+         // Play a tone
+         PlayTone(100, 500);
+      }
+      
+      // If the touch sensor is hitting something
+      if(touchValue)
+      {
+         // Stop the motors
+         Off(MOTOR_AC);
+         
+         // Break out of the loop
+         break;
+      }
+      
+      // Otherwise, move forward
+      MotorsForward(MOTOR_AC, -50);
+   }
+}

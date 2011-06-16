@@ -1,0 +1,48 @@
+/* SensorActivity2-1.nxc */
+
+// Import the sensor utilities
+#include "SensorUtilities.nxc"
+
+// Threshold value for the light sensor
+#define THRESHOLD 50
+
+/**
+* outputSensorValues -
+*   Outputs the sensor values to the
+*   screen and audibly.
+*
+* @param p_SensorValue -
+*   Parameter with the sensor's checked
+*   value.
+*/
+void outputSensorValues(int p_SensorValue)
+{
+   // Display the sensor value to the screen
+   TextOut(0, LCD_LINE3, "Sensor Value: ", true);
+   NumOut(16, LCD_LINE3, p_SensorValue, false);
+
+   // If the sensor value is great enough
+   if(p_SensorValue > THRESHOLD)
+   {
+      // Play a tone based on the sensor's value
+      PlayTone(p_SensorValue, 1);
+   }
+}
+
+// The entry point for your program
+task main()
+{
+   // Setup the sensor to be a light sensor
+   ConfigSensor(S1, SENSOR_TYPE_LIGHT_INACTIVE,
+                    SENSOR_MODE_PERCENT);
+
+   // Now, loop forever, because this is always true
+   while(true)
+   {
+      // Store the value read from the sensor
+      int sensorValue = CheckSensor(S1);
+
+      // Do something else with the data
+      outputSensorValue(sensorValue);
+   }
+}

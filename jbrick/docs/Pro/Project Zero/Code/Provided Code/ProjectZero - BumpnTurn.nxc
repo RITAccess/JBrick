@@ -1,0 +1,25 @@
+/* BumpnTurn.nxc */
+
+// Include utilities for motors and
+// sensors
+#include "MotorUtilities.nxc"
+#include "SensorUtilities.nxc"
+
+// The entry point for your program
+task main()
+{
+   // Configure the touch sensor
+
+   // Initialize variables for storing
+   // sensor values
+
+   // In a continuous loop
+
+      // Read sensor values
+
+      // If we touch something, move
+      // backwards and turn
+
+      // Move forward
+}
+

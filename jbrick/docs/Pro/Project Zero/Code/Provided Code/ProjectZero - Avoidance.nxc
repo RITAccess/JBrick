@@ -1,0 +1,84 @@
+/* Avoidance.nxc */
+
+// Include utilities for motors and
+// sensors
+// Any defines you need
+// The entry point for your program
+
+   // Configure the ultrasonic sensor
+
+   // Initialize variables for storing
+   // sensor values
+
+   // In a continuous loop
+
+      // Read sensor values
+
+      // If we see something, turn until
+      // we don't anymore
+
+      // Otherwise, move forward
+
+
+
+/* SensorActivity2-1.nxc */
+
+// Import the sensor utilities
+#include "SensorUtilities.nxc"
+
+// Threshold value for the light sensor
+#define THRESHOLD 20
+
+void TurnAround()
+{
+   // Turn one direction for 2 seconds
+   MotorsReverse(MOTOR_AC, POWER, 100);
+   Wait(TWO_SECONDS);
+   Coast(MOTOR_AC);
+
+   // Turn the other direction for 2 seconds
+   MotorsReverse(MOTOR_AC, POWER, -100);
+   Wait(TWO_SECONDS);
+   Coast(MOTOR_AC);
+}
+
+
+/**
+* outputSensorValues - Outputs the sensor values to
+*                      the screen and audibly.
+*
+* @param p_SensorValue - Parameter with the sensor's
+*                        checked value.
+*/
+void outputSensorValues(int p_SensorValue)
+{
+   // Display the sensor value to the screen
+   TextOut(0, LCD_LINE3, "Sensor Value: ", true);
+   NumOut(16, LCD_LINE3, p_SensorValue, false);
+
+   // If the sensor value is great enough
+   if(p_SensorValue > THRESHOLD)
+   {
+      // Play a tone based on the sensor's value
+      TurnAround();
+   }
+}
+
+// The entry point for your program
+task main()
+{
+   // Setup the sensor to be a light sensor
+   ConfigSensor(S2, SENSOR_TYPE_LOWSPEED_9V,
+                    SENSOR_MODE_PERCENT);
+
+   // Now, loop forever, because this is always true
+   while(true)
+   {
+      // Store the value read from the sensor
+      int sensorValue = CheckSensor(S2);
+
+      // Do something else with the data
+      outputSensorValues(sensorValue);
+   }
+}
+

@@ -1,0 +1,185 @@
+#ifndef SENSORUTILITIES_NXC_
+#define SENSORUTILITIES_NXC_
+
+// Common sensor configuration defines
+#define COMMON_TOUCH 0
+#define COMMON_ULTRASONIC 1
+#define COMMON_SOUND 2
+
+// A global array of the types for the sensors
+byte g_TypeArray[4];
+byte g_TypeMin[4];
+byte g_TypeMax[4];
+
+// Min and max values used to calculate the range for
+// the tone played.
+int g_Max[] = {0, 0, 0, 0};
+int g_Min[] = {1023, 1023, 1023, 1023};
+
+//flag to determine if sound should be played
+bool g_Sound = false;
+
+/**
+ CheckSensor - Returns the data read in
+               from the given sensor.
+
+ @param p_SensorPort - The port to check
+                       for the sensor value.
+
+ @return The sensor's value.
+**/
+int CheckSensor(byte p_SensorPort)
+{
+   // The return value and reading check
+   int result, reading;
+   
+   // If it's a lowspeed sensor, use one function
+   if(g_TypeArray[p_SensorPort] == SENSOR_TYPE_LOWSPEED ||
+      g_TypeArray[p_SensorPort] == SENSOR_TYPE_LOWSPEED_9V)
+   {
+      result = SensorUS(p_SensorPort);
+      reading = result < 70 ? result : 70;
+   }
+   // Otherwise, use the standard call
+   else
+   {
+      result = Sensor(p_SensorPort);
+      reading = result;
+   }
+   
+   //play the sound if we need to
+   if(g_Sound)
+   {
+      // Calculate the tone for the value
+      int tone = (((reading * 1000) /
+         (g_TypeMax[p_SensorPort])) + 100)
+         * 1100 / 1000;
+         
+      // Play the tone
+      PlayTone(tone, 200);
+   }
+   
+   // Return
+   return result;
+}
+
+/**
+ GetCalibratedValues - Returns calibrated percentile
+                       values based on the provided
+                       minimum and maximum values.
+
+ @param p_Port - The port for the sensor to be read.
+ @param p_Min, p_Max - The current minimum and maximum
+                       values for the sensor.
+
+ @return A value between 0 and 100 of the current
+         range of the sensor.
+**/
+int GetCalibratedValues(byte p_Port)
+{
+   // Get the value
+   int sensorValue = CheckSensor(p_Port);
+
+   // If it's greater than max, set the max value
+   if(g_Max[p_Port] < sensorValue)
+      g_Max[p_Port] = sensorValue;
+
+   // If it's less than the min, set the min value
+   if(g_Min[p_Port] > sensorValue)
+      g_Min[p_Port] = sensorValue;
+
+   // Return the value
+   return (sensorValue - g_Min[p_Port]) * 100 /
+      (g_Max[p_Port] - g_Min[p_Port]);
+}
+
+
+
+/**
+ ConfigSensor - Sets up the given sensor port
+                with the given sesnor type
+                and reading mode.
+
+ @param p_SensorPort - The port of the sensor
+                       to set up.
+ @param p_Type - The type of the sensor for
+                 the port.
+ @param p_Mode - The mode of the sensor for
+                reading values back.
+
+ @param p_Sound - Whether or not a tone should be
+                  played based on the reading of the
+                  sensor.
+**/
+void ConfigSensor(byte p_SensorPort, byte p_Type,
+                  byte p_Mode, bool p_Sound = false)
+{
+   // Set the type and configure the sensor
+   g_TypeArray[p_SensorPort] = p_Type;
+   SetSensorType(p_SensorPort, p_Type);
+   SetSensorMode(p_SensorPort, p_Mode);
+   ResetSensor(p_SensorPort);
+   
+   //set the range for setting the tone played
+   switch(p_Mode)
+   {
+       case SENSOR_MODE_RAW:
+       case SENSOR_MODE_PERCENT:
+            if(  p_Type == SENSOR_TYPE_LOWSPEED ||
+                 p_Type == SENSOR_TYPE_LOWSPEED_9V)
+            {
+                 g_TypeMin[p_SensorPort] = 0;
+                 g_TypeMax[p_SensorPort] = 70;
+            }
+            else
+            {
+                 g_TypeMin[p_SensorPort] = 0;
+                 g_TypeMax[p_SensorPort] = 1023;
+            }
+                 
+            break;
+       case SENSOR_MODE_BOOL:
+            g_TypeMin[p_SensorPort] = 0;
+            g_TypeMax[p_SensorPort] = 1;
+            break;
+   }
+   
+   //set the sound flag
+   g_Sound = p_Sound;
+}
+
+/**
+ ConfigSensorCommon - Allows easy set up of a common
+                      sensor configuration
+
+ @param p_SensorPort - The port of the sensor to set up.
+
+ @param p_Config - The configuration combination to use.
+
+ @param p_Sound - Whether or not a sound should be
+                  emitted based on sensor reading.
+ **/
+void ConfigSensorCommon(byte p_SensorPort, int p_Config,
+     bool p_Sound = false)
+{
+     switch(p_Config)
+     {
+         case COMMON_TOUCH:
+              ConfigSensor(p_SensorPort, SENSOR_TYPE_TOUCH,
+                           SENSOR_MODE_BOOL, p_Sound);
+              break;
+         case COMMON_ULTRASONIC:
+              ConfigSensor(p_SensorPort, SENSOR_TYPE_LOWSPEED_9V,
+                           SENSOR_MODE_RAW, p_Sound);
+              break;
+         case COMMON_SOUND:
+              ConfigSensor(p_SensorPort, SENSOR_TYPE_SOUND_DBA,
+                           SENSOR_MODE_RAW, p_Sound);
+              break;
+
+     }
+}
+
+
+
+#endif
