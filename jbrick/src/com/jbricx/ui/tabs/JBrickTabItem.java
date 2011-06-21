@@ -163,6 +163,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     // this will draw the squigglies under the text
     viewer.addPainter(ap);
 
+    // Set AutoComplete
+    AutoComplete.attachAutoComplete(viewer);
+    
     viewer.getTextWidget().addKeyListener(new KeyListener() {
 
       @Override
