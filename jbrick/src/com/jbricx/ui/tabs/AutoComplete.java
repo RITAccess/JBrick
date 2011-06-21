@@ -8,10 +8,15 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 
 public class AutoComplete {
+	private static AutoCompleteWindow window;
 	private static SortedSet keywords;
 	private static SourceViewer viewer;
 	private static String selectedWord;
 
+	public AutoComplete(){
+		
+	}
+	
 	public static void loadKeywords(String path) {
 
 	}
@@ -33,9 +38,9 @@ public class AutoComplete {
 		});
 	}
 	private static void displayAutoComplete(){
-
+		
 	}
 	public static void selectClosest(String typedWord) {
-
+		
 	}
 }
