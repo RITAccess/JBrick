@@ -186,7 +186,7 @@ public class MenuAndToolBarManagerDelegate {
       compileMenu.add(downloadAction);
       compileMenu.add(findBrickAction);
 
-      toolMenu.add(directControlAction);
+      //toolMenu.add(directControlAction);
       toolMenu.add(joystickAction);
       toolMenu.add(pianoAction);
 
