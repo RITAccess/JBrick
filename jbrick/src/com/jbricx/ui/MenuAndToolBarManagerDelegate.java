@@ -235,7 +235,7 @@ public class MenuAndToolBarManagerDelegate {
       add(aboutAction);
 
       add(new Separator());
-      add(directControlAction);
+      //add(directControlAction);
       add(joystickAction);
       add(pianoAction);
 
