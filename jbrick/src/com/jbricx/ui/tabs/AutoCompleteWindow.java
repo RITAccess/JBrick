@@ -1,6 +1,8 @@
 package com.jbricx.ui.tabs;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -47,8 +49,8 @@ public class AutoCompleteWindow extends org.eclipse.swt.widgets.Composite {
 				FormData keywordListLData = new FormData();
 				keywordListLData.left =  new FormAttachment(0, 1000, 0);
 				keywordListLData.top =  new FormAttachment(0, 1000, 0);
-				keywordListLData.width = 242;
-				keywordListLData.height = 219;
+				keywordListLData.width = 235;
+				keywordListLData.height = 210;
 				keywordListLData.bottom =  new FormAttachment(1000, 1000, 0);
 				keywordListLData.right =  new FormAttachment(1000, 1000, 0);
 				keywordList = new List(this, SWT.NONE);
