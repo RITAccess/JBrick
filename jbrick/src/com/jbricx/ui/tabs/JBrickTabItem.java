@@ -164,7 +164,7 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
     viewer.addPainter(ap);
 
     // Set AutoComplete
-    AutoComplete.attachAutoComplete(viewer);
+    AutoComplete.attachAutocomplete(viewer);
     
     viewer.getTextWidget().addKeyListener(new KeyListener() {
 

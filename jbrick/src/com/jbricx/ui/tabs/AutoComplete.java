@@ -47,7 +47,7 @@ public class AutoComplete {
 					shell.setVisible(false);
 				}
 				else if (arg0.keyCode == SWT.CR){
-					autoCompleteSelected();
+					autocompleteSelected();
 				}
 			}
 		});
@@ -55,7 +55,7 @@ public class AutoComplete {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
-				autoCompleteSelected();
+				autocompleteSelected();
 			}
 
 			@Override
@@ -92,7 +92,6 @@ public class AutoComplete {
 		keywords.add("OnRev");
 		keywords.add("Wait");
 		keywords.add("Off");
-		keywords.add("OnRev");
 		keywords.add("OUT_A");
 		keywords.add("OUT_B");
 		keywords.add("OUT_C");
@@ -104,7 +103,7 @@ public class AutoComplete {
 			window.getKeywordList().add(keyword);
 	}
 
-	public static void attachAutoComplete(SourceViewer sourceViewer) {
+	public static void attachAutocomplete(SourceViewer sourceViewer) {
 		viewer = sourceViewer;
 		textWidget = viewer.getTextWidget();
 		textWidget.addKeyListener(new KeyListener() {
@@ -112,7 +111,7 @@ public class AutoComplete {
 			public void keyPressed(KeyEvent e) {
 				if ((char) e.keyCode == ' ' && (e.stateMask & SWT.CTRL) != 0) {
 					// Ctrl-Space
-					displayAutoComplete();
+					displayAutocomplete();
 				} else if (shell.getVisible() == true && e.keyCode == SWT.ESC) {
 					shell.setVisible(false);
 				}
@@ -125,7 +124,7 @@ public class AutoComplete {
 		});
 	}
 
-	private static void displayAutoComplete() {
+	private static void displayAutocomplete() {
 		Point widgetScreenLoc = pointToScreen(textWidget);
 		Point caretLoc = textWidget.getCaret().getLocation();
 		
@@ -141,6 +140,7 @@ public class AutoComplete {
 		offset = textWidget.getCaretOffset();	
 		String allText = textWidget.getText();		
 		removeIndex = offset - 1;
+		if(removeIndex == -1) removeIndex = 0;
 		while(removeIndex > 0){
 			if(allText.charAt(removeIndex) == ' ' || allText.charAt(removeIndex) == '\n'){
 				removeIndex++;
@@ -148,7 +148,9 @@ public class AutoComplete {
 			}
 			removeIndex--;
 		}
-		String typedStr = allText.substring(removeIndex, offset).toLowerCase();
+		String typedStr = "";
+		if(removeIndex != -1 && removeIndex < offset)
+			typedStr = allText.substring(removeIndex, offset).toLowerCase();
 		while(offset < allText.length()){
 			if(allText.charAt(offset) == ' ' || allText.charAt(offset) == '\n' || 
 					allText.charAt(offset) == ';'){
@@ -171,10 +173,9 @@ public class AutoComplete {
 		
 	}
 		
-	public static void autoCompleteSelected(){
+	public static void autocompleteSelected(){
 		String str = textWidget.getText();
-		if(offset > removeIndex)
-			str = new StringBuffer(str).replace(removeIndex, offset, selectedWord).toString();
+		str = new StringBuffer(str).replace(removeIndex, offset, selectedWord).toString();
 		textWidget.setText(str);
 		textWidget.setCaretOffset(removeIndex + selectedWord.length());
 		shell.setVisible(false);
