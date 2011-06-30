@@ -44,7 +44,7 @@ public class AutoCompleteWindow extends org.eclipse.swt.widgets.Composite {
 	*/
 	private void initGUI() {
 		try {
-			this.setSize(245, 219);
+			this.setSize(239, 217);
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
 			{
@@ -55,7 +55,7 @@ public class AutoCompleteWindow extends org.eclipse.swt.widgets.Composite {
 				keywordListLData.height = 210;
 				keywordListLData.bottom =  new FormAttachment(1000, 1000, 0);
 				keywordListLData.right =  new FormAttachment(1000, 1000, 0);
-				keywordList = new List(this, SWT.NONE);
+				keywordList = new List(this, SWT.V_SCROLL);
 				keywordList.setLayoutData(keywordListLData);
 			}
 			this.layout();

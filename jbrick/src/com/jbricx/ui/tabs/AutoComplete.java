@@ -98,6 +98,16 @@ public class AutoComplete {
 		keywords.add("OUT_AB");
 		keywords.add("OUT_AC");
 		keywords.add("OUT_BC");
+		
+		keywords.add("short");
+		keywords.add("long");
+		keywords.add("byte");
+		keywords.add("bool");
+		keywords.add("string");
+		keywords.add("SetSensor");
+		keywords.add("PlayTone");
+		
+		
 		Collections.sort(keywords, String.CASE_INSENSITIVE_ORDER);
 		for(String keyword : keywords)
 			window.getKeywordList().add(keyword);
@@ -135,14 +145,13 @@ public class AutoComplete {
 		window.getKeywordList().forceFocus();	
 	}
 
-
 	public static void selectClosest() {
 		offset = textWidget.getCaretOffset();	
 		String allText = textWidget.getText();		
 		removeIndex = offset - 1;
 		if(removeIndex == -1) removeIndex = 0;
 		while(removeIndex > 0){
-			if(allText.charAt(removeIndex) == ' ' || allText.charAt(removeIndex) == '\n'){
+			if(allText.charAt(removeIndex) == ' ' || allText.charAt(removeIndex) == '\n' || allText.charAt(removeIndex) == '('){
 				removeIndex++;
 				break;
 			}
@@ -153,7 +162,7 @@ public class AutoComplete {
 			typedStr = allText.substring(removeIndex, offset).toLowerCase();
 		while(offset < allText.length()){
 			if(allText.charAt(offset) == ' ' || allText.charAt(offset) == '\n' || 
-					allText.charAt(offset) == ';'){
+					allText.charAt(offset) == ';' || allText.charAt(offset) == ')'){
 				//offset--;
 				break;
 			}				
@@ -170,9 +179,9 @@ public class AutoComplete {
 		if(i == keywords.size() && keywords.size() > 0 && window.getKeywordList().getSelectionIndex() != -1){
 			selectedWord = keywords.get(window.getKeywordList().getSelectionIndex());
 		}
-		
+		window.getKeywordList().showSelection();
 	}
-		
+	
 	public static void autocompleteSelected(){
 		String str = textWidget.getText();
 		str = new StringBuffer(str).replace(removeIndex, offset, selectedWord).toString();
@@ -180,6 +189,7 @@ public class AutoComplete {
 		textWidget.setCaretOffset(removeIndex + selectedWord.length());
 		shell.setVisible(false);
 	}
+	
 	public static Point pointToScreen(Control c){
 		Point pos = c.getLocation();
 		if(c.getParent() != null){
