@@ -1,6 +1,8 @@
 package com.jbricx.ui.tabs;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.graphics.Point;
@@ -61,34 +63,7 @@ public class AutoCompleteWindow extends org.eclipse.swt.widgets.Composite {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	* Auto-generated main method to display this 
-	* org.eclipse.swt.widgets.Composite inside a new Shell.
-	*/
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
-		AutoCompleteWindow inst = new AutoCompleteWindow(shell, SWT.NULL);
-		Point size = inst.getSize();
-		shell.setLayout(new FillLayout());
-		shell.layout();
-		if(size.x == 0 && size.y == 0) {
-			inst.pack();
-			shell.pack();
-		} else {
-			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
-			shell.setSize(shellBounds.width, shellBounds.height);
-		}
-		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
 		
-	}
-	
-	
 	public List getKeywordList() {
 		return keywordList;
 	}
