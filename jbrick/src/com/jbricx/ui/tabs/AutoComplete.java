@@ -1,5 +1,8 @@
 package com.jbricx.ui.tabs;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;
@@ -17,8 +20,15 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.w3c.dom.*;
+import org.xml.sax.*;
+
+import com.jbricx.pjo.FileExtensionConstants;
+
+import javax.xml.parsers.*;
 
 public class AutoComplete {
+	private static String keywordFilename = "config/KeyWords.xml";
 	private static Display display;
 	private static Shell shell;
 	private static AutoCompleteWindow window;
@@ -38,20 +48,19 @@ public class AutoComplete {
 
 		window.getKeywordList().addKeyListener(new KeyListener() {
 			@Override
-			public void keyReleased(KeyEvent arg0) {			
+			public void keyReleased(KeyEvent arg0) {
 			}
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (shell.getVisible() == true && arg0.keyCode == SWT.ESC) {
 					shell.setVisible(false);
-				}
-				else if (arg0.keyCode == SWT.CR){
+				} else if (arg0.keyCode == SWT.CR) {
 					autocompleteSelected();
 				}
 			}
 		});
-		window.getKeywordList().addMouseListener(new MouseListener(){
+		window.getKeywordList().addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent arg0) {
@@ -65,9 +74,9 @@ public class AutoComplete {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 			}
-			
+
 		});
-		window.getKeywordList().addSelectionListener(new SelectionListener(){
+		window.getKeywordList().addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -75,15 +84,52 @@ public class AutoComplete {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				if(window.getKeywordList().getSelectionCount() > 0)
+				if (window.getKeywordList().getSelectionCount() > 0)
 					selectedWord = window.getKeywordList().getSelection()[0];
 			}
-			
+
 		});
 	}
 
 	public static void loadKeywords() {
-		keywords = new ArrayList<String>();
+		try {
+			keywords = new ArrayList<String>();
+			final InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
+			          FileExtensionConstants.KEYWORDS_FILE);
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			Document doc = builder.parse(keywordStream);
+			NodeList nodes = doc.getElementsByTagName("word");
+			for(int i = 0; i < nodes.getLength(); i++){
+				keywords.add(((Element)nodes.item(i)).getTextContent());
+			}
+			keywordStream.close();
+			/* 	  final InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
+			          FileExtensionConstants.KEYWORDS_FILE);
+
+        // Create a factory
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        // Use the factory to create a builder
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(keywordStream);
+        // Get a list of all elements in the document
+        NodeList list = doc.getElementsByTagName("word");
+
+        for (int i = 0; i < list.getLength(); i++) {
+          // Add elements from xml file to the list of constant
+          // words
+          KEYWORDS.add(((Element) list.item(i)).getTextContent());
+        }
+        keywordStream.close();
+
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			 */
+
+		} catch (Exception e) {
+		}
+
+		/*
 		keywords.add("task");
 		keywords.add("main");
 		keywords.add("if");
@@ -98,7 +144,7 @@ public class AutoComplete {
 		keywords.add("OUT_AB");
 		keywords.add("OUT_AC");
 		keywords.add("OUT_BC");
-		
+
 		keywords.add("short");
 		keywords.add("long");
 		keywords.add("byte");
@@ -106,10 +152,9 @@ public class AutoComplete {
 		keywords.add("string");
 		keywords.add("SetSensor");
 		keywords.add("PlayTone");
-		
-		
+		 */
 		Collections.sort(keywords, String.CASE_INSENSITIVE_ORDER);
-		for(String keyword : keywords)
+		for (String keyword : keywords)
 			window.getKeywordList().add(keyword);
 	}
 
@@ -137,66 +182,73 @@ public class AutoComplete {
 	private static void displayAutocomplete() {
 		Point widgetScreenLoc = pointToScreen(textWidget);
 		Point caretLoc = textWidget.getCaret().getLocation();
-		
-		shell.setLocation(widgetScreenLoc.x + caretLoc.x, widgetScreenLoc.y + caretLoc.y + 70);
+
+		shell.setLocation(widgetScreenLoc.x + caretLoc.x, widgetScreenLoc.y
+				+ caretLoc.y + 70);
 		selectClosest();
 		shell.setVisible(true);
 		shell.moveAbove(null);
-		window.getKeywordList().forceFocus();	
+		window.getKeywordList().forceFocus();
 	}
 
 	public static void selectClosest() {
-		offset = textWidget.getCaretOffset();	
-		String allText = textWidget.getText();		
+		offset = textWidget.getCaretOffset();
+		String allText = textWidget.getText();
 		removeIndex = offset - 1;
-		if(removeIndex == -1) removeIndex = 0;
-		while(removeIndex > 0){
-			if(allText.charAt(removeIndex) == ' ' || allText.charAt(removeIndex) == '\n' || allText.charAt(removeIndex) == '('){
+		if (removeIndex == -1)
+			removeIndex = 0;
+		while (removeIndex > 0) {
+			if (allText.charAt(removeIndex) == ' '
+					|| allText.charAt(removeIndex) == '\n'
+					|| allText.charAt(removeIndex) == '(') {
 				removeIndex++;
 				break;
 			}
 			removeIndex--;
 		}
 		String typedStr = "";
-		if(removeIndex != -1 && removeIndex < offset)
+		if (removeIndex != -1 && removeIndex < offset)
 			typedStr = allText.substring(removeIndex, offset).toLowerCase();
-		while(offset < allText.length()){
-			if(allText.charAt(offset) == ' ' || allText.charAt(offset) == '\n' || 
-					allText.charAt(offset) == ';' || allText.charAt(offset) == ')'){
-				//offset--;
+		while (offset < allText.length()) {
+			if (allText.charAt(offset) == ' ' || allText.charAt(offset) == '\n'
+					|| allText.charAt(offset) == ';'
+					|| allText.charAt(offset) == ')') {
+				// offset--;
 				break;
-			}				
+			}
 			offset++;
 		}
 		int i;
-		for(i = 0; i < keywords.size(); i++){
-			if(keywords.get(i).toLowerCase().startsWith(typedStr)){
+		for (i = 0; i < keywords.size(); i++) {
+			if (keywords.get(i).toLowerCase().startsWith(typedStr)) {
 				selectedWord = keywords.get(i);
 				window.getKeywordList().select(i);
 				break;
 			}
 		}
-		if(i == keywords.size() && keywords.size() > 0 && window.getKeywordList().getSelectionIndex() != -1){
-			selectedWord = keywords.get(window.getKeywordList().getSelectionIndex());
+		if (i == keywords.size() && keywords.size() > 0
+				&& window.getKeywordList().getSelectionIndex() != -1) {
+			selectedWord = keywords.get(window.getKeywordList()
+					.getSelectionIndex());
 		}
 		window.getKeywordList().showSelection();
 	}
-	
-	public static void autocompleteSelected(){
+
+	public static void autocompleteSelected() {
 		String str = textWidget.getText();
-		str = new StringBuffer(str).replace(removeIndex, offset, selectedWord).toString();
+		str = new StringBuffer(str).replace(removeIndex, offset, selectedWord)
+				.toString();
 		textWidget.setText(str);
 		textWidget.setCaretOffset(removeIndex + selectedWord.length());
 		shell.setVisible(false);
 	}
-	
-	public static Point pointToScreen(Control c){
+
+	public static Point pointToScreen(Control c) {
 		Point pos = c.getLocation();
-		if(c.getParent() != null){
+		if (c.getParent() != null) {
 			Point parentPos = pointToScreen(c.getParent());
 			return new Point(parentPos.x + pos.x, parentPos.y + pos.y);
-		}
-		else
+		} else
 			return pos;
 	}
 }
