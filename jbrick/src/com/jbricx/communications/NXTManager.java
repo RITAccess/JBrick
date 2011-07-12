@@ -15,7 +15,7 @@ import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
 
 /**
- * This class works as a Façade, its interface contains all the methods related
+ * This class works as a Facade, its interface contains all the methods related
  * to the Brick operations. It's also a singleton.
  * 
  * @author Abhishek Shrestha
@@ -48,7 +48,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
    * @return whether the Fantom driver is installed.
    */
   public static boolean isFantomDriverLoaded() {
-    // This is done to avoid accessing this class method from outside the Façade
+    // This is done to avoid accessing this class method from outside the Facade
     return NXTBrickConnector.isFantomDriverLoaded();
   }
 
