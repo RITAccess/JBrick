@@ -9,6 +9,7 @@ import java.util.List;
 import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.enums.Motor;
+import com.jbricx.ui.joystick.RecordJoystick;
 
 /**
  * Defines the interactions between the NXT Brick, through the
@@ -31,6 +32,9 @@ public class GamepadController {
   private int directionLeft = 0;
   private int directionRight = 0;
 
+  private RecordJoystick recordJoystick = new RecordJoystick();
+  private long waitStart = 0;
+
   /**
    * Move both of the motors forward, e.g. roughly equivalent to walking while
    * moving both feet forward.
@@ -38,6 +42,7 @@ public class GamepadController {
   public void forward() {
     directionLeft = 1 * reversedMotorLeft;
     directionRight = 1 * reversedMotorRight;
+    recordJoystick.recordForward(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -48,6 +53,7 @@ public class GamepadController {
   public void backwards() {
     directionLeft = -1 * reversedMotorLeft;
     directionRight = -1 * reversedMotorRight;
+    recordJoystick.recordBackward(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -60,6 +66,7 @@ public class GamepadController {
   public void turnForwardCCW() {
     directionLeft = 0;
     directionRight = 1 * reversedMotorRight;
+    recordJoystick.recordTurnFwCCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -71,6 +78,7 @@ public class GamepadController {
   public void turnForwardCW() {
     directionLeft = 1 * reversedMotorLeft;
     directionRight = 0;
+    recordJoystick.recordTurnFwCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -82,6 +90,7 @@ public class GamepadController {
   public void turnBackwardsCCW() {
     directionLeft = -1 * reversedMotorLeft;
     directionRight = 0;
+    recordJoystick.recordTurnBwCCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -93,6 +102,7 @@ public class GamepadController {
   public void turnBackwardsCW() {
     directionLeft = 0;
     directionRight = -1 * reversedMotorRight;
+    recordJoystick.recordTurnBwCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -104,6 +114,7 @@ public class GamepadController {
   public void rotateCCW() {
     directionLeft = -1 * reversedMotorLeft;
     directionRight = 1 * reversedMotorRight;
+    recordJoystick.recordRotateCCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -114,6 +125,7 @@ public class GamepadController {
   public void rotateCW() {
     directionLeft = 1 * reversedMotorLeft;
     directionRight = -1 * reversedMotorRight;
+    recordJoystick.recordRotateCW(motorLeft.getName().charAt(6), motorRight.getName().charAt(6), speed);
     move();
   }
 
@@ -121,6 +133,7 @@ public class GamepadController {
    * Starts the movement on both of the motors.
    */
   public void move() {
+    waitStart = System.currentTimeMillis();
     nxt.motorOn(motorLeft, speed * directionLeft);
     nxt.motorOn(motorRight, speed * directionRight);
   }
@@ -196,6 +209,10 @@ public class GamepadController {
    * Stops the motors.
    */
   public void stop() {
+	if (waitStart != 0)
+		recordJoystick.recordWait(System.currentTimeMillis() - waitStart);
+	
+	waitStart = 0;
     directionLeft = 0;
     directionRight = 0;
     if (nxt.isConnected()) {
@@ -305,5 +322,8 @@ public class GamepadController {
   public GamepadType getGamepadType() {
     return gamepad.getGamepadType();
   }
-  
+
+  public RecordJoystick getRecordJoystick(){
+	  return this.recordJoystick;
+  }
 }
