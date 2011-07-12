@@ -33,7 +33,7 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
   @Override
   protected Control createContents(Composite parent) {
     getShell().setText("Joystick");
-    parent.setSize(300, 410);
+    parent.setSize(280, 420);
 
     return new JoystickComposite(parent, SWT.NULL, gamepadController);
   }
@@ -64,5 +64,4 @@ public class JoystickUIWindow extends TrayDialog implements NXTObserver {
     gamepadController.stop();
     gamepadController.stopGamepadPolling();
   }
-
 }

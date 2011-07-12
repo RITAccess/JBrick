@@ -269,11 +269,22 @@ public class JoystickComposite extends Composite implements GamepadControllerObs
     final HelpContentAction helpAction = new HelpContentAction();
     Button help = new Button(this, SWT.PUSH | SWT.CENTER);
     help.setText("Help");
-    help.setBounds(50, 337, 60, 25);
+    help.setBounds(142, 357, 60, 25);
     help.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseDown(MouseEvent e) {
         helpAction.runJoistickLink();
+      }
+    });
+
+    /* Copy NXC Code Button */
+    Button copyNXC= new Button(this, SWT.PUSH | SWT.CENTER);
+    copyNXC.setText("Copy NXC");
+    copyNXC.setBounds(10, 337, 70, 25);
+    copyNXC.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseDown(MouseEvent e) {
+        gamepadController.getRecordJoystick().codeToClipboard();
       }
     });
 
