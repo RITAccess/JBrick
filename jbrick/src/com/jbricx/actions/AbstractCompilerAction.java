@@ -83,7 +83,7 @@ public abstract class AbstractCompilerAction extends AbstractAction {
     if (document.getFileName() == null) {
       document.setFileName(getManager().getWorkspacePath()
         + System.getProperty("file.separator") + getCurrentTab().getText()
-        + ".bak.nxcs");
+        + ".bak.nxc");
     }
 
     if (document.isDirty()) {
