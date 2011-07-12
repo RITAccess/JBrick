@@ -31,4 +31,5 @@ public class FileExtensionConstants {
   public static final String KEYWORDS_FILE  = "config/KeyWords.xml";
   public static final String OPERATORS_FILE = "config/Operators.xml";
   public static final String CONSTANTS_FILE = "config/Constants.xml";
+  public static final String AUTOCOMPLETE_FILE = "config/Autocomplete.xml";
 }
