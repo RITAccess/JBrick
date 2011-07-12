@@ -28,7 +28,6 @@ import com.jbricx.pjo.FileExtensionConstants;
 import javax.xml.parsers.*;
 
 public class AutoComplete {
-	private static String keywordFilename = "config/KeyWords.xml";
 	private static Display display;
 	private static Shell shell;
 	private static AutoCompleteWindow window;
@@ -36,6 +35,7 @@ public class AutoComplete {
 	private static SourceViewer viewer;
 	private static StyledText textWidget;
 	private static String selectedWord = "";
+	private static String typedStr = "";
 	private static int removeIndex;
 	private static int offset;
 
@@ -57,6 +57,15 @@ public class AutoComplete {
 					shell.setVisible(false);
 				} else if (arg0.keyCode == SWT.CR) {
 					autocompleteSelected();
+				}
+				else if(arg0.keyCode == SWT.BS){
+					if(!typedStr.equals("")){
+						typedStr = typedStr.substring(0, typedStr.length()-1);
+					}
+				}
+				else if(Character.isLetterOrDigit((char)arg0.keyCode)){
+					typedStr += (char)arg0.keyCode;
+					setKeywordFilter();
 				}
 			}
 		});
@@ -90,11 +99,19 @@ public class AutoComplete {
 
 		});
 	}
-
+	public static void setKeywordFilter(){
+		window.getKeywordList().removeAll();
+		int i;
+		for (i = 0; i < keywords.size(); i++) {
+			if (keywords.get(i).toLowerCase().startsWith(typedStr)) {
+				window.getKeywordList().add(keywords.get(i));
+			}
+		}
+	}
 	public static void loadKeywords() {
 		try {
 			keywords = new ArrayList<String>();
-			final InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
+			InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
 			          FileExtensionConstants.KEYWORDS_FILE);
 			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
@@ -104,55 +121,28 @@ public class AutoComplete {
 				keywords.add(((Element)nodes.item(i)).getTextContent());
 			}
 			keywordStream.close();
-			/* 	  final InputStream keywordStream = ClassLoader.getSystemResourceAsStream(
-			          FileExtensionConstants.KEYWORDS_FILE);
-
-        // Create a factory
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        // Use the factory to create a builder
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(keywordStream);
-        // Get a list of all elements in the document
-        NodeList list = doc.getElementsByTagName("word");
-
-        for (int i = 0; i < list.getLength(); i++) {
-          // Add elements from xml file to the list of constant
-          // words
-          KEYWORDS.add(((Element) list.item(i)).getTextContent());
-        }
-        keywordStream.close();
-
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			 */
-
+					
+			keywordStream = ClassLoader.getSystemResourceAsStream(
+			          FileExtensionConstants.CONSTANTS_FILE);
+			doc = builder.parse(keywordStream);
+			nodes = doc.getElementsByTagName("constant");
+			for(int i = 0; i < nodes.getLength(); i++){
+				keywords.add(((Element)nodes.item(i)).getTextContent());
+			}
+			keywordStream.close();
+			
+			keywordStream = ClassLoader.getSystemResourceAsStream(
+			          FileExtensionConstants.AUTOCOMPLETE_FILE);
+			doc = builder.parse(keywordStream);
+			nodes = doc.getElementsByTagName("word");
+			for(int i = 0; i < nodes.getLength(); i++){
+				keywords.add(((Element)nodes.item(i)).getTextContent());
+			}
+			keywordStream.close();
 		} catch (Exception e) {
+			System.out.println("Error in AutoComplete keyword loading: " + e.getMessage());
 		}
 
-		/*
-		keywords.add("task");
-		keywords.add("main");
-		keywords.add("if");
-		keywords.add("while");
-		keywords.add("OnFwd");
-		keywords.add("OnRev");
-		keywords.add("Wait");
-		keywords.add("Off");
-		keywords.add("OUT_A");
-		keywords.add("OUT_B");
-		keywords.add("OUT_C");
-		keywords.add("OUT_AB");
-		keywords.add("OUT_AC");
-		keywords.add("OUT_BC");
-
-		keywords.add("short");
-		keywords.add("long");
-		keywords.add("byte");
-		keywords.add("bool");
-		keywords.add("string");
-		keywords.add("SetSensor");
-		keywords.add("PlayTone");
-		 */
 		Collections.sort(keywords, String.CASE_INSENSITIVE_ORDER);
 		for (String keyword : keywords)
 			window.getKeywordList().add(keyword);
@@ -206,7 +196,7 @@ public class AutoComplete {
 			}
 			removeIndex--;
 		}
-		String typedStr = "";
+		typedStr = "";
 		if (removeIndex != -1 && removeIndex < offset)
 			typedStr = allText.substring(removeIndex, offset).toLowerCase();
 		while (offset < allText.length()) {
@@ -218,20 +208,7 @@ public class AutoComplete {
 			}
 			offset++;
 		}
-		int i;
-		for (i = 0; i < keywords.size(); i++) {
-			if (keywords.get(i).toLowerCase().startsWith(typedStr)) {
-				selectedWord = keywords.get(i);
-				window.getKeywordList().select(i);
-				break;
-			}
-		}
-		if (i == keywords.size() && keywords.size() > 0
-				&& window.getKeywordList().getSelectionIndex() != -1) {
-			selectedWord = keywords.get(window.getKeywordList()
-					.getSelectionIndex());
-		}
-		window.getKeywordList().showSelection();
+		setKeywordFilter();
 	}
 
 	public static void autocompleteSelected() {
