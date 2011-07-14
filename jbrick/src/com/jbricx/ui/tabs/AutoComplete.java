@@ -61,6 +61,7 @@ public class AutoComplete {
 				else if(arg0.keyCode == SWT.BS){
 					if(!typedStr.equals("")){
 						typedStr = typedStr.substring(0, typedStr.length()-1);
+						setKeywordFilter();
 					}
 				}
 				else if(Character.isLetterOrDigit((char)arg0.keyCode)){
@@ -89,6 +90,8 @@ public class AutoComplete {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
+				if (window.getKeywordList().getSelectionCount() > 0)
+					selectedWord = window.getKeywordList().getSelection()[0];
 			}
 
 			@Override
@@ -107,6 +110,10 @@ public class AutoComplete {
 				window.getKeywordList().add(keywords.get(i));
 			}
 		}
+		window.getKeywordList().setSelection(0);
+		if(window.getKeywordList().getItems().length > 0)
+			selectedWord = window.getKeywordList().getItem(0);
+		//window.getKeywordList().forceFocus();
 	}
 	public static void loadKeywords() {
 		try {
