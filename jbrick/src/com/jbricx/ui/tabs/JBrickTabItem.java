@@ -171,18 +171,9 @@ public class JBrickTabItem extends CTabItem implements JBrickObserver {
       @Override
       public void keyPressed(KeyEvent e) {
         int code = e.keyCode;
-        if (code == 32) {
-          getUndoManager().undo();
-          getUndoManager().redo();
-
-          int ln = getCursorLocation();
-          int totalNumberOfLines = viewer.getDocument().getNumberOfLines();
-
-          if (ln == totalNumberOfLines) {
-            StyledText styledText = viewer.getTextWidget();
-            int charcount = viewer.getTextWidget().getCharCount();
-            styledText.setCaretOffset(charcount + 10);
-          }
+        //check if key was space or enters
+        if (code == 32 || code == 13) {
+          getUndoManager().endCompoundChange();
         }
       }
 
