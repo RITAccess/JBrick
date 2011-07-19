@@ -102,19 +102,7 @@ public class AutoComplete {
 
 		});
 	}
-	public static void setKeywordFilter(){
-		window.getKeywordList().removeAll();
-		int i;
-		for (i = 0; i < keywords.size(); i++) {
-			if (keywords.get(i).toLowerCase().startsWith(typedStr)) {
-				window.getKeywordList().add(keywords.get(i));
-			}
-		}
-		window.getKeywordList().setSelection(0);
-		if(window.getKeywordList().getItems().length > 0)
-			selectedWord = window.getKeywordList().getItem(0);
-		//window.getKeywordList().forceFocus();
-	}
+
 	public static void loadKeywords() {
 		try {
 			keywords = new ArrayList<String>();
@@ -154,7 +142,6 @@ public class AutoComplete {
 		for (String keyword : keywords)
 			window.getKeywordList().add(keyword);
 	}
-
 	public static void attachAutocomplete(SourceViewer sourceViewer) {
 		viewer = sourceViewer;
 		textWidget = viewer.getTextWidget();
@@ -175,7 +162,6 @@ public class AutoComplete {
 
 		});
 	}
-
 	private static void displayAutocomplete() {
 		Point widgetScreenLoc = pointToScreen(textWidget);
 		Point caretLoc = textWidget.getCaret().getLocation();
@@ -187,7 +173,6 @@ public class AutoComplete {
 		shell.moveAbove(null);
 		window.getKeywordList().forceFocus();
 	}
-
 	public static void selectClosest() {
 		offset = textWidget.getCaretOffset();
 		String allText = textWidget.getText();
@@ -217,7 +202,18 @@ public class AutoComplete {
 		}
 		setKeywordFilter();
 	}
-
+	public static void setKeywordFilter(){
+		window.getKeywordList().removeAll();
+		int i;
+		for (i = 0; i < keywords.size(); i++) {
+			if (keywords.get(i).toLowerCase().startsWith(typedStr)) {
+				window.getKeywordList().add(keywords.get(i));
+			}
+		}
+		window.getKeywordList().setSelection(0);
+		if(window.getKeywordList().getItems().length > 0)
+			selectedWord = window.getKeywordList().getItem(0);
+	}
 	public static void autocompleteSelected() {
 		String str = textWidget.getText();
 		str = new StringBuffer(str).replace(removeIndex, offset, selectedWord)
@@ -226,7 +222,6 @@ public class AutoComplete {
 		textWidget.setCaretOffset(removeIndex + selectedWord.length());
 		shell.setVisible(false);
 	}
-
 	public static Point pointToScreen(Control c) {
 		Point pos = c.getLocation();
 		if (c.getParent() != null) {
@@ -235,4 +230,5 @@ public class AutoComplete {
 		} else
 			return pos;
 	}
+		
 }
