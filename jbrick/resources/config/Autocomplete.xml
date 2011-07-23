@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <keyWords>
-	<word>main</word>
+  <word>main</word>
   <word>if</word>
   <word>OnFwd</word>
   <word>OnRev</word>
@@ -14,7 +14,6 @@
   <word>PlayFile</word>
   <word>PlayFileEx</word>
   <word>PlaySound</word>
-  <word>PlayTone</word>
   <word>PlayToneEx</word>
   <word>PlayTones</word>
   <word>SetSoundDuration</word>
@@ -166,7 +165,6 @@
   <word>BTNSTATE_LONG_RELEASED_EV</word>
   <word>BTNSTATE_PRESSED_STATE</word>
   <word>BTNSTATE_NONE</word>
-  <word>ReadButtonType</word>
   <word>SendMessage</word>
   <word>ReceiveMessage</word>
   <word>BluetoothStatus</word>
@@ -314,7 +312,6 @@
   <word>SysDrawCircle</word>
   <word>SysDrawRect</word>
   <word>SysDrawGraphic</word>
-  <word>Draw a graphic</word>
   <word>SysSetScreenMode</word>
   <word>SysDisplayExecuteFunction</word>
   <word>DisplayContrast</word>
@@ -338,7 +335,6 @@
   <word>SetSensorMode</word>
   <word>ClearSensor</word>
   <word>ResetSensor</word>
-  <word>SetSensor</word>
   <word>SetSensorTouch</word>
   <word>SetSensorLight</word>
   <word>SetSensorSound</word>
@@ -465,7 +461,6 @@
   <word>OnFwdRegExPID</word>
   <word>OnRevRegPID</word>
   <word>OnRevRegExPID</word>
-  <word>Off</word>
   <word>OffEx</word>
   <word>Coast</word>
   <word>CoastEx</word>
@@ -514,31 +509,6 @@
   <word>PosRegSetAngle</word>
   <word>PosRegAddAngle</word>
   <word>PosRegSetMax</word>
-  <word>PlayFile</word>
-  <word>PlayFileEx</word>
-  <word>PlayTone</word>
-  <word>PlayToneEx</word>
-  <word>SoundState</word>
-  <word>SoundFlags</word>
-  <word>StopSound</word>
-  <word>SoundFrequency</word>
-  <word>SoundDuration</word>
-  <word>SoundSampleRate</word>
-  <word>SoundMode</word>
-  <word>SoundVolume</word>
-  <word>SetSoundDuration</word>
-  <word>SetSoundFlags</word>
-  <word>SetSoundFrequency</word>
-  <word>SetSoundMode</word>
-  <word>SetSoundModuleState</word>
-  <word>SetSoundSampleRate</word>
-  <word>SetSoundVolume</word>
-  <word>SysSoundPlayFile</word>
-  <word>SysSoundPlayTone</word>
-  <word>SysSoundGetState</word>
-  <word>SysSoundSetState</word>
-  <word>PlaySound</word>
-  <word>PlayTones</word>
   <word>CommandFlags</word>
   <word>UIState</word>
   <word>UIButton</word>
@@ -603,6 +573,49 @@
   <word>bcd2dec</word>
   <word>isNAN</word>
   <word>sign</word>
-
-
+  <word>fclose</word>
+  <word>remove</word>
+  <word>rename</word>
+  <word>fgetc</word>
+  <word>fgets</word>
+  <word>feof</word>
+  <word>set_fopen_size</word>
+  <word>fopen</word>
+  <word>fflush</word>
+  <word>ftell</word>
+  <word>fputc</word>
+  <word>fputs</word>
+  <word>printf</word>
+  <word>fprintf</word>
+  <word>sprintf</word>
+  <word>fseek</word>
+  <word>rewind</word>
+  <word>getchar</word>
+  <word>abort</word>
+  <word>abs</word>
+  <word>rand</word>
+  <word>Random</word>
+  <word>SysRandomNumber</word>
+  <word>atoi</word>
+  <word>atol</word>
+  <word>labs</word>
+  <word>atof</word>
+  <word>strtod</word>
+  <word>strtol</word>
+  <word>strtoul</word>
+  <word>div</word>
+  <word>ldiv</word>
+  <word>isupper</word>
+  <word>islower</word>
+  <word>isalpha</word>
+  <word>isdigit</word>
+  <word>isalnum</word>
+  <word>isspace</word>
+  <word>iscntrl</word>
+  <word>isprint</word>
+  <word>isgraph</word>
+  <word>ispunct</word>
+  <word>isxdigit</word>
+  <word>toupper</word>
+  <word>tolower</word>
 </keyWords>
