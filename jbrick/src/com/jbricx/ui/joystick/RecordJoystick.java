@@ -17,7 +17,7 @@ public class RecordJoystick {
 	private StringBuffer nxcCode = new StringBuffer();
 	
 	public RecordJoystick(){
-		nxcCode.append("\ntask main(){\n");
+		nxcCode.append("task main(){\n");
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class RecordJoystick {
 	 */
 	public void recordTurnFwCCW(char leftMotor, char rightMotor, int speed){
 		this.nxcCode.append(" // Turn Forward, Counter-clockwise\n");
-		this.nxcCode.append(" OnFwd(OUT_" + leftMotor + ", " + 0 + ")\n;");
+		this.nxcCode.append(" OnFwd(OUT_" + leftMotor + ", " + 0 + ");\n");
 		this.nxcCode.append(" OnFwd(OUT_" + rightMotor + ", " + Math.abs(speed) + ");\n");
 	}
 
