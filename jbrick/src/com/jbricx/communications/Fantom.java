@@ -1,7 +1,6 @@
 package com.jbricx.communications;
 
 import java.nio.Buffer;
-
 import com.sun.jna.Pointer;
 import com.sun.jna.win32.StdCallLibrary;
 

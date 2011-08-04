@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -22,6 +24,7 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.NXTGadgetManager;
+import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.enums.Motor;
 import com.jbricx.communications.enums.Sensor;
 import com.jbricx.communications.enums.SensorMode;
@@ -75,6 +78,8 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
   private ArrayList<Button> allButtons = new ArrayList<Button>();
   private ArrayList<Scale> allScale = new ArrayList<Scale>();
   private static NXTGadgetManager nxt;
+  private static Motor motorLeft = Motor.MOTOR_C;
+  private static Motor motorRight = Motor.MOTOR_B;
   final Runnable timer = new Runnable() {
 
     public void run() {
@@ -89,10 +94,10 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
    * Auto-generated main method to display this
    * org.eclipse.swt.widgets.Composite inside a new Shell.
    */
-  public static void main(String[] args) {
+/*  public static void main(String[] args) {
     showGUI();
   }
-
+*/
   /**
    * Overriding checkSubclass allows this class to extend
    * org.eclipse.swt.widgets.Composite
@@ -147,13 +152,33 @@ public class DirectControlWindow extends org.eclipse.swt.widgets.Composite {
         btnGet.setLayoutData(btnGetLData);
         btnGet.setText("Get");
         buttonUtil.setAccessibleString(btnGet, "Get");
-        btnGet.addSelectionListener(new SelectionAdapter() {
+        btnGet.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void mouseDown(MouseEvent arg0) {
+				nxt.motorOn(motorLeft, 70);
+				nxt.motorOn(motorRight, 70);
+			}
+
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
+/*        btnGet.addSelectionListener(new SelectionAdapter() {
 
           public void widgetSelected(SelectionEvent evt) {
-            btnGetWidgetSelected(evt);
+            //btnGetWidgetSelected(evt);
           }
         });
-      }
+*/      }
       {
         poll = new Button(this, SWT.CHECK | SWT.CENTER);
         FormData btnPoll = new FormData();
