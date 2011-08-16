@@ -159,7 +159,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
   @Override
   public ExitStatus playTone(int frequency, int duration) {
-    connections.get(currentConnection).getConnection()
+	if(connections != null && currentConnection != null)
+		connections.get(currentConnection).getConnection()
         .playSound(frequency, duration);
     return null;
   }

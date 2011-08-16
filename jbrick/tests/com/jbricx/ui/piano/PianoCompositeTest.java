@@ -12,65 +12,111 @@ import org.eclipse.swt.widgets.Shell;
 import javax.swing.SwingUtilities;
 import org.junit.After;
 import org.junit.Before;
+
+
 import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.InputEvent;
 
 public class PianoCompositeTest extends TestCase {
 	protected Display display = Display.getDefault();
 	protected Shell shell = null;
-	PianoController controller = null;
-	PianoComposite piano = null;
 	Robot robot = null;
-
-	protected void setUp() throws Exception {
-		super.setUp();
-		newShell();
+	
+	public void testPianoRecording() throws Exception {
+		ApplicationThread appThread = new ApplicationThread();
+		appThread.start();
 		robot = new Robot();
-	}
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		
+		robot.mouseMove(590, 190);
+		Thread.sleep(1000);	
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		robot.mouseMove(900, 190);
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		robot.mouseMove(545, 330);
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		assertTrue(appThread.isAlive());
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		robot.mouseMove(680, 190);
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		robot.mouseMove(775, 190);
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		robot.mouseMove(1040, 325);
+		Thread.sleep(1000);
+		assertTrue(appThread.isAlive());
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		assertTrue(appThread.isAlive());
+		Thread.sleep(1000);
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);
+		assertTrue(appThread.isAlive());
+		robot.mouseMove(1070, 12);
+		Thread.sleep(500);
+		robot.mousePress(InputEvent.BUTTON1_MASK);
+		Thread.sleep(500);
+		robot.mouseRelease(InputEvent.BUTTON1_MASK);	
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		display.syncExec(new Runnable() {
-			public void run() {
-				disposeShell();
-			}
-		});
-	}
-
-	protected void newShell() {
-		disposeShell();
-		shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setLayout(new FillLayout());
-		shell.open();
-	}
-
-	private void disposeShell() {
-		if (shell != null) {
-			shell.dispose();
-			shell = null;
-		}
+		String clipContents = (String)Toolkit.getDefaultToolkit()
+        .getSystemClipboard().getData(DataFlavor.stringFlavor);
+		assertEquals(clipContents, "PlayTone(349, 250);\r\nWait(125);\r\nPlayTone(698, 250);\r\nWait(125);\r\nPlayTone(440, 1000);\r\nWait(500);\r\nPlayTone(523, 1000);\r\nWait(500);\r\n");
+	
+		appThread.join();
 	}
 	
-	public void testPianoOpen() throws Exception {
-		controller = new PianoController(shell, "C", true);
-		piano = new PianoComposite(shell, 0, controller);
-		Control[] controls = piano.getChildren();
-		for(Control c : controls)
-		{
-			if(c.getClass() == Class.forName("org.eclipse.swt.widgets.Button"))
-			{
-				//System.out.println("I'm a button");
-				Button btn = (Button)c;
-				//System.out.println(btn.getText());
-				Point screenPoint = btn.getLocation();
-				//robot.mouseMove(screenPoint.x, screenPoint.y);
-				//robot.mousePress(InputEvent.BUTTON1_MASK);
-	            //robot.mouseRelease(InputEvent.BUTTON1_MASK);
-			}	
+	class ApplicationThread extends Thread {
+		PianoController controller = null;
+		PianoComposite piano = null;
+
+		public void run() {
+
+			display = new Display();
+			shell = new Shell(display, SWT.SHELL_TRIM);
+			shell.setBounds(400,0, 700, 520);
+			//ApplicationWindow win = new ApplicationWindow(shell);			
+			//win.setBlockOnOpen(true);
+			//win.open();
+			shell.open();
+			try {
+				controller = new PianoController(shell, "C", true);
+			} catch (NoteNotFoundException e) {
+				e.printStackTrace();
+			}
+			piano = new PianoComposite(shell, 0, controller);
+			piano.setVisible(true);
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch())
+					display.sleep();
+			}
 		}
-		
-		Listener[] listeners = piano.getListeners(1);
-	}
+	};
 	
 	public Point pointToScreen(Control c){
 		Point pos = c.getLocation();

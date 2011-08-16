@@ -79,7 +79,7 @@ public class PianoController {
     int waitDur = (int) (waitDuration * getNoteLengthFactor());
     PianoTone tone = new PianoTone(frequency, duration);
     records.addKey(tone, waitDur);
-    nxt.playTone(frequency, duration);
+   	nxt.playTone(frequency, duration);
   }
 
   /**
