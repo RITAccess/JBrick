@@ -8,13 +8,14 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
-import com.jbricx.preferences.JBrickObserver;
+//import com.jbricx.preferences.JBrickObserver;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorPane;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
-import com.jbricx.ui.tabs.TabFolder;
+//import com.jbricx.ui.tabs.TabFolder;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager  {
 
 	Preferences prefs;
@@ -93,13 +94,13 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		return false;
 	}
 
-	/**
-	 * Returns the tab folder
-	 */
-	public TabFolder getTabFolder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	/**
+//	 * Returns the tab folder
+//	 */
+//	public TabFolder getTabFolder() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public boolean isAutoCompile() {
@@ -113,21 +114,20 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		
 	}
 
-
-	/**
-	 * Register observers
-	 */
-	public void registerObserver(final JBrickObserver observer) {
-		//TODO
-	  }
-
-	/**
-	 * Remove observers
-	 * @param observer to remove
-	 */
-	public void removeObserver(final JBrickObserver observer) {
-	    //TODO
-	}
+//	/**
+//	 * Register observers
+//	 */
+//	public void registerObserver(final JBrickObserver observer) {
+//		//TODO
+//	  }
+//
+//	/**
+//	 * Remove observers
+//	 * @param observer to remove
+//	 */
+//	public void removeObserver(final JBrickObserver observer) {
+//	    //TODO
+//	}
 
 	/**
 	 * Update any preference changes and resize objects if nessecary
@@ -140,6 +140,5 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	public JFrame getShell(){
 		return this;
 	}
-
 
 }
