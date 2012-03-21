@@ -33,6 +33,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
 		prefs = prefClass.getPrefs();
+		System.out.println(prefs.getBoolean(PreferenceStore.WRAP, false));
 	}
 	
 	

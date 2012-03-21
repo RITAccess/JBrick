@@ -10,12 +10,13 @@ import com.jbricx.ui.JBrickManager;
 /**
  * Compiles the current file.
  */
+
 public class CompileAction extends AbstractCompilerAction {
 
   /**
    * Constructor
    */
-  public CompileAction(final JBrickManager manager) {
+ public CompileAction(final JBrickManager manager) {
     super("&Compile@Ctrl+Shift+B", ImageDescriptor.createFromFile(
         CompileAction.class, "/images/compile.png"), manager);
     setToolTipText("Compile");
