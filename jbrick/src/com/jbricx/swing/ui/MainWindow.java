@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import com.jbricx.preferences.JBrickObserver;
+import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorPane;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
@@ -33,7 +34,8 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
 		prefs = prefClass.getPrefs();
-		System.out.println(prefs.getBoolean(PreferenceStore.WRAP, false));
+		JBricxPreferencesWindow preferencwindow = new JBricxPreferencesWindow(this);
+		preferencwindow.setVisible(true);
 	}
 	
 	
@@ -45,7 +47,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		buildMainWindow();
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		//this.setLayout(new BorderLayout());
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
 	}

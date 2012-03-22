@@ -25,6 +25,7 @@ public class PreferenceStore {
 	
 	public static final boolean WRAP_DEFAULT = false;
 	public static final String FONT_DEFAULT  = "Seqoe UI-plain-9";
+	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")+"\\Documents\\";
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
  
 
@@ -89,6 +90,7 @@ public class PreferenceStore {
 		prefs.putBoolean(WRAP,WRAP_DEFAULT);
 		prefs.put(FONT, FONT_DEFAULT);
 		prefs.putBoolean(AUTOCOMPILE, AUTOCOMPILE_DEFAULT);
+		prefs.put(WRKSPC,WRKSPC_DEFAULT);
 		
 	}
 	
