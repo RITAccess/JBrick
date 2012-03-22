@@ -2,8 +2,8 @@ package com.jbricx.swing.ui;
 
 import javax.swing.JFrame;
 
-import com.jbricx.preferences.JBrickObserver;
-import com.jbricx.ui.tabs.TabFolder;
+//import com.jbricx.preferences.JBrickObserver;
+//import com.jbricx.ui.tabs.TabFolder;
 
 
 
@@ -13,11 +13,11 @@ public interface JBricxManager {
 	
 	boolean close();
 	 
-	TabFolder getTabFolder();
+//	TabFolder getTabFolder();
 	
 	void refreshExplorerContent();
 	
-	void registerObserver(JBrickObserver o);
+//	void registerObserver(JBrickObserver o);
 	
 	void updatePreferences();
 	

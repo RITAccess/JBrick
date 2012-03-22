@@ -1,6 +1,6 @@
 package com.jbricx.swing.ui;
 
-import java.util.prefs.Preferences;
+//import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -9,60 +9,35 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import com.jbricx.swing.actions.AboutAction;
-import com.jbricx.swing.actions.CompileAction;
-import com.jbricx.swing.actions.CopyAction;
-import com.jbricx.swing.actions.CutAction;
-import com.jbricx.swing.actions.DirectControlAction;
-import com.jbricx.swing.actions.DownloadAction;
-import com.jbricx.swing.actions.ExitAction;
-import com.jbricx.swing.actions.FindAction;
-import com.jbricx.swing.actions.FindBrickAction;
-import com.jbricx.swing.actions.GotoAction;
-import com.jbricx.swing.actions.JoyStickAction;
-import com.jbricx.swing.actions.MethodTemplateAction;
-import com.jbricx.swing.actions.NewAction;
-import com.jbricx.swing.actions.OpenAction;
-import com.jbricx.swing.actions.PasteAction;
-import com.jbricx.swing.actions.PianoAction;
-import com.jbricx.swing.actions.PreferencesAction;
-import com.jbricx.swing.actions.PrintAction;
-import com.jbricx.swing.actions.PrintPreviewAction;
-import com.jbricx.swing.actions.RedoAction;
-import com.jbricx.swing.actions.SaveAction;
-import com.jbricx.swing.actions.SaveAsAction;
-import com.jbricx.swing.actions.SelectAllAction;
-import com.jbricx.swing.actions.UndoAction;
-import com.jbricx.actions.HelpContentAction;
-import com.jbricx.communications.NXTManager;
 
 public class JBricxMenuAndToolBarDelegate {
 	
 	JBricxManager manager;
 	private AboutAction aboutAction;
-	private HelpContentAction helpContentAction;
-	private CopyAction copyAction;
-	private CutAction cutAction;
-	private SelectAllAction selectAllAction;
-	private ExitAction exitAction;
-	private FindAction findAction;
-	private GotoAction gotoAction;
-	private NewAction newAction;
-	private OpenAction openAction;
-	private PasteAction pasteAction;
-	private PreferencesAction prefsAction;
-	private PrintAction printAction;
-	private PrintPreviewAction printPreviewAction;
-	private RedoAction redoAction;
-	private SaveAction saveAction;
-	private SaveAsAction saveAsAction;
-	private UndoAction undoAction;
-	private DownloadAction downloadAction;
-	private DirectControlAction directControlAction;
-	private JoyStickAction joystickAction;
-	private PianoAction pianoAction;
-	private FindBrickAction findBrickAction;
-	private CompileAction compileAction;
-	private MethodTemplateAction methodTemplateAction;
+//	private HelpContentAction helpContentAction;
+//	private CopyAction copyAction;
+//	private CutAction cutAction;
+//	private SelectAllAction selectAllAction;
+//	private ExitAction exitAction;
+//	private FindAction findAction;
+//	private GotoAction gotoAction;
+//	private NewAction newAction;
+//	private OpenAction openAction;
+//	private PasteAction pasteAction;
+//	private PreferencesAction prefsAction;
+//	private PrintAction printAction;
+//	private PrintPreviewAction printPreviewAction;
+//	private RedoAction redoAction;
+//	private SaveAction saveAction;
+//	private SaveAsAction saveAsAction;
+//	private UndoAction undoAction;
+//	private DownloadAction downloadAction;
+//	private DirectControlAction directControlAction;
+//	private JoyStickAction joystickAction;
+//	private PianoAction pianoAction;
+//	private FindBrickAction findBrickAction;
+//	private CompileAction compileAction;
+//	private MethodTemplateAction methodTemplateAction;
 	
 	private JMenu fileMenu;
 	private JMenu editMenu;
@@ -74,7 +49,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 	public JBricxMenuAndToolBarDelegate(JBricxManager manager) {
 		this.manager = manager;
-
+		
 		aboutAction = new AboutAction(manager);
 		/*
 		copyAction = new CopyAction(manager);
