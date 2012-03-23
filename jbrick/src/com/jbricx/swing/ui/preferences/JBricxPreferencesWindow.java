@@ -78,21 +78,13 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JLabel workspaceLabel;
 
 	private JCheckBox wordWrapBox;
-
 	private JLabel wordWrapLabel;
-
 	private JCheckBox autoCompileBox;
-
 	private JLabel autoCompileLabel;
-
 	private JCheckBox loadRecentlyBox;
-
 	private JLabel loadRecentlyLabel;
-
 	private JLabel toolLocationLabel;
-
 	private JTextField toolLocationTextArea;
-
 	private JButton toolLocationBrowseButton;
 	
 	
@@ -153,6 +145,98 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 
 
 	private void buildLayout() {
+		
+		
+		GroupLayout.SequentialGroup hGroup = textAreaGroupLayout.createSequentialGroup();
+		
+		hGroup.addGroup(textAreaGroupLayout.createParallelGroup()
+				.addComponent(foregroundLabel)
+				.addComponent(backgroundLabel)
+				.addComponent(commentLabel)
+				.addComponent(stringLabel)
+				.addComponent(keywordLabel)
+				.addComponent(operatorLabel)
+				.addComponent(lineNumberFGLabel)
+				.addComponent(lineNumberBGLabel)
+				.addComponent(fontLabel)
+				.addComponent(workspaceLabel)
+				.addComponent(wordWrapBox)
+		);
+		
+		hGroup.addGroup(textAreaGroupLayout.createParallelGroup()
+				.addComponent(foregroundButton)
+				.addComponent(backgroundButton)
+				.addComponent(commentButton)
+				.addComponent(stringButton)
+				.addComponent(keywordButton)
+				.addComponent(operatorButton)
+				.addComponent(lineNumberFGButton)
+				.addComponent(lineNumberBGButton)
+				.addComponent(currentFontText)
+				.addComponent(directoryTextArea)
+				.addComponent(wordWrapLabel)
+		);
+		
+		hGroup.addGroup(textAreaGroupLayout.createParallelGroup()
+				.addComponent(changeFontButton)
+				.addComponent(workspaceChangeButton)
+		);
+		
+		textAreaGroupLayout.setHorizontalGroup(hGroup);
+
+		
+		GroupLayout.SequentialGroup vGroup = textAreaGroupLayout.createSequentialGroup();
+		
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(foregroundLabel)
+				.addComponent(foregroundButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(backgroundLabel)
+				.addComponent(backgroundButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(commentLabel)
+				.addComponent(commentButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(stringLabel)
+				.addComponent(stringButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(keywordLabel)
+				.addComponent(keywordButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(operatorLabel)
+				.addComponent(operatorButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(lineNumberFGLabel)
+				.addComponent(lineNumberFGButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(lineNumberBGLabel)
+				.addComponent(lineNumberBGButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(fontLabel)
+				.addComponent(currentFontText)
+				.addComponent(changeFontButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(workspaceLabel)
+				.addComponent(directoryTextArea)
+				.addComponent(workspaceChangeButton)
+		);
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				.addComponent(wordWrapBox)
+				.addComponent(wordWrapLabel)
+		);
+		
+		
+		textAreaGroupLayout.setVerticalGroup(vGroup);
+		
 		
 	}
 

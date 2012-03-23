@@ -28,6 +28,15 @@ public class PreferenceStore {
 	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")+"\\Documents\\";
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
  
+	
+	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
+	public static final int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
+	public static final int OPERATOR_DEFAULT = Color.ORANGE.getRGB();
+	public static final int COMMENT_DEFAULT = Color.GRAY.getRGB();
+	public static final int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
+	public static final int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
+	public static final int STRING_DEFAULT = Color.GREEN.getRGB();
+	public static final int KEYWORD_DEFAULT = Color.BLUE.getRGB();
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
@@ -59,15 +68,7 @@ public class PreferenceStore {
 	    LINENUMBERFG,
 	    LINENUMBERBG;
 	}
-	
-	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
-	public static final int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
-	public static final int OPERATOR_DEFAULT = Color.ORANGE.getRGB();
-	public static final int COMMENT_DEFAULT = Color.GRAY.getRGB();
-	public static final int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
-	public static final int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
-	public static final int STRING_DEFAULT = Color.GREEN.getRGB();
-	public static final int KEYWORD_DEFAULT = Color.BLUE.getRGB();
+
 
 	
 	public PreferenceStore(){
