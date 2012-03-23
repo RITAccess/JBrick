@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
@@ -31,6 +32,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import com.jbricx.swing.ui.JBricxManager;
 
@@ -101,6 +103,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/2),(screenSize.height-(screenSize.height/5)));
 		makeComponents();
+		this.pack();
 	}
 	
 	
@@ -144,6 +147,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	}
 
 
+	
+	/**
+	 * This builds the layout using a grouplayout. 
+	 */
 	private void buildLayout() {
 		
 		
@@ -174,7 +181,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				.addComponent(lineNumberBGButton)
 				.addComponent(currentFontText)
 				.addComponent(directoryTextArea)
-				.addComponent(wordWrapLabel)
+				
 		);
 		
 		hGroup.addGroup(textAreaGroupLayout.createParallelGroup()
@@ -219,7 +226,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				.addComponent(lineNumberBGLabel)
 				.addComponent(lineNumberBGButton)
 		);
-		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addComponent(fontLabel)
 				.addComponent(currentFontText)
 				.addComponent(changeFontButton)
@@ -231,7 +238,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		);
 		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				.addComponent(wordWrapBox)
-				.addComponent(wordWrapLabel)
+				
 		);
 		
 		
@@ -255,6 +262,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		foregroundButton.setMinimumSize(new Dimension(75,25));
 		foregroundButton.setActionCommand("foregroundButton");
 		foregroundButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
+		foregroundButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
+		foregroundButton.setContentAreaFilled(false);
+		foregroundButton.setOpaque(true);
+		foregroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		foregroundButton.addActionListener(this);
 		
 		//Background Label and Button
@@ -264,6 +275,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		backgroundButton.setPreferredSize(new Dimension(75,25));
 		backgroundButton.setActionCommand("backgroundButton");
 		backgroundButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		backgroundButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		backgroundButton.setContentAreaFilled(false);
+		backgroundButton.setOpaque(true);
+		backgroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		backgroundButton.addActionListener(this);
 		
 		//Comment Label and Button
@@ -273,6 +288,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		commentButton.setPreferredSize(new Dimension(75,25));
 		commentButton.setActionCommand("commentButton");
 		commentButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT)));
+		commentButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT)));
+		commentButton.setContentAreaFilled(false);
+		commentButton.setOpaque(true);
+		commentButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		commentButton.addActionListener(this);
 
 		
@@ -283,6 +302,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		keywordButton.setPreferredSize(new Dimension(75,25));
 		keywordButton.setActionCommand("keywordButton");
 		keywordButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT)));
+		keywordButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT)));
+		keywordButton.setContentAreaFilled(false);
+		keywordButton.setOpaque(true);
+		keywordButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		keywordButton.addActionListener(this);
 		
 		//Operator Panel and Button
@@ -292,6 +315,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		operatorButton.setPreferredSize(new Dimension(75,25));
 		operatorButton.setActionCommand("operatorButton");
 		operatorButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT)));
+		operatorButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT)));
+		operatorButton.setContentAreaFilled(false);
+		operatorButton.setOpaque(true);
+		operatorButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		operatorButton.addActionListener(this);
 		
 		//String Panel and Button
@@ -301,6 +328,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		stringButton.setPreferredSize(new Dimension(75,25));
 		stringButton.setActionCommand("stringButton");
 		stringButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT)));
+		stringButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT)));
+		stringButton.setContentAreaFilled(false);
+		stringButton.setOpaque(true);
+		stringButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		stringButton.addActionListener(this);
 
 		
@@ -311,6 +342,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberFGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberFGButton.setActionCommand("lineNumberFGButton");
 		lineNumberFGButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		lineNumberFGButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		lineNumberFGButton.setContentAreaFilled(false);
+		lineNumberFGButton.setOpaque(true);
+		lineNumberFGButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		lineNumberFGButton.addActionListener(this);
 		
 		//Line number BG label and button
@@ -320,6 +355,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberBGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberBGButton.setActionCommand("lineNumberBGButton");
 		lineNumberBGButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
+		lineNumberBGButton.setForeground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
+		lineNumberBGButton.setContentAreaFilled(false);
+		lineNumberBGButton.setOpaque(true);
+		lineNumberBGButton.setBorder(BorderFactory.createLineBorder(Color.black));
 		lineNumberBGButton.addActionListener(this);
                 
     }
@@ -336,7 +375,6 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		//Shows current font. Stuff in the middle delimits to get the style string which isnt easily attainable(is actually an int)
 		currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
 		currentFontText.setFont(currentFont);
-		
 		changeFontButton = new JButton("Change...");
 		changeFontButton.setActionCommand("changeFont");
 		changeFontButton.addActionListener(this);
@@ -364,15 +402,18 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	 * Populate the other boxes: wordwrap, autocompile, and recent files
 	 */
 	private void makeCheckBoxes() {
+		
 		wordWrapBox = new JCheckBox();
-		wordWrapLabel = new JLabel("Word Wrap");
-				
+		wordWrapBox.setText("Word Wrap");
+
+		
 		autoCompileBox = new JCheckBox();
 		autoCompileLabel = new JLabel("Auto Compile");
 
+
 		loadRecentlyBox = new JCheckBox();
 		loadRecentlyLabel = new JLabel("Load Recently Opened Files");
-		
+
 		
 	}
 	
@@ -406,7 +447,8 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			if (result == JFontChooser.OK_OPTION) {
 				Font currentFont = fontChooser.getSelectedFont();
 				currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
-				currentFontText.setFont(currentFont);				
+				currentFontText.setFont(currentFont);		
+				this.pack();
 			}
 		
 		// the browse button was chosen, open a file dialog to change the directory.	
