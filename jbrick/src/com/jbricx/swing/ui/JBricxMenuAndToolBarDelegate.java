@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
 	
@@ -24,7 +25,7 @@ public class JBricxMenuAndToolBarDelegate {
 //	private NewAction newAction;
 //	private OpenAction openAction;
 //	private PasteAction pasteAction;
-//	private PreferencesAction prefsAction;
+	private PreferencesAction prefsAction;
 //	private PrintAction printAction;
 //	private PrintPreviewAction printPreviewAction;
 //	private RedoAction redoAction;
@@ -51,6 +52,7 @@ public class JBricxMenuAndToolBarDelegate {
 		this.manager = manager;
 		
 		aboutAction = new AboutAction(manager);
+		prefsAction = new PreferencesAction(manager);
 		/*
 		copyAction = new CopyAction(manager);
 		cutAction = new CutAction(manager);
@@ -63,7 +65,7 @@ public class JBricxMenuAndToolBarDelegate {
 		gotoAction = new GotoAction(manager);
 		newAction = new NewAction(manager);
 		penAction = new OpenAction(manager);
-		prefsAction = new PreferencesAction(manager);
+
 		printAction = new PrintAction(manager);
 		printPreviewAction = new PrintPreviewAction(manager);
 		redoAction = new RedoAction(manager);
@@ -89,7 +91,12 @@ public class JBricxMenuAndToolBarDelegate {
 		aboutButton.setAction(aboutAction);
 		aboutButton.setToolTipText("About");
 		
+		JButton preferencesButton = new JButton();
+		preferencesButton.setAction(prefsAction);
+		preferencesButton.setToolTipText("Preferences");
+		
 		mainToolBar.add(aboutButton);
+		mainToolBar.add(preferencesButton);
 		
 		return mainToolBar;
 		
@@ -123,6 +130,9 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		
 		//Edit
+		JMenuItem prefs = new JMenuItem(prefsAction);
+		prefs.setText("Preferences");
+		editMenu.add(prefs);
 		
 		
 		//Compile

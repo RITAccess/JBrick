@@ -1,49 +1,34 @@
 package com.jbricx.swing.actions;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 
-import com.jbricx.preferences.BrickToolsPreferencePage;
-import com.jbricx.preferences.TextPreferencePage;
-import com.jbricx.ui.JBrickManager;
+import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
+
+
 
 /**
  * This action displays the preferences dialog
  */
-public class PreferencesAction extends AbstractAction {
+public class PreferencesAction extends JBricxAbstractAction {
 
-  /**
-   * PreferencesAction constructor
-   */
-  public PreferencesAction(final JBrickManager manager) {
-    super("P&references...@Ctrl+R", ImageDescriptor.createFromFile(PasteAction.class, "/images/preferences-desktop.png"), manager);
-    setToolTipText("Preferences");
-  }
+	/**
+	 * PreferencesAction constructor
+	 */
+	public PreferencesAction(final JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/preferences-desktop.png"),
+				manager);
+	}
 
-  /**
-   * Runs the action
-   */
-  public void run() {
-    PreferenceManager mgr = new PreferenceManager();
-    mgr.addToRoot(new PreferenceNode("text", "Text", null, TextPreferencePage.class.getName()));
-    mgr.addToRoot(new PreferenceNode("tool", "Tools", null, BrickToolsPreferencePage.class.getName()));
-    // mgr.addToRoot(new PreferenceNode("editor", "Editor", null,
-    // EditorPreferencePage.class.getName()));
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JBricxPreferencesWindow preferencwindow = new JBricxPreferencesWindow(
+				getManager());
+		preferencwindow.setVisible(true);
+	}
 
-    PreferenceDialog dlg = new PreferenceDialog(getManager().getShell(), mgr);
-    PreferenceStore ps = getManager().getPreferences();
-    dlg.setPreferenceStore(ps);
-    dlg.open();
-    try {
-      ps.save();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    getManager().updatePreferences();
-  }
 }

@@ -27,6 +27,7 @@ public class PreferenceStore {
 	public static final String FONT_DEFAULT  = "Seqoe UI-plain-9";
 	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")+"\\Documents\\";
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
+	public static final String NBCTOOL_DEFAULT = "nbcTool";
  
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
@@ -54,7 +55,6 @@ public class PreferenceStore {
 	public static final String OPERATORS_FILE = "config/Operators.xml";
 	public static final String CONSTANTS_FILE = "config/Constants.xml";
 	public static final String AUTOCOMPLETE_FILE = "config/Autocomplete.xml";
-
 	
 	//Colors and defaults
 	
@@ -70,14 +70,18 @@ public class PreferenceStore {
 	}
 
 
-	
+	/**
+	 * Constructor for preference store. If the program has never been run on this machine before, will load defaults.
+	 */
 	public PreferenceStore(){
-		setPreferencesAndDefaults();
+		final String NAME = "allPreferences";
+		prefs = Preferences.userRoot().node(NAME);
+		if(prefs.getBoolean("ranPreviously", false)){
+			setPreferencesAndDefaults();
+		}
 	}
 	
 	static void setPreferencesAndDefaults() {
-		final String NAME = "allPreferences";
-		prefs = Preferences.userRoot().node(NAME);
 		
 		prefs.putInt(ColorFor.FOREGROUND.toString(), FOREGROUND_DEFAULT);
 		prefs.putInt(ColorFor.BACKGROUND.toString(), BACKGROUND_DEFAULT);
@@ -92,6 +96,7 @@ public class PreferenceStore {
 		prefs.put(FONT, FONT_DEFAULT);
 		prefs.putBoolean(AUTOCOMPILE, AUTOCOMPILE_DEFAULT);
 		prefs.put(WRKSPC,WRKSPC_DEFAULT);
+		prefs.putBoolean("ranPreviously",true);
 		
 	}
 	

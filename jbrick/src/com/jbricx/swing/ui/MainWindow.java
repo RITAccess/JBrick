@@ -34,8 +34,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
 		prefs = prefClass.getPrefs();
-		JBricxPreferencesWindow preferencwindow = new JBricxPreferencesWindow(this);
-		preferencwindow.setVisible(true);
 	}
 	
 	
