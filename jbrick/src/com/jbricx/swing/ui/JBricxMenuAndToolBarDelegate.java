@@ -14,6 +14,7 @@ import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
+import com.jbricx.swing.actions.FindAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -27,11 +28,11 @@ public class JBricxMenuAndToolBarDelegate {
 	private CutAction cutAction;
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
+	private FindAction findAction;
 	private PreferencesAction prefsAction;
 
 	// private HelpContentAction helpContentAction;
 	// private SelectAllAction selectAllAction;
-	// private FindAction findAction;
 	// private GotoAction gotoAction;
 	// private NewAction newAction;
 	// private OpenAction openAction;
@@ -65,11 +66,11 @@ public class JBricxMenuAndToolBarDelegate {
 		cutAction = new CutAction(manager);
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
+		findAction = new FindAction(manager);
 		prefsAction = new PreferencesAction(manager);
 
 		// selectAllAction = new SelectAllAction(manager);
 		// helpAction = new HelpAction();
-		// findAction = new FindAction(manager);
 		// gotoAction = new GotoAction(manager);
 		// newAction = new NewAction(manager);
 		// penAction = new OpenAction(manager);
@@ -102,6 +103,11 @@ public class JBricxMenuAndToolBarDelegate {
 		copyButton.setAction(copyAction);
 		copyButton.setToolTipText("Copy");
 
+		// find Button
+		JButton findButton = new JButton();
+		findButton.setAction(findAction);
+		findButton.setToolTipText("Find and Replace");
+
 		// Compile Button
 		JButton compileButton = new JButton();
 		compileButton.setAction(compileAction);
@@ -120,6 +126,7 @@ public class JBricxMenuAndToolBarDelegate {
 		// Add all the buttons to the tool bar
 		mainToolBar.add(cutButton);
 		mainToolBar.add(copyButton);
+		mainToolBar.add(findButton);
 		mainToolBar.add(compileButton);
 		mainToolBar.add(dlButton);
 		mainToolBar.add(preferencesButton);
@@ -164,6 +171,10 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem copy = new JMenuItem(copyAction);
 		copy.setText("Copy");
 		editMenu.add(copy);
+		
+		JMenuItem find = new JMenuItem(findAction);
+		find.setText("Find");
+		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
@@ -173,7 +184,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem compile = new JMenuItem(compileAction);
 		compile.setText("Compile");
 		compileMenu.add(compile);
-		
+
 		JMenuItem dl = new JMenuItem(downloadAction);
 		dl.setText("Download");
 		compileMenu.add(dl);

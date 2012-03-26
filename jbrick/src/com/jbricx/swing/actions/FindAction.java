@@ -1,27 +1,33 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.FindReplaceDialog;
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action searches text
  */
-public class FindAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class FindAction extends JBricxAbstractAction {
 
-  /**
-   * FindAction constructor
-   */
-  public FindAction(final JBrickManager manager) {
-    super("&Find@Ctrl+F", ImageDescriptor.createFromFile(FindAction.class,"/images/edit-find.png"), manager);
-    setToolTipText("Find");
-  }
+	/**
+	 * FindAction constructor
+	 */
+	public FindAction(final JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/edit-find.png"), manager);
+	}
 
-  /**
-   * Runs the action
-   */
-  public void run() {
-	  	FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(), getManager().getTabFolder().getSelection().getDocument(),
-        getManager().getTabFolder().getSourceViewer());
-	  	dlg.open();
-  }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Add logic to open and run find window
+
+		// Old code from run method
+		// FindReplaceDialog dlg = new
+		// FindReplaceDialog(getManager().getShell(),
+		// getManager().getTabFolder().getSelection().getDocument(),
+		// getManager().getTabFolder().getSourceViewer());
+		// dlg.open();
+	}
 }
