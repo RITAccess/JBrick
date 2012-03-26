@@ -2,22 +2,30 @@ package com.jbricx.swing.actions;
 
 import com.jbricx.help.HelpBrowser;
 
-public class HelpContentAction extends Action {
+import java.awt.event.ActionEvent;
 
-  public HelpContentAction() {
-    super("&Help Content@F1", ImageDescriptor.createFromFile(AboutAction.class, "/images/help-browser.png"));
-    setToolTipText("Help Content");
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
+
+@SuppressWarnings("serial")
+public class HelpContentAction extends JBricxAbstractAction {
+
+  public HelpContentAction(final JBricxManager manager) {
+    super("", new ImageIcon("./resources/images/help-browser.png"), manager);
   }
 
   /**
    * Shows an about box
    */
-  public void run() {
+  public void actionPerformed(ActionEvent e){
+	/*
     HelpBrowser hb = HelpBrowser.getInstance();
     hb.open();
+    */
   }
   
-  public void runPianoLink() {
+  /*public void runPianoLink() {
     HelpBrowser hb = HelpBrowser.getInstance();
     hb.open();
     hb.getPianoHelpLink();
@@ -28,5 +36,5 @@ public class HelpContentAction extends Action {
     hb.open();
     hb.runJoistickLink();
   }
-  
+  */
 }

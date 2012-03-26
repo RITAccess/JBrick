@@ -1,23 +1,26 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action paste the contents of the clipboard into the document
  */
-public class PasteAction extends AbstractAction {
+public class PasteAction extends JBricxAbstractAction {
   /**
    * PasteAction constructor
    */
-  public PasteAction(final JBrickManager manager) {
-    super("&Paste@Ctrl+V", ImageDescriptor.createFromFile(PasteAction.class, "/images/edit-paste.png"), manager);
-    setToolTipText("Paste");
+  public PasteAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/edit-paste.png"), manager);
   }
 
   /**
    * Runs the action
    */
-  public void run() {
-    getManager().getTabFolder().paste();
+  public void actionPerformed(ActionEvent e) {
+    //getManager().getTabFolder().paste();
   }
 }

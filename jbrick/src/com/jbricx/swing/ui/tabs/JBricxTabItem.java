@@ -35,7 +35,11 @@ public class JBricxTabItem extends JEditorPane {
 	 * @return Absolute path of the file
 	 */
 	public String getFilename(){
-		return file.getAbsolutePath();
+		if (file != null){
+			return file.getAbsolutePath();
+		}
+		return null;
+		
 	}
 	
 	private void populateText(){

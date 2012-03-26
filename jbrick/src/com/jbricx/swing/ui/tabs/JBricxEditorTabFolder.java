@@ -57,7 +57,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * @return true when done
 	 */
 	boolean openNewFile(){
-		System.out.println("AAAA "+ getTabCount());
 		newFileCount++;
 		String fileName = "New File " + newFileCount;
 		JBricxTabItem newTabItem = new JBricxTabItem(this,null);

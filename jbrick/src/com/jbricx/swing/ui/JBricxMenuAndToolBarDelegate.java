@@ -15,7 +15,11 @@ import com.jbricx.swing.actions.CutAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
+import com.jbricx.swing.actions.GotoAction;
+import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
+import com.jbricx.swing.actions.PasteAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -30,15 +34,16 @@ public class JBricxMenuAndToolBarDelegate {
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
+	private GotoAction gotoAction;
+	private HelpContentAction helpContentAction;
+	private NewAction newAction;
 	private OpenAction openAction;
+	private PasteAction pasteAction;
 	private PreferencesAction prefsAction;
-
-	// private HelpContentAction helpContentAction;
-	// private SelectAllAction selectAllAction;
-	// private GotoAction gotoAction;
-	// private NewAction newAction;
 	
-	// private PasteAction pasteAction;
+	
+
+	// private SelectAllAction selectAllAction;
 	// private PrintAction printAction;
 	// private PrintPreviewAction printPreviewAction;
 	// private RedoAction redoAction;
@@ -69,15 +74,14 @@ public class JBricxMenuAndToolBarDelegate {
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
 		findAction = new FindAction(manager);
+		gotoAction = new GotoAction(manager);
+		helpContentAction = new HelpContentAction(manager);
+		newAction = new NewAction(manager);
 		openAction = new OpenAction(manager);
+		pasteAction = new PasteAction(manager);
 		prefsAction = new PreferencesAction(manager);
 
 		// selectAllAction = new SelectAllAction(manager);
-		// helpAction = new HelpAction();
-		// gotoAction = new GotoAction(manager);
-		// newAction = new NewAction(manager);
-		// 
-		// pasteAction = new PasteAction(manager);
 		// printAction = new PrintAction(manager);
 		// printPreviewAction = new PrintPreviewAction(manager);
 		// redoAction = new RedoAction(manager);
@@ -126,10 +130,31 @@ public class JBricxMenuAndToolBarDelegate {
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
-		//Open Button
+		// GoTo Button
+		JButton gotoButton = new JButton();
+		gotoButton.setAction(gotoAction);
+		gotoButton.setToolTipText("GoTo");
+		
+		// Help Content Button
+		JButton helpContentButton = new JButton();
+		helpContentButton.setAction(helpContentAction);
+		helpContentButton.setToolTipText("Help Content");
+		
+		// New Button
+		JButton newButton = new JButton();
+		newButton.setAction(newAction);
+		newButton.setToolTipText("New");
+		
+		// Open Button
 		JButton openButton = new JButton();
 		openButton.setAction(openAction);
-		openButton.setToolTipText("Open...");
+		openButton.setToolTipText("Open");
+		
+		// Paste Button
+		JButton pasteButton = new JButton();
+		pasteButton.setAction(pasteAction);
+		pasteButton.setToolTipText("Paste");
+
 
 		// Add all the buttons to the tool bar
 		mainToolBar.add(cutButton);
@@ -138,7 +163,11 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(compileButton);
 		mainToolBar.add(dlButton);
 		mainToolBar.add(preferencesButton);
+		mainToolBar.add(gotoButton);
+		mainToolBar.add(helpContentButton);
+		mainToolBar.add(newButton);
 		mainToolBar.add(openButton);
+		mainToolBar.add(pasteButton);
 
 		return mainToolBar;
 	}
@@ -171,6 +200,14 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		fileMenu.add(exit);
+		
+		JMenuItem newDoc = new JMenuItem(newAction);
+		newDoc.setText("New");
+		fileMenu.add(newDoc);
+		
+		JMenuItem open = new JMenuItem(openAction);
+		open.setText("Open");
+		fileMenu.add(open);
 
 		// Edit
 		JMenuItem cut = new JMenuItem(cutAction);
@@ -180,6 +217,10 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem copy = new JMenuItem(copyAction);
 		copy.setText("Copy");
 		editMenu.add(copy);
+		
+		JMenuItem paste = new JMenuItem(pasteAction);
+		paste.setText("Paste");
+		editMenu.add(paste);
 		
 		JMenuItem find = new JMenuItem(findAction);
 		find.setText("Find and Replace");
@@ -199,14 +240,20 @@ public class JBricxMenuAndToolBarDelegate {
 		compileMenu.add(dl);
 
 		// Tools
+		JMenuItem gt = new JMenuItem(gotoAction);
+		gt.setText("GoTo");
+		toolsMenu.add(gt);
 
 		// View
 
 		// Help
 		JMenuItem about = new JMenuItem(aboutAction);
 		about.setText("About");
-
 		helpMenu.add(about);
+		
+		JMenuItem help = new JMenuItem(helpContentAction);
+		help.setText("Help Content");
+		helpMenu.add(help);
 
 	}
 
