@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
@@ -38,7 +39,7 @@ public class JBricxMenuAndToolBarDelegate {
 //	private JoyStickAction joystickAction;
 //	private PianoAction pianoAction;
 //	private FindBrickAction findBrickAction;
-//	private CompileAction compileAction;
+	private CompileAction compileAction;
 //	private MethodTemplateAction methodTemplateAction;
 	
 	private JMenu fileMenu;
@@ -71,7 +72,7 @@ public class JBricxMenuAndToolBarDelegate {
 //		saveAsAction = new SaveAsAction(manager);
 //		undoAction = new UndoAction(manager);
 //		downloadAction = new DownloadAction(manager);
-//		compileAction = new CompileAction(manager);
+		compileAction = new CompileAction(manager);
 //		methodTemplateAction = new MethodTemplateAction(manager);
 //		findBrickAction = new FindBrickAction(manager);
 //		joystickAction = new JoyStickAction(manager);
@@ -83,20 +84,21 @@ public class JBricxMenuAndToolBarDelegate {
 	public JToolBar getToolBar(){
 		JToolBar mainToolBar = new JToolBar();
 		mainToolBar.setFloatable(false);
+
+		// Compile Button
+		JButton compileButton = new JButton();
+		compileButton.setAction(compileAction);
+		compileButton.setToolTipText("Compile");
 		
-		JButton aboutButton = new JButton();
-		aboutButton.setAction(aboutAction);
-		aboutButton.setToolTipText("About");
-		
+		// Preferences Button
 		JButton preferencesButton = new JButton();
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
-		
-		mainToolBar.add(aboutButton);
+	
+		mainToolBar.add(compileButton);
 		mainToolBar.add(preferencesButton);
 		
-		return mainToolBar;
-		
+		return mainToolBar;		
 	}
 	
 	public JMenuBar getMenuBar(){
@@ -135,7 +137,9 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		
 		//Compile
-		
+		JMenuItem compile = new JMenuItem(compileAction);
+		compile.setText("Compile");
+		compileMenu.add(compile);
 		
 		//Tools
 		

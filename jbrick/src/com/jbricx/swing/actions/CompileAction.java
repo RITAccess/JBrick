@@ -3,11 +3,9 @@ package com.jbricx.swing.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
-import com.jbricx.communications.ExitStatus;
-import com.jbricx.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.ui.JBrickManager;
 
 /**
  * Compiles the current file.
@@ -19,7 +17,7 @@ public class CompileAction extends AbstractCompilerAction {
 	 * Constructor
 	 */
 	public CompileAction(final JBricxManager manager) {
-		super("&Compile@Ctrl+Shift+B", new ImageIcon(
+		super("", new ImageIcon(
 				"./resources/images/compile.png"), manager);
 	}
 
@@ -31,19 +29,17 @@ public class CompileAction extends AbstractCompilerAction {
 
 	@Override
 	public void onSuccess() {
-		MessageDialog.openInformation(getManager().getShell(), "Compile",
-				"Compile was a success!");
+		JOptionPane.showMessageDialog(null, "Compile was a success!");
 	}
 
 	@Override
 	public void onFailure() {
-		MessageDialog.openError(getManager().getShell(), "Compile",
-				"Errors found during compilation.");
+		JOptionPane.showMessageDialog(null, "Errors found during compilation.");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		// TODO Either add logic for compilation or call super to compile
 
 	}
 }
