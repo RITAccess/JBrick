@@ -9,4 +9,7 @@ import javax.swing.JEditorPane;
  */
 public class JBricxTabItem extends JEditorPane {
 
+	public JBricxTabItem(JBricxEditorTabFolder parent){
+		
+	}
 }

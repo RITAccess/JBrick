@@ -5,8 +5,15 @@ import javax.swing.JTabbedPane;
 
 
 public class JBricxEditorTabFolder extends JTabbedPane {
+	
+	public JBricxEditorTabFolder(){
+		JBricxTabItem test = new JBricxTabItem(this);
+		this.addTab("Test",test);
+		this.setTabComponentAt(0,new ButtonTabComponent(this));
+	}
 
 	boolean open(final String filename){
+
 		return false;
 		
 	}
