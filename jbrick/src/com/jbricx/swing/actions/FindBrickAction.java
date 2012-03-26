@@ -1,42 +1,50 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.communications.NXTManager;
-import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.findbrick.FindBrickUIWindow;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This class shows an About box
  */
-public class FindBrickAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class FindBrickAction extends JBricxAbstractAction {
 
-  /**
-   * AboutAction constructor
-   */
-  public FindBrickAction(JBrickManager manager) {
-    super("&FindBrick@Ctrl+B", ImageDescriptor.createFromFile(
-        FindBrickAction.class, "/images/find_brick.png"), manager);
-    setToolTipText("Find Brick");
-    setEnabled(NXTManager.isFantomDriverLoaded());
-    // try {
-    // NXTManager.getInstance().getFantom();
-    // } catch (FantomDriverNotFoundException e) {
-    // // TODO: notify the user that the fantom driver is missing
-    // setEnabled(false);
-    // }
-  }
+	/**
+	 * AboutAction constructor
+	 */
+	public FindBrickAction(JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/find_brick.png"), manager);
+		setEnabled(NXTManager.isFantomDriverLoaded());
+		// try {
+		// NXTManager.getInstance().getFantom();
+		// } catch (FantomDriverNotFoundException e) {
+		// // TODO: notify the user that the fantom driver is missing
+		// setEnabled(false);
+		// }
+	}
 
-  /**
-   * Shows an about box
-   */
-  @Override
-  public void run() {
-    FindBrickUIWindow findBrick = new FindBrickUIWindow(getManager().getShell());
-    findBrick.setBlockOnOpen(true);
-    findBrick.open();
+	/**
+	 * Shows an about box
+	 */
+	@Override
+	public void run() {
+		FindBrickUIWindow findBrick = new FindBrickUIWindow(getManager()
+				.getShell());
+		findBrick.setBlockOnOpen(true);
+		findBrick.open();
 
-  }
+	}
 
-  public void update(boolean isDriverAvailable) {
-    setEnabled(isDriverAvailable);
-  }
+	public void update(boolean isDriverAvailable) {
+		setEnabled(isDriverAvailable);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 }

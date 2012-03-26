@@ -173,7 +173,7 @@ public class JBricxMenuAndToolBarDelegate {
 		editMenu.add(copy);
 		
 		JMenuItem find = new JMenuItem(findAction);
-		find.setText("Find");
+		find.setText("Find and Replace");
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
