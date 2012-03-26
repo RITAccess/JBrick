@@ -5,26 +5,40 @@ import javax.swing.JTabbedPane;
 
 
 public class JBricxEditorTabFolder extends JTabbedPane {
+	private int newFileCount = 0;
+	private int currentTabIndexCount = 0;
+	
 	
 	public JBricxEditorTabFolder(){
-		JBricxTabItem test = new JBricxTabItem(this);
-		this.addTab("Test",test);
-		this.setTabComponentAt(0,new ButtonTabComponent(this));
+		openNewFile();
+		openNewFile();
+		openNewFile();
+		openNewFile();
 	}
 
 	boolean open(final String filename){
 
 		return false;
-		
 	}
 
 	void closeFile(String filename){
 		
 	}
 
+	/**
+	 * Opens a new file with a default name, and blank text. Changes focus to that file.
+	 * Not sure atm why this returns true instead of being void
+	 * @return true when done
+	 */
 	boolean openNewFile(){
-		return false;
-		
+		newFileCount++;
+		String fileName = "New File " + newFileCount;
+		JBricxTabItem newTabItem = new JBricxTabItem(this);
+		this.addTab(fileName,newTabItem);
+		this.setTabComponentAt(currentTabIndexCount,new ButtonTabComponent(this));
+		currentTabIndexCount++;
+		this.setSelectedComponent(newTabItem);
+		return true;
 	}
 
 	boolean checkOverwrite(){
