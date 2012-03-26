@@ -30,6 +30,7 @@ public class JBricxLauncher {
 		}
 		
 		MainWindow mainWindow = new MainWindow();
+		mainWindow.setTitle("JBrick");
 	    mainWindow.run();
 	}
 
