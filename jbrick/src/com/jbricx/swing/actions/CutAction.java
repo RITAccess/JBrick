@@ -1,24 +1,27 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action cuts the current selection to the clipboard
  */
-public class CutAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class CutAction extends JBricxAbstractAction {
 
-  /**
-   * CutAction constructor
-   */
-  public CutAction(final JBrickManager manager) {
-    super("Cu&t@Ctrl+X", ImageDescriptor.createFromFile(CutAction.class, "/images/edit-cut.png"), manager);
-    setToolTipText("Cut");
-  }
+	/**
+	 * CutAction constructor
+	 */
+	public CutAction(final JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/edit-cut.png"), manager);
+	}
 
-  /**
-   * Runs the action
-   */
-  public void run() {
-    getManager().getTabFolder().cut();
-  }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Implement logic when Tabs are done
+
+	}
 }

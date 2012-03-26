@@ -16,7 +16,7 @@ public class ExitAction extends  JBricxAbstractAction {
 	 * ExitAction constructor
 	 */
 	public ExitAction(final JBricxManager manager) {
-		super("E&xit@Ctrl+Q", new ImageIcon("./resources/images/system-log-out.png"), manager);
+		super("", new ImageIcon("./resources/images/system-log-out.png"), manager);
 	}
 
 	/**
