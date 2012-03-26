@@ -1,9 +1,5 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.swt.custom.StyledTextPrintOptions;
-
 import com.jbricx.ui.JBrickManager;
 
 /**

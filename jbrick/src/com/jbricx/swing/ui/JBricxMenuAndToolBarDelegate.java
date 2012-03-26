@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -19,7 +20,7 @@ public class JBricxMenuAndToolBarDelegate {
 //	private CopyAction copyAction;
 //	private CutAction cutAction;
 //	private SelectAllAction selectAllAction;
-//	private ExitAction exitAction;
+	private ExitAction exitAction;
 //	private FindAction findAction;
 //	private GotoAction gotoAction;
 //	private NewAction newAction;
@@ -50,37 +51,33 @@ public class JBricxMenuAndToolBarDelegate {
 
 	public JBricxMenuAndToolBarDelegate(JBricxManager manager) {
 		this.manager = manager;
-		
-		aboutAction = new AboutAction(manager);
+			
+		aboutAction = new AboutAction(manager);		
+//		copyAction = new CopyAction(manager);
+//		cutAction = new CutAction(manager);
+//		selectAllAction = new SelectAllAction(manager);
+		exitAction = new ExitAction(manager);	
+//		helpAction = new HelpAction();
+//		findAction = new FindAction(manager);
+//		gotoAction = new GotoAction(manager);
+//		newAction = new NewAction(manager);
+//		penAction = new OpenAction(manager);
+//		pasteAction = new PasteAction(manager);
 		prefsAction = new PreferencesAction(manager);
-		/*
-		copyAction = new CopyAction(manager);
-		cutAction = new CutAction(manager);
-		selectAllAction = new SelectAllAction(manager);
-		pasteAction = new PasteAction(manager);
-		
-		exitAction = new ExitAction(manager);
-		helpAction = new HelpAction();
-		findAction = new FindAction(manager);
-		gotoAction = new GotoAction(manager);
-		newAction = new NewAction(manager);
-		penAction = new OpenAction(manager);
-
-		printAction = new PrintAction(manager);
-		printPreviewAction = new PrintPreviewAction(manager);
-		redoAction = new RedoAction(manager);
-		saveAction = new SaveAction(manager);
-		saveAsAction = new SaveAsAction(manager);
-		undoAction = new UndoAction(manager);
-		downloadAction = new DownloadAction(manager);
-		compileAction = new CompileAction(manager);
-		methodTemplateAction = new MethodTemplateAction(manager);
-		findBrickAction = new FindBrickAction(manager);
-		joystickAction = new JoyStickAction(manager);
-		pianoAction = new PianoAction(manager);
-		directControlAction = new DirectControlAction(manager);
-		NXTManager nxtManager = NXTManager.getInstance();
-		*/
+//		printAction = new PrintAction(manager);
+//		printPreviewAction = new PrintPreviewAction(manager);
+//		redoAction = new RedoAction(manager);
+//		saveAction = new SaveAction(manager);
+//		saveAsAction = new SaveAsAction(manager);
+//		undoAction = new UndoAction(manager);
+//		downloadAction = new DownloadAction(manager);
+//		compileAction = new CompileAction(manager);
+//		methodTemplateAction = new MethodTemplateAction(manager);
+//		findBrickAction = new FindBrickAction(manager);
+//		joystickAction = new JoyStickAction(manager);
+//		pianoAction = new PianoAction(manager);
+//		directControlAction = new DirectControlAction(manager);
+//		NXTManager nxtManager = NXTManager.getInstance();	
 	}
 	
 	public JToolBar getToolBar(){
@@ -127,7 +124,9 @@ public class JBricxMenuAndToolBarDelegate {
 	
 	private void makeSubMenus(){
 		//File
-		
+		JMenuItem exit = new JMenuItem(exitAction);
+		exit.setText("Quit");
+		fileMenu.add(exit);
 		
 		//Edit
 		JMenuItem prefs = new JMenuItem(prefsAction);

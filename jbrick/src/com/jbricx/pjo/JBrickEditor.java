@@ -5,13 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Shell;
-
 import com.jbricx.source.ColorManager.ColorFor;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.ui.MainWindow;
 
 /**

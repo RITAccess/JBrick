@@ -2,19 +2,12 @@ package com.jbricx.swing.ui.preferences;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.TextAttribute;
 import java.io.File;
-import java.text.AttributedString;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -29,12 +22,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 import com.jbricx.swing.ui.JBricxManager;
 
@@ -43,6 +32,7 @@ import com.jbricx.swing.ui.JBricxManager;
  * @author Daniel Larsen
  *
  */
+@SuppressWarnings("serial")
 public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JPanel mainArea;
 	

@@ -3,13 +3,9 @@
  */
 package com.jbricx.ui.joystick.hardware;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.java.games.input.Component;
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Rumbler;
 
 /**
  * Provides a rough implementation of a plugged in controller.

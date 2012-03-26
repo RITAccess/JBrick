@@ -1,14 +1,7 @@
 package annotation;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationAccess;
-import org.eclipse.jface.text.source.IAnnotationAccessExtension;
-import org.eclipse.jface.text.source.ImageUtilities;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Canvas;
+import java.awt.Canvas;
+import java.awt.Rectangle;
 
 //santa's little helper
 public class AnnotationMarkerAccess implements IAnnotationAccess,

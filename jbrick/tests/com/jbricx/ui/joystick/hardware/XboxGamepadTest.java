@@ -4,16 +4,6 @@
 package com.jbricx.ui.joystick.hardware;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.internal.verification.AtLeast;
-import org.mockito.internal.verification.Times;
 
 /**
  * @author byktol

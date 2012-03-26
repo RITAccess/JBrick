@@ -2,9 +2,6 @@ package com.jbricx.treeProviders;
 
 import java.io.File;
 
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
-
 /**
  * This class provides the content for the tree in FileTree
  */

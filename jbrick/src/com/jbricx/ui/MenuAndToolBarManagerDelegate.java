@@ -3,12 +3,6 @@
  */
 package com.jbricx.ui;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.swt.SWT;
-
 import com.jbricx.actions.AboutAction;
 import com.jbricx.actions.CompileAction;
 import com.jbricx.actions.CopyAction;

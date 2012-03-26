@@ -1,9 +1,7 @@
 package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;

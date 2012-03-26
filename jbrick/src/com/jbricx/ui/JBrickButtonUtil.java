@@ -1,9 +1,7 @@
 package com.jbricx.ui;
 
-import org.eclipse.swt.accessibility.AccessibleAdapter;
-import org.eclipse.swt.accessibility.AccessibleEvent;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
+import java.awt.Button;
+import java.awt.Label;
 
 public class JBrickButtonUtil {
 

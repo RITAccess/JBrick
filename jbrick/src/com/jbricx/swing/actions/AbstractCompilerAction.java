@@ -5,143 +5,146 @@ package com.jbricx.swing.actions;
 
 import java.io.IOException;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import javax.swing.Icon;
 
-import com.jbricx.communications.CompilerError;
-import com.jbricx.communications.ExitStatus;
-import com.jbricx.model.PersistentDocument;
-import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.tabs.JBrickTabItem;
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * Contains common methods for the Actions that are involved with the compiler
  * tool.
  * 
- * @author byktol
+ * @author Emma Nelson
  */
+@SuppressWarnings("serial")
+public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 
-public abstract class AbstractCompilerAction extends AbstractAction {
+	/**
+	 * Constructor
+	 * 
+	 * @param text - the text for the button
+	 * @param icon - image for buttons
+	 * @param manager - the JBricxManager
+	 */
+	public AbstractCompilerAction(String text, Icon icon,
+			final JBricxManager manager) {
+		super(text, icon, manager);
+	}
 
-  public AbstractCompilerAction(String text, ImageDescriptor image,
-          JBrickManager manager) {
-    super(text, image, manager);
-  }
+	// TODO Requires Tabs
+	// protected JBrickTabItem getCurrentTab() {
+	// return getManager().getTabFolder().getSelection();
+	// }
 
-  protected JBrickTabItem getCurrentTab() {
-    return getManager().getTabFolder().getSelection();
-  }
+	/**
+	 * @return the debugging table from the main window
+	 */
+//	protected Table getTable() {
+//		return (Table) getManager().getTable();
+//	}
 
-  /**
-   * @return the debugging table from the main window
-   */
+	/**
+	 * Run the common operations that require the compiling tool.
+	 */
+	public void run() {
+		// TODO
+//		if (getManager().getTabFolder().getSelection() == null)
+//			return;
+//
+//		// Save the current tab contents
+//		if (save()) {
+//			// Clear the status messages
+//			getTable().removeAll();
+//			// Clear the annotations on the border
+//			getCurrentTab().clearAnnotations();
+//			// Execute the operation
+//			final ExitStatus run = doRun(getCurrentTab().getDocument()
+//					.getFileName());
+//
+//			if (run.isOk()) {
+//				onSuccess();
+//
+//			} else {
+//				displayErrors(run);
+//				onFailure();
+//
+//			}
+//		}
+	}
 
-  protected Table getTable() {
-    return (Table) getManager().getTable();
-  }
+	/**
+	 * Save the current file.
+	 */
+	protected boolean save() {
+		// TODO Implement save action
+//		if (getCurrentTab().getViewer().getTextWidget().getCharCount() == 0) {
+//			MessageDialog.openWarning(getManager().getShell(), "Compile",
+//					"Cannot compile an empty file.");
+//			return false;
+//		}
+//
+//		PersistentDocument document = getCurrentTab().getDocument();
+//
+//		if (document.getFileName() == null) {
+//			document.setFileName(getManager().getWorkspacePath()
+//					+ System.getProperty("file.separator")
+//					+ getCurrentTab().getText() + ".bak.nxc");
+//		}
+//
+//		if (document.isDirty()) {
+//
+//			try {
+//				document.save();
+//				getManager().setStatus("Saving File . . .");
+//
+//			} catch (IOException e) {
+//				getManager().setStatus(
+//						"There was an error while saving the file");
+//				e.printStackTrace();
+//				return false;
+//			}
+//		}
 
-  /**
-   * Run the common operations that require the compiling tool.
-   */
+		return true;
+	}
 
-  public void run() {
-    if (getManager().getTabFolder().getSelection() == null)
-      return;
+	/**
+	 * Displays the error messages in the status panel.
+	 * 
+	 * @param status - The item containing all the error messages
+	 */
+	// TODO
+//	protected void displayErrors(final ExitStatus status) {
+//		// iterate throw the returned message from the compiler
+//		for (CompilerError ce : status.getCompilerErrors()) {
+//			TableItem line = new TableItem(getTable(), SWT.NONE);
+//			line.setText(ce.toString());
+//
+//			// add a new row to the table for each error
+//			int intLineNumber = Integer.parseInt(ce.getLineNumber());
+//
+//			if (getCurrentTab().getDocument().getNumberOfLines() < intLineNumber) {
+//				intLineNumber = getCurrentTab().getDocument()
+//						.getNumberOfLines();
+//			}
+//
+//			getCurrentTab().addAnnotation(intLineNumber, ce.getMessage());
+//		} // end of for
+//	}
 
-    // Save the current tab contents
-    if (save()) {
-      // Clear the status messages
-      getTable().removeAll();
-      // Clear the annotations on the border
-      getCurrentTab().clearAnnotations();
-      // Execute the operation
-      final ExitStatus run = doRun(getCurrentTab().getDocument().getFileName());
-  
-      if (run.isOk()) {
-        onSuccess();
-  
-      } else {
-        displayErrors(run);
-        onFailure();
-  
-      }
-    }
-  }
+	/**
+	 * Execute the particular compiler operation.
+	 * 
+	 * @param filename
+	 */
+//	protected abstract ExitStatus doRun(final String filename);
 
-  /**
-   * Save the current file.
-   */
+	/**
+	 * Execute after a successful operation.
+	 */
+	protected abstract void onSuccess();
 
-  protected boolean save() {
-    if (getCurrentTab().getViewer().getTextWidget().getCharCount() == 0) {
-      MessageDialog.openWarning(getManager().getShell(), "Compile",
-        "Cannot compile an empty file.");
-      return false;
-    }
-
-    PersistentDocument document = getCurrentTab().getDocument();
-
-    if (document.getFileName() == null) {
-      document.setFileName(getManager().getWorkspacePath()
-        + System.getProperty("file.separator") + getCurrentTab().getText()
-        + ".bak.nxc");
-    }
-
-    if (document.isDirty()) {
-
-      try {
-        document.save();
-        getManager().setStatus("Saving File . . .");
-
-      } catch (IOException e) {
-        getManager().setStatus("There was an error while saving the file");
-        e.printStackTrace();
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Displays the error messages in the status panel.
-   * @param status The item containing all the error messages
-   */
-
-  protected void displayErrors(final ExitStatus status) {
-    // iterate throw the returned message from the compiler
-    for (CompilerError ce : status.getCompilerErrors()) {
-      TableItem line = new TableItem(getTable(), SWT.NONE);
-      line.setText(ce.toString());
-
-      // add a new row to the table for each error
-      int intLineNumber = Integer.parseInt(ce.getLineNumber());
-
-      if (getCurrentTab().getDocument().getNumberOfLines() < intLineNumber) {
-        intLineNumber = getCurrentTab().getDocument().getNumberOfLines();
-      }
-
-      getCurrentTab().addAnnotation(intLineNumber, ce.getMessage());
-    } // end of for
-  }
-
-  /**
-   * Execute the particular compiler operation.
-   * @param filename
-   */
-
-  protected abstract ExitStatus doRun(final String filename);
-  /**
-   * Execute after a successful operation.
-   */
-
-  protected abstract void onSuccess();
-  /**
-   * Execute after a failed operation.
-   */
-
-protected abstract void onFailure();
-
+	/**
+	 * Execute after a failed operation.
+	 */
+	protected abstract void onFailure();
+}

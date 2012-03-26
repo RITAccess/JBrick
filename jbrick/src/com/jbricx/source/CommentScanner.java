@@ -1,10 +1,6 @@
 package com.jbricx.source;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.TextAttribute;
-import org.eclipse.jface.text.rules.IToken;
-import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.jface.text.rules.Token;
+import java.awt.font.TextAttribute;
 
 import com.jbricx.preferences.JBrickObserver;
 

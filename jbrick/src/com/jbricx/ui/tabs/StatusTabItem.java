@@ -1,15 +1,6 @@
 package com.jbricx.ui.tabs;
 
-import org.eclipse.jface.action.StatusLineManager;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import javax.swing.text.BadLocationException;
 
 import com.jbricx.ui.JBrickStatusUpdater;
 

@@ -1,8 +1,5 @@
 package com.jbricx.swing.actions;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.communications.ExitStatus;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;

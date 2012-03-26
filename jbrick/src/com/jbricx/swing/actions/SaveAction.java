@@ -2,8 +2,6 @@ package com.jbricx.swing.actions;
 
 import java.io.File;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.ui.JBrickManager;

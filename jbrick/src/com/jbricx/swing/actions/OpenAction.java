@@ -1,11 +1,9 @@
 package com.jbricx.swing.actions;
 
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
+import java.awt.FileDialog;
 
 import com.jbricx.pjo.FileExtensionConstants;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.ui.JBrickManager;
 
 /**

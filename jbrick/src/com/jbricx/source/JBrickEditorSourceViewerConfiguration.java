@@ -1,14 +1,5 @@
 package com.jbricx.source;
 
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.presentation.IPresentationReconciler;
-import org.eclipse.jface.text.presentation.PresentationReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
-import org.eclipse.jface.text.rules.RuleBasedScanner;
-import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
-
-import com.jbricx.pjo.JBrickEditor;
 
 /**
  * This class provides the source viewer configuration

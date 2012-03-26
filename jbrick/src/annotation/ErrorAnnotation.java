@@ -1,9 +1,8 @@
 package annotation;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.source.Annotation;
+import java.text.Annotation;
+
+import javax.swing.text.Position;
 
 // one error annotation
 public class ErrorAnnotation extends Annotation {

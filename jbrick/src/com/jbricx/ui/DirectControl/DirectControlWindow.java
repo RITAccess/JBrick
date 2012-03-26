@@ -1,32 +1,15 @@
 package com.jbricx.ui.DirectControl;
 
-import java.io.FileInputStream;
+import java.awt.Button;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.event.MouseListener;
+import java.security.acl.Group;
 import java.util.ArrayList;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.communications.NXTGadgetManager;
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.enums.Motor;
-import com.jbricx.communications.enums.Sensor;
-import com.jbricx.communications.enums.SensorMode;
-import com.jbricx.communications.enums.SensorType;
 import com.jbricx.ui.JBrickButtonUtil;
 
 /**

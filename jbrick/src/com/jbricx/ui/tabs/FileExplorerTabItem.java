@@ -3,13 +3,6 @@
  */
 package com.jbricx.ui.tabs;
 
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Listener;
-
 import com.jbricx.filters.FolderFilter;
 import com.jbricx.treeProviders.FileTreeContentProvider;
 import com.jbricx.treeProviders.FileTreeLabelProvider;

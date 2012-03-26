@@ -1,11 +1,6 @@
 package annotation;
 
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextHover;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.source.IAnnotationHover;
-import org.eclipse.jface.text.source.ISourceViewer;
+import javax.swing.text.BadLocationException;
 
 //annotation hover manager
 public class AnnotationHover implements IAnnotationHover, ITextHover {

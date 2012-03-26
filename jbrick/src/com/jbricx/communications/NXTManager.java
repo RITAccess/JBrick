@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.widgets.Display;
-
 import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.communications.enums.Motor;
 import com.jbricx.communications.enums.Sensor;

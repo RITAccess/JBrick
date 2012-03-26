@@ -3,13 +3,6 @@ package com.jbricx.ui.tabs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolder2Listener;
-import org.eclipse.swt.custom.CTabFolderEvent;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.widgets.Control;
-
 import com.jbricx.ui.MainWindow;
 
 /**

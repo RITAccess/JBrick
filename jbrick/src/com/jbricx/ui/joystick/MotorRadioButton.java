@@ -3,11 +3,8 @@
  */
 package com.jbricx.ui.joystick;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Group;
+import java.awt.Button;
+import java.security.acl.Group;
 
 import com.jbricx.communications.enums.Motor;
 

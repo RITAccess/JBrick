@@ -3,9 +3,6 @@
  */
 package com.jbricx.actions;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.ui.JBrickManager;
 
 /**

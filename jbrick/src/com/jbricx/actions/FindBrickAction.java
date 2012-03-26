@@ -1,7 +1,5 @@
 package com.jbricx.actions;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.communications.NXTManager;
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.findbrick.FindBrickUIWindow;

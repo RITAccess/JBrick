@@ -5,12 +5,6 @@ package com.jbricx.actions;
 
 import java.io.IOException;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
-
 import com.jbricx.communications.CompilerError;
 import com.jbricx.communications.ExitStatus;
 import com.jbricx.model.PersistentDocument;

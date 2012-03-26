@@ -6,11 +6,10 @@ package com.jbricx.swing.actions;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
-
-import com.jbricx.swing.ui.*;
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
- * @author byktol
+ * @author Dan Larsen
  */
 @SuppressWarnings("serial")
 public abstract class JBricxAbstractAction extends AbstractAction {

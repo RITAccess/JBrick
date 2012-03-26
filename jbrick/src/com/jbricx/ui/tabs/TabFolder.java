@@ -3,9 +3,6 @@
  */
 package com.jbricx.ui.tabs;
 
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabItem;
 
 /**
  * @author byktol

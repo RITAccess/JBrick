@@ -8,8 +8,6 @@ import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
 import com.jbricx.communications.exceptions.NXTNotFoundException;
 import com.jbricx.communications.exceptions.UnableToCreateNXTException;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
 
 /**
  * Implements the low-level methods for connecting to the Lego Brick.

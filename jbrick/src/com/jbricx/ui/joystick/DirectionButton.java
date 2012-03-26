@@ -3,12 +3,9 @@
  */
 package com.jbricx.ui.joystick;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Group;
+import java.awt.Button;
+import java.awt.event.MouseAdapter;
+import java.security.acl.Group;
 
 /**
  * Button used to move in a specific direction.

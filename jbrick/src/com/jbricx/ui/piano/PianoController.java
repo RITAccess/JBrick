@@ -9,9 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 import com.jbricx.actions.AbstractAction;
 import com.jbricx.actions.SavePianoRecording;
 import com.jbricx.communications.NXTGadgetManager;

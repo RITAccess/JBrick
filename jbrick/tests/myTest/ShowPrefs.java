@@ -1,12 +1,7 @@
 package myTest;
 import java.io.IOException;
 
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Display;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
  * This class demonstrates JFace preferences

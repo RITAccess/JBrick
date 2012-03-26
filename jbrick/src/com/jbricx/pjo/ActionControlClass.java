@@ -3,9 +3,6 @@ package com.jbricx.pjo;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
-
 import com.jbricx.ui.JBrickManager;
 import com.jbricx.ui.SafeSaveDialog;
 import com.jbricx.ui.tabs.JBrickTabItem;

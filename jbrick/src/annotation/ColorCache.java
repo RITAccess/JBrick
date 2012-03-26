@@ -1,9 +1,6 @@
 package annotation;
 
-import org.eclipse.jface.text.source.ISharedTextColors;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
+import java.awt.Color;
 
 public class ColorCache implements ISharedTextColors {
 	

@@ -5,14 +5,7 @@ package myTest;
 //Robert Harris (rbrt_harris@yahoo.com)
 
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.LineBackgroundEvent;
-import org.eclipse.swt.custom.LineBackgroundListener;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import java.awt.Color;
 
 /**
  * This class demonstrates LineBackgroundListeners

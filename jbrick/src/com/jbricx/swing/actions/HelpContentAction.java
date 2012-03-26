@@ -1,8 +1,5 @@
 package com.jbricx.swing.actions;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.help.HelpBrowser;
 
 public class HelpContentAction extends Action {

@@ -2,8 +2,6 @@ package com.jbricx.communications;
 import java.util.EnumSet;
 import java.util.HashMap;
 
-import com.sun.jna.Structure;
-
 /**
  *
  * @author Emmanuel Pirsch

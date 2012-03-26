@@ -1,25 +1,30 @@
 package com.jbricx.swing.actions;
 
-import org.eclipse.jface.resource.ImageDescriptor;
+import java.awt.event.ActionEvent;
 
-import com.jbricx.ui.JBrickManager;
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action class exits the application
  */
-public class ExitAction extends AbstractAction {
-  /**
-   * ExitAction constructor
-   */
-  public ExitAction(final JBrickManager manager) {
-    super("E&xit@Ctrl+Q", ImageDescriptor.createFromFile(PasteAction.class, "/images/system-log-out.png"), manager);
-    setToolTipText("Exit");
-  }
+@SuppressWarnings("serial")
+public class ExitAction extends  JBricxAbstractAction {
+	
+	/**
+	 * ExitAction constructor
+	 */
+	public ExitAction(final JBricxManager manager) {
+		super("E&xit@Ctrl+Q", new ImageIcon("./resources/images/system-log-out.png"), manager);
+	}
 
-  /**
-   * Exits the application
-   */
-  public void run() {
-    getManager().close();
-  }
+	/**
+	 * 
+	 */
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO close() is not implemented
+		getManager().close();
+	}
 }

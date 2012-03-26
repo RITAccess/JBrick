@@ -8,14 +8,12 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
-//import com.jbricx.preferences.JBrickObserver;
-import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorPane;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
-//import com.jbricx.ui.tabs.TabFolder;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager  {
 
 	Preferences prefs;
@@ -47,6 +45,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	  
 	/**
@@ -89,7 +88,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 * Closing logic
 	 */
 	public boolean close() {
-		// TODO Auto-generated method stub
+		// TODO Closing the program logic, button is in place
 		return false;
 	}
 

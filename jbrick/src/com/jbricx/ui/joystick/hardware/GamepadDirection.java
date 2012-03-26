@@ -3,7 +3,6 @@
  */
 package com.jbricx.ui.joystick.hardware;
 
-import net.java.games.input.Component.POV;
 
 /**
  * The different directions a gamepad can by intented to go to.

@@ -1,6 +1,5 @@
 package com.jbricx.source;
 
-import org.eclipse.jface.text.rules.IWordDetector;
 
 /**
  * This class detects constant words in a NXC file

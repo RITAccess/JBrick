@@ -7,12 +7,6 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.TooManyListenersException;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.PortInUseException;
-import javax.comm.SerialPort;
-import javax.comm.SerialPortEvent;
-import javax.comm.UnsupportedCommOperationException;
-
 import com.jbricx.communications.exceptions.NotConnectedException;
 
 /**

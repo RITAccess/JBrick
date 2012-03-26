@@ -1,5 +1,4 @@
 package com.jbricx.communications;
-import com.sun.jna.Native;
 
 /**
  *

@@ -6,12 +6,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.FontData;
-
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.printpreview.PrintPreview;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.ui.JBrickManager;
 
 /**

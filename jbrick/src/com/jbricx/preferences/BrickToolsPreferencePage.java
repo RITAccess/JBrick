@@ -3,9 +3,7 @@
  */
 package com.jbricx.preferences;
 
-import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.FileFieldEditor;
-import org.eclipse.swt.widgets.Composite;
+import java.awt.Composite;
 
 import com.jbricx.pjo.FileExtensionConstants;
 

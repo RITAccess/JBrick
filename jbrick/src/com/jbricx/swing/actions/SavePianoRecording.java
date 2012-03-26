@@ -1,11 +1,7 @@
 package com.jbricx.swing.actions;
 
+import java.awt.FileDialog;
 import java.io.File;
-
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.ui.piano.PianoRecording;

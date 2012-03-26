@@ -2,14 +2,9 @@ package com.jbricx.actions;
 
 import java.io.IOException;
 
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import com.jbricx.preferences.BrickToolsPreferencePage;
 import com.jbricx.preferences.TextPreferencePage;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.ui.JBrickManager;
 
 /**

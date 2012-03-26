@@ -1,13 +1,8 @@
 package com.jbricx.source;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 import com.jbricx.preferences.JBrickObserver;
 

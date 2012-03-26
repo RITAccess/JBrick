@@ -1,16 +1,8 @@
 package com.jbricx.treeProviders;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.LabelProviderChangedEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.program.Program;
 
 /**
  * This class provides the labels for the file tree

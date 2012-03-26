@@ -3,11 +3,10 @@
  */
 package com.jbricx.ui;
 
-import org.eclipse.jface.preference.PreferenceStore;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import java.awt.Composite;
 
 import com.jbricx.preferences.JBrickObserver;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.ui.tabs.TabFolder;
 
 /**

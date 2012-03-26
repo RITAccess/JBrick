@@ -3,10 +3,6 @@
  */
 package com.jbricx.ui.joystick.hardware;
 
-import static org.junit.Assert.assertEquals;
-import net.java.games.input.Component.POV;
-
-import org.junit.Test;
 
 /**
  * @author byktol
