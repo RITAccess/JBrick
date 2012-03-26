@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
-import com.jbricx.swing.ui.tabs.JBricxEditorPane;
+import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 
@@ -18,7 +18,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 
 	Preferences prefs;
 	
-	JBricxEditorPane editorPane;
+	JBricxEditorTabFolder editorPane;
 	JBricxStatusPane statusPane;
 	JBricxFilePane filePane;
 	
@@ -53,7 +53,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 */
 	private void buildMainWindow() {
 		
-		editorPane = new JBricxEditorPane();
+		editorPane = new JBricxEditorTabFolder();
 		statusPane = new JBricxStatusPane();
 		filePane = new JBricxFilePane();
 		

@@ -4,7 +4,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JTabbedPane;
 
 
-public class JBricxEditorPane extends JTabbedPane {
+public class JBricxEditorTabFolder extends JTabbedPane {
 
 	boolean open(final String filename){
 		return false;
