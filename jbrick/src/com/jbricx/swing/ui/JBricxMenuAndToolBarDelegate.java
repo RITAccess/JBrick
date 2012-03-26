@@ -10,24 +10,29 @@ import javax.swing.JToolBar;
 
 import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CompileAction;
+import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
 	
 	JBricxManager manager;
+	
+	// TODO Alphabetize as you add more!!!
 	private AboutAction aboutAction;
+	private CompileAction compileAction;
+	private CopyAction copyAction;
+	private ExitAction exitAction;
+	private PreferencesAction prefsAction;
+	
 //	private HelpContentAction helpContentAction;
-//	private CopyAction copyAction;
 //	private CutAction cutAction;
 //	private SelectAllAction selectAllAction;
-	private ExitAction exitAction;
 //	private FindAction findAction;
 //	private GotoAction gotoAction;
 //	private NewAction newAction;
 //	private OpenAction openAction;
 //	private PasteAction pasteAction;
-	private PreferencesAction prefsAction;
 //	private PrintAction printAction;
 //	private PrintPreviewAction printPreviewAction;
 //	private RedoAction redoAction;
@@ -39,7 +44,6 @@ public class JBricxMenuAndToolBarDelegate {
 //	private JoyStickAction joystickAction;
 //	private PianoAction pianoAction;
 //	private FindBrickAction findBrickAction;
-	private CompileAction compileAction;
 //	private MethodTemplateAction methodTemplateAction;
 	
 	private JMenu fileMenu;
@@ -53,18 +57,21 @@ public class JBricxMenuAndToolBarDelegate {
 	public JBricxMenuAndToolBarDelegate(JBricxManager manager) {
 		this.manager = manager;
 			
-		aboutAction = new AboutAction(manager);		
-//		copyAction = new CopyAction(manager);
+		// TODO Alphabetize as you add more!!!
+		aboutAction = new AboutAction(manager);
+		compileAction = new CompileAction(manager);
+		copyAction = new CopyAction(manager);
+		exitAction = new ExitAction(manager);
+		prefsAction = new PreferencesAction(manager);
+		
 //		cutAction = new CutAction(manager);
-//		selectAllAction = new SelectAllAction(manager);
-		exitAction = new ExitAction(manager);	
+//		selectAllAction = new SelectAllAction(manager);	
 //		helpAction = new HelpAction();
 //		findAction = new FindAction(manager);
 //		gotoAction = new GotoAction(manager);
 //		newAction = new NewAction(manager);
 //		penAction = new OpenAction(manager);
 //		pasteAction = new PasteAction(manager);
-		prefsAction = new PreferencesAction(manager);
 //		printAction = new PrintAction(manager);
 //		printPreviewAction = new PrintPreviewAction(manager);
 //		redoAction = new RedoAction(manager);
@@ -72,7 +79,6 @@ public class JBricxMenuAndToolBarDelegate {
 //		saveAsAction = new SaveAsAction(manager);
 //		undoAction = new UndoAction(manager);
 //		downloadAction = new DownloadAction(manager);
-		compileAction = new CompileAction(manager);
 //		methodTemplateAction = new MethodTemplateAction(manager);
 //		findBrickAction = new FindBrickAction(manager);
 //		joystickAction = new JoyStickAction(manager);
@@ -85,6 +91,11 @@ public class JBricxMenuAndToolBarDelegate {
 		JToolBar mainToolBar = new JToolBar();
 		mainToolBar.setFloatable(false);
 
+		// Copy Button
+		JButton copyButton = new JButton();
+		copyButton.setAction(copyAction);
+		copyButton.setToolTipText("Copy");
+		
 		// Compile Button
 		JButton compileButton = new JButton();
 		compileButton.setAction(compileAction);
@@ -95,6 +106,7 @@ public class JBricxMenuAndToolBarDelegate {
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 	
+		mainToolBar.add(copyButton);
 		mainToolBar.add(compileButton);
 		mainToolBar.add(preferencesButton);
 		
@@ -131,6 +143,10 @@ public class JBricxMenuAndToolBarDelegate {
 		fileMenu.add(exit);
 		
 		//Edit
+		JMenuItem copy = new JMenuItem(copyAction);
+		copy.setText("Copy");
+		editMenu.add(copy);
+		
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
 		editMenu.add(prefs);
