@@ -1,28 +1,54 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+
+import com.jbricx.ui.tabs.JBrickTabItem;
 
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
-	private int currentTabIndexCount = 0;
-	
+	private ArrayList<String> openFileList;
 	
 	public JBricxEditorTabFolder(){
+		openFileList = new ArrayList<String>();
 		openNewFile();
 		openNewFile();
 		openNewFile();
 		openNewFile();
 	}
 
-	boolean open(final String filename){
-
-		return false;
+	public void open(final String filename){
+		int tabIndex = getTabIndexByFilepath(filename);
+		System.out.println("Index is: " + tabIndex);
+		//Make a new file because it was not currently found in the list of open files
+		if(tabIndex == -1){
+			File file = new File(filename);
+			if (file.exists()) {
+				System.out.println("File exists, with a file name of " + file.getAbsolutePath());
+				JBricxTabItem newItem = new JBricxTabItem(this, file);
+				this.add(file.getName(),newItem);
+				this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
+				this.setSelectedComponent(newItem);
+				openFileList.add(file.getAbsolutePath());
+				
+			} else { //File doesn't exist, throw an error.
+				JOptionPane.showMessageDialog(null,
+						"The file you have specified does not exits!", "File Not Found!",
+			            JOptionPane.WARNING_MESSAGE);
+			}
+		}else{
+			this.setSelectedIndex(tabIndex);
+		}
 	}
 
-	void closeFile(String filename){
-		
+	void closeFile(int n){
+		JBricxTabItem w = ((JBricxTabItem)getComponentAt(n));
+		openFileList.remove(w.getFilename());
 	}
 
 	/**
@@ -31,12 +57,12 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * @return true when done
 	 */
 	boolean openNewFile(){
+		System.out.println("AAAA "+ getTabCount());
 		newFileCount++;
 		String fileName = "New File " + newFileCount;
-		JBricxTabItem newTabItem = new JBricxTabItem(this);
+		JBricxTabItem newTabItem = new JBricxTabItem(this,null);
 		this.addTab(fileName,newTabItem);
-		this.setTabComponentAt(currentTabIndexCount,new ButtonTabComponent(this));
-		currentTabIndexCount++;
+		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
 		this.setSelectedComponent(newTabItem);
 		return true;
 	}
@@ -71,10 +97,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 	}
 
-	JBricxTabItem[] getItems(){
-		return null;
-		
-	}
+	public JBricxTabItem getItem(int index) {
+	    return (JBricxTabItem)getComponentAt(index);
+	  }
 
 	int getSelectionIndex(){
 		return tabPlacement;
@@ -131,4 +156,22 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	void refreshTabItems(){
 		
 	}
+	
+	public int getTabIndexByFilepath(String filePath) {
+	    int index = -1;
+	    int count = getComponentCount();
+	    for (int i = 0; i < count-1; i++) {
+	      try {
+	        if (getItem(i).getFilename().equals(filePath)) {
+	          index = i;
+	          break;
+	        }
+	      } catch (NullPointerException ne) {
+	        // in case a new tab is opened no filename is open so.. let the
+	        // loop conitnue
+	      }
+	    }
+	    return index;
+	  }
+
 }

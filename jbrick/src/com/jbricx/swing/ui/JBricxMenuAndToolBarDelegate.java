@@ -15,6 +15,7 @@ import com.jbricx.swing.actions.CutAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
+import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PreferencesAction;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -29,13 +30,14 @@ public class JBricxMenuAndToolBarDelegate {
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
+	private OpenAction openAction;
 	private PreferencesAction prefsAction;
 
 	// private HelpContentAction helpContentAction;
 	// private SelectAllAction selectAllAction;
 	// private GotoAction gotoAction;
 	// private NewAction newAction;
-	// private OpenAction openAction;
+	
 	// private PasteAction pasteAction;
 	// private PrintAction printAction;
 	// private PrintPreviewAction printPreviewAction;
@@ -67,13 +69,14 @@ public class JBricxMenuAndToolBarDelegate {
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
 		findAction = new FindAction(manager);
+		openAction = new OpenAction(manager);
 		prefsAction = new PreferencesAction(manager);
 
 		// selectAllAction = new SelectAllAction(manager);
 		// helpAction = new HelpAction();
 		// gotoAction = new GotoAction(manager);
 		// newAction = new NewAction(manager);
-		// penAction = new OpenAction(manager);
+		// 
 		// pasteAction = new PasteAction(manager);
 		// printAction = new PrintAction(manager);
 		// printPreviewAction = new PrintPreviewAction(manager);
@@ -122,6 +125,11 @@ public class JBricxMenuAndToolBarDelegate {
 		JButton preferencesButton = new JButton();
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
+		
+		//Open Button
+		JButton openButton = new JButton();
+		openButton.setAction(openAction);
+		openButton.setToolTipText("Open...");
 
 		// Add all the buttons to the tool bar
 		mainToolBar.add(cutButton);
@@ -130,6 +138,7 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(compileButton);
 		mainToolBar.add(dlButton);
 		mainToolBar.add(preferencesButton);
+		mainToolBar.add(openButton);
 
 		return mainToolBar;
 	}

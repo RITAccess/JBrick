@@ -92,14 +92,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		return false;
 	}
 
-//	/**
-//	 * Returns the tab folder
-//	 */
-//	public TabFolder getTabFolder() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 	@Override
 	public boolean isAutoCompile() {
 		// TODO Auto-generated method stub
@@ -138,6 +130,12 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	
 	public JFrame getShell(){
 		return this;
+	}
+
+
+	@Override
+	public JBricxEditorTabFolder getTabFolder() {
+		return editorPane;
 	}
 
 

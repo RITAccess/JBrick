@@ -73,10 +73,17 @@ public class ButtonTabComponent extends JPanel {
         addActionListener(this);
     }
 
+	/**
+	 * Closes the file upon request.
+	 * Calls closeFile to remove from the internal arraylist
+	 * then calls remove to remove from the panes.
+	 */
     public void actionPerformed(ActionEvent e) {
         int i = pane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
+        	pane.closeFile(i);
             pane.remove(i);
+           
         }
     }
 
@@ -102,7 +109,7 @@ public class ButtonTabComponent extends JPanel {
         g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
         g2.dispose();
     }
-
+    
 
  final MouseListener buttonMouseListener = new MouseAdapter() {
     public void mouseEntered(MouseEvent e) {

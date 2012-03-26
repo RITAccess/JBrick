@@ -100,7 +100,7 @@ public class PreferenceStore {
 		
 	}
 	
-	public Preferences getPrefs(){
+	public static Preferences getPrefs(){
 		return prefs;
 	}
 }
