@@ -4,21 +4,24 @@ import java.io.File;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action class responds to requests to save a file
  */
-public class SaveAction extends AbstractAction {
+public class SaveAction extends JBricxAbstractAction {
 
   /**
    * SaveAction constructor
    */
-  public SaveAction(final JBrickManager manager) {
-    super("&Save@Ctrl+S", ImageDescriptor.createFromFile(SaveAction.class,
-        "/images/document-save.png"), manager);
+  public SaveAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/document-save.png"), manager);
 
-    setToolTipText("Save");
+    // setToolTipText("Save");
     // setAccelerator(SWT.CTRL + 's');
   }
 
@@ -26,8 +29,8 @@ public class SaveAction extends AbstractAction {
    * Saves the file
    */
   @Override
-  public void run() {
-    getManager().setStatus("Saving File . . .");
+  public void actionPerformed(ActionEvent e) {
+   /* getManager().setStatus("Saving File . . .");
     PersistentDocument currDoc = getManager().getTabFolder().getSelection()
         .getDocument();
 
@@ -51,5 +54,6 @@ public class SaveAction extends AbstractAction {
       CompileAction compileAction = new CompileAction(getManager());
       compileAction.run();
     }
+    */
   }
 }
