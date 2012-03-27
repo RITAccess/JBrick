@@ -23,7 +23,7 @@ public class GotoAction extends JBricxAbstractAction {
    */
   public void actionPerformed(ActionEvent arg0) {
     /*GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager()
-        .getTabFolder().getSelection().getDocument(), getManager()
+        .getTabFolder().getSelection().getPersistentDocument(), getManager()
         .getTabFolder().getSourceViewer());
     dlg.openUp();
     */

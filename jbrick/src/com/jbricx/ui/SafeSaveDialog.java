@@ -1,9 +1,11 @@
 package com.jbricx.ui;
 
+import java.awt.Component;
 import java.awt.FileDialog;
 import java.io.File;
 
 import com.jbricx.pjo.FileExtensionConstants;
+import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.ui.tabs.TabFolder;
 
 /**
@@ -14,15 +16,15 @@ public class SafeSaveDialog {
     // The wrapped FileDialog
 
     private FileDialog dlg;
-    private Shell mainShell;
-    private JBrickManager manager;
+    private Component mainShell;
+    private JBricxManager manager;
 
     /**
      * SafeSaveDialog constructor
      *
      * @param shell the parent shell
      */
-    public SafeSaveDialog(final Shell shell, final JBrickManager manager, final String workspacePath) {
+    public SafeSaveDialog(final Component shell, final JBricxManager manager, final String workspacePath) {
       this.manager = manager;
         mainShell = shell;
 

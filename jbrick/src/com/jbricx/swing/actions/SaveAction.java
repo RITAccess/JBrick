@@ -32,7 +32,7 @@ public class SaveAction extends JBricxAbstractAction {
   public void actionPerformed(ActionEvent e) {
    /* getManager().setStatus("Saving File . . .");
     PersistentDocument currDoc = getManager().getTabFolder().getSelection()
-        .getDocument();
+        .getPersistantDocument();
 
     // Check and see if it was previously saved as a backup
     if (currDoc.getFileName() != null

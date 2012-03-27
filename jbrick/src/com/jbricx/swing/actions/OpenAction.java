@@ -8,6 +8,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jbricx.swing.ui.JBricxManager;
@@ -32,9 +33,25 @@ public class OpenAction extends JBricxAbstractAction {
 	public void actionPerformed(ActionEvent arg0) {
 		Preferences prefs = PreferenceStore.getPrefs();
 		
-		final JFileChooser fileOpener = new JFileChooser(prefs.get(PreferenceStore.WRKSPC , PreferenceStore.WRKSPC_DEFAULT));
 		
-		fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
+		
+		class MyCustomFilter extends FileFilter {
+	        @Override
+	        public boolean accept(File file) {
+	            // Allow only directories, or files with ".txt" extension
+	        	return file.isDirectory() || file.getAbsolutePath().endsWith(PreferenceStore.FILTER_EXTENSION);
+	        }
+	        @Override
+	        public String getDescription() {
+	            return PreferenceStore.FILTER_NAME;
+	        }
+	    }
+		MyCustomFilter filter = new MyCustomFilter();
+		
+		final JFileChooser fileOpener = new JFileChooser();
+		fileOpener.setFileFilter(filter);
+		
+		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
 		fileOpener.showOpenDialog(getManager().getShell());
 		File selectedFile = fileOpener.getSelectedFile();
 		

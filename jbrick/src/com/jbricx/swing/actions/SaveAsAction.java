@@ -29,7 +29,7 @@ public class SaveAsAction extends JBricxAbstractAction {
 		/*
 		JBrickTabItem tabItem = getManager().getTabFolder().getSelection();
 		PersistentDocument currDoc = getManager().getTabFolder().getSelection()
-				.getDocument();
+				.getPersistentDocument();
 
 		// Check and see if it was previously saved as a backup
 		if (currDoc.getFileName() != null

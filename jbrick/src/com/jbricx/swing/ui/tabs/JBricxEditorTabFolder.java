@@ -3,12 +3,8 @@ package com.jbricx.swing.ui.tabs;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
-
-import com.jbricx.ui.tabs.JBrickTabItem;
-
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
@@ -17,14 +13,11 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public JBricxEditorTabFolder(){
 		openFileList = new ArrayList<String>();
 		openNewFile();
-		openNewFile();
-		openNewFile();
-		openNewFile();
+
 	}
 
 	public void open(final String filename){
 		int tabIndex = getTabIndexByFilepath(filename);
-		System.out.println("Index is: " + tabIndex);
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
 			File file = new File(filename);
@@ -92,24 +85,24 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 	}
 
-	void setSelection(int selectedIndex){
-		
+	public void setSelection(int selectedIndex){
+		this.setSelectedIndex(selectedIndex);
 	}
 
 	public JBricxTabItem getItem(int index) {
 	    return (JBricxTabItem)getComponentAt(index);
 	  }
 
-	int getSelectionIndex(){
+	public int getSelectionIndex(){
 		return tabPlacement;
 		
 	}
 
-	void saveFile(String filePath){
+	public void saveFile(String filePath){
 		
 	}
 
-	void insertText(String text){
+	public void insertText(String text){
 		
 	}
 
@@ -118,36 +111,36 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 	}
 
-	void undo(){
+	public void undo(){
 		
 	}
 
-	void redo(){
+	public void redo(){
 		
 	}
 
-	void cut(){
+	public void cut(){
 		
 	}
 
-	void copy(){
+	public void copy(){
 		
 	}
 
-	void paste(){
+	public void paste(){
 		
 	}
 
-	void selectAll(){
+	public void selectAll(){
 		
 	}
 
-	String getCurrentFilename(){
+	public String getCurrentFilename(){
 		return null;
 		
 	}
 
-	int getCurrentIndex(){
+	public int getCurrentIndex(){
 		return tabPlacement;
 		
 	}

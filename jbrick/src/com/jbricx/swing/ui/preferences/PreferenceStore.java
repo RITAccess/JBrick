@@ -8,11 +8,10 @@ public class PreferenceStore {
 	private static Preferences prefs;
 	
 	// Filter names for file dialogs
-	public static final String[] FILTER_NAMES = { "NXC Files (*.nxc)",
-			"All Files (*.*)" };
+	public static final String FILTER_NAME = "NXC Files (*.nxc)";
 	// TODO: add all file names
 	// Filter extensions for file dialogs
-	public static final String[] FILTER_EXTENSIONS = { "*.nxc", "*.*" };
+	public static final String FILTER_EXTENSION = ".nxc";
 	// TODO: add all file extensions
 	
 	// Preference names

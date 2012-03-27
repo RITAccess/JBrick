@@ -3,15 +3,15 @@ package com.jbricx.pjo;
 import java.io.File;
 import java.io.IOException;
 
-import com.jbricx.ui.JBrickManager;
-import com.jbricx.ui.SafeSaveDialog;
-import com.jbricx.ui.tabs.JBrickTabItem;
+import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
+
 
 public class ActionControlClass {
 
-    public static void saveFile(JBrickTabItem tabItem, boolean isSaveAs, final JBrickManager manager, final String workpath) {
+    public static void saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager, final String workpath) {
         String fileLocation = tabItem.getDocument().getFileName();
-        Shell mainShell = tabItem.getParent().getShell();
+        tabItem.getParent().getShell();
 
         boolean isNewFile = false;
         String filename = null;
