@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 
+//import javax.swing.JEditorPane;
 import javax.swing.JEditorPane;
 
 import com.jbricx.model.PersistentDocument;
@@ -27,9 +28,9 @@ public class JBricxTabItem extends JEditorPane {
 		update();
 	}
 
-	private void setUpDocument(File fileName) {
+	private void setUpDocument(File file) {
 		if (file != null) {
-			document = new PersistentDocument(fileName.getAbsolutePath());
+			document = new PersistentDocument(file.getAbsolutePath());
 			try {
 				document.open();
 			} catch (IOException e) {
@@ -40,6 +41,7 @@ public class JBricxTabItem extends JEditorPane {
 
 		}else{
 			document = new PersistentDocument();
+			this.setDocument(document);
 		}
 	}
 
@@ -48,6 +50,10 @@ public class JBricxTabItem extends JEditorPane {
 		
 	}
 
+	public boolean getScrollableTracksViewportWidth() {
+        return true;
+    }
+	
 
 	/**
 	 * Gets the absolute path(+filename)
@@ -68,11 +74,12 @@ public class JBricxTabItem extends JEditorPane {
 		//TODO: read preferences and change items
 	}
 	
-	public JBricxEditorTabFolder getParent(){
-		return parent;
-	}
+	//public JBricxEditorTabFolder getParent(){
+	//	return parent;
+	//}
 	
-	public PersistentDocument getDocument(){
-		return null;
+	
+	public PersistentDocument getPersistantDocument(){
+		return document	;
 	}
 }

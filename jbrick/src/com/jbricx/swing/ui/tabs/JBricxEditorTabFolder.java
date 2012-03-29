@@ -1,10 +1,15 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+
+import com.jbricx.swing.documentModel.DefaultSyntaxKit;
+
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
@@ -13,20 +18,27 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public JBricxEditorTabFolder(){
 		openFileList = new ArrayList<String>();
 		openNewFile();
+		openNewFile();
+
+		openNewFile();
 
 	}
 
+	/**
+	 * Opens a new file with the given filename. Makes a new tab item and hands off the file to it.
+	 * @param filename Absolute path of the filename to open.
+	 */
 	public void open(final String filename){
 		int tabIndex = getTabIndexByFilepath(filename);
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
 			File file = new File(filename);
 			if (file.exists()) {
-				System.out.println("File exists, with a file name of " + file.getAbsolutePath());
 				JBricxTabItem newItem = new JBricxTabItem(this, file);
-				this.add(file.getName(),newItem);
+				JScrollPane scroller = new JScrollPane(newItem);				
+				this.add(file.getName(),scroller);
 				this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
-				this.setSelectedComponent(newItem);
+				this.setSelectedComponent(scroller);
 				openFileList.add(file.getAbsolutePath());
 				
 			} else { //File doesn't exist, throw an error.
@@ -39,23 +51,29 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		}
 	}
 
+	/**
+	 * Have to do some black magic to get the Tab item out of the scrollpane.
+	 * @param index of the file to close.
+	 */
 	void closeFile(int n){
-		JBricxTabItem w = ((JBricxTabItem)getComponentAt(n));
+		JBricxTabItem w = (JBricxTabItem)((JScrollPane)getComponentAt(n)).getViewport().getView();
 		openFileList.remove(w.getFilename());
 	}
 
 	/**
 	 * Opens a new file with a default name, and blank text. Changes focus to that file.
-	 * Not sure atm why this returns true instead of being void
+	 * Not sure atm why this returns true instead of being void but I'm leaving it for now.
 	 * @return true when done
 	 */
 	boolean openNewFile(){
 		newFileCount++;
 		String fileName = "New File " + newFileCount;
 		JBricxTabItem newTabItem = new JBricxTabItem(this,null);
-		this.addTab(fileName,newTabItem);
+		JScrollPane scroller = new JScrollPane(newTabItem);
+		this.add(fileName,scroller);
 		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
-		this.setSelectedComponent(newTabItem);
+		this.setSelectedComponent(scroller);
+
 		return true;
 	}
 
@@ -90,7 +108,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	public JBricxTabItem getItem(int index) {
-	    return (JBricxTabItem)getComponentAt(index);
+	    return (JBricxTabItem)(((JScrollPane)getComponentAt(index)).getViewport().getView());
 	  }
 
 	public int getSelectionIndex(){

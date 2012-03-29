@@ -14,13 +14,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.PlainDocument;
 
 /**
  * This class adds persistence to the Document class
  * 
  * Handles FileIO for the document as well.
  */
-public class PersistentDocument extends DefaultStyledDocument implements DocumentListener {
+public class PersistentDocument extends PlainDocument implements DocumentListener {
 	
   private String fileName;
   private boolean dirty;
@@ -134,18 +135,21 @@ public class PersistentDocument extends DefaultStyledDocument implements Documen
 
 @Override
 public void changedUpdate(DocumentEvent arg0) {
+	//System.out.println("Changed Update " + arg0.getDocument());
 	setDirty(true);
 }
 
 @Override
 public void insertUpdate(DocumentEvent arg0) {
-	// TODO Auto-generated method stub
+	//System.out.println("insert update " + arg0.getDocument());
+	setDirty(true);
 	
 }
 
 @Override
 public void removeUpdate(DocumentEvent arg0) {
-	// TODO Auto-generated method stub
+	//System.out.println("Remove update " + arg0);
+	setDirty(true);
 	
 }
 }
