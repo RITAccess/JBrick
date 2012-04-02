@@ -297,7 +297,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		foregroundLabel = new JLabel("Foreground color: ");
 		foregroundButton = new JButton();
 		foregroundButton.setMaximumSize(new Dimension(75,25));
-		foregroundButton.setPreferredSize(new Dimension(75/Users/eknelson17/Documents/jbrick/jbrick/src/com/jbricx/swing/ui/preferences/JBricxPreferencesWindow.java,25));
+		foregroundButton.setPreferredSize(new Dimension(75,25));
 		foregroundButton.setMinimumSize(new Dimension(75,25));
 		foregroundButton.setActionCommand("foregroundButton");
 		foregroundButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
