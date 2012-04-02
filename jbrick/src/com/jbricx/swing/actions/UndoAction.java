@@ -1,24 +1,27 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action undoes the last action
  */
-public class UndoAction extends AbstractAction {
+public class UndoAction extends JBricxAbstractAction {
 
   /**
    * UndoAction constructor
    */
-  public UndoAction(final JBrickManager manager) {
-    super("&Undo@Ctrl+Z", ImageDescriptor.createFromFile(UndoAction.class, "/images/edit-undo.png"), manager);
-    setToolTipText("Undo");
+  public UndoAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/edit-undo.png"), manager);
   }
 
   /**
    * Runs the action
    */
-  public void run() {
-    getManager().getTabFolder().undo();
+  public void actionPerformed(ActionEvent e){
+    //getManager().getTabFolder().undo();
   }
 }

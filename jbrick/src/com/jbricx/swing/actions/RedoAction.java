@@ -1,25 +1,28 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action redoes the last action
  */
-public class RedoAction extends AbstractAction {
+public class RedoAction extends JBricxAbstractAction {
 
   /**
    * RedoAction constructor
    */
-  public RedoAction(final JBrickManager manager) {
-    super("&Redo@Ctrl+Y", ImageDescriptor.createFromFile(RedoAction.class, "/images/edit-redo.png"), manager);
-    setToolTipText("Redo");
+  public RedoAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/edit-redo.png"), manager);
   }
 
   /**
    * Runs the action
    */
-  public void run() {
-    getManager().getTabFolder().redo();
+  public void actionPerformed(ActionEvent e)  {
+    //getManager().getTabFolder().redo();
   }
 
   /*public void enableRedo() {

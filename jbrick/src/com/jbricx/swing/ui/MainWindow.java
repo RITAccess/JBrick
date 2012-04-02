@@ -5,8 +5,16 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.prefs.Preferences;
 
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+
+import jsyntaxpane.DefaultSyntaxKit;
+
+
+
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
@@ -57,11 +65,23 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		statusPane = new JBricxStatusPane();
 		filePane = new JBricxFilePane();
 		
+		JPanel testColors = new JPanel();
+//		DefaultSyntaxKit.initKit();
+//	        
+//	    JEditorPane codeEditor = new JEditorPane();
+//	    JScrollPane scrPane = new JScrollPane(codeEditor);
+//	        testColors.add(scrPane, BorderLayout.CENTER);
+//	        testColors.doLayout();
+//	        System.out.println(codeEditor.getParent().getClass());
+//	        codeEditor.setContentType("text/java");
+//	        codeEditor.setText("public static void main(String[] args) {\n}");
+//		
+		
 		//Contains the main Editor component, and the status component
 		upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,editorPane,statusPane);
 		upDownSplit.setOneTouchExpandable(true);
 		upDownSplit.setResizeWeight(.7);
-		upDownSplit.setMinimumSize(new Dimension(0,0));
+		//upDownSplit.setMinimumSize(new Dimension(0,0));
 		
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
@@ -91,14 +111,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		// TODO Closing the program logic, button is in place
 		return false;
 	}
-
-//	/**
-//	 * Returns the tab folder
-//	 */
-//	public TabFolder getTabFolder() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 	@Override
 	public boolean isAutoCompile() {
@@ -138,6 +150,12 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	
 	public JFrame getShell(){
 		return this;
+	}
+
+
+	@Override
+	public JBricxEditorTabFolder getTabFolder() {
+		return editorPane;
 	}
 
 

@@ -196,7 +196,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
   public boolean openNewFile() {
     // counter for the number of times a new file is opened
     newFileCount++;
-    String fileName = "New File " + newFileCount;
+    	
     // load recent files if they exist on preference (JBrickEditor.properties)
     JBrickTabItem newTabItem = new JBrickTabItem(this, SWT.CLOSE, null,
         manager, sourceViewerConfiguration);

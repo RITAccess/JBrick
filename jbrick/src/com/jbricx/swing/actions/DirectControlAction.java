@@ -2,39 +2,43 @@ package com.jbricx.swing.actions;
 
 import com.jbricx.communications.NXTManager;
 import com.jbricx.communications.NXTObserver;
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.ui.DirectControl.DirectControlUIWindow;
 
 /**
  * This action opens the DirectControl window
  */
-public class DirectControlAction extends AbstractAction implements NXTObserver {
+public class DirectControlAction extends JBricxAbstractAction /*implements NXTObserver*/ {
 
   /**
    * DirectControlAction constructor
    */
-  public DirectControlAction(JBrickManager manager) {
-    super("&DirectControl@Ctrl+D", ImageDescriptor.createFromFile(
-        AboutAction.class, "/images/direct_controller.png"), manager);
-    setToolTipText("Direct Control");
-    setEnabled(NXTManager.isFantomDriverLoaded());
-    setEnabled(false);
+  public DirectControlAction(JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/direct_controller.png"), manager);
   }
 
   /**
    * Runs the action
    */
   @Override
-  public void run() {
+  public void actionPerformed(ActionEvent e) {
+	/*
     DirectControlUIWindow control = new DirectControlUIWindow(getManager()
         .getShell());
     control.setBlockOnOpen(true);
     control.open();
+    */
   }
 
+  /*
   public void update(boolean isConnected) {
     if (isEnabled() != isConnected) {
       setEnabled(isConnected);
     }
   }
+  */
 }

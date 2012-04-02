@@ -2,41 +2,61 @@ package com.jbricx.swing.actions;
 
 import java.awt.FileDialog;
 
-import com.jbricx.pjo.FileExtensionConstants;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.prefs.Preferences;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
-import com.jbricx.ui.JBrickManager;
 
 /**
  * This action class responds to requests open a file
  */
-public class OpenAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class OpenAction extends JBricxAbstractAction {
 
   /**
    * OpenAction constructor
    */
-  public OpenAction(final JBrickManager manager) {
-    super("&Open...@Ctrl+O", ImageDescriptor.createFromFile(OpenAction.class, "/images/document-open.png"), manager);
-    setToolTipText("Open");
-  }
+  public OpenAction(final JBricxManager manager) {
+	    super("", new ImageIcon("./resources//images/document-open.png"), manager);
+	  }
 
-  /**
-   * Opens an existing file
-   */
-  public void run() {
-    // lets set the path of the dialog to the workspace
-    PreferenceStore store = getManager().getPreferences();
-    String workspacePath = store.getString(FileExtensionConstants.WRKSPC);
 
-    // Use the file dialog
-    FileDialog dlg = new FileDialog(getManager().getShell(), SWT.OPEN);
-    dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-    dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-    dlg.setFilterPath(workspacePath);
 
-    String fileName = dlg.open();
-
-    if (fileName != null) {
-      getManager().getTabFolder().open(fileName);
-    }
-  }
-}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		Preferences prefs = PreferenceStore.getPrefs();
+		
+		
+		
+		class MyCustomFilter extends FileFilter {
+	        @Override
+	        public boolean accept(File file) {
+	            // Allow only directories, or files with ".txt" extension
+	        	return file.isDirectory() || file.getAbsolutePath().endsWith(PreferenceStore.FILTER_EXTENSION);
+	        }
+	        @Override
+	        public String getDescription() {
+	            return PreferenceStore.FILTER_NAME;
+	        }
+	    }
+		MyCustomFilter filter = new MyCustomFilter();
+		
+		final JFileChooser fileOpener = new JFileChooser();
+		fileOpener.setFileFilter(filter);
+		
+		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
+		fileOpener.showOpenDialog(getManager().getShell());
+		File selectedFile = fileOpener.getSelectedFile();
+		
+		if(selectedFile.exists()){
+			getManager().getTabFolder().open(selectedFile.getAbsolutePath());
+		}
+	}
+	}

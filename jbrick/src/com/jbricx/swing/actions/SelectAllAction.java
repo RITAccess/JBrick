@@ -1,24 +1,25 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 /**
  * This action copies the current selection to the clipboard
  */
-public class SelectAllAction extends AbstractAction {
+public class SelectAllAction extends JBricxAbstractAction {
   /**
    * CopyAction constructor
    */
-  public SelectAllAction(final JBrickManager manager) {
-    super("&Select All@Ctrl+A", ImageDescriptor.createFromFile(SelectAllAction.class, "/images/edit-selectall.png"),
-        manager);
-    setToolTipText("Select All");
+  public SelectAllAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/edit-selectall.png"), manager);
   }
 
   /**
    * Runs the action
    */
-  public void run() {
-    getManager().getTabFolder().selectAll();
+  public void actionPerformed(ActionEvent e) {
+    // getManager().getTabFolder().selectAll();
   }
 }

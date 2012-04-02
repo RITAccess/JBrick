@@ -1,28 +1,31 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.GotoDialog;
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action searches text
  */
-public class GotoAction extends AbstractAction {
+@SuppressWarnings("serial")
+public class GotoAction extends JBricxAbstractAction {
   /**
    * FindAction constructor
    */
-  public GotoAction(final JBrickManager manager) {
-    super("&Goto@Ctrl+G", ImageDescriptor.createFromFile(GotoAction.class,
-        "/images/edit-find.png"), manager);
-    setToolTipText("Goto");
+  public GotoAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/edit-find.png"), manager);
   }
 
   /**
    * Runs the action
    */
-  public void run() {
-    GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager()
-        .getTabFolder().getSelection().getDocument(), getManager()
+  public void actionPerformed(ActionEvent arg0) {
+    /*GotoDialog dlg = new GotoDialog(getManager().getShell(), getManager()
+        .getTabFolder().getSelection().getPersistentDocument(), getManager()
         .getTabFolder().getSourceViewer());
     dlg.openUp();
+    */
   }
 }

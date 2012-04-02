@@ -1,26 +1,28 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action class prints the document
  */
-public class PrintAction extends AbstractAction {
+public class PrintAction extends JBricxAbstractAction {
 
 	/**
 	 * PrintAction constructor
 	 */
-	public PrintAction(final JBrickManager manager) {
-		super("&Print...@Ctrl+P", ImageDescriptor.createFromFile(
-				PrintAction.class, "/images/document-print.png"), manager);
-		setToolTipText("Print");
+	public PrintAction(final JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/document-print.png"), manager);
 	}
 
 	/**
 	 * Prints the document
 	 */
-	public void run() {
-		SourceViewer viewer = getManager().getTabFolder().getSourceViewer();
+	public void actionPerformed(ActionEvent e) {
+		/*SourceViewer viewer = getManager().getTabFolder().getSourceViewer();
 
 		StyledTextPrintOptions options = new StyledTextPrintOptions();
 
@@ -28,5 +30,6 @@ public class PrintAction extends AbstractAction {
 		options.printLineBackground = true;
 
 		viewer.print(options);
+		*/
 	}
 }

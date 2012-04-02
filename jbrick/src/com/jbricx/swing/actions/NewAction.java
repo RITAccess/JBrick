@@ -1,24 +1,27 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.ui.JBrickManager;
+import java.awt.event.ActionEvent;
+
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action class responds to requests for a new file
  */
-public class NewAction extends AbstractAction {
+public class NewAction extends JBricxAbstractAction {
 
   /**
    * NewAction constructor
    */
-  public NewAction(final JBrickManager manager) {
-    super("&New@Ctrl+N", ImageDescriptor.createFromFile(NewAction.class, "/images/document-new.png"), manager);
-    setToolTipText("New");
+  public NewAction(final JBricxManager manager) {
+	  super("", new ImageIcon("./resources/images/document-new.png"), manager);
   }
 
   /**
    * Creates a new file
    */
-  public void run() {
-    getManager().getTabFolder().openNewFile();
+  public void actionPerformed(ActionEvent e) {
+    //getManager().getTabFolder().openNewFile();
   }
 }

@@ -1,33 +1,35 @@
 package com.jbricx.swing.actions;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.ui.JBrickManager;
+import javax.swing.ImageIcon;
+
+import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.ui.tabs.JBrickTabItem;
 
 /**
  * This action class responds to requests to save a file as . . .
  */
-public class SaveAsAction extends AbstractAction {
+public class SaveAsAction extends JBricxAbstractAction {
 
 	/**
 	 * SaveAsAction constructor
 	 */
-	public SaveAsAction(final JBrickManager manager) {
-		super("Save As...", ImageDescriptor.createFromFile(SaveAsAction.class,
-				"/images/document-save-as.png"), manager);
-		setToolTipText("Save As");
+	public SaveAsAction(final JBricxManager manager) {
+		super("", new ImageIcon("./resources/images/document-save-as.png"), manager);
 	}
 
 	/**
 	 * Saves the file
 	 */
-	public void run() {
+	public void actionPerformed(ActionEvent e) {
+		/*
 		JBrickTabItem tabItem = getManager().getTabFolder().getSelection();
 		PersistentDocument currDoc = getManager().getTabFolder().getSelection()
-				.getDocument();
+				.getPersistentDocument();
 
 		// Check and see if it was previously saved as a backup
 		if (currDoc.getFileName() != null
@@ -49,5 +51,6 @@ public class SaveAsAction extends AbstractAction {
 			CompileAction compileAction = new CompileAction(getManager());
 			compileAction.run();
 		}
+		*/
 	}
 }

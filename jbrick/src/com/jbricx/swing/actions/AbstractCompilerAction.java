@@ -57,7 +57,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 //			// Clear the annotations on the border
 //			getCurrentTab().clearAnnotations();
 //			// Execute the operation
-//			final ExitStatus run = doRun(getCurrentTab().getDocument()
+//			final ExitStatus run = doRun(getCurrentTab().getPersistantDocument()
 //					.getFileName());
 //
 //			if (run.isOk()) {
@@ -82,7 +82,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 //			return false;
 //		}
 //
-//		PersistentDocument document = getCurrentTab().getDocument();
+//		PersistentDocument document = getCurrentTab().getPersistantDocument();
 //
 //		if (document.getFileName() == null) {
 //			document.setFileName(getManager().getWorkspacePath()
@@ -122,8 +122,8 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 //			// add a new row to the table for each error
 //			int intLineNumber = Integer.parseInt(ce.getLineNumber());
 //
-//			if (getCurrentTab().getDocument().getNumberOfLines() < intLineNumber) {
-//				intLineNumber = getCurrentTab().getDocument()
+//			if (getCurrentTab().getPersistantDocument().getNumberOfLines() < intLineNumber) {
+//				intLineNumber = getCurrentTab().getPersistantDocument()
 //						.getNumberOfLines();
 //			}
 //
