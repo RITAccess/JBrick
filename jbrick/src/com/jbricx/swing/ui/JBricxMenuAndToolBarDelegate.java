@@ -18,6 +18,9 @@ import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
 import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.actions.MaxEditorAction;
+import com.jbricx.swing.actions.MaxStatusAction;
+import com.jbricx.swing.actions.MaxViewerAction;
 import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PasteAction;
@@ -26,9 +29,11 @@ import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
 import com.jbricx.swing.actions.RedoAction;
+import com.jbricx.swing.actions.ResetViewAction;
 import com.jbricx.swing.actions.SaveAction;
 import com.jbricx.swing.actions.SaveAsAction;
 import com.jbricx.swing.actions.SelectAllAction;
+import com.jbricx.swing.actions.ShowHideFileViewerAction;
 import com.jbricx.swing.actions.UndoAction;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -46,6 +51,9 @@ public class JBricxMenuAndToolBarDelegate {
 	private FindAction findAction;
 	private GotoAction gotoAction;
 	private HelpContentAction helpContentAction;
+	private MaxEditorAction maxEditorAction;
+	private MaxStatusAction maxStatusAction;
+	private MaxViewerAction maxViewerAction;
 	private NewAction newAction;
 	private OpenAction openAction;
 	private PasteAction pasteAction;
@@ -54,9 +62,11 @@ public class JBricxMenuAndToolBarDelegate {
 	private PrintAction printAction;
 	private PrintPreviewAction printPreviewAction;
 	private RedoAction redoAction;
+	private ResetViewAction resetViewAction;
 	private SaveAction saveAction;
 	private SaveAsAction saveAsAction;
 	private SelectAllAction selectAllAction;
+	private ShowHideFileViewerAction showHideFileViewerAction;
 	private UndoAction undoAction;
 
 	// private JoyStickAction joystickAction;
@@ -84,6 +94,9 @@ public class JBricxMenuAndToolBarDelegate {
 		findAction = new FindAction(manager);
 		gotoAction = new GotoAction(manager);
 		helpContentAction = new HelpContentAction(manager);
+		maxEditorAction = new MaxEditorAction(manager);
+		maxStatusAction = new MaxStatusAction(manager);
+		maxViewerAction = new MaxViewerAction(manager);
 		newAction = new NewAction(manager);
 		openAction = new OpenAction(manager);
 		pasteAction = new PasteAction(manager);
@@ -92,9 +105,11 @@ public class JBricxMenuAndToolBarDelegate {
 		printAction = new PrintAction(manager);
 		printPreviewAction = new PrintPreviewAction(manager);
 		redoAction = new RedoAction(manager);
+		resetViewAction = new ResetViewAction(manager);
 		saveAction = new SaveAction(manager);
 		saveAsAction = new SaveAsAction(manager);
 		selectAllAction = new SelectAllAction(manager);
+		showHideFileViewerAction = new ShowHideFileViewerAction(manager);
 		undoAction = new UndoAction(manager);
  
 		// methodTemplateAction = new MethodTemplateAction(manager);
@@ -318,6 +333,25 @@ public class JBricxMenuAndToolBarDelegate {
 		toolsMenu.add(directControl);
 
 		// View
+		JMenuItem showHideViewer = new JMenuItem(showHideFileViewerAction);
+		showHideViewer.setText("Show/Hide File Viewer");
+		viewMenu.add(showHideViewer);
+		
+		JMenuItem maxViewer = new JMenuItem(maxViewerAction);
+		maxViewer.setText("Maximize File Viewer");
+		viewMenu.add(maxViewer);
+		
+		JMenuItem maxEditor = new JMenuItem(maxEditorAction);
+		maxEditor.setText("Maximise File Editor");
+		viewMenu.add(maxEditor);
+		
+		JMenuItem maxStatus = new JMenuItem(maxStatusAction);
+		maxStatus.setText("Maximise Status");
+		viewMenu.add(maxStatus);
+		
+		JMenuItem resetView = new JMenuItem(resetViewAction);
+		resetView.setText("Reset View");
+		viewMenu.add(resetView);
 
 		// Help
 		JMenuItem about = new JMenuItem(aboutAction);
