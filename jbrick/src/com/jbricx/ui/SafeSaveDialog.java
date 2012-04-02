@@ -4,8 +4,15 @@ import java.awt.Component;
 import java.awt.FileDialog;
 import java.io.File;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+
 import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.ui.tabs.TabFolder;
 
 /**
@@ -18,26 +25,38 @@ public class SafeSaveDialog {
     private FileDialog dlg;
     private Component mainShell;
     private JBricxManager manager;
+    private MyCustomFilter filter;
 
-    /**
-     * SafeSaveDialog constructor
-     *
-     * @param shell the parent shell
-     */
-    public SafeSaveDialog(final Component shell, final JBricxManager manager, final String workspacePath) {
-      this.manager = manager;
-        mainShell = shell;
+	/**
+	 * SafeSaveDialog constructor
+	 * 
+	 * @param shell
+	 *            the parent shell
+	 */
+	public SafeSaveDialog(final JBricxManager manager, final String workspacePath) {
+		this.manager = manager;
+		mainShell = manager.getShell();
+		filter = new MyCustomFilter();
 
-        dlg = new FileDialog(shell, SWT.SAVE);
-        dlg.setFilterNames(FileExtensionConstants.FILTER_NAMES);
-        dlg.setFilterExtensions(FileExtensionConstants.FILTER_EXTENSIONS);
-        dlg.setFilterPath(workspacePath);
+	}
+
+	class MyCustomFilter extends FileFilter {
+		@Override
+		public boolean accept(File file) {
+            // Allow only directories, or files with ".txt" extension
+        	return file.isDirectory() || file.getAbsolutePath().endsWith(PreferenceStore.FILTER_EXTENSION);
+        }
+        @Override
+        public String getDescription() {
+            return PreferenceStore.FILTER_NAME;
+        }
     }
-
-    public String open() {
+	
+	public String open() {
         // We store the selected file name in fileName
         String fileName = null;
-
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(filter);
         /* The user has finished when one of the following happens:
          * The user may provide a new file name or an existing filename
          * In case user selects an existing file:
@@ -52,29 +71,37 @@ public class SafeSaveDialog {
 
         while (!done) {
             // Open the File Dialog
-            fileName = dlg.open();
-            if (fileName == null) {
-                // User has cancelled, so quit and return
-                done = true;
-            } else {
-                // User has selected a file; see if it already exists
-                File file = new File(fileName);
-                TabFolder tabfolder = manager.getTabFolder();
+        	int returnVal = fileChooser.showSaveDialog(mainShell);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+            	// User has selected a file; see if it already exists
+                File file = fileChooser.getSelectedFile();
+                
+                JBricxEditorTabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {
                
                     // do not allow the user to specify the an existing file if already open in editor
 
-                    int tabIndex = tabfolder.contains(fileName);
+                    int tabIndex = tabfolder.getTabIndexByFilepath(fileName);
                     if (tabIndex != -1) { // check if the file is already open
-                        //tabfolder.setSelection(tabItem);
-                        MessageDialog.openWarning(mainShell, fileName + " is already in editor!",
-                                "The file you have selected is already in the editor. Please specify a different name!");
+                    	JOptionPane.showMessageDialog(mainShell,
+                    			"The file you have selected is already in the editor. Please specify a different name!",
+                    		    fileName + " is already in editor!",
+                    		    JOptionPane.WARNING_MESSAGE);
                         fileName = null;
                     } else {
-                        boolean overwrite = MessageDialog.openQuestion(mainShell, "Confirm over write", fileName + " already exists. Do you want to replace it?");
+                    	
+                    	Object[] options = {"Yes", "No"};
+                    	int overwrite = JOptionPane.showOptionDialog(mainShell,
+                    			fileName + " already exists. \n"
+                    			+ "Do you want to replace it?","Confirm over write",
+                    		    JOptionPane.YES_NO_OPTION,
+                    		    JOptionPane.QUESTION_MESSAGE,
+                    		    null,
+                    		    options,
+                    		    options[1]);
 
-                        if (!overwrite) {
+                        if (overwrite==JOptionPane.NO_OPTION) {
                             fileName = null;
                         }
                         done = true;
@@ -84,60 +111,13 @@ public class SafeSaveDialog {
                 }
                 
                 tabfolder.saveFile(fileName);
+            } else {
+            	// User has cancelled, so quit and return
+            	done = true;
+                
             }
         }
         return fileName;
     }
 
-    public String getFileName() {
-        return dlg.getFileName();
-    }
-
-    public String[] getFileNames() {
-        return dlg.getFileNames();
-    }
-
-    public String[] getFilterExtensions() {
-        return dlg.getFilterExtensions();
-    }
-
-    public String[] getFilterNames() {
-        return dlg.getFilterNames();
-    }
-
-    public String getFilterPath() {
-        return dlg.getFilterPath();
-    }
-
-    public void setFileName(String string) {
-        dlg.setFileName(string);
-    }
-
-    public void setFilterExtensions(String[] extensions) {
-        dlg.setFilterExtensions(extensions);
-    }
-
-    public void setFilterNames(String[] names) {
-        dlg.setFilterNames(names);
-    }
-
-    public void setFilterPath(String string) {
-        dlg.setFilterPath(string);
-    }
-
-    public Shell getParent() {
-        return dlg.getParent();
-    }
-
-    public int getStyle() {
-        return dlg.getStyle();
-    }
-
-    public String getText() {
-        return dlg.getText();
-    }
-
-    public void setText(String string) {
-        dlg.setText(string);
-    }
 }
