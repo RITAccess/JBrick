@@ -36,6 +36,7 @@ public class PersistentDocument extends PlainDocument implements
 	}
 
 	public PersistentDocument() {
+		fileName = null;
 		addDocumentListener(this);
 	}
 

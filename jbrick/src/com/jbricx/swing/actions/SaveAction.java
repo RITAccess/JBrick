@@ -30,7 +30,6 @@ public class SaveAction extends JBricxAbstractAction {
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-   /* getManager().setStatus("Saving File . . .");
     PersistentDocument currDoc = getManager().getTabFolder().getSelection()
         .getPersistantDocument();
 

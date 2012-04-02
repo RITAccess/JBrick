@@ -10,8 +10,8 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 public class ActionControlClass {
 
     public static void saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager, final String workpath) {
-        String fileLocation = tabItem.getDocument().getFileName();
-        tabItem.getParent().getShell();
+        String fileLocation = tabItem.getDocumentName();
+        
 
         boolean isNewFile = false;
         String filename = null;
