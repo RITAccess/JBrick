@@ -1,4 +1,4 @@
-package com.jbricx.ui;
+package com.jbricx.swing.ui;
 
 import java.awt.Component;
 import java.awt.FileDialog;
@@ -33,7 +33,7 @@ public class SafeSaveDialog {
 	 * @param shell
 	 *            the parent shell
 	 */
-	public SafeSaveDialog(final JBricxManager manager, final String workspacePath) {
+	public SafeSaveDialog(final JBricxManager manager) {
 		this.manager = manager;
 		mainShell = manager.getShell();
 		filter = new MyCustomFilter();
@@ -55,7 +55,7 @@ public class SafeSaveDialog {
 	public String open() {
         // We store the selected file name in fileName
         String fileName = null;
-        final JFileChooser fileChooser = new JFileChooser();
+        final JFileChooser fileChooser = new JFileChooser(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC,PreferenceStore.WRKSPC_DEFAULT));
         fileChooser.setFileFilter(filter);
         /* The user has finished when one of the following happens:
          * The user may provide a new file name or an existing filename
@@ -75,7 +75,8 @@ public class SafeSaveDialog {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
             	// User has selected a file; see if it already exists
                 File file = fileChooser.getSelectedFile();
-                
+                fileName = file.getAbsolutePath();
+                System.out.println(fileName+" FILENAME!");
                 JBricxEditorTabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {

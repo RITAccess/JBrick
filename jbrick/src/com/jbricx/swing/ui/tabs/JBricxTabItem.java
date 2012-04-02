@@ -47,7 +47,7 @@ public class JBricxTabItem extends JEditorPane {
 		}
 	}
 
-	private void setFile(File file2) {
+	public void setFile(File file2) {
 		this.file = file2;
 		
 	}
