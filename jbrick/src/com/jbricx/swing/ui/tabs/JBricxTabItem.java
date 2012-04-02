@@ -74,9 +74,9 @@ public class JBricxTabItem extends JEditorPane {
 		//TODO: read preferences and change items
 	}
 	
-	//public JBricxEditorTabFolder getParent(){
-	//	return parent;
-	//}
+//	public JBricxEditorTabFolder getParent(){
+//		return parent;
+//	}
 	
 	
 	public PersistentDocument getPersistantDocument(){
