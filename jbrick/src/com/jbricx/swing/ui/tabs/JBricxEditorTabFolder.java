@@ -8,8 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import com.jbricx.swing.documentModel.DefaultSyntaxKit;
-
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
