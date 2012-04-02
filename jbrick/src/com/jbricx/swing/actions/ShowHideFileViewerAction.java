@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 import com.jbricx.swing.ui.JBricxManager;
 
 public class ShowHideFileViewerAction extends JBricxAbstractAction{
+	
+	
 
 	public ShowHideFileViewerAction(final JBricxManager manager){
 		super("", new ImageIcon(""), manager);
@@ -15,6 +17,11 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		/*setDividerSize(5);
+		setDividerLocation(.getLocation().x+50)
+		setDividerSize(0);
+		setDivderLocation(.getLocation().x)
+		*/
 		
 		
 	}

@@ -78,7 +78,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,editorPane,statusPane);
 		upDownSplit.setOneTouchExpandable(true);
 		upDownSplit.setResizeWeight(.7);
-		//upDownSplit.setMinimumSize(new Dimension(0,0));
+		upDownSplit.setMinimumSize(new Dimension(0,0));
 		
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
@@ -156,6 +156,10 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	@Override
 	public JBricxEditorTabFolder getTabFolder() {
 		return editorPane;
+	}
+	
+	public JSplitPane getSplitPane(){
+		return leftRightSplit;
 	}
 
 
