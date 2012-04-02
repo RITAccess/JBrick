@@ -17,14 +17,16 @@ import com.jbricx.model.PersistentDocument;
  *
  */
 public class JBricxTabItem extends JEditorPane {
-	File file;
-	JBricxEditorTabFolder parent;
+	private File file;
+	private JBricxEditorTabFolder parent;
 	private PersistentDocument document;
+	private String name;
 	
-	public JBricxTabItem(JBricxEditorTabFolder parent,File file){
+	public JBricxTabItem(JBricxEditorTabFolder parent,File file,String fileName){
 		setFile(file);
 	    setUpDocument(file);
 		this.parent = parent;
+		this.name = fileName;
 		update();
 	}
 
@@ -78,8 +80,36 @@ public class JBricxTabItem extends JEditorPane {
 //		return parent;
 //	}
 	
-	
+	/**
+	 * Return the document of the tabbed pane (where all the data is)
+	 */
 	public PersistentDocument getPersistantDocument(){
 		return document	;
 	}
+
+	/**
+	 * Clear the error annotations on the current file, if any.
+	 */
+	public void clearAnnotations() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * returns if the document is empty
+	 * @return
+	 */
+	public boolean isEmpty(){
+		return document.isEmpty();
+	}
+	
+	/**
+	 * returns the files name (ex New File 03) in the event it has not been saved yet.
+	 * @return
+	 */
+	public String getDocumentName(){
+		return name;
+	}
+	
+	
 }

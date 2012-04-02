@@ -21,80 +21,83 @@ import javax.swing.text.PlainDocument;
  * 
  * Handles FileIO for the document as well.
  */
-public class PersistentDocument extends PlainDocument implements DocumentListener {
-	
-  private String fileName;
-  private boolean dirty;
-  
-  /**
-   * Constructor
-   */
-  public PersistentDocument(String fileName) { 
-	this.fileName = fileName;
-    addDocumentListener(this);
-  }
-  
-  public PersistentDocument(){
-	addDocumentListener(this);
-  }
+public class PersistentDocument extends PlainDocument implements
+		DocumentListener {
 
-  /**
-   * Gets whether this document is dirty
-   *
-   * @return boolean
-   */
-  public boolean isDirty() {
-    return dirty;
-  }
+	private String fileName;
+	private boolean dirty;
 
-  /**
-   * Gets the file name
-   *
-   * @return String
-   */
-  public String getFileName() {
-    return fileName;
-  }
+	/**
+	 * Constructor
+	 */
+	public PersistentDocument(String fileName) {
+		this.fileName = fileName;
+		addDocumentListener(this);
+	}
 
-  /**
-   * Sets the file name
-   *
-   * @param fileName
-   */
-  public void setFileName(String fileName) {
-	  this.fileName = fileName;
-  }
+	public PersistentDocument() {
+		addDocumentListener(this);
+	}
 
-  /**
-   * Saves the file
-   *
-   * @throws IOException if any problems
-   */
-  public void save() throws IOException {
-    if (fileName == null) {
-      throw new IllegalStateException("Can't save file with null name");
-    }
-    ObjectOutputStream oos = null;
-    try {
-    	FileOutputStream fos = new FileOutputStream (fileName);
-    	oos = new ObjectOutputStream (fos);
-    	oos.writeObject(this);
-    	
-    } finally {
-    	oos.flush();
-    	oos.close();
-    }
-  }
+	/**
+	 * Gets whether this document is dirty
+	 * 
+	 * @return boolean
+	 */
+	public boolean isDirty() {
+		return dirty;
+	}
 
-  /**
-   * Opens the file
-   *
-   * @throws IOException if any problems
-   */
-  public void open() throws IOException {
-    if (fileName == null) {
-      throw new IllegalStateException("Can't open file with null name");
-    }
+	/**
+	 * Gets the file name
+	 * 
+	 * @return String
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * Sets the file name
+	 * 
+	 * @param fileName
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	/**
+	 * Saves the file
+	 * 
+	 * @throws IOException
+	 *             if any problems
+	 */
+	public void save() throws IOException {
+		if (fileName == null) {
+			throw new IllegalStateException("Can't save file with null name");
+		}
+		ObjectOutputStream oos = null;
+		try {
+			FileOutputStream fos = new FileOutputStream(fileName);
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(this);
+
+		} finally {
+			oos.flush();
+			oos.close();
+		}
+	}
+
+	/**
+	 * Opens the file
+	 * 
+	 * @throws IOException
+	 *             if any problems
+	 */
+	public void open() throws IOException {
+		if (fileName == null) {
+			throw new IllegalStateException("Can't open file with null name");
+		}
 		String strLine;
 		FileInputStream in;
 		try {
@@ -102,12 +105,13 @@ public class PersistentDocument extends PlainDocument implements DocumentListene
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			try {
 				while ((strLine = br.readLine()) != null) {
-				   try {
-					this.insertString(this.getLength(), strLine + "\n", null);
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					try {
+						this.insertString(this.getLength(), strLine + "\n",
+								null);
+					} catch (BadLocationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -116,40 +120,48 @@ public class PersistentDocument extends PlainDocument implements DocumentListene
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}    
-  }
+		}
+	}
 
-  /**
-   * Clears the file's contents
-   */
-  public void clear() {
-    this.clear();
-    fileName = "";
-    setDirty(false);
-  }
+	/**
+	 * Clears the file's contents
+	 */
+	public void clear() {
+		this.clear();
+		fileName = "";
+		setDirty(false);
+	}
 
-  private void setDirty(boolean isDirty){
-    dirty = isDirty;
-  }
+	private void setDirty(boolean isDirty) {
+		dirty = isDirty;
+	}
 
+	@Override
+	public void changedUpdate(DocumentEvent arg0) {
+		// System.out.println("Changed Update " + arg0.getDocument());
+		setDirty(true);
+	}
 
-@Override
-public void changedUpdate(DocumentEvent arg0) {
-	//System.out.println("Changed Update " + arg0.getDocument());
-	setDirty(true);
-}
+	@Override
+	public void insertUpdate(DocumentEvent arg0) {
+		// System.out.println("insert update " + arg0.getDocument());
+		setDirty(true);
 
-@Override
-public void insertUpdate(DocumentEvent arg0) {
-	//System.out.println("insert update " + arg0.getDocument());
-	setDirty(true);
-	
-}
+	}
 
-@Override
-public void removeUpdate(DocumentEvent arg0) {
-	//System.out.println("Remove update " + arg0);
-	setDirty(true);
-	
-}
+	@Override
+	public void removeUpdate(DocumentEvent arg0) {
+		// System.out.println("Remove update " + arg0);
+		setDirty(true);
+
+	}
+
+	/**
+	 * Returns true if the document has something in it.
+	 * 
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return getLength() > 0;
+	}
 }

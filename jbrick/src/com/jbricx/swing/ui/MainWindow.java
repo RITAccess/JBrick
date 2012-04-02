@@ -5,13 +5,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.prefs.Preferences;
 
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import jsyntaxpane.DefaultSyntaxKit;
 
 
 
@@ -65,7 +62,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		statusPane = new JBricxStatusPane();
 		filePane = new JBricxFilePane();
 		
-		JPanel testColors = new JPanel();
+		//JPanel testColors = new JPanel();
 //		DefaultSyntaxKit.initKit();
 //	        
 //	    JEditorPane codeEditor = new JEditorPane();
@@ -152,6 +149,9 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		return this;
 	}
 
+	public JBricxStatusPane getStatusPane(){
+		return statusPane;
+	}
 
 	@Override
 	public JBricxEditorTabFolder getTabFolder() {

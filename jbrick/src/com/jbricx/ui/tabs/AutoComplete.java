@@ -202,7 +202,7 @@ public class AutoComplete {
 		}
 		window.getKeywordList().setSelection(0);
 		if(window.getKeywordList().getItems().length > 0)
-			selectedWord = window.getKeywordList().getItem(0);
+			selectedWord = window.getKeywordList().getSelection(0);
 	}
 	public static void autocompleteSelected() {
 		String str = textWidget.getText();

@@ -34,7 +34,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		if(tabIndex == -1){
 			File file = new File(filename);
 			if (file.exists()) {
-				JBricxTabItem newItem = new JBricxTabItem(this, file);
+				JBricxTabItem newItem = new JBricxTabItem(this, file,file.getName());
 				JScrollPane scroller = new JScrollPane(newItem);				
 				this.add(file.getName(),scroller);
 				this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
@@ -68,7 +68,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	boolean openNewFile(){
 		newFileCount++;
 		String fileName = "New File " + newFileCount;
-		JBricxTabItem newTabItem = new JBricxTabItem(this,null);
+		JBricxTabItem newTabItem = new JBricxTabItem(this,null,fileName);
 		JScrollPane scroller = new JScrollPane(newTabItem);
 		this.add(fileName,scroller);
 		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
@@ -82,8 +82,12 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 	}
 	
-	JBricxTabItem getSelection(){
-		return null;
+	/**
+	 * Uses the getSelection(index) method to get the currently focused tab item
+	 * @return
+	 */
+	public JBricxTabItem getSelection(){
+		return this.getSelection(getSelectedIndex());
 		
 	}
 /*
@@ -107,7 +111,13 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		this.setSelectedIndex(selectedIndex);
 	}
 
-	public JBricxTabItem getItem(int index) {
+	/**
+	 * Pulls out the selected JBricxTabItem for whatever purpose.
+	 * 
+	 * @param index of the requested tab item
+	 * @return the tab item requested
+	 */
+	public JBricxTabItem getSelection(int index) {
 	    return (JBricxTabItem)(((JScrollPane)getComponentAt(index)).getViewport().getView());
 	  }
 
@@ -172,7 +182,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    int count = getComponentCount();
 	    for (int i = 0; i < count-1; i++) {
 	      try {
-	        if (getItem(i).getFilename().equals(filePath)) {
+	        if (getSelection(i).getFilename().equals(filePath)) {
 	          index = i;
 	          break;
 	        }

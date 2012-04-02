@@ -6,8 +6,15 @@ package com.jbricx.swing.actions;
 import java.io.IOException;
 
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
+import com.jbricx.communications.CompilerError;
+import com.jbricx.communications.ExitStatus;
+import com.jbricx.model.PersistentDocument;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.tabs.JBricxStatusPane;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 /**
  * Contains common methods for the Actions that are involved with the compiler
@@ -30,45 +37,45 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		super(text, icon, manager);
 	}
 
-	// TODO Requires Tabs
-	// protected JBrickTabItem getCurrentTab() {
-	// return getManager().getTabFolder().getSelection();
-	// }
+	
+	protected JBricxTabItem getCurrentTab() {
+	 return getManager().getTabFolder().getSelection();
+	 }
 
 	/**
 	 * @return the debugging table from the main window
 	 */
-//	protected Table getTable() {
-//		return (Table) getManager().getTable();
-//	}
+	protected JBricxStatusPane getStatusPane() {
+		return getManager().getStatusPane();
+	}
 
 	/**
 	 * Run the common operations that require the compiling tool.
 	 */
 	public void run() {
 		// TODO
-//		if (getManager().getTabFolder().getSelection() == null)
-//			return;
-//
-//		// Save the current tab contents
-//		if (save()) {
-//			// Clear the status messages
-//			getTable().removeAll();
-//			// Clear the annotations on the border
-//			getCurrentTab().clearAnnotations();
-//			// Execute the operation
-//			final ExitStatus run = doRun(getCurrentTab().getPersistantDocument()
-//					.getFileName());
-//
-//			if (run.isOk()) {
-//				onSuccess();
-//
-//			} else {
-//				displayErrors(run);
-//				onFailure();
-//
-//			}
-//		}
+		if (getManager().getTabFolder().getSelection() == null)
+			return;
+
+		// Save the current tab contents
+		if (save()) {
+			// Clear the status messages
+			getStatusPane().removeAll();
+			// Clear the annotations on the border
+			getCurrentTab().clearAnnotations();
+			// Execute the operation
+			final ExitStatus run = doRun(getCurrentTab().getPersistantDocument()
+					.getFileName());
+
+			if (run.isOk()) {
+				onSuccess();
+
+			} else {
+				displayErrors(run);
+				onFailure();
+
+			}
+		}
 	}
 
 	/**
@@ -76,33 +83,37 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 	 */
 	protected boolean save() {
 		// TODO Implement save action
-//		if (getCurrentTab().getViewer().getTextWidget().getCharCount() == 0) {
-//			MessageDialog.openWarning(getManager().getShell(), "Compile",
-//					"Cannot compile an empty file.");
-//			return false;
-//		}
-//
-//		PersistentDocument document = getCurrentTab().getPersistantDocument();
-//
-//		if (document.getFileName() == null) {
-//			document.setFileName(getManager().getWorkspacePath()
-//					+ System.getProperty("file.separator")
-//					+ getCurrentTab().getText() + ".bak.nxc");
-//		}
-//
-//		if (document.isDirty()) {
-//
-//			try {
-//				document.save();
-//				getManager().setStatus("Saving File . . .");
-//
-//			} catch (IOException e) {
-//				getManager().setStatus(
-//						"There was an error while saving the file");
-//				e.printStackTrace();
-//				return false;
-//			}
-//		}
+		if (getCurrentTab().isEmpty()) {
+			JOptionPane.showMessageDialog(getManager().getShell(),
+				    "Cannot compile an empty file.",
+				    "Compile",
+				    JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+
+		PersistentDocument document = getCurrentTab().getPersistantDocument();
+
+		if (document.getFileName() == null) {
+			document.setFileName(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
+					+ System.getProperty("file.separator")
+					+ getCurrentTab().getDocumentName() + ".bak.nxc");
+		}
+
+		if (document.isDirty()) {
+
+			try {
+				document.save();
+
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(getManager().getShell(),
+					    "There was an error saving the current file"+
+					    e.getMessage(),
+					    "Error",
+					    JOptionPane.WARNING_MESSAGE);
+				
+				return false;
+			}
+		}
 
 		return true;
 	}
@@ -112,31 +123,30 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 	 * 
 	 * @param status - The item containing all the error messages
 	 */
-	// TODO
-//	protected void displayErrors(final ExitStatus status) {
-//		// iterate throw the returned message from the compiler
-//		for (CompilerError ce : status.getCompilerErrors()) {
-//			TableItem line = new TableItem(getTable(), SWT.NONE);
-//			line.setText(ce.toString());
-//
-//			// add a new row to the table for each error
+
+	protected void displayErrors(final ExitStatus status) {
+		JBricxStatusPane statusPane = getStatusPane();
+		// iterate throw the returned message from the compiler
+		for (CompilerError ce : status.getCompilerErrors()) {
+			statusPane.pushMessage(ce.toString());
+
+			//TODO: Logic for adding error annotations.
+			// add a new row to the table for each error
 //			int intLineNumber = Integer.parseInt(ce.getLineNumber());
-//
 //			if (getCurrentTab().getPersistantDocument().getNumberOfLines() < intLineNumber) {
 //				intLineNumber = getCurrentTab().getPersistantDocument()
 //						.getNumberOfLines();
 //			}
-//
 //			getCurrentTab().addAnnotation(intLineNumber, ce.getMessage());
-//		} // end of for
-//	}
+		} // end of for
+	}
 
 	/**
 	 * Execute the particular compiler operation.
 	 * 
 	 * @param filename
 	 */
-//	protected abstract ExitStatus doRun(final String filename);
+	protected abstract ExitStatus doRun(final String filename);
 
 	/**
 	 * Execute after a successful operation.

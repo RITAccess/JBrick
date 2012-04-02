@@ -97,6 +97,7 @@ public class PreferenceStore {
 		prefs.put(WRKSPC,WRKSPC_DEFAULT);
 		prefs.putBoolean("ranPreviously",true);
 		
+		
 	}
 	
 	public static Preferences getPrefs(){

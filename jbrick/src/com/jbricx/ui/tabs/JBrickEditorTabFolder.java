@@ -215,7 +215,7 @@ public class JBrickEditorTabFolder extends CTabFolder implements TabFolder {
 
   @Override
   public JBrickTabItem getItem(int index) {
-    return (JBrickTabItem) super.getItem(index);
+    return (JBrickTabItem) super.getSelection(index);
   }
 
   /**
