@@ -26,7 +26,7 @@ public class PreferenceStore {
 	public static final String FONT_DEFAULT  = "Seqoe UI-plain-9";
 	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")+"\\Documents\\";
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
-	public static final String NBCTOOL_DEFAULT = "nbcTool";
+	public static final String NBCTOOL_DEFAULT = "./lib/nbc.exe";
  
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();

@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
 	private ArrayList<String> openFileList;
