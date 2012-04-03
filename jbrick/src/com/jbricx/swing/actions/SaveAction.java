@@ -12,6 +12,7 @@ import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * This action class responds to requests to save a file
+ * 
  */
 public class SaveAction extends JBricxAbstractAction {
 
@@ -32,13 +33,16 @@ public class SaveAction extends JBricxAbstractAction {
   public void actionPerformed(ActionEvent e) {
     PersistentDocument currDoc = getManager().getTabFolder().getSelection()
         .getPersistantDocument();
-
+    System.out.println("Saving!");
     // Check and see if it was previously saved as a backup
     if (currDoc.getFileName() != null
         && currDoc.getFileName().endsWith(".bak.nxc")) {
-      String fname = currDoc.getFileName();
+    	
+    	System.out.println("CURR DOC IS NOT NULL OR BAK.NXC");
+      
+    	String fname = currDoc.getFileName();
       ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
-          true, getManager(), getManager().getWorkspacePath());
+          true, getManager());
       if (!currDoc.getFileName().endsWith(".bak.nxc")) {
         // File was successfully saved, cleanup the temporary file
         File f = new File(fname);
@@ -46,13 +50,13 @@ public class SaveAction extends JBricxAbstractAction {
       }
     } else {
       ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
-          false, getManager(), getManager().getWorkspacePath());
+          false, getManager());
     }
 
     if (getManager().isAutoCompile()) {
       CompileAction compileAction = new CompileAction(getManager());
       compileAction.run();
     }
-    */
+    
   }
 }

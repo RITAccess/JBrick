@@ -52,7 +52,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * Have to do some black magic to get the Tab item out of the scrollpane.
 	 * @param index of the file to close.
 	 */
-	void closeFile(int n){
+	public void closeFile(int n){
 		JBricxTabItem w = (JBricxTabItem)((JScrollPane)getComponentAt(n)).getViewport().getView();
 		openFileList.remove(w.getFilename());
 	}
@@ -161,14 +161,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	public String getCurrentFilename(){
-		return null;
+		return getSelection().getName();
 		
 	}
 
-	public int getCurrentIndex(){
-		return tabPlacement;
-		
-	}
 
 	void refreshTabItems(){
 		

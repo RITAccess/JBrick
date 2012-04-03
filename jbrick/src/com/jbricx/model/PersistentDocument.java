@@ -26,6 +26,7 @@ public class PersistentDocument extends PlainDocument implements
 
 	private String fileName;
 	private boolean dirty;
+	private File file;
 
 	/**
 	 * Constructor
@@ -48,6 +49,8 @@ public class PersistentDocument extends PlainDocument implements
 	public boolean isDirty() {
 		return dirty;
 	}
+	
+
 
 	/**
 	 * Gets the file name
