@@ -23,7 +23,9 @@ public class ResetViewAction extends JBricxAbstractAction{
 		JSplitPane upDownPane = (JSplitPane) leftRightPane.getRightComponent();
 		
 		leftRightPane.resetToPreferredSizes();
+		leftRightPane.setDividerSize(5);
 		upDownPane.resetToPreferredSizes();
+		upDownPane.setDividerSize(5);
 		
 	}
 
