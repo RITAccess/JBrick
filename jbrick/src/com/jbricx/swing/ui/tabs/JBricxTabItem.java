@@ -14,7 +14,7 @@ import com.jbricx.model.PersistentDocument;
 /**
  * An individual tab item to be used in the editor pane.
  * @author Daniel
- *
+ * do you still want to
  */
 public class JBricxTabItem extends JEditorPane {
 	private File file;
@@ -47,11 +47,18 @@ public class JBricxTabItem extends JEditorPane {
 		}
 	}
 
+	/**
+	 * Sets the file path for later use
+	 * @param file2 absolute path of the file
+	 */
 	public void setFile(File file2) {
 		this.file = file2;
 		
 	}
 
+	/**
+	 * Overwridden method to help ensure scrolling works properly #swingproblems.
+	 */
 	public boolean getScrollableTracksViewportWidth() {
         return true;
     }
@@ -76,9 +83,6 @@ public class JBricxTabItem extends JEditorPane {
 		//TODO: read preferences and change items
 	}
 	
-//	public JBricxEditorTabFolder getParent(){
-//		return parent;
-//	}
 	
 	/**
 	 * Return the document of the tabbed pane (where all the data is)
@@ -104,13 +108,18 @@ public class JBricxTabItem extends JEditorPane {
 	}
 	
 	/**
-	 * returns the files name (ex New File 03) in the event it has not been saved yet.
+	 * returns the files name with extension (ex New File 03 or test.txt) 
+	 * 
 	 * @return
 	 */
 	public String getDocumentName(){
 		return name;
 	}
 
+	/**
+	 * Sets the file name (not path).
+	 * @param filename name of file
+	 */
 	public void setFileName(String filename) {
 		name = filename;
 		

@@ -27,7 +27,13 @@ public class SaveAction extends JBricxAbstractAction {
   }
 
   /**
-   * Saves the file
+   * Saves the file.
+   * Checks if it was saved during compile (.bak)
+   * Calls actioncontrolclass which takes the filename and some other things, and saves the file
+   * (Im not sure exactly why there are 3 classes (this, actioncontrolclass,safesavedialog) to save a file
+   * but not messing with that currently.
+   * 
+   * When it is done, refreshes the tab items' title.
    */
   @Override
   public void actionPerformed(ActionEvent e) {

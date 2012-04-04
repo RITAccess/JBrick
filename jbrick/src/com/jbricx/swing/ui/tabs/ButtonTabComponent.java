@@ -20,6 +20,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+/**
+ * 
+ * @author Daniel Larsen
+ * 
+ * Used to set the individual tab's "X" button, and their title. 
+ * 
+ * Uses some swing black magic.
+ *
+ */
 public class ButtonTabComponent extends JPanel {
 	private final JBricxEditorTabFolder pane;
 	
@@ -80,8 +89,7 @@ public class ButtonTabComponent extends JPanel {
 	 */
     public void actionPerformed(ActionEvent e) {
         int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-        if (i != -1) {
-        	pane.closeFile(i);
+        if (i != -1 && pane.closeFile(i)) {
             pane.remove(i);
            
         }

@@ -1,6 +1,7 @@
 package com.jbricx.swing.ui.tabs;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -8,11 +9,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import com.jbricx.model.PersistentDocument;
+import com.jbricx.pjo.ActionControlClass;
+import com.jbricx.swing.ui.JBricxManager;
+
+
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
 	private ArrayList<String> openFileList;
+	private JBricxManager manager;
 	
-	public JBricxEditorTabFolder(){
+	public JBricxEditorTabFolder(JBricxManager  manager){
+		this.manager = manager;
 		openFileList = new ArrayList<String>();
 		openNewFile();
 		openNewFile();
@@ -49,12 +57,76 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	/**
+	 * Closes file. If the file is dirty, asks if it should be saved first. 
+	 * If true, user has chosen to close the file, or the file was not dirty.
+	 * If false, user wants to cancel the close.
 	 * Have to do some black magic to get the Tab item out of the scrollpane.
-	 * @param index of the file to close.
+	 * 
+	 * @param index
+	 *            of the file to close.
 	 */
-	public void closeFile(int n){
-		JBricxTabItem w = (JBricxTabItem)((JScrollPane)getComponentAt(n)).getViewport().getView();
-		openFileList.remove(w.getFilename());
+	public boolean closeFile(int n) {
+		JBricxTabItem tabItem = (JBricxTabItem) ((JScrollPane) getComponentAt(n))
+				.getViewport().getView();
+		String fileName = tabItem.getPersistantDocument().getFileName();
+		//User needs to be prompted to save file before closing
+		if (tabItem.getPersistantDocument().isDirty() || fileName != null
+				&& fileName.endsWith(".bak.nxc")) {
+
+			Object[] options = { "Save", "Don't save", "Cancel" };
+			int overwrite = JOptionPane
+					.showOptionDialog(
+							this,
+							"Changes to \""
+									+ tabItem.getDocumentName()
+									+ "\" have not been saved. Do you wish to save your changes?",
+							"Unsaved Changes", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, options,
+							options[0]);
+			//User wishes to save the file before closing.
+			if(overwrite == JOptionPane.YES_OPTION){
+				//TODO: Implement saving here...
+				boolean saveSuccess;
+				
+				PersistentDocument currDoc = getSelection().getPersistantDocument();
+				if (currDoc.getFileName() != null
+				        && currDoc.getFileName().endsWith(".bak.nxc")) {
+				      
+				    	String fname = currDoc.getFileName();
+				      saveSuccess = ActionControlClass.saveFile(tabItem,
+				          true, manager);
+				      if (!currDoc.getFileName().endsWith(".bak.nxc")) {
+				        // File was successfully saved, cleanup the temporary file
+				        File f = new File(fname);
+				        f.delete();
+				      }
+				    } else {
+				      saveSuccess = ActionControlClass.saveFile(tabItem,
+				          false, manager);
+				    }
+				
+				if(saveSuccess){
+					openFileList.remove(tabItem.getFilename());
+					return true;
+				}else{
+					return false;
+				}
+				
+				
+			//User said they do not wish to save (close without saving)	
+			}else if(overwrite == JOptionPane.NO_OPTION){
+				openFileList.remove(tabItem.getFilename());
+				return true;
+			//user chose to cancel or hit x. Do nothing
+			}else{
+				return false;
+			}
+		//File was already saved, do not need to prompt
+		}else{
+			
+			openFileList.remove(tabItem.getFilename());
+			return true;	
+		}
 	}
 
 	/**

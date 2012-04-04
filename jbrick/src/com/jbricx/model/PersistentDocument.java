@@ -10,12 +10,11 @@ import java.io.Writer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.PlainDocument;
 
 /**
@@ -138,26 +137,33 @@ public class PersistentDocument extends PlainDocument implements
 		setDirty(false);
 	}
 
+	/**
+	 * Sets if the document is dirty (needs saving)
+	 * @param isDirty
+	 */
 	private void setDirty(boolean isDirty) {
 		dirty = isDirty;
 	}
 
-	@Override
+	/**
+	 * On changes, sets dirty
+	 */
 	public void changedUpdate(DocumentEvent arg0) {
-		// System.out.println("Changed Update " + arg0.getDocument());
 		setDirty(true);
 	}
 
-	@Override
+	/**
+	 * On changes, sets dirty
+	 */
 	public void insertUpdate(DocumentEvent arg0) {
-		// System.out.println("insert update " + arg0.getDocument());
 		setDirty(true);
 
 	}
 
-	@Override
+	/**
+	 * On changes, sets dirty
+	 */
 	public void removeUpdate(DocumentEvent arg0) {
-		// System.out.println("Remove update " + arg0);
 		setDirty(true);
 
 	}

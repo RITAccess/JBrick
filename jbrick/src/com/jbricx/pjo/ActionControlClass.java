@@ -11,9 +11,26 @@ import com.jbricx.swing.ui.SafeSaveDialog;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 
+/**
+ * 
+ * @author Daniel Larsen 
+ * 
+ * Deals with errors from file saving and presenting them to the user.
+ * 
+ * Depending on whether save or save as will prompt for a file dialog box (SafeSaveDialog, which handles overwriting conditions)
+ * 
+ * 
+ *
+ */
 public class ActionControlClass {
 
-    public static void saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager) {
+	/**
+	 * 
+	 * @param tabItem Tab Item to save
+	 * @param isSaveAs Whether the user requested Save(false) or Save As(true)
+	 * @param manager Main Manager for reference.
+	 */
+    public static boolean saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager) {
         String fileLocation = tabItem.getFilename();
         
 
@@ -45,16 +62,20 @@ public class ActionControlClass {
                 tabItem.setFileName(filename);
                 tabItem.setFile(file);
                 manager.refreshExplorerContent();
+                return true;
             } 
         } catch (IOException e) {
         	JOptionPane.showMessageDialog(manager.getShell(),
         			"Can't save file" + fileLocation +"; " ,
         			e.getMessage(),
         		    JOptionPane.WARNING_MESSAGE);
+        	return false;
 
         } catch (NullPointerException ne) {
+        	return false;
             // user has opted to cancel the save dialog
         }
+		return true;
     }
 
     public static void showError(JFrame shell, String msg) {

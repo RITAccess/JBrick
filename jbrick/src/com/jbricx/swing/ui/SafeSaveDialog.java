@@ -76,7 +76,6 @@ public class SafeSaveDialog {
             	// User has selected a file; see if it already exists
                 File file = fileChooser.getSelectedFile();
                 fileName = file.getAbsolutePath();
-                System.out.println(fileName+" FILENAME!");
                 JBricxEditorTabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {

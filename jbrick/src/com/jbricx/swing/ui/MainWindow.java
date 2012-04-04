@@ -58,7 +58,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 */
 	private void buildMainWindow() {
 		
-		editorPane = new JBricxEditorTabFolder();
+		editorPane = new JBricxEditorTabFolder(this);
 		statusPane = new JBricxStatusPane();
 		filePane = new JBricxFilePane();
 		
