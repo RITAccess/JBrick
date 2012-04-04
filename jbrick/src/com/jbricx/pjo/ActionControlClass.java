@@ -21,14 +21,11 @@ public class ActionControlClass {
         String filename = null;
 
         if (isSaveAs || fileLocation == null) {
-        	System.out.println("Is a new file!");
             SafeSaveDialog dlg = new SafeSaveDialog(manager);
             fileLocation = dlg.open();
-            System.out.println(fileLocation);
             isNewFile = true;
         }
         try {
-        	System.out.println("Continuing on!");
             File file = new File(fileLocation);
             filename = file.getName(); // get just name of the file
             /*
@@ -45,10 +42,8 @@ public class ActionControlClass {
                 }
                 tabItem.getPersistantDocument().setFileName(fileLocation);
                 tabItem.getPersistantDocument().save();
-               //TODO tabItem.setName(filename);// to show the filename in the tab
-
+                tabItem.setFileName(filename);
                 tabItem.setFile(file);
-
                 manager.refreshExplorerContent();
             } 
         } catch (IOException e) {

@@ -166,8 +166,19 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 
-	void refreshTabItems(){
-		
+	/**
+	 * Refreshes tab items (file names), eventually text and color etc.
+	 */
+	public void refreshTabItems() {
+		int paneCount = this.getTabCount();
+		for (int i = 0; i < paneCount; i++) {
+			JBricxTabItem tab = (JBricxTabItem) (((JScrollPane) getComponentAt(i))
+					.getViewport().getView());
+			if (tab.getDocumentName() != null) {
+				this.setTitleAt(i, tab.getDocumentName());
+				this.setTabComponentAt(i, new ButtonTabComponent(this));
+			}
+		}
 	}
 	
 	public int getTabIndexByFilepath(String filePath) {

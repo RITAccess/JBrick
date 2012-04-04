@@ -33,12 +33,9 @@ public class SaveAction extends JBricxAbstractAction {
   public void actionPerformed(ActionEvent e) {
     PersistentDocument currDoc = getManager().getTabFolder().getSelection()
         .getPersistantDocument();
-    System.out.println("Saving!");
     // Check and see if it was previously saved as a backup
     if (currDoc.getFileName() != null
         && currDoc.getFileName().endsWith(".bak.nxc")) {
-    	
-    	System.out.println("CURR DOC IS NOT NULL OR BAK.NXC");
       
     	String fname = currDoc.getFileName();
       ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
@@ -57,6 +54,9 @@ public class SaveAction extends JBricxAbstractAction {
       CompileAction compileAction = new CompileAction(getManager());
       compileAction.run();
     }
+    
+    //Refresh file names
+    getManager().getTabFolder().refreshTabItems();
     
   }
 }

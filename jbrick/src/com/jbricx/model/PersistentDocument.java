@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -79,17 +81,17 @@ public class PersistentDocument extends PlainDocument implements
 	public void save() throws IOException {
 		if (fileName == null) {
 			throw new IllegalStateException("Can't save file with null name");
-		}
-		ObjectOutputStream oos = null;
-		try {
-			FileOutputStream fos = new FileOutputStream(fileName);
-			oos = new ObjectOutputStream(fos);
-			oos.writeObject(this);
+		}		
+			Writer out = new OutputStreamWriter(new FileOutputStream(fileName));
+			try {
+				out.write(this.getText(0, getLength()));
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				out.close();
+			}
 
-		} finally {
-			oos.flush();
-			oos.close();
-		}
 	}
 
 	/**

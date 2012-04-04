@@ -110,6 +110,11 @@ public class JBricxTabItem extends JEditorPane {
 	public String getDocumentName(){
 		return name;
 	}
+
+	public void setFileName(String filename) {
+		name = filename;
+		
+	}
 	
 	
 }
