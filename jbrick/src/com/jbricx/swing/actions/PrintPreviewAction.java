@@ -31,26 +31,20 @@ public class PrintPreviewAction extends JBricxAbstractAction {
    * Shows an about box
    */
   public void actionPerformed(ActionEvent e) {
-    /*final PrintPreview pp = new PrintPreview();
+    final PrintPreview pp = new PrintPreview();
     final JEditorPane ep = new JEditorPane();
     final JFrame f = new JFrame("Print Preview");
     ep.setEditable(false);
-    ep.setText(getManager().getTabFolder().getSourceViewer().getTextWidget().getText());
+    ep.setText(getManager().getTabFolder().getSelection().getText());
 
-    PreferenceStore store = getManager().getPreferences();
-    String fontProp = store.getString(FileExtensionConstants.FONT);
-    if (fontProp.length() > 0) { /* Check if the font is available * /
-      FontData[] fd = new FontData[1];
-      fd[0] = new FontData(fontProp);
-      Font toAwtFont = new java.awt.Font(fd[0].getName(), fd[0].getStyle(), fd[0].getHeight());
-      ep.setFont(toAwtFont);
-    }
+    String fontProp = PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT);
+    Font.decode(fontProp);
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     f.setSize(800, 600);
     f.add(new JScrollPane(ep));
     f.setVisible(true);
     pp.showPreview(ep);
     f.dispose();
-    */
+    
   }
 }
