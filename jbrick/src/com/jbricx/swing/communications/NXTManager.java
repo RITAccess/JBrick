@@ -310,10 +310,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 		}
 	}
 
-	public void setPreferences() {
-		this.compilerRunner.setPreferences();
-	}
-
 	/**
 	 * Upon disconnection of a brick, sets the selected connection to the next
 	 * active one. If the last brick is being disconnected, then notify the

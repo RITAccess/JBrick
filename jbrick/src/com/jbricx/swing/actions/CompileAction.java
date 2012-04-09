@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.jbricx.communications.ExitStatus;
+import com.jbricx.swing.communications.NXTManager;
+import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 
 /**
@@ -34,13 +35,11 @@ public class CompileAction extends AbstractCompilerAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Either add logic for compilation or call super to compile
-
+		this.run();
 	}
 
 	@Override
 	protected ExitStatus doRun(String filename) {
-		// TODO Auto-generated method stub
-		return null;
+		return NXTManager.getInstance().compile(filename);	
 	}
 }

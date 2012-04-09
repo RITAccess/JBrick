@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
@@ -32,6 +33,10 @@ public class CompilerRunner {
 	 */
 	private Preferences preferences;
 
+	public CompilerRunner(){
+		this.preferences = PreferenceStore.getPrefs();
+	}
+	
 	public ExitStatus download(final String filename, final String port) {
 		return run(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT), port,
 				"-d", filename);
@@ -43,6 +48,7 @@ public class CompilerRunner {
 	}
 
 	private ExitStatus run(final String... command) {
+		System.out.println(command[0] + " " +command[1]);
 		final List<CompilerError> list = new ArrayList<CompilerError>();
 		Process proc;
 		ProcessBuilder pb = new ProcessBuilder(command);
@@ -65,7 +71,7 @@ public class CompilerRunner {
 			 */
 			String line = bufferedreader.readLine();
 			while (!(line == null || line.contains("during compilation"))) {
-
+				System.out.println(line);
 				CompilerError ce = new CompilerError();
 				ce.setMessageLine(line);
 				ce.setFileLine(bufferedreader.readLine());
@@ -84,7 +90,7 @@ public class CompilerRunner {
 			}
 
 			bufferedreader.close();
-			return new ExitStatus(ExitStatus.OK, list);
+			return new ExitStatus(list.isEmpty()? ExitStatus.OK : ExitStatus.ERROR, list);
 
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -93,7 +99,4 @@ public class CompilerRunner {
 		}	
 	}
 
-	public void setPreferences() {
-		this.preferences = PreferenceStore.getPrefs();
-	}
 }

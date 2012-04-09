@@ -170,11 +170,11 @@ public class PersistentDocument extends DefaultStyledDocument implements
 	}
 
 	/**
-	 * Returns true if the document has something in it.
+	 * Returns false if the document has something in it.
 	 * 
 	 * @return
 	 */
 	public boolean isEmpty() {
-		return getLength() > 0;
+		return !(getLength() > 0);
 	}
 }
