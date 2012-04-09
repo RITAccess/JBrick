@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import com.jbricx.communications.enums.ConnectionType;
 import com.jbricx.communications.enums.Motor;
 import com.jbricx.communications.enums.Sensor;
@@ -82,7 +84,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
 	@Override
 	public void disconnect(final String name) {
-		Display.getDefault().syncExec(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (connections.containsKey(name)) {
 					connections.remove(name).disconnect();
@@ -308,8 +310,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 		}
 	}
 
-	public void setPreferences(final PreferenceStore preferences) {
-		this.compilerRunner.setPrefs(preferences);
+	public void setPreferences() {
+		this.compilerRunner.setPreferences();
 	}
 
 	/**
