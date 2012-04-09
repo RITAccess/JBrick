@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+import com.jbricx.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
 
 /**
