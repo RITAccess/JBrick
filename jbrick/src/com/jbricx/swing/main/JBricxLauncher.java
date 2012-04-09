@@ -13,8 +13,13 @@ public class JBricxLauncher {
 	public static void main(String[] args) {
 		// Look and feel code
 		try {
-			UIManager.setLookAndFeel(
-			            UIManager.getSystemLookAndFeelClassName());
+			if (System.getProperty("os.name").contains("OS X")) {
+				System.setProperty("apple.laf.useScreenMenuBar", "true");
+				System.setProperty(
+						"com.apple.mrj.application.apple.menu.about.name",
+						"JBrick");
+			}
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

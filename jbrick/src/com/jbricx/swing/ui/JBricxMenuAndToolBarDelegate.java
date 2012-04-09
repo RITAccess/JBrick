@@ -128,7 +128,6 @@ public class JBricxMenuAndToolBarDelegate {
 		cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
 		cutButton.setAction(cutAction);
 		cutButton.setToolTipText("Cut");
-	
 
 		// Copy Button
 		JButton copyButton = new JButton();
@@ -261,6 +260,7 @@ public class JBricxMenuAndToolBarDelegate {
 		makeSubMenus();
 
 		JMenuBar mainMenuBar = new JMenuBar();
+		mainMenuBar.requestFocusInWindow();
 		mainMenuBar.add(fileMenu);
 		mainMenuBar.add(editMenu);
 		mainMenuBar.add(compileMenu);
@@ -272,6 +272,9 @@ public class JBricxMenuAndToolBarDelegate {
 
 	private void makeMainMenus() {
 		fileMenu = new JMenu("File");
+		fileMenu.getAccessibleContext().setAccessibleName("File");
+		fileMenu.getAccessibleContext().setAccessibleDescription("File");
+		
 		editMenu = new JMenu("Edit");
 		compileMenu = new JMenu("Compile");
 		toolsMenu = new JMenu("Tools");
@@ -280,27 +283,17 @@ public class JBricxMenuAndToolBarDelegate {
 	}
 
 	private void makeSubMenus() {
-		// File
-		JMenuItem exit = new JMenuItem(exitAction);
-		exit.setText("Quit");
-		fileMenu.add(exit);
-		
+		// File	
 		JMenuItem newDoc = new JMenuItem(newAction);
+		newDoc.getAccessibleContext().setAccessibleName("New Document");
+		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
 		newDoc.setText("New");
 		fileMenu.add(newDoc);
 		
 		JMenuItem open = new JMenuItem(openAction);
 		open.setText("Open");
 		fileMenu.add(open);
-		
-		JMenuItem print = new JMenuItem(printAction);
-		print.setText("Print");
-		fileMenu.add(print);
-		
-		JMenuItem printPreview = new JMenuItem(printPreviewAction);
-		printPreview.setText("Print Preview");
-		fileMenu.add(printPreview);
-		
+
 		JMenuItem save = new JMenuItem(saveAction);
 		save.setText("Save");
 		fileMenu.add(save);
@@ -308,8 +301,31 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem saveAs = new JMenuItem(saveAsAction);
 		saveAs.setText("Save As");
 		fileMenu.add(saveAs);
+		
+		JMenuItem printPreview = new JMenuItem(printPreviewAction);
+		printPreview.setText("Print Preview");
+		fileMenu.add(printPreview);
+		
+		JMenuItem print = new JMenuItem(printAction);
+		print.setText("Print");
+		fileMenu.add(print);
+		
+		JMenuItem exit = new JMenuItem(exitAction);
+		exit.setText("Quit");
+		exit.getAccessibleContext().setAccessibleName("Quit");
+		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
+		fileMenu.add(exit);
 
 		// Edit
+
+		JMenuItem undo = new JMenuItem(undoAction);
+		undo.setText("Undo");
+		editMenu.add(undo);
+
+		JMenuItem redo = new JMenuItem(redoAction);
+		redo.setText("Redo");
+		editMenu.add(redo);
+		
 		JMenuItem cut = new JMenuItem(cutAction);
 		cut.setText("Cut");
 		editMenu.add(cut);
@@ -321,26 +337,18 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem paste = new JMenuItem(pasteAction);
 		paste.setText("Paste");
 		editMenu.add(paste);
-		
+
+		JMenuItem selectAll = new JMenuItem(selectAllAction);
+		selectAll.setText("Select All");
+		editMenu.add(selectAll);
+				
 		JMenuItem find = new JMenuItem(findAction);
 		find.setText("Find and Replace");
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
-		editMenu.add(prefs);
-		
-		JMenuItem redo = new JMenuItem(redoAction);
-		redo.setText("Redo");
-		editMenu.add(redo);
-		
-		JMenuItem selectAll = new JMenuItem(selectAllAction);
-		selectAll.setText("Select All");
-		editMenu.add(selectAll);
-		
-		JMenuItem undo = new JMenuItem(undoAction);
-		undo.setText("Undo");
-		editMenu.add(undo);
+		editMenu.add(prefs);	
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
@@ -374,11 +382,11 @@ public class JBricxMenuAndToolBarDelegate {
 		viewMenu.add(maxViewer);
 		
 		JMenuItem maxEditor = new JMenuItem(maxEditorAction);
-		maxEditor.setText("Maximise File Editor");
+		maxEditor.setText("Maximize File Editor");
 		viewMenu.add(maxEditor);
 		
 		JMenuItem maxStatus = new JMenuItem(maxStatusAction);
-		maxStatus.setText("Maximise Status");
+		maxStatus.setText("Maximize Status");
 		viewMenu.add(maxStatus);
 		
 		JMenuItem resetView = new JMenuItem(resetViewAction);

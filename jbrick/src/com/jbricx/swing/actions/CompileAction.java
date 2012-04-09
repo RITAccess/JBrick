@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import com.jbricx.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 
 /**
@@ -21,12 +22,6 @@ public class CompileAction extends AbstractCompilerAction {
 				"./resources/images/compile.png"), manager);
 	}
 
-	// TODO Add in when AbstractCompilerAction is done
-//	@Override
-//	public ExitStatus doRun(final String filename) {
-//		return NXTManager.getInstance().compile(filename);
-//	}
-
 	@Override
 	public void onSuccess() {
 		JOptionPane.showMessageDialog(null, "Compile was a success!");
@@ -41,5 +36,11 @@ public class CompileAction extends AbstractCompilerAction {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Either add logic for compilation or call super to compile
 
+	}
+
+	@Override
+	protected ExitStatus doRun(String filename) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
