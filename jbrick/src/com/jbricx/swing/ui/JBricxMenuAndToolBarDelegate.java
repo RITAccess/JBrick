@@ -284,11 +284,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 	private void makeSubMenus() {
 		// File
-		JMenuItem exit = new JMenuItem(exitAction);
-		exit.setText("Quit");
-		exit.getAccessibleContext().setAccessibleName("Quit");
-		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
-		fileMenu.add(exit);
+		
 		
 		JMenuItem newDoc = new JMenuItem(newAction);
 		newDoc.getAccessibleContext().setAccessibleName("New Document");
@@ -299,15 +295,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem open = new JMenuItem(openAction);
 		open.setText("Open");
 		fileMenu.add(open);
-		
-		JMenuItem print = new JMenuItem(printAction);
-		print.setText("Print");
-		fileMenu.add(print);
-		
-		JMenuItem printPreview = new JMenuItem(printPreviewAction);
-		printPreview.setText("Print Preview");
-		fileMenu.add(printPreview);
-		
+
 		JMenuItem save = new JMenuItem(saveAction);
 		save.setText("Save");
 		fileMenu.add(save);
@@ -315,8 +303,31 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem saveAs = new JMenuItem(saveAsAction);
 		saveAs.setText("Save As");
 		fileMenu.add(saveAs);
+		
+		JMenuItem printPreview = new JMenuItem(printPreviewAction);
+		printPreview.setText("Print Preview");
+		fileMenu.add(printPreview);
+		
+		JMenuItem print = new JMenuItem(printAction);
+		print.setText("Print");
+		fileMenu.add(print);
+		
+		JMenuItem exit = new JMenuItem(exitAction);
+		exit.setText("Quit");
+		exit.getAccessibleContext().setAccessibleName("Quit");
+		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
+		fileMenu.add(exit);
 
 		// Edit
+
+		JMenuItem undo = new JMenuItem(undoAction);
+		undo.setText("Undo");
+		editMenu.add(undo);
+
+		JMenuItem redo = new JMenuItem(redoAction);
+		redo.setText("Redo");
+		editMenu.add(redo);
+		
 		JMenuItem cut = new JMenuItem(cutAction);
 		cut.setText("Cut");
 		editMenu.add(cut);
@@ -328,26 +339,18 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem paste = new JMenuItem(pasteAction);
 		paste.setText("Paste");
 		editMenu.add(paste);
-		
+
+		JMenuItem selectAll = new JMenuItem(selectAllAction);
+		selectAll.setText("Select All");
+		editMenu.add(selectAll);
+				
 		JMenuItem find = new JMenuItem(findAction);
 		find.setText("Find and Replace");
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
-		editMenu.add(prefs);
-		
-		JMenuItem redo = new JMenuItem(redoAction);
-		redo.setText("Redo");
-		editMenu.add(redo);
-		
-		JMenuItem selectAll = new JMenuItem(selectAllAction);
-		selectAll.setText("Select All");
-		editMenu.add(selectAll);
-		
-		JMenuItem undo = new JMenuItem(undoAction);
-		undo.setText("Undo");
-		editMenu.add(undo);
+		editMenu.add(prefs);	
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
