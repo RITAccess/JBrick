@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.PlainDocument;
 
 /**
@@ -22,7 +23,7 @@ import javax.swing.text.PlainDocument;
  * 
  * Handles FileIO for the document as well.
  */
-public class PersistentDocument extends PlainDocument implements
+public class PersistentDocument extends DefaultStyledDocument implements
 		DocumentListener {
 
 	private String fileName;

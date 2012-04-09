@@ -128,6 +128,7 @@ public class JBricxMenuAndToolBarDelegate {
 		cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
 		cutButton.setAction(cutAction);
 		cutButton.setToolTipText("Cut");
+	
 
 		// Copy Button
 		JButton copyButton = new JButton();
