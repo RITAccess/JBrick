@@ -124,102 +124,133 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Cut Button
 		JButton cutButton = new JButton();
+		cutButton.getAccessibleContext().setAccessibleName("Cut");
+		cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
 		cutButton.setAction(cutAction);
 		cutButton.setToolTipText("Cut");
 
 		// Copy Button
 		JButton copyButton = new JButton();
+		copyButton.getAccessibleContext().setAccessibleName("Copy");
+		copyButton.getAccessibleContext().setAccessibleDescription("Copy text");
 		copyButton.setAction(copyAction);
 		copyButton.setToolTipText("Copy");
 
 		// find Button
 		JButton findButton = new JButton();
+		findButton.getAccessibleContext().setAccessibleName("Find");
+		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
 		findButton.setToolTipText("Find and Replace");
 
 		// Compile Button
 		JButton compileButton = new JButton();
+		compileButton.getAccessibleContext().setAccessibleName("Compile");
+		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
 		compileButton.setToolTipText("Compile");
 
 		// Download Button
 		JButton dlButton = new JButton();
+		dlButton.getAccessibleContext().setAccessibleName("Download");
+		dlButton.getAccessibleContext().setAccessibleDescription("Download program on to brick");
 		dlButton.setAction(downloadAction);
 		dlButton.setToolTipText("Download");
 
 		// Preferences Button
 		JButton preferencesButton = new JButton();
+		preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
+		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
 		JButton gotoButton = new JButton();
+		gotoButton.getAccessibleContext().setAccessibleName("Go to");
+		gotoButton.getAccessibleContext().setAccessibleDescription("Go to a specific location");
 		gotoButton.setAction(gotoAction);
 		gotoButton.setToolTipText("GoTo");
 		
 		// Help Content Button
 		JButton helpContentButton = new JButton();
+		helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
+		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
 		JButton newButton = new JButton();
+		newButton.getAccessibleContext().setAccessibleName("New File");
+		newButton.getAccessibleContext().setAccessibleDescription("Opens a new file");
 		newButton.setAction(newAction);
 		newButton.setToolTipText("New");
 		
 		// Open Button
 		JButton openButton = new JButton();
+		openButton.getAccessibleContext().setAccessibleName("Open file");
+		openButton.getAccessibleContext().setAccessibleDescription("Opens the chosen file");
 		openButton.setAction(openAction);
 		openButton.setToolTipText("Open");
 		
 		// Paste Button
 		JButton pasteButton = new JButton();
+		pasteButton.getAccessibleContext().setAccessibleName("Paste");
+		pasteButton.getAccessibleContext().setAccessibleDescription("Paste text");
 		pasteButton.setAction(pasteAction);
 		pasteButton.setToolTipText("Paste");
 		
 		// Print Button
 		JButton printButton = new JButton();
+		printButton.getAccessibleContext().setAccessibleName("Print");
+		printButton.getAccessibleContext().setAccessibleDescription("Print file");
 		printButton.setAction(printAction);
 		printButton.setToolTipText("Print");
 		
 		// redo Button
 		JButton redoButton = new JButton();
+		redoButton.getAccessibleContext().setAccessibleName("Redo");
+		redoButton.getAccessibleContext().setAccessibleDescription("Redo");
 		redoButton.setAction(redoAction);
 		redoButton.setToolTipText("Redo");
 		
 		// Save Button
 		JButton saveButton = new JButton();
+		saveButton.getAccessibleContext().setAccessibleName("Save");
+		saveButton.getAccessibleContext().setAccessibleDescription("Save");
 		saveButton.setAction(saveAction);
 		saveButton.setToolTipText("Save");
 		
 		// Save As Button
 		JButton saveAsButton = new JButton();
+		saveAsButton.getAccessibleContext().setAccessibleName("Save As");
+		saveAsButton.getAccessibleContext().setAccessibleDescription("Save As");
 		saveAsButton.setAction(saveAsAction);
 		saveAsButton.setToolTipText("Save As");
 		
 		// Undo Button
 		JButton undoButton = new JButton();
+		undoButton.getAccessibleContext().setAccessibleName("Undo");
+		undoButton.getAccessibleContext().setAccessibleDescription("Undo");
 		undoButton.setAction(undoAction);
 		undoButton.setToolTipText("Undo");
 
-
 		// Add all the buttons to the tool bar
-		mainToolBar.add(cutButton);
-		mainToolBar.add(copyButton);
-		mainToolBar.add(findButton);
-		mainToolBar.add(compileButton);
-		mainToolBar.add(dlButton);
-		mainToolBar.add(preferencesButton);
-		mainToolBar.add(gotoButton);
-		mainToolBar.add(helpContentButton);
 		mainToolBar.add(newButton);
 		mainToolBar.add(openButton);
-		mainToolBar.add(pasteButton);
-		mainToolBar.add(printButton);
-		mainToolBar.add(redoButton);
 		mainToolBar.add(saveButton);
 		mainToolBar.add(saveAsButton);
 		mainToolBar.add(undoButton);
+		mainToolBar.add(redoButton);		
+		mainToolBar.add(cutButton);
+		mainToolBar.add(copyButton);
+		mainToolBar.add(pasteButton);
+		mainToolBar.add(findButton);
+		mainToolBar.add(gotoButton);
+		mainToolBar.add(printButton);
+		mainToolBar.add(compileButton);
+		mainToolBar.add(dlButton);
+		mainToolBar.add(preferencesButton);
+		mainToolBar.add(helpContentButton);
 
 		return mainToolBar;
 	}
