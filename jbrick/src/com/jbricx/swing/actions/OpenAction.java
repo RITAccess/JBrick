@@ -27,13 +27,9 @@ public class OpenAction extends JBricxAbstractAction {
 	    super("", new ImageIcon("./resources//images/document-open.png"), manager);
 	  }
 
-
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		Preferences prefs = PreferenceStore.getPrefs();
-		
-		
 		
 		class MyCustomFilter extends FileFilter {
 	        @Override

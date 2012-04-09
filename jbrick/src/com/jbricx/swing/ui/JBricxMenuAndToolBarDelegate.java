@@ -283,9 +283,7 @@ public class JBricxMenuAndToolBarDelegate {
 	}
 
 	private void makeSubMenus() {
-		// File
-		
-		
+		// File	
 		JMenuItem newDoc = new JMenuItem(newAction);
 		newDoc.getAccessibleContext().setAccessibleName("New Document");
 		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
@@ -384,11 +382,11 @@ public class JBricxMenuAndToolBarDelegate {
 		viewMenu.add(maxViewer);
 		
 		JMenuItem maxEditor = new JMenuItem(maxEditorAction);
-		maxEditor.setText("Maximise File Editor");
+		maxEditor.setText("Maximize File Editor");
 		viewMenu.add(maxEditor);
 		
 		JMenuItem maxStatus = new JMenuItem(maxStatusAction);
-		maxStatus.setText("Maximise Status");
+		maxStatus.setText("Maximize Status");
 		viewMenu.add(maxStatus);
 		
 		JMenuItem resetView = new JMenuItem(resetViewAction);
