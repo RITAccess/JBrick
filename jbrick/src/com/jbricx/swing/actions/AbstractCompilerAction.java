@@ -48,12 +48,11 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 	protected JBricxStatusPane getStatusPane() {
 		return getManager().getStatusPane();
 	}
-
+	
 	/**
 	 * Run the common operations that require the compiling tool.
 	 */
 	public void run() {
-		// TODO
 		if (getManager().getTabFolder().getSelection() == null)
 			return;
 
@@ -66,7 +65,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			// Execute the operation
 			final ExitStatus run = doRun(getCurrentTab().getPersistantDocument()
 					.getFileName());
-
+			
 			if (run.isOk()) {
 				onSuccess();
 

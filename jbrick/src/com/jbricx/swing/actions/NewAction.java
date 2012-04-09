@@ -22,6 +22,6 @@ public class NewAction extends JBricxAbstractAction {
    * Creates a new file
    */
   public void actionPerformed(ActionEvent e) {
-    //getManager().getTabFolder().openNewFile();
+    getManager().getTabFolder().openNewFile();
   }
 }

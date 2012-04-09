@@ -1,5 +1,6 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -7,12 +8,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
+
+
+
 import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
+
 import com.jbricx.swing.ui.JBricxManager;
 
 
-@SuppressWarnings("serial")
+
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
 	private ArrayList<String> openFileList;
@@ -133,11 +141,27 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * Not sure atm why this returns true instead of being void but I'm leaving it for now.
 	 * @return true when done
 	 */
-	boolean openNewFile(){
+	public boolean openNewFile(){
 		newFileCount++;
 		String fileName = "New File " + newFileCount;
+		
 		JBricxTabItem newTabItem = new JBricxTabItem(this,null,fileName);
 		JScrollPane scroller = new JScrollPane(newTabItem);
+		/*
+		
+	      RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
+	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+	      textArea.setCodeFoldingEnabled(true);
+	      textArea.setAntiAliasingEnabled(true);
+	      
+	      RTextScrollPane sp = new RTextScrollPane(textArea);
+	      sp.setFoldIndicatorEnabled(true);
+		textArea.setFont(new Font(null, Font.BOLD,50));
+		/*/
+		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+		
 		this.add(fileName,scroller);
 		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
 		this.setSelectedComponent(scroller);

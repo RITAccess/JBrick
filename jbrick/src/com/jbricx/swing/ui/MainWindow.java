@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import jsyntaxpane.DefaultSyntaxKit;
+
 
 
 
@@ -36,7 +38,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	public void run() {
 		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
-		prefs = prefClass.getPrefs();
+			prefs = prefClass.getPrefs();
 	}
 	
 	
@@ -51,6 +53,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 	}
 	  
 	/**
@@ -62,17 +65,16 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		statusPane = new JBricxStatusPane();
 		filePane = new JBricxFilePane();
 		
-		//JPanel testColors = new JPanel();
-//		DefaultSyntaxKit.initKit();
-//	        
-//	    JEditorPane codeEditor = new JEditorPane();
-//	    JScrollPane scrPane = new JScrollPane(codeEditor);
-//	        testColors.add(scrPane, BorderLayout.CENTER);
-//	        testColors.doLayout();
-//	        System.out.println(codeEditor.getParent().getClass());
-//	        codeEditor.setContentType("text/java");
-//	        codeEditor.setText("public static void main(String[] args) {\n}");
-//		
+		 JPanel testColors = new JPanel();
+		 
+	
+		 
+		 //testColors.add(scrPane, BorderLayout.CENTER);
+		 testColors.doLayout();
+		 //System.out.println(codeEditor.getParent().getClass());
+		 
+		 //codeEditor.setText("public static void main(String[] args) {\n}");
+				
 		
 		//Contains the main Editor component, and the status component
 		upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,editorPane,statusPane);
