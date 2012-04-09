@@ -1,7 +1,5 @@
 package com.jbricx.swing.ui.tabs;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -14,6 +12,7 @@ import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.swing.ui.JBricxManager;
 
 
+@SuppressWarnings("serial")
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
 	private ArrayList<String> openFileList;

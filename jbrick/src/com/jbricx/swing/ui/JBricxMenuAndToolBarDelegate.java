@@ -260,6 +260,7 @@ public class JBricxMenuAndToolBarDelegate {
 		makeSubMenus();
 
 		JMenuBar mainMenuBar = new JMenuBar();
+		mainMenuBar.requestFocusInWindow();
 		mainMenuBar.add(fileMenu);
 		mainMenuBar.add(editMenu);
 		mainMenuBar.add(compileMenu);
@@ -271,6 +272,9 @@ public class JBricxMenuAndToolBarDelegate {
 
 	private void makeMainMenus() {
 		fileMenu = new JMenu("File");
+		fileMenu.getAccessibleContext().setAccessibleName("File");
+		fileMenu.getAccessibleContext().setAccessibleDescription("File");
+		
 		editMenu = new JMenu("Edit");
 		compileMenu = new JMenu("Compile");
 		toolsMenu = new JMenu("Tools");
@@ -282,9 +286,13 @@ public class JBricxMenuAndToolBarDelegate {
 		// File
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
+		exit.getAccessibleContext().setAccessibleName("Quit");
+		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
 		fileMenu.add(exit);
 		
 		JMenuItem newDoc = new JMenuItem(newAction);
+		newDoc.getAccessibleContext().setAccessibleName("New Document");
+		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
 		newDoc.setText("New");
 		fileMenu.add(newDoc);
 		
