@@ -30,9 +30,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		this.manager = manager;
 		openFileList = new ArrayList<String>();
 		openNewFile();
-		openNewFile();
-
-		openNewFile();
 
 	}
 
@@ -146,25 +143,17 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		String fileName = "New File " + newFileCount;
 		
 		JBricxTabItem newTabItem = new JBricxTabItem(this,null,fileName);
-		JScrollPane scroller = new JScrollPane(newTabItem);
-		/*
-		
-	      RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
-	      textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-	      textArea.setCodeFoldingEnabled(true);
-	      textArea.setAntiAliasingEnabled(true);
+		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		newTabItem.setCodeFoldingEnabled(true);
+	    newTabItem.setAntiAliasingEnabled(true);
+	    newTabItem.setFont(new Font(null, Font.BOLD,50));
 	      
-	      RTextScrollPane sp = new RTextScrollPane(textArea);
-	      sp.setFoldIndicatorEnabled(true);
-		textArea.setFont(new Font(null, Font.BOLD,50));
-		/*/
-		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		
+	     
+		RTextScrollPane scroller = new RTextScrollPane(newTabItem);
+		scroller.setFoldIndicatorEnabled(true);		
 		this.add(fileName,scroller);
-		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
-		this.setSelectedComponent(scroller);
+		//this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
+		//this.setSelectedComponent(scroller);
 
 		return true;
 	}
