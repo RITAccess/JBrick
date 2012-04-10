@@ -143,17 +143,19 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		String fileName = "New File " + newFileCount;
 		
 		JBricxTabItem newTabItem = new JBricxTabItem(this,null,fileName);
-		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		/*newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		newTabItem.setCodeFoldingEnabled(true);
 	    newTabItem.setAntiAliasingEnabled(true);
 	    newTabItem.setFont(new Font(null, Font.BOLD,50));
 	      
 	     
 		RTextScrollPane scroller = new RTextScrollPane(newTabItem);
-		scroller.setFoldIndicatorEnabled(true);		
+		*/
+		JScrollPane scroller = new JScrollPane(newTabItem);
+		//scroller.setFoldIndicatorEnabled(true);		
 		this.add(fileName,scroller);
-		//this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
-		//this.setSelectedComponent(scroller);
+		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
+		this.setSelectedComponent(scroller);
 
 		return true;
 	}

@@ -17,8 +17,6 @@ import javax.swing.text.BadLocationException;
 
 import javax.swing.text.Utilities;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
 
 import com.jbricx.model.PersistentDocument;
 
@@ -28,7 +26,7 @@ import com.jbricx.model.PersistentDocument;
  * @author Daniel
  * 
  */
-public class JBricxTabItem extends RSyntaxTextArea {
+public class JBricxTabItem extends  JTextPane {
 	private File file;
 	private JBricxEditorTabFolder parent;
 	private PersistentDocument document;
@@ -36,7 +34,6 @@ public class JBricxTabItem extends RSyntaxTextArea {
 
 	public JBricxTabItem(JBricxEditorTabFolder parent, File file,
 			String fileName) {
-		super();
 		setFile(file);
 		setUpDocument(file);
 		this.parent = parent;
@@ -79,7 +76,7 @@ public class JBricxTabItem extends RSyntaxTextArea {
 	}
 
 	private void setUpDocument(File file) {
-		/*if (file != null) {
+		if (file != null) {
 			document = new PersistentDocument(file.getAbsolutePath());
 			try {
 				document.open();
@@ -92,7 +89,7 @@ public class JBricxTabItem extends RSyntaxTextArea {
 		} else {
 			document = new PersistentDocument();
 			this.setDocument(document);
-		}*/
+		}
 	}
 
 	/**
