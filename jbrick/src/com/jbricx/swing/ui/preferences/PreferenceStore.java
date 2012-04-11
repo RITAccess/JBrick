@@ -68,7 +68,6 @@ public class PreferenceStore {
 	    LINENUMBERBG;
 	}
 
-
 	/**
 	 * Constructor for preference store. If the program has never been run on this machine before, will load defaults.
 	 */
@@ -95,9 +94,7 @@ public class PreferenceStore {
 		prefs.put(FONT, FONT_DEFAULT);
 		prefs.putBoolean(AUTOCOMPILE, AUTOCOMPILE_DEFAULT);
 		prefs.put(WRKSPC,WRKSPC_DEFAULT);
-		prefs.putBoolean("ranPreviously",true);
-		
-		
+		prefs.putBoolean("ranPreviously",true);	
 	}
 	
 	public static Preferences getPrefs(){

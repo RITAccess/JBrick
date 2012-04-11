@@ -13,7 +13,7 @@ import com.sun.jna.win32.StdCallLibrary;
  * @author Emmanuel Pirsch
  */
 public interface Fantom extends StdCallLibrary {
-	// Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);
+//	 Fantom INSTANCE = (Fantom) Native.loadLibrary("fantom", Fantom.class);
 
 	/**
 	 * 
