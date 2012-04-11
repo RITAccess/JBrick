@@ -16,6 +16,7 @@ import com.jbricx.swing.actions.DirectControlAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
+import com.jbricx.swing.actions.FindBrickAction;
 import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
 import com.jbricx.swing.actions.MaxEditorAction;
@@ -49,6 +50,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
+	private FindBrickAction findBrickAction;
 	private GotoAction gotoAction;
 	private HelpContentAction helpContentAction;
 	private MaxEditorAction maxEditorAction;
@@ -70,7 +72,6 @@ public class JBricxMenuAndToolBarDelegate {
 	private UndoAction undoAction;
 
 	// private JoyStickAction joystickAction;
-	// private FindBrickAction findBrickAction;
 	// private MethodTemplateAction methodTemplateAction;
 
 	private JMenu fileMenu;
@@ -92,6 +93,7 @@ public class JBricxMenuAndToolBarDelegate {
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
 		findAction = new FindAction(manager);
+		findBrickAction = new FindBrickAction(manager);
 		gotoAction = new GotoAction(manager);
 		helpContentAction = new HelpContentAction(manager);
 		maxEditorAction = new MaxEditorAction(manager);
@@ -113,7 +115,6 @@ public class JBricxMenuAndToolBarDelegate {
 		undoAction = new UndoAction(manager);
  
 		// methodTemplateAction = new MethodTemplateAction(manager);
-		// findBrickAction = new FindBrickAction(manager);
 		// joystickAction = new JoyStickAction(manager);
 		// NXTManager nxtManager = NXTManager.getInstance();
 	}
