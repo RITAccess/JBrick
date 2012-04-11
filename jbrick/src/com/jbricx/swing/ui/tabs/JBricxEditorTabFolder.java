@@ -34,23 +34,25 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	/**
-	 * Opens a new file with the given filename. Makes a new tab item and hands off the file to it.
-	 * @param filename Absolute path of the filename to open.
+	 * Opens a new file with the given filename. Makes a new tab item and hands off the filepath to it.
+	 * @param absoluteFilePath Absolute path of the filename to open.
 	 */
-	public void open(final String filename){
-		int tabIndex = getTabIndexByFilepath(filename);
+	public void open(final String absoluteFilePath){
+		int tabIndex = getTabIndexByFilepath(absoluteFilePath);
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
-			File file = new File(filename);
-			if (file.exists()) {
-				JBricxTabItem newItem = new JBricxTabItem(this, file,file.getName());
-				JScrollPane scroller = new JScrollPane(newItem);				
-				this.add(file.getName(),scroller);
+				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
+				JScrollPane scroller = new JScrollPane(newItem);	
+				String fileName = newItem.getFileName();
+				if(fileName != null){
+					 
+				
+				this.add(fileName,scroller);
 				this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
 				this.setSelectedComponent(scroller);
-				openFileList.add(file.getAbsolutePath());
+				openFileList.add(absoluteFilePath);
 				
-			} else { //File doesn't exist, throw an error.
+				} else { //File doesn't exist, throw an error.
 				JOptionPane.showMessageDialog(null,
 						"The file you have specified does not exits!", "File Not Found!",
 			            JOptionPane.WARNING_MESSAGE);
@@ -72,9 +74,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public boolean closeFile(int n) {
 		JBricxTabItem tabItem = (JBricxTabItem) ((JScrollPane) getComponentAt(n))
 				.getViewport().getView();
-		String fileName = tabItem.getPersistantDocument().getFileName();
+		String fileName = tabItem.getFileAbsolutePath();
 		//User needs to be prompted to save file before closing
-		if (tabItem.getPersistantDocument().isDirty() || fileName != null
+		if (tabItem.isDirty() || fileName != null
 				&& fileName.endsWith(".bak.nxc")) {
 
 			Object[] options = { "Save", "Don't save", "Cancel" };
@@ -82,7 +84,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 					.showOptionDialog(
 							this,
 							"Changes to \""
-									+ tabItem.getDocumentName()
+									+ tabItem.getFileName()
 									+ "\" have not been saved. Do you wish to save your changes?",
 							"Unsaved Changes", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null, options,
@@ -92,16 +94,15 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				//TODO: Implement saving here...
 				boolean saveSuccess;
 				
-				PersistentDocument currDoc = getSelection().getPersistantDocument();
-				if (currDoc.getFileName() != null
-				        && currDoc.getFileName().endsWith(".bak.nxc")) {
+				if (tabItem.getFileAbsolutePath() != null
+				        && tabItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
 				      
-				    	String fname = currDoc.getFileName();
+				    	String fpathname = tabItem.getFileAbsolutePath();
 				      saveSuccess = ActionControlClass.saveFile(tabItem,
 				          true, manager);
-				      if (!currDoc.getFileName().endsWith(".bak.nxc")) {
+				      if (!tabItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
 				        // File was successfully saved, cleanup the temporary file
-				        File f = new File(fname);
+				        File f = new File(fpathname);
 				        f.delete();
 				      }
 				    } else {
@@ -110,7 +111,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				    }
 				
 				if(saveSuccess){
-					openFileList.remove(tabItem.getFilename());
+					openFileList.remove(tabItem.getFileAbsolutePath());
 					return true;
 				}else{
 					return false;
@@ -119,7 +120,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				
 			//User said they do not wish to save (close without saving)	
 			}else if(overwrite == JOptionPane.NO_OPTION){
-				openFileList.remove(tabItem.getFilename());
+				openFileList.remove(tabItem.getFileAbsolutePath());
 				return true;
 			//user chose to cancel or hit x. Do nothing
 			}else{
@@ -128,7 +129,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		//File was already saved, do not need to prompt
 		}else{
 			
-			openFileList.remove(tabItem.getFilename());
+			openFileList.remove(tabItem.getFileName());
 			return true;	
 		}
 	}
@@ -140,20 +141,18 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 */
 	public boolean openNewFile(){
 		newFileCount++;
-		String fileName = "New File " + newFileCount;
 		
-		JBricxTabItem newTabItem = new JBricxTabItem(this,null,fileName);
-		/*newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		JBricxTabItem newTabItem = new JBricxTabItem(this,newFileCount);
+		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		newTabItem.setCodeFoldingEnabled(true);
 	    newTabItem.setAntiAliasingEnabled(true);
-	    newTabItem.setFont(new Font(null, Font.BOLD,50));
+	    //newTabItem.setFont(new Font(null, Font.BOLD,50));
 	      
-	     
+	    
 		RTextScrollPane scroller = new RTextScrollPane(newTabItem);
-		*/
-		JScrollPane scroller = new JScrollPane(newTabItem);
-		//scroller.setFoldIndicatorEnabled(true);		
-		this.add(fileName,scroller);
+		scroller.setFoldIndicatorEnabled(true);
+		
+		this.add(newTabItem.getFileName(),scroller);
 		this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
 		this.setSelectedComponent(scroller);
 
@@ -260,19 +259,24 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		for (int i = 0; i < paneCount; i++) {
 			JBricxTabItem tab = (JBricxTabItem) (((JScrollPane) getComponentAt(i))
 					.getViewport().getView());
-			if (tab.getDocumentName() != null) {
-				this.setTitleAt(i, tab.getDocumentName());
+			if (tab.getFileName() != null) {
+				this.setTitleAt(i, tab.getFileName());
 				this.setTabComponentAt(i, new ButtonTabComponent(this));
 			}
 		}
 	}
 	
+	/**
+	 * Returns the index of the tab item based on the file path given.
+	 * @param filePath absolute file path of the desired tab item
+	 * @return the index of the tab. If it does not exist will return -1
+	 */
 	public int getTabIndexByFilepath(String filePath) {
 	    int index = -1;
 	    int count = getComponentCount();
 	    for (int i = 0; i < count-1; i++) {
 	      try {
-	        if (getSelection(i).getFilename().equals(filePath)) {
+	        if (getSelection(i).getFileAbsolutePath()	.equals(filePath)) {
 	          index = i;
 	          break;
 	        }

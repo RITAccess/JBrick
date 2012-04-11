@@ -93,8 +93,41 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	/**
 	 * The default name given to files if none is specified in a constructor.
 	 */
-	private static final String DEFAULT_FILE_NAME = "Untitled.txt";
+	private String fileName;
 
+	
+	/**
+	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 
+	 * 
+	 * @param newFileNumber number of new file number (ex: "3" for New File 3)
+	 */
+	public TextEditorPane(int newFileNumber){
+		super(INSERT_MODE);
+		String newFileName = "New File " + newFileNumber;
+		try {
+			setLineWrap(false);
+			init(null,null,newFileName);
+		} catch (IOException ioe) { // Never happens
+			ioe.printStackTrace();
+		}
+	}
+	
+	/**
+	 * JBRICX MODIFIED CONSTRUCTOR.
+	 * 
+	 * Used for opening an already existing file.
+	 * 
+	 * @param fileAbsolutePath absolute path of the existing file
+	 */
+	public TextEditorPane(String fileAbsolutePath){
+		super(INSERT_MODE);
+		setLineWrap(false);
+		try {
+			init(FileLocation.create(fileAbsolutePath),null,null);
+		} catch (IOException ioe) { // Never happens
+			ioe.printStackTrace();
+		}
+	}
 
 	/**
 	 * Constructor.  The file will be given a default name.
@@ -110,9 +143,9 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @param textMode Either <code>INSERT_MODE</code> or
 	 *        <code>OVERWRITE_MODE</code>.
 	 */
-	public TextEditorPane(int textMode) {
-		this(textMode, false);
-	}
+	//public TextEditorPane(int textMode) {
+	//	this(textMode, false);
+	//}
 
 
 	/**
@@ -127,7 +160,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		super(textMode);
 		setLineWrap(wordWrapEnabled);
 		try {
-			init(null, null);
+			init(null, null,"");
 		} catch (IOException ioe) { // Never happens
 			ioe.printStackTrace();
 		}
@@ -174,7 +207,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 				FileLocation loc, String defaultEnc) throws IOException {
 		super(textMode);
 		setLineWrap(wordWrapEnabled);
-		init(loc, defaultEnc);
+		init(loc, defaultEnc,"");
 	}
 
 
@@ -298,13 +331,13 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws IOException If an IO error occurs reading from <code>loc</code>.
 	 *         If <code>loc</code> is <code>null</code>, this cannot happen.
 	 */
-	private void init(FileLocation loc, String defaultEnc) throws IOException {
+	private void init(FileLocation loc, String defaultEnc,String newFileName) throws IOException {
 
 		if (loc==null) {
 			// Don't call load() just in case Untitled.txt actually exists,
 			// just to ensure there is no chance of an IOException being thrown
 			// in the default case.
-			this.loc = FileLocation.create(DEFAULT_FILE_NAME);
+			this.loc = FileLocation.create(newFileName);
 			charSet = defaultEnc==null ? getDefaultEncoding() : defaultEnc;
 			// Ensure that line separator always has a value, even if the file
 			// does not exist (or is the "default" file).  This makes life
@@ -487,6 +520,8 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		if (!dirty) {
 			setDirty(true);
 		}
+		
+		
 	}
 
 
@@ -502,6 +537,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	public void save() throws IOException {
 		saveImpl(loc);
+		System.out.println("Set to NOT Dirty");
 		setDirty(false);
 		syncLastSaveOrLoadTimeToActualFile();
 	}
@@ -516,15 +552,17 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @see #save()
 	 * @see #load(FileLocation, String)
 	 */
-	public void saveAs(FileLocation loc) throws IOException {
+	public void saveAs(String strLoc) throws IOException {
+		this.loc = FileLocation.create(strLoc);
 		saveImpl(loc);
 		// No exception thrown - we can "rename" the file.
 		String old = getFileFullPath();
-		this.loc = loc;
+		System.out.println("Set to NOT Dirty");
 		setDirty(false);
 		lastSaveOrLoadTime = loc.getActualLastModified();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
 	}
+	
 
 
 	/**
