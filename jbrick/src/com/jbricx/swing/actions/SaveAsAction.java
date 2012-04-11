@@ -27,23 +27,21 @@ public class SaveAsAction extends JBricxAbstractAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		
-		JBricxTabItem tabItem = getManager().getTabFolder().getSelection();
-		PersistentDocument currDoc = getManager().getTabFolder().getSelection()
-				.getPersistantDocument();
+		JBricxTabItem currItem = getManager().getTabFolder().getSelection();
 
 		// Check and see if it was previously saved as a backup
-		if (currDoc.getFileName() != null
-				&& currDoc.getFileName().endsWith(".bak.nxc")) {
-			String fname = currDoc.getFileName();
+		if (!currItem.isNewFile()
+				&& currItem.getFileName().endsWith(".bak.nxc")) {
+			String fname = currItem.getFileName();
 			ActionControlClass.saveFile(getManager().getTabFolder()
 					.getSelection(), true, getManager());
-			if (!currDoc.getFileName().endsWith(".bak.nxc")) {
+			if (!fname.endsWith(".bak.nxc")) {
 				// File was successfully saved, cleanup the temporary file
 				File f = new File(fname);
 				f.delete();
 			}
 		} else
-			ActionControlClass.saveFile(tabItem, true, getManager());
+			ActionControlClass.saveFile(currItem, true, getManager());
 
 		if (getManager().isAutoCompile()) {
 			CompileAction compileAction = new CompileAction(getManager());

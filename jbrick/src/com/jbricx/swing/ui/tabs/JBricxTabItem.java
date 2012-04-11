@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-//import javax.swing.JEditorPane;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,6 +16,8 @@ import javax.swing.text.BadLocationException;
 
 import javax.swing.text.Utilities;
 
+import org.fife.ui.rsyntaxtextarea.TextEditorPane;
+
 
 import com.jbricx.model.PersistentDocument;
 
@@ -26,19 +27,26 @@ import com.jbricx.model.PersistentDocument;
  * @author Daniel
  * 
  */
-public class JBricxTabItem extends  JTextPane {
-	private File file;
+public class JBricxTabItem extends TextEditorPane {
 	private JBricxEditorTabFolder parent;
-	private PersistentDocument document;
-	private String name;
+	private boolean isNewFile;
 
-	public JBricxTabItem(JBricxEditorTabFolder parent, File file,
-			String fileName) {
-		setFile(file);
-		setUpDocument(file);
+	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
+		super(newFileNumber);
+		isNewFile = true;
 		this.parent = parent;
-		this.name = fileName;
-		
+		setShortcuts();
+
+	}
+	
+	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
+		super(fileName);
+		this.parent = parent;
+		isNewFile = false;
+		setShortcuts();
+	}
+	
+	private void setShortcuts(){
 		//Logic for JAWS CTRL-L line read
 		Action SetLine = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
@@ -63,57 +71,32 @@ public class JBricxTabItem extends  JTextPane {
 		
 		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK), "SetLine");
 		this.getActionMap().put("SetLine",SetLine);
-        
-		
-		
-       
-    
-
-	}
-
-	public boolean getScrollableTracksViewportWidth() {
-		return getUI().getPreferredSize(this).width <= getParent().getSize().width;
-	}
-
-	private void setUpDocument(File file) {
-		if (file != null) {
-			document = new PersistentDocument(file.getAbsolutePath());
-			try {
-				document.open();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			this.setDocument(document);
-
-		} else {
-			document = new PersistentDocument();
-			this.setDocument(document);
-		}
 	}
 
 	/**
-	 * Sets the file path for later use
 	 * 
-	 * @param file2
-	 *            absolute path of the file
+	 * @return true if the file in this tab item is new and has not been saved previously.
 	 */
-	public void setFile(File file2) {
-		this.file = file2;
-
+	public boolean isNewFile(){
+		return isNewFile;
 	}
-
+	
 	/**
-	 * Gets the absolute path(+filename)
+	 * Changes the file status to whatever is desired
+	 * @param fileStatus True if the file is new. False if the file has already existed or was just saved.
+	 */
+	public void setNewFile(boolean fileStatus){
+		isNewFile = fileStatus;
+	}
+	
+	/**
+	 * Gets the absolute path(+filename) (Should return null if there is no actual file assoc with this.
 	 * 
 	 * @return Absolute path of the file
 	 */
-	public String getFilename() {
-		if (file != null) {
-			return file.getAbsolutePath();
-		}
-		return null;
-
+	public String getFileAbsolutePath() {
+		System.out.println(this.getFileFullPath());
+			return this.getFileFullPath();
 	}
 
 	/**
@@ -125,13 +108,6 @@ public class JBricxTabItem extends  JTextPane {
 	}
 
 	/**
-	 * Return the document of the tabbed pane (where all the data is)
-	 */
-	public PersistentDocument getPersistantDocument() {
-		return document;
-	}
-
-	/**
 	 * Clear the error annotations on the current file, if any.
 	 */
 	public void clearAnnotations() {
@@ -140,33 +116,12 @@ public class JBricxTabItem extends  JTextPane {
 	}
 
 	/**
-	 * returns if the document is empty
+	 * returns true if the document is empty
 	 * 
 	 * @return
 	 */
 	public boolean isEmpty() {
-		return document.isEmpty();
-	}
-
-	/**
-	 * returns the files name with extension (ex New File 03 or test.txt)
-	 * 
-	 * @return
-	 */
-	public String getDocumentName() {
-		return name;
-
-	}
-
-	/**
-	 * Sets the file name (not path).
-	 * 
-	 * @param filename
-	 *            name of file
-	 */
-	public void setFileName(String filename) {
-		name = filename;
-
+		return this.getDocument().getLength()==0;
 	}
 
 }

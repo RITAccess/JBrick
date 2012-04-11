@@ -1,14 +1,13 @@
 package com.jbricx.swing.actions;
 
 import java.io.File;
-
-import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 /**
  * This action class responds to requests to save a file
@@ -37,16 +36,16 @@ public class SaveAction extends JBricxAbstractAction {
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-    PersistentDocument currDoc = getManager().getTabFolder().getSelection()
-        .getPersistantDocument();
+    JBricxTabItem currItem = getManager().getTabFolder().getSelection();
     // Check and see if it was previously saved as a backup
-    if (currDoc.getFileName() != null
-        && currDoc.getFileName().endsWith(".bak.nxc")) {
+    if (!currItem.isNewFile()
+        && currItem.getFileName().endsWith(".bak.nxc")) {
       
-    	String fname = currDoc.getFileName();
+    	String fname = currItem.getFileAbsolutePath();
       ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
           true, getManager());
-      if (!currDoc.getFileName().endsWith(".bak.nxc")) {
+      //File was saved, check again if it has .bak
+      if (currItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
         // File was successfully saved, cleanup the temporary file
         File f = new File(fname);
         f.delete();

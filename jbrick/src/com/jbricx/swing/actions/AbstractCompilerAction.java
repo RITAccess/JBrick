@@ -63,8 +63,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			// Clear the annotations on the border
 			getCurrentTab().clearAnnotations();
 			// Execute the operation
-			final ExitStatus run = doRun(getCurrentTab().getPersistantDocument()
-					.getFileName());
+			final ExitStatus run = doRun(getCurrentTab().getFileFullPath());
 			
 			if (run.isOk()) {
 				onSuccess();
@@ -90,18 +89,18 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			return false;
 		}
 
-		PersistentDocument document = getCurrentTab().getPersistantDocument();
-
-		if (document.getFileName() == null) {
-			document.setFileName(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
-					+ System.getProperty("file.separator")
-					+ getCurrentTab().getDocumentName() + ".bak.nxc");
+		JBricxTabItem tabItem = getCurrentTab();
+		String filename="";
+		if (tabItem.isNewFile()) {
+			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
+			+ System.getProperty("file.separator")
+			+ getCurrentTab().getFileName() + ".bak.nxc";
 		}
 
-		if (document.isDirty()) {
+		if (tabItem.isDirty()) {
 
 			try {
-				document.save();
+				tabItem.saveAs(filename);
 
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(getManager().getShell(),

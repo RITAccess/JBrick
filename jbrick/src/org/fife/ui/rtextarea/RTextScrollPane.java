@@ -93,7 +93,7 @@ public class RTextScrollPane extends JScrollPane {
 		textArea = area;
 
 		// Create the gutter for this document.
-		Font defaultFont = new Font("Monospaced", Font.PLAIN, 50);
+		Font defaultFont = new Font("Monospaced", Font.PLAIN, 13);
 		gutter = new Gutter(textArea);
 		gutter.setLineNumberFont(defaultFont);
 		gutter.setLineNumberColor(lineNumberColor);

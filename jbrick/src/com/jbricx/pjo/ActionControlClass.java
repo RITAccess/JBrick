@@ -31,50 +31,50 @@ public class ActionControlClass {
 	 * @param manager Main Manager for reference.
 	 */
     public static boolean saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager) {
-        String fileLocation = tabItem.getFilename();
         
+    	String fileLocation = tabItem.getFileAbsolutePath();
+    	System.out.println("Tab item contains new file"+ (fileLocation.indexOf("New File")>0));
+    	System.out.println("tabItem absolute path:"+ fileLocation );
 
         boolean isNewFile = false;
-        String filename = null;
 
-        if (isSaveAs || fileLocation == null) {
+
+        if (isSaveAs || tabItem.isNewFile()) {
             SafeSaveDialog dlg = new SafeSaveDialog(manager);
             fileLocation = dlg.open();
             isNewFile = true;
         }
         try {
-            File file = new File(fileLocation);
-            filename = file.getName(); // get just name of the file
             /*
              * trigger save only if changes have been made to editor or SaveAs
              * is perfomed or is a newly opened file
              */
-            if (isSaveAs || tabItem.getPersistantDocument().isDirty() || isNewFile) {
+            if (isSaveAs || tabItem.isDirty() || isNewFile) {
                 if (isSaveAs) { // remove the currently selected file from the list
-                    try {
-                        int currFileIndex = manager.getTabFolder().getSelectedIndex();
-                        manager.getTabFolder().closeFile(currFileIndex);
-                    } catch (NullPointerException ne) {
-                    }
+//                    try {
+//                        int currFileIndex = manager.getTabFolder().getSelectedIndex();
+//                        manager.getTabFolder().closeFile(currFileIndex);
+//                    } catch (NullPointerException ne) {
+//                    }
                 }
-                tabItem.getPersistantDocument().setFileName(fileLocation);
-                tabItem.getPersistantDocument().save();
-                tabItem.setFileName(filename);
-                tabItem.setFile(file);
+                //Save as save
+                if(isSaveAs|| isNewFile){
+                	tabItem.saveAs(fileLocation);
+                //Save save
+                }else{
+                	tabItem.save();
+                }
+                tabItem.setNewFile(false);
                 manager.refreshExplorerContent();
                 return true;
             } 
-        } catch (IOException e) {
-        	JOptionPane.showMessageDialog(manager.getShell(),
-        			"Can't save file" + fileLocation +"; " ,
-        			e.getMessage(),
-        		    JOptionPane.WARNING_MESSAGE);
-        	return false;
-
         } catch (NullPointerException ne) {
         	return false;
             // user has opted to cancel the save dialog
-        }
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
     }
 
