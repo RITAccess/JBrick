@@ -1,5 +1,6 @@
 package com.jbricx.swing.actions;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
@@ -45,7 +46,11 @@ public class FindBrickAction extends JBricxAbstractAction {
 //	}
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		JOptionPane findBrick = new JOptionPane("Find Brick");
+		JOptionPane.showMessageDialog((Component) getManager(), "To connect to the brick, select the communication method "
+		          + "and click Connect.  You can save your preference by clicking "
+		          + "the Save button so you do not need to come back to this screen "
+		          + "in the future.");
+		
 
 	}
 }
