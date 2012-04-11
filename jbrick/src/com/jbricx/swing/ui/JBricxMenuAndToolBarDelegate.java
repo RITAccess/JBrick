@@ -150,6 +150,13 @@ public class JBricxMenuAndToolBarDelegate {
 		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
 		compileButton.setToolTipText("Compile");
+		
+		// Find Brick Button
+		JButton fbButton = new JButton();
+		fbButton.getAccessibleContext().setAccessibleName("Find Brick");
+		fbButton.getAccessibleContext().setAccessibleDescription("connect the brick to the system");
+		fbButton.setAction(findBrickAction);
+		fbButton.setToolTipText("Find Brick");
 
 		// Download Button
 		JButton dlButton = new JButton();
@@ -249,6 +256,7 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(gotoButton);
 		mainToolBar.add(printButton);
 		mainToolBar.add(compileButton);
+		mainToolBar.add(fbButton);
 		mainToolBar.add(dlButton);
 		mainToolBar.add(preferencesButton);
 		mainToolBar.add(helpContentButton);
@@ -355,6 +363,10 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem compile = new JMenuItem(compileAction);
 		compile.setText("Compile");
 		compileMenu.add(compile);
+		
+		JMenuItem fb = new JMenuItem(findBrickAction);
+		fb.setText("Find Brick");
+		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
 		dl.setText("Download");
