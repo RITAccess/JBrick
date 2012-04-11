@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 import com.jbricx.swing.communications.CompilerError;
 import com.jbricx.swing.communications.ExitStatus;
-import com.jbricx.model.PersistentDocument;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;

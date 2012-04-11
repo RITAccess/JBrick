@@ -4,12 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 
 import javax.swing.text.BadLocationException;
@@ -18,9 +16,6 @@ import javax.swing.text.Utilities;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
-
-import com.jbricx.model.PersistentDocument;
-
 /**
  * An individual tab item to be used in the editor pane.
  * 
@@ -28,20 +23,17 @@ import com.jbricx.model.PersistentDocument;
  * 
  */
 public class JBricxTabItem extends TextEditorPane {
-	private JBricxEditorTabFolder parent;
 	private boolean isNewFile;
 
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
 		super(newFileNumber);
 		isNewFile = true;
-		this.parent = parent;
 		setShortcuts();
 
 	}
 	
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
-		this.parent = parent;
 		isNewFile = false;
 		setShortcuts();
 	}
@@ -95,7 +87,6 @@ public class JBricxTabItem extends TextEditorPane {
 	 * @return Absolute path of the file
 	 */
 	public String getFileAbsolutePath() {
-		System.out.println(this.getFileFullPath());
 			return this.getFileFullPath();
 	}
 

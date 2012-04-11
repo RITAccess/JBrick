@@ -110,7 +110,7 @@ public class SafeSaveDialog {
                     done = true;
                 }
                 
-                tabfolder.saveFile(fileName);
+                //tabfolder.saveFile(fileName);
             } else {
             	// User has cancelled, so quit and return
             	done = true;

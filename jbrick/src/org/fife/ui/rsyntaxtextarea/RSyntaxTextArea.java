@@ -2005,7 +2005,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *         <code>RSyntaxDocument</code>.
 	 */
 	public void setDocument(Document document) {
-		System.out.println("Setting document in RSyntaxTextArea");
 		if (!(document instanceof RSyntaxDocument))
 			throw new IllegalArgumentException("Documents for " +
 					"RSyntaxTextArea must be instances of " +

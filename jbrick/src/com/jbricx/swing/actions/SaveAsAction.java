@@ -3,7 +3,6 @@ package com.jbricx.swing.actions;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 import javax.swing.ImageIcon;
 

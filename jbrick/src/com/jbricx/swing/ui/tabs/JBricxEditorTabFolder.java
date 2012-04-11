@@ -1,20 +1,16 @@
 package com.jbricx.swing.ui.tabs;
 
-import java.awt.Font;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 
 
-import com.jbricx.model.PersistentDocument;
 import com.jbricx.pjo.ActionControlClass;
 
 import com.jbricx.swing.ui.JBricxManager;
@@ -23,12 +19,10 @@ import com.jbricx.swing.ui.JBricxManager;
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
-	private ArrayList<String> openFileList;
 	private JBricxManager manager;
 	
 	public JBricxEditorTabFolder(JBricxManager  manager){
 		this.manager = manager;
-		openFileList = new ArrayList<String>();
 		openNewFile();
 
 	}
@@ -50,7 +44,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				this.add(fileName,scroller);
 				this.setTabComponentAt(this.getTabCount()-1,new ButtonTabComponent(this));
 				this.setSelectedComponent(scroller);
-				openFileList.add(absoluteFilePath);
 				
 				} else { //File doesn't exist, throw an error.
 				JOptionPane.showMessageDialog(null,
@@ -76,7 +69,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				.getViewport().getView();
 		String fileName = tabItem.getFileAbsolutePath();
 		//User needs to be prompted to save file before closing
-		if (tabItem.isDirty() || fileName != null
+		if (tabItem.isDirty() || !tabItem.isNewFile()
 				&& fileName.endsWith(".bak.nxc")) {
 
 			Object[] options = { "Save", "Don't save", "Cancel" };
@@ -91,7 +84,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 							options[0]);
 			//User wishes to save the file before closing.
 			if(overwrite == JOptionPane.YES_OPTION){
-				//TODO: Implement saving here...
 				boolean saveSuccess;
 				
 				if (tabItem.getFileAbsolutePath() != null
@@ -111,7 +103,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				    }
 				
 				if(saveSuccess){
-					openFileList.remove(tabItem.getFileAbsolutePath());
 					return true;
 				}else{
 					return false;
@@ -120,7 +111,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				
 			//User said they do not wish to save (close without saving)	
 			}else if(overwrite == JOptionPane.NO_OPTION){
-				openFileList.remove(tabItem.getFileAbsolutePath());
 				return true;
 			//user chose to cancel or hit x. Do nothing
 			}else{
@@ -129,7 +119,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		//File was already saved, do not need to prompt
 		}else{
 			
-			openFileList.remove(tabItem.getFileName());
 			return true;	
 		}
 	}
@@ -203,23 +192,11 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    return (JBricxTabItem)(((JScrollPane)getComponentAt(index)).getViewport().getView());
 	  }
 
-	public int getSelectionIndex(){
-		return tabPlacement;
-		
-	}
-
-	public void saveFile(String filePath){
-		
-	}
 
 	public void insertText(String text){
 		
 	}
 
-	int contains(String fileName){
-		return tabPlacement;
-		
-	}
 
 	public void undo(){
 		
@@ -246,8 +223,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	public String getCurrentFilename(){
-		return getSelection().getName();
-		
+		return getSelection().getFileName();
 	}
 
 
