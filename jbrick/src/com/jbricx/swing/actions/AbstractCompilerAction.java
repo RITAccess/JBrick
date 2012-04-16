@@ -128,7 +128,6 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		// iterate throw the returned message from the compiler
 		for (CompilerError ce : status.getCompilerErrors()) {
 			statusPane.pushMessage(ce.toString());
-
 			//TODO: Logic for adding error annotations.
 			// add a new row to the table for each error
 //			int intLineNumber = Integer.parseInt(ce.getLineNumber());

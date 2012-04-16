@@ -537,7 +537,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	public void save() throws IOException {
 		saveImpl(loc);
-		System.out.println("Set to NOT Dirty");
 		setDirty(false);
 		syncLastSaveOrLoadTimeToActualFile();
 	}
@@ -557,7 +556,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		saveImpl(loc);
 		// No exception thrown - we can "rename" the file.
 		String old = getFileFullPath();
-		System.out.println("Set to NOT Dirty");
 		setDirty(false);
 		lastSaveOrLoadTime = loc.getActualLastModified();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());

@@ -33,8 +33,6 @@ public class ActionControlClass {
     public static boolean saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager) {
         
     	String fileLocation = tabItem.getFileAbsolutePath();
-    	System.out.println("Tab item contains new file"+ (fileLocation.indexOf("New File")>0));
-    	System.out.println("tabItem absolute path:"+ fileLocation );
 
         boolean isNewFile = false;
 

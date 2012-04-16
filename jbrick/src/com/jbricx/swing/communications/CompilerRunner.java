@@ -5,6 +5,7 @@ package com.jbricx.swing.communications;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +92,11 @@ public class CompilerRunner {
 			bufferedreader.close();
 			return new ExitStatus(list.isEmpty()? ExitStatus.OK : ExitStatus.ERROR, list);
 
-		} catch (final Exception e) {
-			e.printStackTrace();
+		}catch(IOException e){
 			JOptionPane.showMessageDialog(null, "The compiler could not be found.");
+			return new ExitStatus(ExitStatus.ERROR, list);
+		}catch (final Exception e) {
+			e.printStackTrace();
 			return new ExitStatus(ExitStatus.ERROR, list);
 		}	
 	}

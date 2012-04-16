@@ -143,7 +143,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 * Update any preference changes and resize objects if nessecary
 	 */
 	public void updatePreferences() {
-		// TODO Auto-generated method stub
+		editorPane.refreshTabItems();
 		
 	}
 	
