@@ -12,7 +12,6 @@ import com.jbricx.communications.enums.Motor;
 import com.jbricx.communications.enums.Sensor;
 import com.jbricx.communications.enums.SensorMode;
 import com.jbricx.communications.enums.SensorType;
-import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
  * This class works as a Facade, its interface contains all the methods related

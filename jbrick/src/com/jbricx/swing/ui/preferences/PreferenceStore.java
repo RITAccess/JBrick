@@ -24,7 +24,9 @@ public class PreferenceStore {
 	
 	public static final boolean WRAP_DEFAULT = false;
 	public static final String FONT_DEFAULT  = "Seqoe UI-plain-9";
-	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")+"\\Documents\\";
+	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")
+			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
+					: "\\Documents\\");
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
 	public static final String NBCTOOL_DEFAULT = "./lib/nbc.exe";
  
@@ -74,7 +76,7 @@ public class PreferenceStore {
 	public PreferenceStore(){
 		final String NAME = "allPreferences";
 		prefs = Preferences.userRoot().node(NAME);
-		if(prefs.getBoolean("ranPreviously", false)){
+		if(!prefs.getBoolean("ranPreviously", false)){
 			setPreferencesAndDefaults();
 		}
 	}

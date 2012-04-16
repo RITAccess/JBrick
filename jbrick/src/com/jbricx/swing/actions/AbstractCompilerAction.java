@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 import com.jbricx.swing.communications.CompilerError;
 import com.jbricx.swing.communications.ExitStatus;
-import com.jbricx.model.PersistentDocument;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
@@ -69,9 +68,10 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 				onSuccess();
 
 			} else {
-				displayErrors(run);
-				onFailure();
-
+				if(run.getCompilerErrors().size() > 0) {
+					displayErrors(run);
+					onFailure();
+				}
 			}
 		}
 	}
@@ -93,7 +93,8 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		String filename="";
 		if (tabItem.isNewFile()) {
 			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
-			+ System.getProperty("file.separator")
+			+ (System.getProperty("os.name").contains("OS X") ? ""
+					: System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
 		}
 

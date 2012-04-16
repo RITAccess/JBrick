@@ -36,9 +36,9 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 * Runs the application. Called by initial class
 	 */
 	public void run() {
-		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
-			prefs = prefClass.getPrefs();
+		prefs = prefClass.getPrefs();
+		initMainWindow();
 	}
 	
 	
