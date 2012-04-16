@@ -235,6 +235,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		for (int i = 0; i < paneCount; i++) {
 			JBricxTabItem tab = (JBricxTabItem) (((JScrollPane) getComponentAt(i))
 					.getViewport().getView());
+			tab.updateText();
 			if (tab.getFileName() != null) {
 				this.setTitleAt(i, tab.getFileName());
 				this.setTabComponentAt(i, new ButtonTabComponent(this));

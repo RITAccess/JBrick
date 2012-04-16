@@ -36,9 +36,10 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 * Runs the application. Called by initial class
 	 */
 	public void run() {
-		initMainWindow();
 		PreferenceStore prefClass = new PreferenceStore();
-			prefs = prefClass.getPrefs();
+		prefs = prefClass.getPrefs();
+		initMainWindow();
+
 	}
 	
 	
@@ -143,7 +144,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 * Update any preference changes and resize objects if nessecary
 	 */
 	public void updatePreferences() {
-		// TODO Auto-generated method stub
+		editorPane.refreshTabItems();
 		
 	}
 	

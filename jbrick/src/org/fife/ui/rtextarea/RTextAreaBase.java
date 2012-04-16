@@ -27,6 +27,8 @@ import javax.swing.plaf.TextUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 
 /**
  * This is the base class for <code>RTextArea</code>; basically it's just an
@@ -423,10 +425,10 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 			}
 		}
 		else {
-			font = new Font("Monospaced", Font.PLAIN, 13);
+			font = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT));
 		}
 
-		//System.out.println(font.getFamily() + ", " + font.getName());
+		
 		return font;
 
 	}
