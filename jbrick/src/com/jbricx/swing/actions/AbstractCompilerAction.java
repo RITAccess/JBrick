@@ -58,9 +58,9 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		// Save the current tab contents
 		if (save()) {
 			// Clear the status messages
-			getStatusPane().removeAll();
+			getStatusPane().clearOldMessages();
 			// Clear the annotations on the border
-			getCurrentTab().clearAnnotations();
+			//getCurrentTab().clearAnnotations();
 			// Execute the operation
 			final ExitStatus run = doRun(getCurrentTab().getFileFullPath());
 			

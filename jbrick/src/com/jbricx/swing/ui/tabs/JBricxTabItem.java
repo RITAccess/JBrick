@@ -110,6 +110,7 @@ public class JBricxTabItem extends TextEditorPane {
 		Color literalNumber		= new Color(100,0,200);
 		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
 		Color error			= new Color(202,25,25);
+		
 		/*
 		styles[COMMENT_EOL]				= new Style(comment, null, commentFont);
 		styles[COMMENT_MULTILINE]			= new Style(comment, null, commentFont);

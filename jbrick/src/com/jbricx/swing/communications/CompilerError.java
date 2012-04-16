@@ -23,14 +23,12 @@ public class CompilerError {
   private String line;
 
   public void setFileLine(final String fileline) {
-    try {
-    	file = fileline.substring(fileline.indexOf("/"));
-    	// fileline.substring( 
-//            fileline.indexOf("File \""), //+ 6,
-//            fileline.indexOf("\" ; ")
-//           );
-   		System.out.println(file);
-
+	  try {
+    	file = 
+    	 fileline.substring( 
+            fileline.indexOf("File \""), //+ 6,
+            fileline.indexOf("\" ; ")
+           );
     } catch (StringIndexOutOfBoundsException e) {
       e.printStackTrace();
     }
@@ -40,7 +38,7 @@ public class CompilerError {
   public void setMessageLine(final String messageline) {
     // We don't know if there are warnings;
     int i = messageline.indexOf("Error: ");
-    message = messageline.substring(i + 7);
+    message = messageline.substring(i );
   }
 
   public void setLine(final String line) {

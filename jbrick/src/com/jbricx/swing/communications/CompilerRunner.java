@@ -77,13 +77,13 @@ public class CompilerRunner {
 				ce.setFileLine(bufferedreader.readLine());
 				ce.setLine(bufferedreader.readLine());
 
-//				// Last line of error message is never used.
-//				line = bufferedreader.readLine();
-//				// Somehow, sometimes it comes empty so we read it again to be
-//				// sure
-//				if (line.isEmpty()) {
-//					line = bufferedreader.readLine();
-//				}
+				// Last line of error message is never used.
+				line = bufferedreader.readLine();
+				// Somehow, sometimes it comes empty so we read it again to be
+				// sure
+				if (line.isEmpty()) {
+					line = bufferedreader.readLine();
+				}
 
 				list.add(ce);
 				line = bufferedreader.readLine();
