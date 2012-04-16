@@ -104,21 +104,7 @@ public class JBricxTabItem extends TextEditorPane {
 	 * time.
 	 */
 	public void updateText() {
-		
-		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
-		Color function			= new Color(0,0,0);
-		Color preprocessor		= new Color(128,64,64);
-		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));;
-		Color variable			= new Color(255,153,0);
-		Color literalNumber		= new Color(100,0,200);
-		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
-		Color error			= new Color(202,25,25);
-		
 		this.restoreDefaultSyntaxScheme();
-		
-		
 	}
 
 	/**
