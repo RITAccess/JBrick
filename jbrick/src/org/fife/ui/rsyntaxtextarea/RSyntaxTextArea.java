@@ -57,6 +57,8 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 
 
 /**
@@ -974,7 +976,7 @@ private boolean fractionalFontMetricsEnabled;
 	 * @see #setSyntaxScheme(SyntaxScheme)
 	 */
 	public SyntaxScheme getDefaultSyntaxScheme() {
-		return new SyntaxScheme(getFont());
+		return new SyntaxScheme(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
 	}
 
 
@@ -1767,6 +1769,7 @@ private boolean fractionalFontMetricsEnabled;
 
 
 	/**
+	 * MODIFIED FOR JBRICX ( Sets default font and other defaults from preferences.
 	 * Sets the colors used for syntax highlighting to their defaults.
 	 *
 	 * @see #setSyntaxScheme(SyntaxScheme)
@@ -1775,6 +1778,7 @@ private boolean fractionalFontMetricsEnabled;
 	 */
 	public void restoreDefaultSyntaxScheme() {
 		setSyntaxScheme(getDefaultSyntaxScheme());
+		this.setFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
 	}
 
 

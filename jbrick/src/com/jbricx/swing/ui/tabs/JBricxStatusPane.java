@@ -14,7 +14,6 @@ public class JBricxStatusPane extends JTabbedPane {
 		messagePane.setEnabled(false);
 		
 		this.addTab("Status", messagePane);
-		//messagePane.setText("LALALALA");
 	}
 
 	/**

@@ -15,8 +15,9 @@ import javax.swing.text.BadLocationException;
 
 import javax.swing.text.Utilities;
 
-import org.fife.ui.rsyntaxtextarea.Style;
+
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
+
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
@@ -28,10 +29,13 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  */
 public class JBricxTabItem extends TextEditorPane {
 	private boolean isNewFile;
+	private JBricxEditorTabFolder parent;
 
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
+		
 		super(newFileNumber);
 		isNewFile = true;
+		this.parent = parent;
 		setShortcuts();
 
 	}
@@ -39,6 +43,7 @@ public class JBricxTabItem extends TextEditorPane {
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
 		isNewFile = false;
+		this.parent = parent;
 		setShortcuts();
 	}
 	
@@ -111,46 +116,9 @@ public class JBricxTabItem extends TextEditorPane {
 		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
 		Color error			= new Color(202,25,25);
 		
-		/*
-		styles[COMMENT_EOL]				= new Style(comment, null, commentFont);
-		styles[COMMENT_MULTILINE]			= new Style(comment, null, commentFont);
-		styles[COMMENT_DOCUMENTATION]		= new Style(docComment, null, commentFont);
-		styles[COMMENT_KEYWORD]			= new Style(new Color(255,152,0), null, commentFont);
-		styles[COMMENT_MARKUP]			= new Style(Color.gray, null, commentFont);
-		styles[RESERVED_WORD]				= new Style(keyword, null, keywordFont);
-		styles[RESERVED_WORD_2]			= new Style(keyword, null, keywordFont);
-		styles[FUNCTION]					= new Style(function);
-		styles[LITERAL_BOOLEAN]			= new Style(literalNumber);
-		styles[LITERAL_NUMBER_DECIMAL_INT]	= new Style(literalNumber);
-		styles[LITERAL_NUMBER_FLOAT]		= new Style(literalNumber);
-		styles[LITERAL_NUMBER_HEXADECIMAL]	= new Style(literalNumber);
-		styles[LITERAL_STRING_DOUBLE_QUOTE]	= new Style(literalString);
-		styles[LITERAL_CHAR]				= new Style(literalString);
-		styles[LITERAL_BACKQUOTE]			= new Style(literalString);
-		styles[DATA_TYPE]				= new Style(new Color(0,128,128));
-		styles[VARIABLE]					= new Style(variable);
-		styles[REGEX]						= new Style(regex);
-		styles[ANNOTATION]				= new Style(Color.gray);
-		styles[IDENTIFIER]				= new Style(null);
-		styles[WHITESPACE]				= new Style(Color.gray);
-		styles[SEPARATOR]				= new Style(Color.RED);
-		styles[OPERATOR]					= new Style(preprocessor);
-		styles[PREPROCESSOR]				= new Style(Color.gray);
-		styles[MARKUP_TAG_DELIMITER]		= new Style(Color.RED);
-		styles[MARKUP_TAG_NAME]			= new Style(Color.BLUE);
-		styles[MARKUP_TAG_ATTRIBUTE]		= new Style(new Color(63,127,127));
-		styles[MARKUP_TAG_ATTRIBUTE_VALUE]= new Style(literalString);
-		styles[MARKUP_PROCESSING_INSTRUCTION] = new Style(preprocessor);
-		styles[MARKUP_CDATA]				= new Style(variable);
-		styles[ERROR_IDENTIFIER]			= new Style(error);
-		styles[ERROR_NUMBER_FORMAT]		= new Style(error);
-		styles[ERROR_STRING_DOUBLE]		= new Style(error);
-		styles[ERROR_CHAR]				= new Style(error);
-
+		this.restoreDefaultSyntaxScheme();
 		
 		
-		this.setSyntaxScheme(getSyntaxScheme());
-		*/
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 
 import javax.swing.JOptionPane;
@@ -7,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 
@@ -14,6 +17,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.jbricx.pjo.ActionControlClass;
 
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 
 
@@ -23,6 +27,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	
 	public JBricxEditorTabFolder(JBricxManager  manager){
 		this.manager = manager;
+		refreshTabItems();
 		openNewFile();
 
 	}
@@ -36,7 +41,11 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
 				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
-				JScrollPane scroller = new JScrollPane(newItem);	
+				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+				newItem.setCodeFoldingEnabled(true);
+			    newItem.setAntiAliasingEnabled(true);
+				RTextScrollPane scroller = new RTextScrollPane(newItem);	
+				scroller.setFoldIndicatorEnabled(true);
 				String fileName = newItem.getFileName();
 				if(fileName != null){
 					 
@@ -232,9 +241,15 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 */
 	public void refreshTabItems() {
 		int paneCount = this.getTabCount();
+		
 		for (int i = 0; i < paneCount; i++) {
-			JBricxTabItem tab = (JBricxTabItem) (((JScrollPane) getComponentAt(i))
-					.getViewport().getView());
+			RTextScrollPane scroller = (RTextScrollPane)getComponentAt(i);
+			Gutter theGutter = scroller.getGutter();
+			theGutter.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
+			theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
+			
+			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport().getView());
 			tab.updateText();
 			if (tab.getFileName() != null) {
 				this.setTitleAt(i, tab.getFileName());

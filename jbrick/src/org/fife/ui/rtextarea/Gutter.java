@@ -31,6 +31,8 @@ import org.fife.ui.rsyntaxtextarea.ActiveLineRangeListener;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 
 /**
  * The gutter is the component on the left-hand side of the text area that
@@ -97,7 +99,7 @@ public class Gutter extends JPanel {
 
 
 	/**
-	 * Constructor.
+	 * Constructor. MODIFIED FOR JBRICX
 	 *
 	 * @param textArea The parent text area.  If this is
 	 *        <code>null</code>, you must call
@@ -121,12 +123,9 @@ public class Gutter extends JPanel {
 
 		setBorder(new GutterBorder(0, 0, 0, 1)); // Assume ltr
 
-		Color bg = null;
-		if (textArea!=null) {
-			bg = textArea.getBackground(); // May return null if image bg
-		}
-		setBackground(bg!=null ? bg : Color.WHITE);
-
+		//JBRICX MODIFICATION
+		setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT)));
+		
 	}
 
 

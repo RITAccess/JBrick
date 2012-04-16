@@ -14,6 +14,8 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 
 /**
  * An extension of <code>javax.swing.JScrollPane</code> that will only take
@@ -93,10 +95,9 @@ public class RTextScrollPane extends JScrollPane {
 		textArea = area;
 
 		// Create the gutter for this document.
-		Font defaultFont = new Font("Monospaced", Font.PLAIN, 13);
 		gutter = new Gutter(textArea);
-		gutter.setLineNumberFont(defaultFont);
-		gutter.setLineNumberColor(lineNumberColor);
+		gutter.setLineNumberColor(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		gutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
 		setLineNumbersEnabled(lineNumbers);
 
 		// Set miscellaneous properties.
