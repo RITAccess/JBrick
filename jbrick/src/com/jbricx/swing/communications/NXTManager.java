@@ -7,11 +7,11 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import com.jbricx.communications.enums.ConnectionType;
-import com.jbricx.communications.enums.Motor;
-import com.jbricx.communications.enums.Sensor;
-import com.jbricx.communications.enums.SensorMode;
-import com.jbricx.communications.enums.SensorType;
+import com.jbricx.swing.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.enums.Motor;
+import com.jbricx.swing.communications.enums.Sensor;
+import com.jbricx.swing.communications.enums.SensorMode;
+import com.jbricx.swing.communications.enums.SensorType;
 
 /**
  * This class works as a Facade, its interface contains all the methods related

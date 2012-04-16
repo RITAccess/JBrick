@@ -3,7 +3,7 @@
  */
 package com.jbricx.swing.communications;
 
-import com.jbricx.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.enums.ConnectionType;
 
 /**
  * Defines the methods for connecting and disconnecting to a Lego Brick.

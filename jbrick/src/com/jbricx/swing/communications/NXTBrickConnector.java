@@ -3,9 +3,9 @@
  */
 package com.jbricx.swing.communications;
 
-import com.jbricx.communications.enums.ConnectionType;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.swing.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.exceptions.NXTNotFoundException;
+import com.jbricx.swing.communications.exceptions.UnableToCreateNXTException;
 
 /**
  * Manages a single connection to the brick and polls the port to verify it's

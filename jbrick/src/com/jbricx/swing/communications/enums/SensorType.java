@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jbrix.swing.communications.enums;
+package com.jbricx.swing.communications.enums;
 
 /**
  * @author Spencer Herzberg

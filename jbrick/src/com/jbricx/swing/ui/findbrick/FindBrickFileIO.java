@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.jbricx.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.enums.ConnectionType;
 
 /**
  * @author Michael Goldstein

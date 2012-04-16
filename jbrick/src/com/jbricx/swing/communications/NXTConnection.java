@@ -1,9 +1,9 @@
 package com.jbricx.swing.communications;
 
-import com.jbricx.communications.enums.ConnectionType;
-import com.jbricx.communications.enums.Sensor;
-import com.jbricx.communications.enums.SensorMode;
-import com.jbricx.communications.enums.SensorType;
+import com.jbricx.swing.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.enums.Sensor;
+import com.jbricx.swing.communications.enums.SensorMode;
+import com.jbricx.swing.communications.enums.SensorType;
 
 /**
  * Defines the methods for the low-level connections to the Lego Brick.

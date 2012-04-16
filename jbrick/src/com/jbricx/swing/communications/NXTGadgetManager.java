@@ -3,10 +3,10 @@
  */
 package com.jbricx.swing.communications;
 
-import com.jbricx.communications.enums.Motor;
-import com.jbricx.communications.enums.Sensor;
-import com.jbricx.communications.enums.SensorMode;
-import com.jbricx.communications.enums.SensorType;
+import com.jbricx.swing.communications.enums.Motor;
+import com.jbricx.swing.communications.enums.Sensor;
+import com.jbricx.swing.communications.enums.SensorMode;
+import com.jbricx.swing.communications.enums.SensorType;
 
 /**
  * Defines the methods related to the different gadgets that can be attached to

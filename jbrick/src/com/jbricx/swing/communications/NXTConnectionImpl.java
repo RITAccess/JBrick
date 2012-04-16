@@ -2,12 +2,12 @@ package com.jbricx.swing.communications;
 
 import java.nio.ByteBuffer;
 
-import com.jbricx.communications.enums.ConnectionType;
-import com.jbricx.communications.enums.Sensor;
-import com.jbricx.communications.enums.SensorMode;
-import com.jbricx.communications.enums.SensorType;
-import com.jbricx.communications.exceptions.NXTNotFoundException;
-import com.jbricx.communications.exceptions.UnableToCreateNXTException;
+import com.jbricx.swing.communications.enums.ConnectionType;
+import com.jbricx.swing.communications.enums.Sensor;
+import com.jbricx.swing.communications.enums.SensorMode;
+import com.jbricx.swing.communications.enums.SensorType;
+import com.jbricx.swing.communications.exceptions.NXTNotFoundException;
+import com.jbricx.swing.communications.exceptions.UnableToCreateNXTException;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
