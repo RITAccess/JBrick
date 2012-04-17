@@ -1,8 +1,7 @@
 package com.jbricx.swing.ui.findbrick;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.LayoutManager;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +18,7 @@ import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.communications.enums.ConnectionType;
 
 /**
- * @author Priya Sankaran
+ * @author Jim Grosso
  */
 public class FindBrickUIWindow extends JDialog implements ActionListener {
 	
@@ -30,7 +29,8 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		super(manager.getShell(), "Find Brick", true);
 		this.manager = manager;
 		
-		setLayout(new BorderLayout());
+		// create the information panel
+		setLayout(new GridLayout(3,1));
 		JPanel info = new JPanel();
 		
 		info.setLayout(new FlowLayout());
@@ -39,8 +39,9 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
           + "and click Connect. You can save your preference by clicking "
           + "the Save button so you do not need to come back to this screen "
           + "in the future."));
-		add(info,BorderLayout.NORTH);
+		add(info);
 		
+		// create the status panel
 		JPanel status = new JPanel();
 		status.setLayout(new FlowLayout());
 		status.setBorder(BorderFactory.createTitledBorder("Connection satus:"));
@@ -56,10 +57,11 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 			}
 		
 		status.add(connected);
-		add(status,BorderLayout.CENTER);
+		add(status);
 		
+		// create  the buttons
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new FlowLayout());
+		buttons.setLayout(new GridLayout(1,2));
 		
 		JButton connect = new JButton("Connect");
 		connect.addActionListener(this);
@@ -78,7 +80,7 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		buttons.add(connect);
 		buttons.add(quit);
 		
-		add(buttons,BorderLayout.SOUTH);
+		add(buttons);
 		
 		this.pack();
 		//this.setSize(200, 400);
