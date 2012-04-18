@@ -144,6 +144,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	 */
 	public void updatePreferences() {
 		editorPane.refreshTabItems();
+		statusPane.refresh();
 		
 	}
 	
