@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.jbricx.swing.communications.enums.ConnectionType;
@@ -135,17 +136,23 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	@Override
 	public ExitStatus downloadFile(final String filename) {
 		if (connections.containsKey(currentConnection) && isConnected()) {
+			
+			try{
 
-			NXTBrickConnector proc = connections.get(currentConnection);
-
-			// This is how it works: disconnect the brick, transfer file,
-			// re-connect.
-			disconnect();
-			ExitStatus status = compilerRunner.download(filename, proc
-					.getConnection().getConnectionType().toPort());
-			connect(proc.getConnection().getConnectionType());
-
-			return status;
+				NXTBrickConnector proc = connections.get(currentConnection);
+			
+			
+				// This is how it works: disconnect the brick, transfer file,
+				// re-connect.
+				disconnect();
+				ExitStatus status = compilerRunner.download(filename, proc
+						.getConnection().getConnectionType().toPort());
+				connect(proc.getConnection().getConnectionType());
+	
+				return status;
+			}catch(Exception e){
+				
+			}
 		}
 
 		// Since we know we're using the same tool to compile and download,

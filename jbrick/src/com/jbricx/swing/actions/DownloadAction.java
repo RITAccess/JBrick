@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import com.jbricx.swing.communications.NXTManager;
+import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 
 
@@ -40,5 +42,13 @@ public class DownloadAction extends AbstractCompilerAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Either add logic for compilation or call super to download
+		this.run();
+	}
+
+	@Override
+	protected ExitStatus doRun(String filename) {
+		// TODO Auto-generated method stub
+		return NXTManager.getInstance().downloadFile(filename);
+
 	}
 }
