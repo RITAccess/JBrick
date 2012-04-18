@@ -96,11 +96,13 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			+ (System.getProperty("os.name").contains("OS X") ? ""
 					: System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
+		}else{
+			filename = tabItem.getFileAbsolutePath();
 		}
-
 		if (tabItem.isDirty()) {
 
 			try {
+				
 				tabItem.saveAs(filename);
 
 			} catch (IOException e) {
