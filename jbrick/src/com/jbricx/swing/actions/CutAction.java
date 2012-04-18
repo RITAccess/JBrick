@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
+import org.fife.ui.rtextarea.RTextScrollPane;
+
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 /**
  * This action cuts the current selection to the clipboard
@@ -21,7 +24,8 @@ public class CutAction extends JBricxAbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Implement logic when Tabs are done
+		JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
+	    tab.cut();
 
 	}
 }
