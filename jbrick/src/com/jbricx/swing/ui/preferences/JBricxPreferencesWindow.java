@@ -99,8 +99,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	public JBricxPreferencesWindow(JBricxManager manager){
 		super(manager.getShell(),"Preferences",true);
 		this.manager = manager;
-		PreferenceStore prefClass = new PreferenceStore();
-		prefs = prefClass.getPrefs();
+		prefs = PreferenceStore.getPrefs();
 		
 		setLayout(new BorderLayout());
 		mainArea = new JPanel();

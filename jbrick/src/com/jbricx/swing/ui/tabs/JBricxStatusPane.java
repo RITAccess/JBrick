@@ -1,17 +1,28 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.util.prefs.Preferences;
+
 import javax.swing.JEditorPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 public class JBricxStatusPane extends JTabbedPane {
 	JEditorPane messagePane;
+	private Preferences prefs;
 	
 	public JBricxStatusPane(){
 		messagePane = new JEditorPane();
 		messagePane.setEnabled(false);
+		messagePane.setBackground(Color.WHITE);
+		messagePane.setDisabledTextColor(Color.BLACK);
+		prefs = PreferenceStore.getPrefs();
+		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
 		
 		this.addTab("Status", messagePane);
 	}
@@ -39,5 +50,9 @@ public class JBricxStatusPane extends JTabbedPane {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void refresh(){
+		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
 	}
 }
