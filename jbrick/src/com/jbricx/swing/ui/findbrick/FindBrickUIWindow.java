@@ -1,5 +1,6 @@
 package com.jbricx.swing.ui.findbrick;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import com.jbricx.swing.communications.NXTConnectionManager;
 import com.jbricx.swing.communications.NXTManager;
@@ -30,16 +32,16 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		this.manager = manager;
 		
 		// create the information panel
-		setLayout(new GridLayout(3,1));
+		setLayout(new BorderLayout());
 		JPanel info = new JPanel();
 		
 		info.setLayout(new FlowLayout());
-		info.setBorder(BorderFactory.createTitledBorder("Information"));
-		info.add(new JLabel("To connect to the brick, select the communication method "
-          + "and click Connect. You can save your preference by clicking "
-          + "the Save button so you do not need to come back to this screen "
-          + "in the future."));
-		add(info);
+		info.setBorder(BorderFactory.createTitledBorder("Information:"));
+		info.add(new JLabel("<html>To connect to the brick, select the communication method "
+          + "<br>and click Connect. You can save your preference by clicking "
+          + "<br>the Save button so you do not need to come back to this screen "
+          + "<br>in the future.</html>"));
+		add(info, BorderLayout.NORTH);
 		
 		// create the status panel
 		JPanel status = new JPanel();
@@ -57,16 +59,20 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 			}
 		
 		status.add(connected);
-		add(status);
+		add(status, BorderLayout.CENTER);
 		
 		// create  the buttons
 		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(1,2));
+		buttons.setLayout(new FlowLayout());
 		
 		JButton connect = new JButton("Connect");
+		connect.setSize(100, 100);
+		connect.getAccessibleContext().setAccessibleName("connect to brick via USB");
 		connect.addActionListener(this);
 		
 		JButton quit = new JButton("Quit");
+		quit.setSize(100, 100);
+		quit.getAccessibleContext().setAccessibleName("quit");
 		quit.addActionListener(new ActionListener(){
 
 			@Override
@@ -80,8 +86,14 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		buttons.add(connect);
 		buttons.add(quit);
 		
-		add(buttons);
+		add(buttons, BorderLayout.SOUTH);
 		
+		this.getAccessibleContext().setAccessibleName("Information: To connect to the brick, select the communication method "
+          + "and click Connect. You can save your preference by clicking "
+          + "the Save button so you do not need to come back to this screen "
+          + "in the future."
+          + "Connection satus:"
+          + connected.getText());
 		this.pack();
 		//this.setSize(200, 400);
 		this.setVisible(true);
