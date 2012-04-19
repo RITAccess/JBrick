@@ -24,6 +24,7 @@ public class CompilerError {
 
   public void setFileLine(final String fileline) {
     try {
+    	System.out.println("fileline: " + fileline);
     	file = fileline.substring(fileline.indexOf("/"));
     	// fileline.substring( 
 //            fileline.indexOf("File \""), //+ 6,
