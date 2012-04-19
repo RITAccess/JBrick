@@ -135,7 +135,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	 */
 	@Override
 	public ExitStatus downloadFile(final String filename) {
-		if (connections.containsKey(currentConnection) && isConnected()) {
+		//if (connections.containsKey(currentConnection) && isConnected()) {
 			
 			try{
 
@@ -153,7 +153,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 			}catch(Exception e){
 				
 			}
-		}
+		//}
 
 		// Since we know we're using the same tool to compile and download,
 		// let's

@@ -70,10 +70,10 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		connect.getAccessibleContext().setAccessibleName("connect to brick via USB");
 		connect.addActionListener(this);
 		
-		JButton quit = new JButton("Quit");
-		quit.setSize(100, 100);
-		quit.getAccessibleContext().setAccessibleName("quit");
-		quit.addActionListener(new ActionListener(){
+		JButton ok = new JButton("Ok");
+		ok.setSize(100, 100);
+		ok.getAccessibleContext().setAccessibleName("Ok");
+		ok.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -84,7 +84,7 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		});
 		
 		buttons.add(connect);
-		buttons.add(quit);
+		buttons.add(ok);
 		
 		add(buttons, BorderLayout.SOUTH);
 		
@@ -119,7 +119,8 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 	        	Toolkit.getDefaultToolkit().beep();
 	        } 
 	        else {
-	        	this.dispose();
+	        	connected.setText("Connected using "
+						+ NXTManager.getInstance());
 	        }
 	        nxtManager.notifyAllObservers(isConnected);
 	     //}
