@@ -23,12 +23,16 @@ public class CompilerError {
   private String line;
 
   public void setFileLine(final String fileline) {
-	  try {
-    	file = 
-    	 fileline.substring( 
-            fileline.indexOf("File \""), //+ 6,
-            fileline.indexOf("\" ; ")
-           );
+
+    try {
+    	System.out.println("fileline: " + fileline);
+    	file = fileline.substring(fileline.indexOf("/"));
+    	// fileline.substring( 
+//            fileline.indexOf("File \""), //+ 6,
+//            fileline.indexOf("\" ; ")
+//           );
+   		System.out.println(file);
+
     } catch (StringIndexOutOfBoundsException e) {
       e.printStackTrace();
     }
