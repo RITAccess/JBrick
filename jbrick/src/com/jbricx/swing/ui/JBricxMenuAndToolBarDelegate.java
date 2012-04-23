@@ -2,11 +2,14 @@ package com.jbricx.swing.ui;
 
 //import java.util.prefs.Preferences;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
@@ -247,23 +250,45 @@ public class JBricxMenuAndToolBarDelegate {
 		undoButton.setToolTipText("Undo");
 
 		// Add all the buttons to the tool bar
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(newButton);
 		mainToolBar.add(openButton);
 		mainToolBar.add(saveButton);
 		mainToolBar.add(saveAsButton);
+		mainToolBar.add(printButton);
+		mainToolBar.add( new JToolBar.Separator());
+		//mainToolBar.add(Box.createHorizontalStrut(45));
+		mainToolBar.add(Box.createHorizontalGlue());
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(undoButton);
-		mainToolBar.add(redoButton);		
+		mainToolBar.add(redoButton);
+		mainToolBar.add( new JToolBar.Separator());
+		//mainToolBar.add(Box.createHorizontalStrut(45));
+		mainToolBar.add(Box.createHorizontalGlue());
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(cutButton);
 		mainToolBar.add(copyButton);
 		mainToolBar.add(pasteButton);
+		mainToolBar.add( new JToolBar.Separator());
+		//mainToolBar.add(Box.createHorizontalStrut(45));
+		mainToolBar.add(Box.createHorizontalGlue());
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(findButton);
 		mainToolBar.add(gotoButton);
-		mainToolBar.add(printButton);
+		mainToolBar.add( new JToolBar.Separator());
+		//mainToolBar.add(Box.createHorizontalStrut(45));
+		mainToolBar.add(Box.createHorizontalGlue());
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(compileButton);
 		mainToolBar.add(fbButton);
 		mainToolBar.add(dlButton);
+		mainToolBar.add( new JToolBar.Separator());
+		//mainToolBar.add(Box.createHorizontalStrut(45));
+		mainToolBar.add(Box.createHorizontalGlue());
+		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(preferencesButton);
 		mainToolBar.add(helpContentButton);
+		mainToolBar.add( new JToolBar.Separator());
 
 		return mainToolBar;
 	}
