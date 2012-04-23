@@ -49,17 +49,17 @@ public class CompilerRunner {
 	}
 
 	private ExitStatus run(final String... command) {
-		System.out.println(command[0] + " " +command[1]);
+		int length = command.length;
 		final List<CompilerError> list = new ArrayList<CompilerError>();
 		Process proc;
 		ProcessBuilder pb = new ProcessBuilder(command);
 
 		try {
 			proc = pb.start();
-
 			final BufferedReader bufferedreader = new BufferedReader(
 					new InputStreamReader(new BufferedInputStream(
 							proc.getErrorStream())));
+			
 
 			/*
 			 * Listen up, boyo, every (most?) error message by NBC is composed

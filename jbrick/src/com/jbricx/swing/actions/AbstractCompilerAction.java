@@ -62,6 +62,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			// Clear the annotations on the border
 			//getCurrentTab().clearAnnotations();
 			// Execute the operation
+			System.out.println("Trying to download file to "+ getCurrentTab().getFileFullPath());
 			final ExitStatus run = doRun(getCurrentTab().getFileFullPath());
 			
 			if (run.isOk()) {

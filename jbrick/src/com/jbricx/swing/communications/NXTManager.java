@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import com.jbricx.swing.communications.enums.ConnectionType;
 import com.jbricx.swing.communications.enums.Motor;
 import com.jbricx.swing.communications.enums.Sensor;
@@ -63,7 +59,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
 	public NXTManager connect(final ConnectionType connectionType) {
 		currentConnection = connectionType.toString();
-
 		if (!(connections.containsKey(currentConnection) && connections.get(
 				currentConnection).isRunning())) {
 			NXTBrickConnector c = new NXTBrickConnector();
@@ -84,7 +79,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 
 	@Override
 	public void disconnect(final String name) {
-		SwingUtilities.invokeLater(new Runnable() {
+		Thread t = new Thread( new Runnable(){
 			public void run() {
 				if (connections.containsKey(name)) {
 					connections.remove(name).disconnect();
@@ -92,6 +87,7 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 				}
 			}
 		});
+		t.start();
 	}
 
 	/**
@@ -138,10 +134,8 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 		//if (connections.containsKey(currentConnection) && isConnected()) {
 			
 			try{
-
 				NXTBrickConnector proc = connections.get(currentConnection);
-			
-			
+		
 				// This is how it works: disconnect the brick, transfer file,
 				// re-connect.
 				disconnect();

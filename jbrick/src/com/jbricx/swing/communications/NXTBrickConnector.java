@@ -94,6 +94,7 @@ public class NXTBrickConnector {
   public void disconnect() {
     if (connection != null) {
       connection.disconnect();
+      
     }
 
     if (thread != null) {
