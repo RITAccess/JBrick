@@ -3,6 +3,8 @@ package com.jbricx.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
@@ -21,7 +23,7 @@ import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager  {
+public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener  {
 
 	Preferences prefs;
 	
@@ -38,6 +40,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	public void run() {
 		PreferenceStore prefClass = new PreferenceStore();
 		prefs = prefClass.getPrefs();
+		prefs.addPreferenceChangeListener(this);
 		initMainWindow();
 	}
 	
@@ -63,18 +66,7 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		
 		editorPane = new JBricxEditorTabFolder(this);
 		statusPane = new JBricxStatusPane();
-		filePane = new JBricxFilePane();
-		
-		 JPanel testColors = new JPanel();
-		 
-	
-		 
-		 //testColors.add(scrPane, BorderLayout.CENTER);
-		 testColors.doLayout();
-		 //System.out.println(codeEditor.getParent().getClass());
-		 
-		 //codeEditor.setText("public static void main(String[] args) {\n}");
-				
+		filePane = new JBricxFilePane();				
 		
 		//Contains the main Editor component, and the status component
 		upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,editorPane,statusPane);
@@ -117,12 +109,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 		return false;
 	}
 
-	@Override
-	public void refreshExplorerContent() {
-		// TODO Auto-generated method stub
-		
-	}
-
 //
 //	/**
 //	 * Register observers
@@ -139,14 +125,6 @@ public class MainWindow extends JFrame implements JBricxManager  {
 //	    //TODO
 //	}
 
-	/**
-	 * Update any preference changes and resize objects if nessecary
-	 */
-	public void updatePreferences() {
-		editorPane.refreshTabItems();
-		statusPane.refresh();
-		
-	}
 	
 	public JFrame getShell(){
 		return this;
@@ -163,6 +141,15 @@ public class MainWindow extends JFrame implements JBricxManager  {
 	
 	public JSplitPane getSplitPane(){
 		return leftRightSplit;
+	}
+
+
+	/**
+	 * Called by the listner whenever a property has changed.
+	 */
+	public void preferenceChange(PreferenceChangeEvent arg0) {
+		editorPane.refreshTabItems();
+		statusPane.refresh();	
 	}
 
 

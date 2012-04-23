@@ -474,7 +474,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		
 		applyButton = new JButton("Apply");
 		applyButton.setActionCommand("apply");
-		okButton.addActionListener(this);
+		applyButton.addActionListener(this);
 		
 		bottomPane.add(Box.createRigidArea(new Dimension(10,0)));
 		bottomPane.add(resetToDefaultButton);
@@ -616,13 +616,13 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				    "Preferences",
 				    JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION){
-				manager.updatePreferences();
+				//manager.updatePreferences(); //Should automatically update.
 				this.dispose();
 			}
 		// User wishes to leave. Saves changes and leaves	
 		}else if(arg0.getActionCommand().equals("OK")){
 			saveValues();
-			manager.updatePreferences();
+			//manager.updatePreferences(); //Should automatically Update
 			this.dispose();
 		//User wishes to reset all items to default. Makes sure with another dialog, then does so if necessary.
 		}else if(arg0.getActionCommand().equals("reset")){

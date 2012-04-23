@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
+import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
@@ -71,6 +72,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private ShowHideFileViewerAction showHideFileViewerAction;
 	private UndoAction undoAction;
 
+
 	// private JoyStickAction joystickAction;
 	// private MethodTemplateAction methodTemplateAction;
 
@@ -116,7 +118,9 @@ public class JBricxMenuAndToolBarDelegate {
  
 		// methodTemplateAction = new MethodTemplateAction(manager);
 		// joystickAction = new JoyStickAction(manager);
-		// NXTManager nxtManager = NXTManager.getInstance();
+		NXTManager nxtManager = NXTManager.getInstance();
+
+	    nxtManager.register(downloadAction);
 	}
 
 	public JToolBar getToolBar() {

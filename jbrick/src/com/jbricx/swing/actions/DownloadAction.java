@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.communications.ExitStatus;
+import com.jbricx.swing.communications.NXTObserver;
 import com.jbricx.swing.ui.JBricxManager;
 
 
@@ -14,20 +15,17 @@ import com.jbricx.swing.ui.JBricxManager;
  * Downloads the current file into the brick.
  */
 @SuppressWarnings("serial")
-public class DownloadAction extends AbstractCompilerAction {
+public class DownloadAction extends AbstractCompilerAction implements NXTObserver {
 
 	/**
 	 * Constructor
 	 */
 	public DownloadAction(final JBricxManager manager) {
 		super("", new ImageIcon("./resources/images/download.png"), manager);
+		System.out.println(NXTManager.isFantomDriverLoaded());
+		setEnabled(NXTManager.isFantomDriverLoaded());
 	}
 
-	//TODO Implement after AbstractCompilerAction is done
-//	@Override
-//	protected ExitStatus doRun(final String filename) {
-//		return NXTManager.getInstance().downloadFile(filename);
-//	}
 
 	@Override
 	protected void onSuccess() {
@@ -50,5 +48,10 @@ public class DownloadAction extends AbstractCompilerAction {
 		// TODO Auto-generated method stub
 		return NXTManager.getInstance().downloadFile(filename);
 
+	}
+
+	// Disables when not connected to brick.
+	public void update(boolean isConnected) {
+		setEnabled(isConnected);
 	}
 }

@@ -57,6 +57,7 @@ public class SafeSaveDialog {
         String fileName = null;
         final JFileChooser fileChooser = new JFileChooser(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC,PreferenceStore.WRKSPC_DEFAULT));
         fileChooser.setFileFilter(filter);
+        
         /* The user has finished when one of the following happens:
          * The user may provide a new file name or an existing filename
          * In case user selects an existing file:
@@ -76,6 +77,11 @@ public class SafeSaveDialog {
             	// User has selected a file; see if it already exists
                 File file = fileChooser.getSelectedFile();
                 fileName = file.getAbsolutePath();
+                
+                if (fileName.indexOf('.')==-1) {
+                	fileName += ".nxc";
+                	file = new File(file.getParentFile(), fileName);
+                	}
                 JBricxEditorTabFolder tabfolder = manager.getTabFolder();
 
                 if (file.exists()) {

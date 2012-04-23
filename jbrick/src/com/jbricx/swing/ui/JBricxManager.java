@@ -17,12 +17,8 @@ public interface JBricxManager {
 	
 	boolean close();
 	
-	void refreshExplorerContent();
-	
 //	void registerObserver(JBrickObserver o);
-	
-	void updatePreferences();
-	
+		
 	boolean isAutoCompile();
 
 	JBricxEditorTabFolder getTabFolder();
