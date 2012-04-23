@@ -26,5 +26,7 @@ public interface JBricxManager {
 	JBricxStatusPane getStatusPane();
 	
 	JSplitPane getSplitPane();
+
+	void refreshExplorerContent();
 	
 }

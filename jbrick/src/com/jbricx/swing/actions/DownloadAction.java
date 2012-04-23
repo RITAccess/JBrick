@@ -22,7 +22,7 @@ public class DownloadAction extends AbstractCompilerAction implements NXTObserve
 	 */
 	public DownloadAction(final JBricxManager manager) {
 		super("", new ImageIcon("./resources/images/download.png"), manager);
-		System.out.println(NXTManager.isFantomDriverLoaded());
+		//System.out.println(NXTManager.isConnected());
 		setEnabled(NXTManager.isFantomDriverLoaded());
 	}
 

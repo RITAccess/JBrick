@@ -3,27 +3,29 @@ package com.jbricx.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import jsyntaxpane.DefaultSyntaxKit;
 
 
 
 
-
+import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
+import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
+import com.jbricx.ui.tabs.JBrickTabItem;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener  {
+public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener,WindowListener  {
 
 	Preferences prefs;
 	
@@ -41,8 +43,24 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		PreferenceStore prefClass = new PreferenceStore();
 		prefs = prefClass.getPrefs();
 		prefs.addPreferenceChangeListener(this);
+		
+		
+		  
+		
 		initMainWindow();
+		
+		
+		if (NXTManager.isFantomDriverLoaded()) {
+		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
+		    } else {
+		      // TODO: make the notification accessible!
+		      System.out.println("MainWindow.MainWindow(): Fantom driver missing!");
+		    }
+		
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
 	}
+	
 	
 	
 	/**
@@ -99,7 +117,20 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 * Closing logic
 	 */
 	public boolean close() {
-		// TODO Closing the program logic, button is in place
+		if (getTabFolder().checkOverwrite()) {
+		     // close = super.close();
+		      //if (close) {
+		        StringBuilder recentfiles = new StringBuilder();
+		       // for (CTabItem t : tabFolder.getItems()) {
+		     //     JBrickTabItem i = (JBrickTabItem) t;
+
+		         // recentfiles.append(i.getDocument().getFileName());
+		          recentfiles.append(';');
+		          this.dispose();
+		  		NXTManager.getInstance().stopPolling();
+		  		System.exit(0);
+		  		return true;
+		        }
 		return false;
 	}
 
@@ -148,6 +179,49 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 * Called by the listner whenever a property has changed.
 	 */
 	public void preferenceChange(PreferenceChangeEvent arg0) {
+		editorPane.refreshTabItems();
+		statusPane.refresh();	
+	}
+	
+	
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		close();
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void refreshExplorerContent() {
 		editorPane.refreshTabItems();
 		statusPane.refresh();	
 	}

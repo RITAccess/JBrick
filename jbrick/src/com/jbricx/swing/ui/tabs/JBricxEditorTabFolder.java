@@ -14,8 +14,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 
 
-import com.jbricx.pjo.ActionControlClass;
 
+import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
@@ -157,8 +157,28 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		return true;
 	}
 
-	boolean checkOverwrite(){
-		return false;
+	/**
+	 * Called to see if anything needs to be saved before closing. If it does, saves files.
+	 * @return
+	 */
+	public boolean checkOverwrite(){
+		 boolean proceed = true;
+		 JBricxTabItem tabItem = null;
+		 
+		 int paneCount = this.getTabCount();
+			
+			for (int i = 0; i < paneCount; i++) {
+				tabItem=getSelection(i);
+
+		      if (closeFile(i)) {
+		        
+		      }else{
+		    	  proceed = false;
+		    	  break;
+		      }
+
+		  }
+			return proceed;
 		
 	}
 	
@@ -201,35 +221,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    return (JBricxTabItem)(((JScrollPane)getComponentAt(index)).getViewport().getView());
 	  }
 
-
-	public void insertText(String text){
-		
-	}
-
-
-	public void undo(){
-		
-	}
-
-	public void redo(){
-		
-	}
-
-	public void cut(){
-		
-	}
-
-	public void copy(){
-		
-	}
-
-	public void paste(){
-		
-	}
-
-	public void selectAll(){
-		
-	}
 
 	public String getCurrentFilename(){
 		return getSelection().getFileName();
@@ -279,5 +270,18 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    }
 	    return index;
 	  }
+
+	/**
+	 * Gets the list of files currently open in order to open them next time.
+	 * @return
+	 */
+	public StringBuilder getFileList() {
+		StringBuilder recentFiles = new StringBuilder();
+		for (int i = 0; i < getTabCount(); i++) {
+			JBricxTabItem tab = getSelection(i);
+			recentFiles.append(tab.getFileAbsolutePath());
+		}
+		return recentFiles;
+	}
 
 }

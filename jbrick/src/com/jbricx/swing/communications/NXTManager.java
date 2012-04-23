@@ -97,7 +97,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	 * @param observer
 	 */
 	public void register(final NXTObserver observer) {
-		System.out.println("Registered "+observer);
 		nxtObservers.add(observer);
 	}
 
@@ -106,7 +105,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	}
 
 	public void notifyAllObservers(boolean isConnected) {
-		System.out.println("Notifying!");
 		List<NXTObserver> copiedObservers = new ArrayList<NXTObserver>();
 
 		// CONCURRENCY IDIOM: copy then iterate

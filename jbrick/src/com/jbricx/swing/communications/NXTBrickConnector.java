@@ -76,11 +76,11 @@ public class NXTBrickConnector {
       success = true;
 
     } catch (final NXTNotFoundException e) {
-      e.printStackTrace();
+      //e.printStackTrace();
       success = false;
 
     } catch (final UnableToCreateNXTException e) {
-      e.printStackTrace();
+      //e.printStackTrace();
       success = false;
 
     }
