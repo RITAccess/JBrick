@@ -128,8 +128,9 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 	protected void displayErrors(final ExitStatus status) {
 		JBricxStatusPane statusPane = getStatusPane();
 		// iterate throw the returned message from the compiler
-		for (CompilerError ce : status.getCompilerErrors()) {
-			statusPane.pushMessage(ce.toString());
+//		for (CompilerError ce : status.getCompilerErrors()) {
+//			statusPane.pushMessage(ce.toString());
+			statusPane.pushMessage(status.getCompilerErrors());
 			//TODO: Logic for adding error annotations.
 			// add a new row to the table for each error
 //			int intLineNumber = Integer.parseInt(ce.getLineNumber());
@@ -138,7 +139,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 //						.getNumberOfLines();
 //			}
 //			getCurrentTab().addAnnotation(intLineNumber, ce.getMessage());
-		} // end of for
+//		} // end of for
 	}
 
 	/**
