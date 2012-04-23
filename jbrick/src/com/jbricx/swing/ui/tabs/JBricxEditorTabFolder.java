@@ -3,6 +3,7 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -24,11 +25,15 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private int newFileCount = 0;
 	private JBricxManager manager;
+	private ArrayList<String> listOfFiles;
+	//Used so the folder knows whether to add files to the recent file list.
+	private boolean closingTime;
 	
 	public JBricxEditorTabFolder(JBricxManager  manager){
 		this.manager = manager;
 		refreshTabItems();
 		openNewFile();
+		listOfFiles = new ArrayList<String>();
 
 	}
 
@@ -112,6 +117,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				    }
 				
 				if(saveSuccess){
+					if(closingTime){
+						listOfFiles.add(tabItem.getFileAbsolutePath());
+					}
 					return true;
 				}else{
 					return false;
@@ -127,7 +135,11 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			}
 		//File was already saved, do not need to prompt
 		}else{
-			
+			if(closingTime){
+				if(!tabItem.isNewFile()){
+					listOfFiles.add(tabItem.getFileAbsolutePath());
+				}
+			}
 			return true;	
 		}
 	}
@@ -159,9 +171,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 	/**
 	 * Called to see if anything needs to be saved before closing. If it does, saves files.
-	 * @return
+	 * @return true if everything is cleaned up, false if they weren't done.
 	 */
 	public boolean checkOverwrite(){
+		closingTime = true;
 		 boolean proceed = true;
 		 JBricxTabItem tabItem = null;
 		 
@@ -169,11 +182,13 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			
 			for (int i = 0; i < paneCount; i++) {
 				tabItem=getSelection(i);
-
+				
 		      if (closeFile(i)) {
-		        
+		    	  //file save succeeded or they chose not to save the file, or file doesnt need to be saved.
 		      }else{
 		    	  proceed = false;
+		    	  closingTime = false;
+		    	  listOfFiles.clear();
 		    	  break;
 		      }
 
@@ -277,9 +292,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 */
 	public StringBuilder getFileList() {
 		StringBuilder recentFiles = new StringBuilder();
-		for (int i = 0; i < getTabCount(); i++) {
-			JBricxTabItem tab = getSelection(i);
-			recentFiles.append(tab.getFileAbsolutePath());
+		for (String eachName : listOfFiles) {
+				recentFiles.append(eachName);
+				recentFiles.append(";");
 		}
 		return recentFiles;
 	}
