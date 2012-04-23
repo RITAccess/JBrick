@@ -5,13 +5,14 @@ import java.awt.Font;
 import java.util.prefs.Preferences;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
+@SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane {
 	JEditorPane messagePane;
 	private Preferences prefs;
@@ -22,9 +23,12 @@ public class JBricxStatusPane extends JTabbedPane {
 		messagePane.setBackground(Color.WHITE);
 		messagePane.setDisabledTextColor(Color.BLACK);
 		prefs = PreferenceStore.getPrefs();
-		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
+		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
+				PreferenceStore.FONT_DEFAULT)));
 		
-		this.addTab("Status", messagePane);
+		this.addTab("Status", new JScrollPane(messagePane,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
 	}
 
 	/**
@@ -35,6 +39,9 @@ public class JBricxStatusPane extends JTabbedPane {
 	public void pushMessage(String message){
 		Document doc = messagePane.getDocument();
 		try {
+			System.out.println("\nMessage: " + message);
+			int ln = Integer.parseInt(message.split(" ")[3].split(":")[0]);
+			
 			doc.insertString(doc.getLength(), message + "\n", null);
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
@@ -53,6 +60,7 @@ public class JBricxStatusPane extends JTabbedPane {
 	}
 	
 	public void refresh(){
-		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
+		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
+				PreferenceStore.FONT_DEFAULT)));
 	}
 }

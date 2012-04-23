@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.jbricx.swing.communications.enums.ConnectionType;
 import com.jbricx.swing.communications.enums.Motor;
 import com.jbricx.swing.communications.enums.Sensor;

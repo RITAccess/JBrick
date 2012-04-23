@@ -94,8 +94,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		String filename="";
 		if (tabItem.isNewFile()) {
 			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
-			+ (System.getProperty("os.name").contains("OS X") ? ""
-					: System.getProperty("file.separator"))
+			+ (System.getProperty("os.name").contains("OS X") ? "" : System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
 		}else{
 			filename = tabItem.getFileAbsolutePath();

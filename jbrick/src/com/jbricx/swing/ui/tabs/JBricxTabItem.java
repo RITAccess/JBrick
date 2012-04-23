@@ -1,25 +1,16 @@
 package com.jbricx.swing.ui.tabs;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
-
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
-
 import javax.swing.text.BadLocationException;
-
 import javax.swing.text.Utilities;
 
-
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
-
-
-import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
  * An individual tab item to be used in the editor pane.
@@ -27,6 +18,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * @author Daniel
  * 
  */
+@SuppressWarnings("serial")
 public class JBricxTabItem extends TextEditorPane {
 	private boolean isNewFile;
 	private JBricxEditorTabFolder parent;
