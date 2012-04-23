@@ -40,12 +40,8 @@ public class JBricxStatusPane extends JTabbedPane {
 		Document doc = messagePane.getDocument();
 		try {
 			System.out.println("\nMessage: " + message);
-			if(message.contains("Error on line")) {
-				for(String s : message.split(" ")) 
-					System.out.println(s);
-//				int ln = Integer.parseInt(message.split(" ")[5]);
-//				System.out.println(ln);
-			}
+			int ln = Integer.parseInt(message.split(" ")[3].split(":")[0]);
+			
 			doc.insertString(doc.getLength(), message + "\n", null);
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
