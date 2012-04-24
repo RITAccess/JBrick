@@ -120,7 +120,6 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 		if (getTabFolder().checkOverwrite()) {
 				StringBuilder recentFiles = getTabFolder().getFileList();
-				System.out.println(recentFiles);
 		        prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
 		        this.dispose();
 		  		NXTManager.getInstance().stopPolling();
