@@ -38,12 +38,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		listOfFiles = new ArrayList<String>();
 		prefs = PreferenceStore.getPrefs();
 		if(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT)){
-			System.out.println("We are going to load the most recent files...");
 			ArrayList<String>recentFiles = getRecentFiles();
-				if (recentFiles.size() > 0) {
-
+				if (recentFiles.size() > 1) {
 				      for (String file : recentFiles) {
-							System.out.println("Recent files found... "+ file);
 				        if (new File(file).exists()) {
 				          open(file);
 				        }
@@ -68,7 +65,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	          recentfiles.add(dir.getAbsolutePath() + "\\" + fileNames[i]);
 	        }
 	      }
-	      System.out.println(prefs.get(PreferenceStore.RECENTFILES,""));
 	      for (String s : prefs.get(PreferenceStore.RECENTFILES,"").split(
 	          ";")) {
 	        recentfiles.add(s);
@@ -173,6 +169,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 					String fpathname = tabItem.getFileAbsolutePath();
 					File f = new File(fpathname);
 			        f.delete();
+				}else{
+					if(closingTime){
+						listOfFiles.add(tabItem.getFileAbsolutePath());
+					}
 				}
 				return true;
 			//user chose to cancel or hit x. Do nothing
@@ -222,12 +222,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public boolean checkOverwrite(){
 		closingTime = true;
 		 boolean proceed = true;
-		 JBricxTabItem tabItem = null;
 		 
 		 int paneCount = this.getTabCount();
 			
 			for (int i = 0; i < paneCount; i++) {
-				tabItem=getSelection(i);
 				
 		      if (closeFile(i)) {
 		    	  //file save succeeded or they chose not to save the file, or file doesnt need to be saved.
