@@ -25,12 +25,10 @@ public class CompilerError {
   public void setFileLine(final String fileline) {
 
     try {
-    	System.out.println("fileline: " + fileline);
-    	file = fileline.substring(fileline.indexOf("/"));
-    	// fileline.substring( 
-//            fileline.indexOf("File \""), //+ 6,
-//            fileline.indexOf("\" ; ")
-//           );
+    	file = fileline.substring(
+                fileline.indexOf("File \"") + 6,
+                fileline.indexOf("\" ; ")
+               );
    		System.out.println(file);
 
     } catch (StringIndexOutOfBoundsException e) {

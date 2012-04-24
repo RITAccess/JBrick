@@ -431,12 +431,15 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeCheckBoxes() {
 		wordWrapBox = new JCheckBox();
 		wordWrapBox.setText("Word Wrap");
-
+		wordWrapBox.setSelected(prefs.getBoolean(PreferenceStore.WRAP, PreferenceStore.WRAP_DEFAULT));
+		
 		autoCompileBox = new JCheckBox();
 		autoCompileBox.setText("Auto Compile");
-
+		autoCompileBox.setSelected(prefs.getBoolean(PreferenceStore.AUTOCOMPILE,PreferenceStore.AUTOCOMPILE_DEFAULT));
+		
 		loadRecentlyBox = new JCheckBox();
 		loadRecentlyBox.setText("Load Recent Files");
+		loadRecentlyBox.setSelected(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT));
 	}
 	
 	/**

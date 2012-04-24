@@ -62,7 +62,6 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			// Clear the annotations on the border
 			//getCurrentTab().clearAnnotations();
 			// Execute the operation
-			System.out.println("Trying to download file to "+ getCurrentTab().getFileFullPath());
 			final ExitStatus run = doRun(getCurrentTab().getFileFullPath());
 			
 			if (run.isOk()) {
@@ -104,7 +103,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			try {
 				
 				tabItem.saveAs(filename);
-
+				getManager().getTabFolder().refreshTabItems();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(getManager().getShell(),
 					    "There was an error saving the current file"+

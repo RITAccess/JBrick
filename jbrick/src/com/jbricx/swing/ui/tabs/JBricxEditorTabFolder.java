@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -17,6 +18,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 
 import com.jbricx.pjo.ActionControlClass;
+import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
@@ -28,13 +30,51 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	private ArrayList<String> listOfFiles;
 	//Used so the folder knows whether to add files to the recent file list.
 	private boolean closingTime;
+	private Preferences prefs;
 	
 	public JBricxEditorTabFolder(JBricxManager  manager){
 		this.manager = manager;
 		refreshTabItems();
-		openNewFile();
 		listOfFiles = new ArrayList<String>();
+		prefs = PreferenceStore.getPrefs();
+		if(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT)){
+			System.out.println("We are going to load the most recent files...");
+			ArrayList<String>recentFiles = getRecentFiles();
+				if (recentFiles.size() > 0) {
 
+				      for (String file : recentFiles) {
+							System.out.println("Recent files found... "+ file);
+				        if (new File(file).exists()) {
+				          open(file);
+				        }
+				      }
+				    } else {
+				      this.openNewFile();
+				    }
+		}else{
+			this.openNewFile();
+		}
+
+	}
+
+	private ArrayList<String> getRecentFiles() {
+	    ArrayList<String> recentfiles = new ArrayList<String>();
+	    
+	      File dir = new File(prefs.get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT));
+	      String[] fileNames = dir.list();
+
+	      for (int i = 0; fileNames != null && i < fileNames.length; i++) {
+	        if (fileNames[i].endsWith(".bak.nxc")) {
+	          recentfiles.add(dir.getAbsolutePath() + "\\" + fileNames[i]);
+	        }
+	      }
+	      System.out.println(prefs.get(PreferenceStore.RECENTFILES,""));
+	      for (String s : prefs.get(PreferenceStore.RECENTFILES,"").split(
+	          ";")) {
+	        recentfiles.add(s);
+	      }
+	    return recentfiles;
+		
 	}
 
 	/**
@@ -128,6 +168,12 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				
 			//User said they do not wish to save (close without saving)	
 			}else if(overwrite == JOptionPane.NO_OPTION){
+				//User chose not to save .bak.nxc file. Delete it.
+				if(tabItem.getFileAbsolutePath().endsWith(".bak.nxc")){
+					String fpathname = tabItem.getFileAbsolutePath();
+					File f = new File(fpathname);
+			        f.delete();
+				}
 				return true;
 			//user chose to cancel or hit x. Do nothing
 			}else{

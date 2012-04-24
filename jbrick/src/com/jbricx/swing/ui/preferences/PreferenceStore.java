@@ -42,7 +42,7 @@ public class PreferenceStore {
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
-	public static final boolean BOOLRECENTFILES_DEFAULT = false;
+	public static final boolean BOOLRECENTFILES_DEFAULT = true;
 	public static final String RECENTFILES = "recentfiles"; //default is ""
 
 	// Tools names for preferences

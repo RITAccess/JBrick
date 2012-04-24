@@ -34,7 +34,7 @@ public class OpenAction extends JBricxAbstractAction {
 		class MyCustomFilter extends FileFilter {
 	        @Override
 	        public boolean accept(File file) {
-	            // Allow only directories, or files with ".txt" extension
+	            // Allow only directories, or files with ".nxc" extension
 	        	return file.isDirectory() || file.getAbsolutePath().endsWith(PreferenceStore.FILTER_EXTENSION);
 	        }
 	        @Override
@@ -48,11 +48,13 @@ public class OpenAction extends JBricxAbstractAction {
 		fileOpener.setFileFilter(filter);
 		
 		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
-		fileOpener.showOpenDialog(getManager().getShell());
-		File selectedFile = fileOpener.getSelectedFile();
-		
-		if(selectedFile.exists()){
-			getManager().getTabFolder().open(selectedFile.getAbsolutePath());
+		int returnVal = fileOpener.showOpenDialog(getManager().getShell());
+		if(returnVal == JFileChooser.APPROVE_OPTION){
+			File selectedFile = fileOpener.getSelectedFile();
+			if(selectedFile.exists()){
+				getManager().getTabFolder().open(selectedFile.getAbsolutePath());
+			}
 		}
+		
 	}
 	}

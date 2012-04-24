@@ -58,7 +58,6 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
-		System.out.println(prefs.get(PreferenceStore.RECENTFILES, "nothing"));
 	}
 	
 	
@@ -120,13 +119,8 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	public boolean close() {
 		
 		if (getTabFolder().checkOverwrite()) {
-		     // close = super.close();
-		      //if (close) {
-		       // for (CTabItem t : tabFolder.getItems()) {
-		     //     JBrickTabItem i = (JBrickTabItem) t;
-
-		         // recentfiles.append(i.getDocument().getFileName());
 				StringBuilder recentFiles = getTabFolder().getFileList();
+				System.out.println(recentFiles);
 		        prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
 		        this.dispose();
 		  		NXTManager.getInstance().stopPolling();
