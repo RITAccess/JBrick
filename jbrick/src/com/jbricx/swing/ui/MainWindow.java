@@ -84,7 +84,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 		editorPane = new JBricxEditorTabFolder(this);
 		statusPane = new JBricxStatusPane();
-		filePane = new JBricxFilePane();				
+		filePane = new JBricxFilePane(this);				
 		
 		//Contains the main Editor component, and the status component
 		upDownSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,editorPane,statusPane);
@@ -220,6 +220,10 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	public void refreshExplorerContent() {
 		editorPane.refreshTabItems();
 		statusPane.refresh();	
+	}
+	
+	public void openTab(String FilePath) {
+		editorPane.open(FilePath);
 	}
 
 

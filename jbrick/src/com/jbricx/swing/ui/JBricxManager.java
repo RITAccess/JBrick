@@ -29,4 +29,6 @@ public interface JBricxManager {
 
 	void refreshExplorerContent();
 	
+	void openTab(String FilePath);
+	
 }
