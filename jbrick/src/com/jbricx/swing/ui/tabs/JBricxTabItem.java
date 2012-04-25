@@ -3,6 +3,7 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.print.PageFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -23,13 +24,13 @@ public class JBricxTabItem extends TextEditorPane {
 	private boolean isNewFile;
 	private JBricxEditorTabFolder parent;
 
+	
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
 		
 		super(newFileNumber);
 		isNewFile = true;
 		this.parent = parent;
 		setShortcuts();
-
 	}
 	
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {

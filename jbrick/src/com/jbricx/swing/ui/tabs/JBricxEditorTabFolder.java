@@ -2,6 +2,8 @@ package com.jbricx.swing.ui.tabs;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
@@ -15,28 +17,35 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 
-
-
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 
 
 public class JBricxEditorTabFolder extends JTabbedPane {
-	private int newFileCount = 0;
 	private JBricxManager manager;
+	//Used to name new files when opened
+	private int newFileCount = 0;
+	//List of currently open files.
 	private ArrayList<String> listOfFiles;
+	
 	//Used so the folder knows whether to add files to the recent file list.
 	private boolean closingTime;
+	
 	private Preferences prefs;
 	
+	/**
+	 * Constructor for the tab folder. 
+	 * Loads recent files if any exist.
+	 * 
+	 * @param manager MainWindow class goes here (JBricxManager)
+	 */
 	public JBricxEditorTabFolder(JBricxManager  manager){
 		this.manager = manager;
-		refreshTabItems();
 		listOfFiles = new ArrayList<String>();
 		prefs = PreferenceStore.getPrefs();
+		
 		if(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT)){
 			ArrayList<String>recentFiles = getRecentFiles();
 				if (recentFiles.size() > 1) {
@@ -54,6 +63,13 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 	}
 
+	/**
+	 * Returns an ArrayList of Strings, each representing the absolute file path of any files that were left
+	 * open for the next time. Also includes any .bak.nxc files in the working directory.
+	 * 
+	 * @return
+	 * 
+	 */
 	private ArrayList<String> getRecentFiles() {
 	    ArrayList<String> recentfiles = new ArrayList<String>();
 	    
@@ -82,7 +98,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
 				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
-				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
 				newItem.setCodeFoldingEnabled(true);
 			    newItem.setAntiAliasingEnabled(true);
 				RTextScrollPane scroller = new RTextScrollPane(newItem);	
@@ -199,7 +215,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		newFileCount++;
 		
 		JBricxTabItem newTabItem = new JBricxTabItem(this,newFileCount);
-		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
 		newTabItem.setCodeFoldingEnabled(true);
 	    newTabItem.setAntiAliasingEnabled(true);
 	    //newTabItem.setFont(new Font(null, Font.BOLD,50));
@@ -238,34 +254,20 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 		  }
 			return proceed;
-		
 	}
 	
 	/**
 	 * Uses the getSelection(index) method to get the currently focused tab item
-	 * @return
+	 * @return JBricxTabItem
 	 */
 	public JBricxTabItem getSelection(){
 		return this.getSelection(getSelectedIndex());
-		
-	}
-/*
-	SourceViewer getSourceViewer(){
-		
 	}
 
-	void addCTabFolder2Listener(CTabFolder2Adapter cTabFolder2Adapter){
-		
-	}
-*/
-	void setMaximized(boolean b){
-		
-	}
-
-	void setMinimized(boolean b){
-		
-	}
-
+	/**
+	 * Sets the currently selected tab to the index specified
+	 * @param selectedIndex index of tab you you want selected
+	 */
 	public void setSelection(int selectedIndex){
 		this.setSelectedIndex(selectedIndex);
 	}
@@ -281,13 +283,29 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	  }
 
 
+	/**
+	 * Gets the file name of the currently selected tab.
+	 * 
+	 * @return Name of the file 
+	 */
 	public String getCurrentFilename(){
 		return getSelection().getFileName();
 	}
 
+	public void print(){
+		try {
+			PrinterJob job = PrinterJob.getPrinterJob();
+			job.setPrintable(getSelection());
+			job.printDialog();
+			job.print();
+		} catch (PrinterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
-	 * Refreshes tab items (file names), eventually text and color etc.
+	 * Refreshes tab items (file names), text and color etc.
 	 */
 	public void refreshTabItems() {
 		int paneCount = this.getTabCount();

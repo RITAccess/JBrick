@@ -77,6 +77,9 @@ public class RTextScrollPane extends JScrollPane {
 
 
 	/**
+	 * 
+	 * MODIFIED FOR JBRICX 
+	 * 
 	 * Creates a scroll pane with preferred size (width, height).
 	 *
 	 * @param area The text area this scroll pane will contain.  If this is

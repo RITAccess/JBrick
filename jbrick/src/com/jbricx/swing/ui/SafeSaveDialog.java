@@ -4,16 +4,13 @@ import java.awt.Component;
 import java.awt.FileDialog;
 import java.io.File;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import com.jbricx.pjo.FileExtensionConstants;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
-import com.jbricx.ui.tabs.TabFolder;
 
 /**
  * This class provides a facade for the "save" FileDialog class. If the selected
@@ -22,7 +19,6 @@ import com.jbricx.ui.tabs.TabFolder;
 public class SafeSaveDialog {
     // The wrapped FileDialog
 
-    private FileDialog dlg;
     private Component mainShell;
     private JBricxManager manager;
     private MyCustomFilter filter;
