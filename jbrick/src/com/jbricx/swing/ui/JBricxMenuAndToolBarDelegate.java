@@ -94,7 +94,7 @@ public class JBricxMenuAndToolBarDelegate {
 		compileAction = new CompileAction(manager);
 		copyAction = new CopyAction(manager);
 		cutAction = new CutAction(manager);
-		directControlAction = new DirectControlAction(manager);
+		//directControlAction = new DirectControlAction(manager);
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
 		findAction = new FindAction(manager);
@@ -107,7 +107,7 @@ public class JBricxMenuAndToolBarDelegate {
 		newAction = new NewAction(manager);
 		openAction = new OpenAction(manager);
 		pasteAction = new PasteAction(manager);
-		pianoAction = new PianoAction(manager);
+		//pianoAction = new PianoAction(manager);
 		prefsAction = new PreferencesAction(manager);
 		printAction = new PrintAction(manager);
 		printPreviewAction = new PrintPreviewAction(manager);

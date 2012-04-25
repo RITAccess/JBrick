@@ -2,8 +2,8 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 
-import com.jbricx.communications.NXTManager;
-import com.jbricx.communications.NXTObserver;
+import com.jbricx.swing.communications.NXTManager;
+import com.jbricx.swing.communications.NXTObserver;
 import com.jbricx.ui.piano.PianoUIWindow;
 
 import javax.swing.ImageIcon;

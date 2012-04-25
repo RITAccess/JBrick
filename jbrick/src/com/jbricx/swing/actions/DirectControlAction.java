@@ -1,7 +1,7 @@
 package com.jbricx.swing.actions;
 
-import com.jbricx.communications.NXTManager;
-import com.jbricx.communications.NXTObserver;
+import com.jbricx.swing.communications.NXTManager;
+import com.jbricx.swing.communications.NXTObserver;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;

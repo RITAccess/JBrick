@@ -206,9 +206,9 @@ public class FindReplaceDialog extends javax.swing.JDialog
 			textArea.setSelectionStart( pos );
 			textArea.setSelectionEnd( pos + wordToFind.length() );
 			textArea.requestFocusInWindow();
-			//Now after the word has been found inorder that the user should find the next occurence of 
+			//Now after the word has been found in order that the user should find the next occurrence of 
 			//the given word increment the value of currentPos by 1 so that the search continues from next position
-			//and not from begining when the user clicks the Next Button.
+			//and not from beginning when the user clicks the Next Button.
 			currentPos = pos + 1;
 		}
 		else
