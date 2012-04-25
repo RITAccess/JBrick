@@ -12,17 +12,12 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
-
-
-
-
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
-import com.jbricx.ui.tabs.JBrickTabItem;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener,WindowListener  {

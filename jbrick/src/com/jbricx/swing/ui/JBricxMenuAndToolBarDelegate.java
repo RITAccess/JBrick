@@ -2,6 +2,10 @@ package com.jbricx.swing.ui;
 
 //import java.util.prefs.Preferences;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -9,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import com.jbricx.swing.communications.NXTManager;
@@ -149,13 +154,19 @@ public class JBricxMenuAndToolBarDelegate {
 		findButton.getAccessibleContext().setAccessibleName("Find");
 		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
+		findButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK), "SetFind");
+		findButton.getActionMap().put("SetFind",compileAction);
 		findButton.setToolTipText("Find and Replace");
 
 		// Compile Button
+		
+		/////////////////////////////////////////////////
 		JButton compileButton = new JButton();
 		compileButton.getAccessibleContext().setAccessibleName("Compile");
 		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
+		compileButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK), "SetCompile");
+		compileButton.getActionMap().put("SetCompile",compileAction);
 		compileButton.setToolTipText("Compile");
 		
 		// Find Brick Button
@@ -177,6 +188,8 @@ public class JBricxMenuAndToolBarDelegate {
 		preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
 		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
+		preferencesButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK), "SetPreferences");
+		preferencesButton.getActionMap().put("SetPreferences",prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
@@ -191,6 +204,8 @@ public class JBricxMenuAndToolBarDelegate {
 		helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
 		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
+		compileButton.getInputMap().put(KeyStroke.getKeyStroke((char) KeyEvent.VK_F1), "SetHelp");
+		compileButton.getActionMap().put("SetHelp",compileAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
@@ -326,14 +341,17 @@ public class JBricxMenuAndToolBarDelegate {
 		newDoc.getAccessibleContext().setAccessibleName("New Document");
 		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
 		newDoc.setText("New");
+		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 		fileMenu.add(newDoc);
 		
 		JMenuItem open = new JMenuItem(openAction);
 		open.setText("Open");
+		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		fileMenu.add(open);
 
 		JMenuItem save = new JMenuItem(saveAction);
 		save.setText("Save");
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		fileMenu.add(save);
 		
 		JMenuItem saveAs = new JMenuItem(saveAsAction);
@@ -346,12 +364,14 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		JMenuItem print = new JMenuItem(printAction);
 		print.setText("Print");
+		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		fileMenu.add(print);
 		
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit");
 		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		fileMenu.add(exit);
 
 		// Edit
@@ -382,28 +402,37 @@ public class JBricxMenuAndToolBarDelegate {
 				
 		JMenuItem find = new JMenuItem(findAction);
 		find.setText("Find and Replace");
+		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
+		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 		editMenu.add(prefs);	
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
+		compile.setAccelerator(KeyStroke.getKeyStroke(
+			       KeyEvent.VK_C, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 		
 		JMenuItem fb = new JMenuItem(findBrickAction);
 		fb.setText("Find Brick");
+		fb.setAccelerator(KeyStroke.getKeyStroke(
+			       KeyEvent.VK_F, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
+		dl.setAccelerator(KeyStroke.getKeyStroke(
+			       KeyEvent.VK_D, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		dl.setText("Download");
 		compileMenu.add(dl);
 
 		// Tools
 		JMenuItem gt = new JMenuItem(gotoAction);
 		gt.setText("GoTo");
+		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 		toolsMenu.add(gt);
 		
 		JMenuItem piano = new JMenuItem(pianoAction);
@@ -442,6 +471,7 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		JMenuItem help = new JMenuItem(helpContentAction);
 		help.setText("Help Content");
+		help.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1,0));
 		helpMenu.add(help);
 
 	}

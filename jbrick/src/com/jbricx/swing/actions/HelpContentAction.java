@@ -19,6 +19,7 @@ public class HelpContentAction extends JBricxAbstractAction {
    * Shows an about box
    */
   public void actionPerformed(ActionEvent e){
+	  System.out.println("Help!");
 	/*
     HelpBrowser hb = HelpBrowser.getInstance();
     hb.open();

@@ -6,6 +6,9 @@ package com.jbricx.communications;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.jbricx.swing.communications.NXTBrickConnector;
+import com.jbricx.swing.communications.NXTConnection;
+
 /**
  * @author byktol
  */
