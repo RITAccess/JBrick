@@ -78,7 +78,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	private void buildMainWindow() {
 		
 		editorPane = new JBricxEditorTabFolder(this);
-		statusPane = new JBricxStatusPane();
+		statusPane = new JBricxStatusPane(this);
 		filePane = new JBricxFilePane(this);				
 		
 		//Contains the main Editor component, and the status component

@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.GoToDialog;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
@@ -16,7 +14,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 @SuppressWarnings("serial")
 public class GotoAction extends JBricxAbstractAction {
   /**
-   * FindAction constructor
+   * GotoAction constructor
    */
   public GotoAction(final JBricxManager manager) {
 	  super("", new ImageIcon("./resources/images/edit-find.png"), manager);
