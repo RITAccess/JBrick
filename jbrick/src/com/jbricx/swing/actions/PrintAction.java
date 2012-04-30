@@ -15,7 +15,7 @@ public class PrintAction extends JBricxAbstractAction {
 	 * PrintAction constructor
 	 */
 	public PrintAction(final JBricxManager manager) {
-		super("", new ImageIcon("./resources/images/document-print.png"), manager);
+		super("", new ImageIcon(PrintAction.class.getResource("/images/document-print.png")), manager);
 	}
 
 	/**

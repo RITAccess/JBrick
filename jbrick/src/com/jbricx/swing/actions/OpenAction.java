@@ -24,7 +24,7 @@ public class OpenAction extends JBricxAbstractAction {
    * OpenAction constructor
    */
   public OpenAction(final JBricxManager manager) {
-	    super("", new ImageIcon("./resources//images/document-open.png"), manager);
+	    super("", new ImageIcon(OpenAction.class.getResource("/images/document-open.png")), manager);
 	  }
 
 	@Override
