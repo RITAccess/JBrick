@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.ui.DirectControl.DirectControlUIWindow;
+
 
 /**
  * This action opens the DirectControl window
