@@ -89,7 +89,7 @@
   <target name="create_jar" depends="compile">
     <!-- Delete the tests directory to avoid its inclusion in the JAR -->
     <delete dir="${testDir}" />
-
+  	<fileset dir="src"/>
     <tstamp>
       <!-- The format for the JAR file. -->
       <format property="archive.name" pattern="'jbrick-'yyyyMMdd'.jar'" />
@@ -108,6 +108,7 @@
       </manifest>
 
       <fileset dir="${workDir}" />
+   	  <include name="src/**"/>
       <zipfileset src="jar-in-jar-loader.zip" />
       <zipfileset dir="${libsDir}" includes="jna.jar" />
       <zipfileset dir="${libsDir}" includes="nbc.exe" />	
