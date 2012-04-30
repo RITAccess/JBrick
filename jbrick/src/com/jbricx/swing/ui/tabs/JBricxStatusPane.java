@@ -75,19 +75,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
 				PreferenceStore.FONT_DEFAULT)));
 	}
-	
-	class StatusPaneHyperlinkListener implements HyperlinkListener {
-	    public void hyperlinkUpdate(HyperlinkEvent e) {
-//	      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-//	        StringTokenizer st = new StringTokenizer(e.getDescription(), " ");
-//	        if (st.hasMoreTokens()) {
-//	          String s = st.nextToken();
-//	          System.err.println("token: " + s);
-//	        }
-//	      }
-	    	System.out.println("Hyperlink event");
-	    }
-	}
 
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent arg0) {
