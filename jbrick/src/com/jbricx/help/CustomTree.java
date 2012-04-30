@@ -1,4 +1,3 @@
-/*
 package com.jbricx.help;
 
 import java.awt.Image;
@@ -222,4 +221,4 @@ class Node {
   public Node getParent() {
     return parent;
   }
-}*/
+}

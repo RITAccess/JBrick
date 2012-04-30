@@ -36,6 +36,7 @@ public class RSyntaxTextAreaUI extends RTextAreaUI {
 	private static final String SHARED_INPUT_MAP_NAME		= "RSyntaxTextAreaUI.inputMap";
 	private static final EditorKit defaultKit			= new RSyntaxTextAreaEditorKit();
 
+
 	public static ComponentUI createUI(JComponent ta) {
 		return new RSyntaxTextAreaUI(ta);
 	}
