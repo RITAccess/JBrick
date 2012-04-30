@@ -21,7 +21,7 @@ public class FindBrickAction extends JBricxAbstractAction {
 	 * AboutAction constructor
 	 */
 	public FindBrickAction(JBricxManager manager) {
-		super("", new ImageIcon("./resources/images/find_brick.png"), manager);
+		super("", new ImageIcon(FindBrickAction.class.getResource("/images/find_brick.png")), manager);
 		setEnabled(NXTManager.isFantomDriverLoaded());
 		// try {
 		// NXTManager.getInstance().getFantom();

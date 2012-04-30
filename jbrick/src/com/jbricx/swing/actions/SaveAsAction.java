@@ -18,7 +18,7 @@ public class SaveAsAction extends JBricxAbstractAction {
 	 * SaveAsAction constructor
 	 */
 	public SaveAsAction(final JBricxManager manager) {
-		super("", new ImageIcon("./resources/images/document-save-as.png"), manager);
+		super("", new ImageIcon(SaveAsAction.class.getResource("/images/document-save-as.png")), manager);
 	}
 
 	/**
