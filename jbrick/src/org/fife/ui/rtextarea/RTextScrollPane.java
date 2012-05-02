@@ -225,6 +225,7 @@ public class RTextScrollPane extends JScrollPane {
 	 * @param view The new view.
 	 * @see #getTextArea()
 	 */
+	@Override
 	public void setViewportView(Component view) {
 		if (!(view instanceof RTextArea)) {
 			throw new IllegalArgumentException("view must be an RTextArea");

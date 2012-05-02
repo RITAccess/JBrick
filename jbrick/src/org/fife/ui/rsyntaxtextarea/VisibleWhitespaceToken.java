@@ -111,6 +111,7 @@ public class VisibleWhitespaceToken extends DefaultToken {
 	 *        not paint when this token is "to the left" of the clip rectangle.
 	 * @return The x-coordinate representing the end of the painted text.
 	 */
+	@Override
 	public final float paint(Graphics2D g, float x, float y,
 						RSyntaxTextArea host, TabExpander e,
 						float clipStart) {

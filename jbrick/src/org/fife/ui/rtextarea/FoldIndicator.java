@@ -124,6 +124,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	 *
 	 * @return The tool tip.
 	 */
+	@Override
 	public JToolTip createToolTip() {
 		JToolTip tip = super.createToolTip();
 		Color textAreaBG = textArea.getBackground();
@@ -182,6 +183,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	}
 
 
+	@Override
 	public Dimension getPreferredSize() {
 		int h = textArea!=null ? textArea.getHeight() : 100; // Arbitrary
 		return new Dimension(WIDTH, h);
@@ -207,6 +209,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	 *
 	 * @param e The mouse location.
 	 */
+	@Override
 	public Point getToolTipLocation(MouseEvent e) {
 		//return super.getToolTipLocation(e);
 		Point p = e.getPoint();
@@ -221,6 +224,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	 *
 	 * @param e The mouse location.
 	 */
+	@Override
 	public String getToolTipText(MouseEvent e) {
 
 		String text = null;
@@ -267,6 +271,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	}
 
 
+	@Override
 	void handleDocumentEvent(DocumentEvent e) {
 		int newLineCount = textArea.getLineCount();
 		if (newLineCount!=currentLineCount) {
@@ -276,11 +281,13 @@ public class FoldIndicator extends AbstractGutterComponent {
 	}
 
 
+	@Override
 	void lineHeightsChanged() {
 		// TODO Auto-generated method stub
 	}
 
 
+	@Override
 	protected void paintComponent(Graphics g) {
 
 		if (textArea==null) {
@@ -438,7 +445,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 		// y<0.  The computed y-value is the y-value of the top of the first
 		// (possibly) partially-visible view.
 		Rectangle visibleEditorRect = ui.getVisibleEditorRect();
-		Rectangle r = LineNumberList.getChildViewBounds(v, topLine,
+		Rectangle r = AbstractGutterComponent.getChildViewBounds(v, topLine,
 												visibleEditorRect);
 		int y = r.y;
 		y += (cellHeight-collapsedFoldIcon.getIconHeight())/2;
@@ -452,7 +459,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 
 		while (y<visibleBottom && line<lineCount) {
 
-			int curLineH = LineNumberList.getChildViewBounds(v, line,
+			int curLineH = AbstractGutterComponent.getChildViewBounds(v, line,
 					visibleEditorRect).height;
 
 			if (paintingOutlineLine) {
@@ -478,7 +485,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 				}
 				if (fold.isCollapsed()) {
 					collapsedFoldIcon.paintIcon(this, g, x, y);
-					y += LineNumberList.getChildViewBounds(v, line,
+					y += AbstractGutterComponent.getChildViewBounds(v, line,
 								visibleEditorRect).height;
 					line += fold.getLineCount() + 1;
 				}
@@ -566,6 +573,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 	/**
 	 * Overridden so we can track when code folding is enabled/disabled.
 	 */
+	@Override
 	public void setTextArea(RTextArea textArea) {
 		if (this.textArea!=null) {
 			this.textArea.removePropertyChangeListener(
@@ -623,6 +631,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 			fgc.addMouseMotionListener(this);
 		}
 
+		@Override
 		public void mouseClicked(MouseEvent e) {
 
 //			// TODO: Implement code folding with word wrap enabled
@@ -646,6 +655,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 
 		}
 
+		@Override
 		public void mouseExited(MouseEvent e) {
 			if (foldWithOutlineShowing!=null) {
 				foldWithOutlineShowing = null;
@@ -653,6 +663,7 @@ public class FoldIndicator extends AbstractGutterComponent {
 			}
 		}
 
+		@Override
 		public void mouseMoved(MouseEvent e) {
 			Fold newSelectedFold = findOpenFoldClosestTo(e.getPoint());
 			if (newSelectedFold!=foldWithOutlineShowing) {

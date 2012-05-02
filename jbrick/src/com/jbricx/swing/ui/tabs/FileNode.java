@@ -14,6 +14,7 @@ public class FileNode extends File{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public String toString(){
 		String[] list = getPath().split("\\\\");
 		return list[list.length-1];

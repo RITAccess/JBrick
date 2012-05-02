@@ -10,6 +10,7 @@ package org.fife.ui.rsyntaxtextarea;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.CharacterIterator;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import javax.swing.*;
@@ -123,6 +124,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 	 *
 	 * @return The document.
 	 */
+	@Override
 	public Document createDefaultDocument() {
 		return new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_NONE);
 	}
@@ -134,6 +136,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 	 * @param textArea The text area.
 	 * @return The icon row header.
 	 */
+	@Override
 	public IconRowHeader createIconRowHeader(RTextArea textArea) {
 		return new FoldingAwareIconRowHeader((RSyntaxTextArea)textArea);
 	}
@@ -146,6 +149,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 	 *
 	 * @return the command list
 	 */ 
+	@Override
 	public Action[] getActions() {
 		return TextAction.augmentList(super.getActions(),
 							RSyntaxTextAreaEditorKit.defaultActions);
@@ -179,6 +183,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			seg = new Segment();
 		}
 
+		@Override
 		protected int getWordStart(RTextArea textArea, int offs)
 										throws BadLocationException {
 
@@ -231,7 +236,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			// etc.).
 
 			offs -= firstIndex - seg.getIndex() + 1;//seg.getEndIndex() - seg.getIndex();
-			if (ch!=Segment.DONE && nextCh!='\n') {
+			if (ch!=CharacterIterator.DONE && nextCh!='\n') {
 				offs++;
 			}
 
@@ -259,6 +264,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			if (rsta.isCodeFoldingEnabled()) {
@@ -273,6 +279,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return getName();
 		}
@@ -295,6 +302,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			seg = new Segment();
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
@@ -364,6 +372,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaCloseCurlyBraceAction;
 		}
@@ -382,6 +391,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(rstaCloseMarkupTagAction);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -412,7 +422,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 						Token t = doc.getTokenListForLine(
 											rsta.getCaretLineNumber());
 						t = RSyntaxUtilities.getTokenAtOffset(t, dot-1);
-						if (t!=null && t.type==Token.MARKUP_TAG_DELIMITER) {
+						if (t!=null && t.type==TokenTypes.MARKUP_TAG_DELIMITER) {
 							//System.out.println("Huzzah - closing tag!");
 							String tagName = discoverTagName(doc, dot);
 							if (tagName!=null) {
@@ -454,16 +464,16 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 				Token t = doc.getTokenListForLine(i);
 				while (t!=null && t.isPaintable()) {
 
-					if (t.type==Token.MARKUP_TAG_DELIMITER) {
+					if (t.type==TokenTypes.MARKUP_TAG_DELIMITER) {
 						if (t.isSingleChar('<') || t.isSingleChar('[')) {
 							t = t.getNextToken();
 							while (t!=null && t.isPaintable()) {
-								if (t.type==Token.MARKUP_TAG_NAME ||
+								if (t.type==TokenTypes.MARKUP_TAG_NAME ||
 										// Being lenient here and also checking
 										// for attributes, in case they
 										// (incorrectly) have whitespace between
 										// the '<' char and the element name.
-										t.type==Token.MARKUP_TAG_ATTRIBUTE) {
+										t.type==TokenTypes.MARKUP_TAG_ATTRIBUTE) {
 									stack.push(t.getLexeme());
 									break;
 								}
@@ -500,6 +510,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		}
 
+		@Override
 		public String getMacroID() {
 			return getName();
 		}
@@ -524,6 +535,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			if (rsta.isCodeFoldingEnabled()) {
@@ -536,6 +548,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaCollapseAllCommentFoldsAction;
 		}
@@ -566,10 +579,12 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			if (rsta.isCodeFoldingEnabled()) {
 				FoldCollapser collapser = new FoldCollapser() {
+					@Override
 					public boolean getShouldCollapse(Fold fold) {
 						return true;
 					}
@@ -582,6 +597,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaCollapseAllFoldsAction;
 		}
@@ -605,11 +621,13 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			((RSyntaxTextArea)textArea).copyAsRtf();
 			textArea.requestFocusInWindow();
 		}
 
+		@Override
 		public final String getMacroID() {
 			return getName();
 		}
@@ -634,6 +652,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
@@ -732,6 +751,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			s = new Segment();
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -789,6 +809,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaDecreaseIndentAction;
 		}
@@ -847,6 +868,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		private Segment seg = new Segment();
 
+		@Override
 		protected int getPreviousWordStart(RTextArea textArea, int offs)
 				throws BadLocationException {
 
@@ -892,12 +914,12 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			else {
 				while (!Character.isWhitespace(ch) &&
 						!Character.isLetterOrDigit(ch)
-						&& ch!=Segment.DONE) {
+						&& ch!=CharacterIterator.DONE) {
 					ch = seg.previous();
 				}
 			}
 
-			if (ch==Segment.DONE) {
+			if (ch==CharacterIterator.DONE) {
 				return start; // Removed last "token" of the line
 			}
 			offs -= firstIndex - seg.getIndex();
@@ -918,6 +940,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, select);
 		}
 
+		@Override
 		protected int getVisibleEnd(RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			return rsta.getLastVisibleOffset();
@@ -940,6 +963,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			seg = new Segment();
 		}
 
+		@Override
 		protected int getWordEnd(RTextArea textArea, int offs)
 									throws BadLocationException {
 
@@ -1011,6 +1035,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			if (rsta.isCodeFoldingEnabled()) {
@@ -1032,6 +1057,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaExpandAllFoldsAction;
 		}
@@ -1097,6 +1123,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			int pos = RSyntaxUtilities.getMatchingBracketPosition(rsta);
@@ -1110,6 +1137,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaGoToMatchingBracketAction;
 		}
@@ -1134,6 +1162,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
@@ -1222,6 +1251,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		private static final long serialVersionUID = 1L;
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -1268,7 +1298,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			for (int i=0; i<lineCount; i++) {
 				Token t = doc.getTokenListForLine(i);
 				while (t!=null && t.isPaintable()) {
-					if (t.type==Token.SEPARATOR && t.textCount==1) {
+					if (t.type==TokenTypes.SEPARATOR && t.textCount==1) {
 						char ch = t.text[t.textOffset];
 						if (ch=='{') {
 							openCount++;
@@ -1424,6 +1454,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -1488,6 +1519,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 
 		}
 
+		@Override
 		public final String getMacroID() {
 			return insertTabAction;
 		}
@@ -1513,6 +1545,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 		/**
 		 * Overridden to do better with skipping "words" in code.
 		 */
+		@Override
 		protected int getNextWord(RTextArea textArea, int offs)
 									throws BadLocationException {
 
@@ -1557,7 +1590,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			else if (!Character.isWhitespace(ch)) {
 				do {
 					ch = seg.next();
-				} while (ch!=Segment.DONE &&
+				} while (ch!=CharacterIterator.DONE &&
 						!(Character.isLetterOrDigit(ch) ||
 								Character.isWhitespace(ch)));
 			}
@@ -1588,6 +1621,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(rstaPossiblyInsertTemplateAction);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled())
@@ -1653,6 +1687,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			textArea.replaceSelection(" ");
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaPossiblyInsertTemplateAction;
 		}
@@ -1678,6 +1713,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 		/**
 		 * Overridden to do better with skipping "words" in code.
 		 */
+		@Override
 		protected int getPreviousWord(RTextArea textArea, int offs)
 										throws BadLocationException {
 
@@ -1726,13 +1762,13 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			else if (!Character.isWhitespace(ch)) {
 				do {
 					ch = seg.previous();
-				} while (ch!=Segment.DONE &&
+				} while (ch!=CharacterIterator.DONE &&
 						!(Character.isLetterOrDigit(ch) ||
 								Character.isWhitespace(ch)));
 			}
 
 			offs -= seg.getEndIndex() - seg.getIndex();
-			if (ch!=Segment.DONE) {
+			if (ch!=CharacterIterator.DONE) {
 				offs++;
 			}
 
@@ -1750,6 +1786,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 	public static class SelectWordAction
 					extends RTextAreaEditorKit.SelectWordAction {
 
+		@Override
 		protected void createActions() {
 			start = new BeginWordAction("pigdog", false);
 			end = new EndWordAction("pigdog", true);
@@ -1768,6 +1805,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(rstaToggleCommentAction);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -1854,6 +1892,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaToggleCommentAction;
 		}
@@ -1878,6 +1917,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
+		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 			if (rsta.isCodeFoldingEnabled()) {
@@ -1892,6 +1932,7 @@ public class RSyntaxTextAreaEditorKit extends RTextAreaEditorKit {
 			}
 		}
 
+		@Override
 		public final String getMacroID() {
 			return rstaToggleCurrentFoldAction;
 		}

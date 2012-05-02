@@ -280,8 +280,9 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
 	 *        <code>text</code>).
 	 * @return <code>Token.NULL</code>.
 	 */
+	@Override
 	public int getLastTokenTypeOnLine(Segment text, int initialTokenType) {
-		return Token.NULL;
+		return TokenTypes.NULL;
 	}
 
 
@@ -291,6 +292,7 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
 	 *
 	 * @return <code>null</code>, as there are no comments in plain text.
 	 */
+	@Override
 	public String[] getLineCommentStartAndEnd() {
 		return null;
 	}
@@ -304,6 +306,7 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
 	 * @return Whether tokens of this type should have "mark occurrences"
 	 *         enabled.
 	 */
+	@Override
 	public boolean getMarkOccurrencesOfTokenType(int type) {
 		return false;
 	}
@@ -605,7 +608,7 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 3: 
-          { addToken(Token.WHITESPACE, false);
+          { addToken(TokenTypes.WHITESPACE, false);
           }
         case 5: break;
         case 2: 
@@ -613,11 +616,11 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
           }
         case 6: break;
         case 4: 
-          { addToken(Token.IDENTIFIER, true);
+          { addToken(TokenTypes.IDENTIFIER, true);
           }
         case 7: break;
         case 1: 
-          { addToken(Token.IDENTIFIER, false);
+          { addToken(TokenTypes.IDENTIFIER, false);
           }
         case 8: break;
         default: 

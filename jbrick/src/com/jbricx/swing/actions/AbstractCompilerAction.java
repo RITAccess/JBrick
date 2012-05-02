@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
-import com.jbricx.swing.communications.CompilerError;
 import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;

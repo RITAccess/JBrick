@@ -91,7 +91,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		super(new RGapContent());
 		putProperty(tabSizeAttribute, new Integer(5));
 		lastTokensOnLines = new DynamicIntArray(400);
-		lastTokensOnLines.add(Token.NULL); // Initial (empty) line.
+		lastTokensOnLines.add(TokenTypes.NULL); // Initial (empty) line.
 		s = new Segment();
 		setTokenMakerFactory(tmf);
 		setSyntaxStyle(syntaxStyle);
@@ -119,6 +119,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	 *
 	 * @param e The change.
 	 */
+	@Override
 	protected void fireInsertUpdate(DocumentEvent e) {
 
 		/*
@@ -135,7 +136,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		int line = lineMap.getElementIndex(e.getOffset());
 		int previousLine = line - 1;
 		int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : Token.NULL);
+					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
 
 		// If entire lines were added...
 		if (added!=null && added.length>0) {
@@ -191,6 +192,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	 * @param chng The change that occurred.
 	 * @see #removeUpdate
 	 */
+	@Override
 	protected void fireRemoveUpdate(DocumentEvent chng) {
 
 		Element lineMap = getDefaultRootElement();
@@ -205,7 +207,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 			int line = change.getIndex();	// First line entirely removed.
 			int previousLine = line - 1;	// Line before that.
 			int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : Token.NULL);
+					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
 
 			Element[] added = change.getChildrenAdded();
 			int numAdded = added==null ? 0 : added.length;
@@ -232,7 +234,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 
 			int previousLine = line - 1;
 			int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : Token.NULL);
+					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
 			//System.err.println("previousTokenType for line : " + previousLine + " is " + previousTokenType);
 			// Update last tokens for lines below until they've stopped changing.
 			updateLastTokensBelow(line, numLines, previousTokenType);
@@ -358,7 +360,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 			ble.printStackTrace();
 			return null;
 		}
-		int initialTokenType = line==0 ? Token.NULL :
+		int initialTokenType = line==0 ? TokenTypes.NULL :
 								getLastTokenTypeOnLine(line-1);
 		return tokenMaker.getTokenList(s, initialTokenType, startOffset);
 	}
@@ -568,7 +570,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		// is the same.
 		Element map = getDefaultRootElement();
 		int numLines = map.getElementCount();
-		int lastTokenType = Token.NULL;
+		int lastTokenType = TokenTypes.NULL;
 		for (int i=0; i<numLines; i++) {
 			setSharedSegment(i);
 			lastTokenType = tokenMaker.getLastTokenTypeOnLine(s, lastTokenType);

@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.GoToDialog;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;

@@ -1,5 +1,5 @@
 /*
- * 04/07/2005
+s * 04/07/2005
  *
  * RTextAreaBase.java - The base class for an RTextArea.
  * 
@@ -40,7 +40,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * @author Robert Futrell
  * @version 0.8
  */
-abstract class RTextAreaBase extends JTextArea {
+public abstract class RTextAreaBase extends JTextArea {
 
 	public static final String BACKGROUND_IMAGE_PROPERTY			= "background.image";
 	public static final String CURRENT_LINE_HIGHLIGHT_COLOR_PROPERTY	= "RTA.currentLineHighlightColor";
@@ -296,6 +296,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 * @return The current background color, or <code>null</code> if an image
 	 *         is currently the background.
 	 */
+	@Override
 	public final Color getBackground() {
 		Object bg = getBackgroundObject();
 		return (bg instanceof Color) ? (Color)bg : null;
@@ -671,6 +672,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 *
 	 * @param g The graphics context with which to paint.
 	 */
+	@Override
 	protected void paintComponent(Graphics g) {
 
 		//long startTime = System.currentTimeMillis();
@@ -761,6 +763,7 @@ try {
 	 * @param e The component event about to be sent to all registered
 	 *        <code>ComponentListener</code>s.
 	 */
+	@Override
 	protected void processComponentEvent(ComponentEvent e) {
 
 		// In line wrap mode, resizing the text area means that the caret's
@@ -794,6 +797,7 @@ try {
 	 *
 	 * @param bg The color to use as the background color.
 	 */
+	@Override
 	public void setBackground(Color bg) {
 		Object oldBG = getBackgroundObject();
 		if (oldBG instanceof Color) { // Just change color of strategy.
@@ -927,6 +931,7 @@ try {
 	 *
 	 * @param font The font to use for this text component.
 	 */
+	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
 		updateMarginLineX();
@@ -960,6 +965,7 @@ try {
 	 *
 	 * @param wrap Whether or not word wrap should be enabled.
 	 */
+	@Override
 	public void setLineWrap(boolean wrap) {
 		super.setLineWrap(wrap);
 		forceCurrentLineHighlightRepaint();
@@ -1087,6 +1093,7 @@ try {
 	 *
 	 * @param size Number of characters to expand to.
 	 */
+	@Override
 	public void setTabSize(int size) {
 		super.setTabSize(size);
 		boolean b = getLineWrap();
@@ -1153,10 +1160,12 @@ try {
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
 
+		@Override
 		public int getDot() {
 			return dot;
 		}
 
+		@Override
 		public int getMark() {
 			return mark;
 		}

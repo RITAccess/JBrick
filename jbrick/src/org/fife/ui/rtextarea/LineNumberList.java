@@ -132,6 +132,7 @@ public class LineNumberList extends AbstractGutterComponent
 	 * displayed (as keying off of the RTextArea gives us (0,0) when it isn't
 	 * yet displayed.
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		if (textArea!=null) {
@@ -157,6 +158,7 @@ public class LineNumberList extends AbstractGutterComponent
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		int h = textArea!=null ? textArea.getHeight() : 100; // Arbitrary
 		return new Dimension(cellWidth, h);
@@ -183,6 +185,7 @@ public class LineNumberList extends AbstractGutterComponent
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	void handleDocumentEvent(DocumentEvent e) {
 		int newLineCount = textArea!=null ? textArea.getLineCount() : 0;
 		if (newLineCount!=currentLineCount) {
@@ -200,6 +203,7 @@ public class LineNumberList extends AbstractGutterComponent
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	void lineHeightsChanged() {
 		updateCellHeights();
 	}
@@ -258,6 +262,7 @@ public class LineNumberList extends AbstractGutterComponent
 	 *
 	 * @param g The graphics context.
 	 */
+	@Override
 	protected void paintComponent(Graphics g) {
 
 		if (textArea==null) {
@@ -421,7 +426,7 @@ public class LineNumberList extends AbstractGutterComponent
 		// y<0.  The computed y-value is the y-value of the top of the first
 		// (possibly) partially-visible view.
 		Rectangle visibleEditorRect = ui.getVisibleEditorRect();
-		Rectangle r = LineNumberList.getChildViewBounds(v, topLine,
+		Rectangle r = AbstractGutterComponent.getChildViewBounds(v, topLine,
 												visibleEditorRect);
 		int y = r.y;
 		final int RHS_BORDER_WIDTH = getRhsBorderWidth();
@@ -442,7 +447,7 @@ public class LineNumberList extends AbstractGutterComponent
 
 		while (y < visibleBottom) {
 
-			r = LineNumberList.getChildViewBounds(v, topLine, visibleEditorRect);
+			r = AbstractGutterComponent.getChildViewBounds(v, topLine, visibleEditorRect);
 
 			/*
 			// Highlight the current line's line number, if desired.
@@ -487,6 +492,7 @@ public class LineNumberList extends AbstractGutterComponent
 	/**
 	 * Called when this component is removed from the view hierarchy.
 	 */
+	@Override
 	public void removeNotify() {
 		super.removeNotify();
 		if (textArea!=null) {
@@ -513,6 +519,7 @@ public class LineNumberList extends AbstractGutterComponent
 	 *
 	 * @param font The new font to use for line numbers.
 	 */
+	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
 		updateCellWidths();
@@ -538,6 +545,7 @@ public class LineNumberList extends AbstractGutterComponent
 	 *
 	 * @param textArea The text area.
 	 */
+	@Override
 	public void setTextArea(RTextArea textArea) {
 
 		if (l==null) {
@@ -667,8 +675,8 @@ public class LineNumberList extends AbstractGutterComponent
 			String name = e.getPropertyName();
 
 			// If they change the current line highlight in any way...
-			if (RTextArea.HIGHLIGHT_CURRENT_LINE_PROPERTY.equals(name) ||
-				RTextArea.CURRENT_LINE_HIGHLIGHT_COLOR_PROPERTY.equals(name)) {
+			if (RTextAreaBase.HIGHLIGHT_CURRENT_LINE_PROPERTY.equals(name) ||
+				RTextAreaBase.CURRENT_LINE_HIGHLIGHT_COLOR_PROPERTY.equals(name)) {
 				repaintLine(currentLine);
 			}
 

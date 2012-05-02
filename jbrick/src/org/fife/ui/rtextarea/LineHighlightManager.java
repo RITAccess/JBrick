@@ -182,6 +182,7 @@ class LineHighlightManager {
 			return -1;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (o==this) {
 				return true;
@@ -200,6 +201,7 @@ class LineHighlightManager {
 			return offs.getOffset();
 		}
 
+		@Override
 		public int hashCode() {
 			return getOffset();
 		}
