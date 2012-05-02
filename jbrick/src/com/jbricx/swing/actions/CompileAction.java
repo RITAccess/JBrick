@@ -2,6 +2,7 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 
+import javax.accessibility.AccessibleContext;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -29,8 +30,11 @@ public class CompileAction extends AbstractCompilerAction {
 	}
 
 	@Override
-	public void onFailure() {
-		JOptionPane.showMessageDialog(null, "Errors found during compilation.");
+	public void onFailure(ExitStatus run) {
+		run.getCompilerErrors().toString();
+		JOptionPane newMessage = new JOptionPane();
+		newMessage.getAccessibleContext().setAccessibleName("Hello there");
+		newMessage.showMessageDialog(null, "Errors found during compilation.");
 	}
 
 	@Override

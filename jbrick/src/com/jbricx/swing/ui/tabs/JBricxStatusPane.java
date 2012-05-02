@@ -9,8 +9,10 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -23,6 +25,10 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	JEditorPane messagePane;
 	private Preferences prefs;
 	private JBricxEditorTabFolder tab;
+	// Using this as a hack because preferences update too many times(one update
+	// fired per preference changed.)
+	private int timesRefreshed = 0;
+	private List<CompilerError> errorList;
 
 	public JBricxStatusPane(MainWindow main) {
 		tab = main.getTabFolder();
@@ -34,7 +40,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
 				PreferenceStore.FONT_DEFAULT)));
 		messagePane.setContentType("text/html");
-
+		messagePane.getCaret().setVisible(true);
 		this.addTab("Status", new JScrollPane(messagePane,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
@@ -48,21 +54,27 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 *            Message to **append** to the current text.
 	 */
 	public void pushMessage(List<CompilerError> list) {
-		StringBuffer sb = new StringBuffer();
-		for (CompilerError ce : list) {
-			String m = ce.toString();
-			String[] mess = m.split(":");
-			m = "<a href=\"" + mess[0] + "\">" + mess[0] + "</a>:";
-			for (int i = 1; i < mess.length; ++i) {
-				m += mess[i];
-				if (i == 1)
-					m += ":";
+		if (list != null) {
+			errorList = list;
+			StringBuffer sb = new StringBuffer();
+			for (CompilerError ce : errorList) {
+				String m = ce.toString();
+				String[] mess = m.split(":");
+				m = "<a href=\"" + mess[0] + "\">" + mess[0] + "</a>:";
+				for (int i = 1; i < mess.length; ++i) {
+					m += mess[i];
+					if (i == 1)
+						m += ":";
+				}
+				m += "<br>";
+				sb.append(m);
 			}
-			m += "<br>";
-			sb.append(m);
+			messagePane.addHyperlinkListener(this);
+			Font newFont = Font.decode(prefs.get(PreferenceStore.FONT,
+					PreferenceStore.FONT_DEFAULT));
+			messagePane.setText("<p style=\"font-size:" + newFont.getSize()
+					+ "px\">" + sb.toString() + "</p>");
 		}
-		messagePane.addHyperlinkListener(this);
-		messagePane.setText(sb.toString());
 	}
 
 	public void clearOldMessages() {
@@ -74,9 +86,13 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		}
 	}
 
+	/**
+	 * We clear the list, then repush it with the existing error set. Easiest
+	 * way to do this and change the font with html in mind.
+	 */
 	public void refresh() {
-		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
-				PreferenceStore.FONT_DEFAULT)));
+		clearOldMessages();
+		pushMessage(errorList);
 	}
 
 	@Override
@@ -93,7 +109,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 						.getLineStartOffset(ln)));
 				tab.setCaretPosition(tab.getLineStartOffset(ln));
 
-				// TODO this will not jump to the right file if it isn't currently open
+				// TODO this will not jump to the right file if it isn't
+				// currently open
 				this.tab.getSelection().requestFocusInWindow();
 			}
 		} catch (Exception e1) {

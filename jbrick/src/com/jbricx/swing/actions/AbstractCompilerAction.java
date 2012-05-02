@@ -69,7 +69,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			} else {
 				if(run.getCompilerErrors().size() > 0) {
 					displayErrors(run);
-					onFailure();
+					onFailure(run);
 				}
 			}
 		}
@@ -90,7 +90,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 
 		JBricxTabItem tabItem = getCurrentTab();
 		String filename="";
-		if (tabItem.isNewFile()) {
+		if (tabItem.isNewFile()&&(!tabItem.getFileAbsolutePath().endsWith(".bak.nxc"))) {
 			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
 			+ (System.getProperty("os.name").contains("OS X") ? "" : System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
@@ -154,6 +154,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 
 	/**
 	 * Execute after a failed operation.
+	 * @param run 
 	 */
-	protected abstract void onFailure();
+	protected abstract void onFailure(ExitStatus run);
 }

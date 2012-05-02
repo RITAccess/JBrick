@@ -10,6 +10,7 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
@@ -49,7 +50,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		      System.out.println("MainWindow.MainWindow(): Fantom driver missing!");
+		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -91,7 +92,9 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
 		leftRightSplit.setOneTouchExpandable(true);
-		leftRightSplit.setResizeWeight(.05);
+		leftRightSplit.setResizeWeight(.5);
+		leftRightSplit.setDividerLocation(250);
+		
 		
 		this.add(leftRightSplit);
 	}
@@ -168,7 +171,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 
 
 	/**
-	 * Called by the listner whenever a property has changed.
+	 * Called by the listener whenever a property has changed.
 	 */
 	public void preferenceChange(PreferenceChangeEvent arg0) {
 		editorPane.refreshTabItems();

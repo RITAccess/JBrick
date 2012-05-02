@@ -48,7 +48,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 		if(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT)){
 			ArrayList<String>recentFiles = getRecentFiles();
-				if (recentFiles.size() > 1) {
+				if (recentFiles.size() > 0 && recentFiles.get(0).length()>1) {
 				      for (String file : recentFiles) {
 				        if (new File(file).exists()) {
 				          open(file);
@@ -350,7 +350,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 	/**
 	 * Gets the list of files currently open in order to open them next time.
-	 * @return
+	 * @return StringBuilder of Recent Files
 	 */
 	public StringBuilder getFileList() {
 		StringBuilder recentFiles = new StringBuilder();

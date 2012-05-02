@@ -33,7 +33,7 @@ public class DownloadAction extends AbstractCompilerAction implements NXTObserve
 	}
 
 	@Override
-	protected void onFailure() {
+	protected void onFailure(ExitStatus run) {
 		JOptionPane.showMessageDialog(null, "Download failed!");
 	}
 

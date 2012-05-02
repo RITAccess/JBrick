@@ -15,6 +15,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.CloseAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
@@ -50,6 +51,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private CompileAction compileAction;
 	private CopyAction copyAction;
 	private CutAction cutAction;
+	private CloseAction closeAction;
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
@@ -92,6 +94,7 @@ public class JBricxMenuAndToolBarDelegate {
 		compileAction = new CompileAction(manager);
 		copyAction = new CopyAction(manager);
 		cutAction = new CutAction(manager);
+		closeAction = new CloseAction(manager);
 		//directControlAction = new DirectControlAction(manager);
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
@@ -222,13 +225,6 @@ public class JBricxMenuAndToolBarDelegate {
 		pasteButton.setAction(pasteAction);
 		pasteButton.setToolTipText("Paste");
 		
-		// Print Button
-		JButton printButton = new JButton();
-		printButton.getAccessibleContext().setAccessibleName("Print");
-		printButton.getAccessibleContext().setAccessibleDescription("Print file");
-		printButton.setAction(printAction);
-		printButton.setToolTipText("Print");
-		
 		// redo Button
 		JButton redoButton = new JButton();
 		redoButton.getAccessibleContext().setAccessibleName("Redo");
@@ -263,7 +259,6 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(openButton);
 		mainToolBar.add(saveButton);
 		mainToolBar.add(saveAsButton);
-		mainToolBar.add(printButton);
 		mainToolBar.add( new JToolBar.Separator());
 		//mainToolBar.add(Box.createHorizontalStrut(45));
 		mainToolBar.add(Box.createHorizontalGlue());
@@ -360,6 +355,13 @@ public class JBricxMenuAndToolBarDelegate {
 		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		fileMenu.add(print);
 		
+		JMenuItem close = new JMenuItem(closeAction);
+		close.setText("Close");
+		close.getAccessibleContext().setAccessibleName("Close File");
+		close.getAccessibleContext().setAccessibleDescription("Close the current File");
+		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		fileMenu.add(close);
+		
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit");
@@ -405,8 +407,8 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
-		compile.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_C, KeyEvent.CTRL_MASK + InputEvent.SHIFT_MASK));
+		
+		compile.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5,0));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 		
@@ -417,8 +419,7 @@ public class JBricxMenuAndToolBarDelegate {
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
-		dl.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_D, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,0));
 		dl.setText("Download");
 		compileMenu.add(dl);
 

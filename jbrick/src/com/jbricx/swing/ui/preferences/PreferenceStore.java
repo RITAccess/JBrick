@@ -76,7 +76,7 @@ public class PreferenceStore {
 	public PreferenceStore(){
 		final String NAME = "allPreferences";
 		prefs = Preferences.userRoot().node(NAME);
-		if(prefs.getBoolean("ranPreviously", false)){
+		if(!prefs.getBoolean("ranPreviously", false)){
 			setPreferencesAndDefaults();
 		}
 	}

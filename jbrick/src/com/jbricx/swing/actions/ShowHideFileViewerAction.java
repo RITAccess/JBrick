@@ -29,7 +29,7 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 		}
 		else{
 			leftRightPane.setDividerSize(5);
-			leftRightPane.setDividerLocation(leftRightPane.getLocation().x+50);
+			leftRightPane.setDividerLocation(leftRightPane.getLocation().x+250);
 			isOpen = true;
 		}
 		

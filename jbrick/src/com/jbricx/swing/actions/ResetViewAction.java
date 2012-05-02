@@ -24,6 +24,7 @@ public class ResetViewAction extends JBricxAbstractAction{
 		
 		leftRightPane.resetToPreferredSizes();
 		leftRightPane.setDividerSize(5);
+		leftRightPane.setDividerLocation(250);
 		upDownPane.resetToPreferredSizes();
 		upDownPane.setDividerSize(5);
 		
