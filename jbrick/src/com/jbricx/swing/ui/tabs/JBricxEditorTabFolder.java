@@ -12,7 +12,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -97,8 +100,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		int tabIndex = getTabIndexByFilepath(absoluteFilePath);
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
+			
+			
 				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
-				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 				newItem.setCodeFoldingEnabled(true);
 			    newItem.setAntiAliasingEnabled(true);
 				RTextScrollPane scroller = new RTextScrollPane(newItem);	

@@ -57,6 +57,10 @@ public interface SyntaxConstants {
 	 */
 	public static final String SYNTAX_STYLE_C				= "text/c";
 
+	/**
+	 * Style for highlighting NXC.
+	 */
+	public static final String SYNTAX_STYLE_NXC				= "text/nxc";
 
 	/**
 	 * Style for highlighting Clojure.
