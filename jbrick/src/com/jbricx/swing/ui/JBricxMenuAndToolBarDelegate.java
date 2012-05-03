@@ -11,8 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CompileAction;
@@ -406,7 +409,7 @@ public class JBricxMenuAndToolBarDelegate {
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
 		compile.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_C, KeyEvent.CTRL_MASK + InputEvent.SHIFT_MASK));
+			       KeyEvent.VK_C, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 		
@@ -466,6 +469,7 @@ public class JBricxMenuAndToolBarDelegate {
 		help.setText("Help Content");
 		help.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1,0));
 		helpMenu.add(help);
+
 	}
 
 }

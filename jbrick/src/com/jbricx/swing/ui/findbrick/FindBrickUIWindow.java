@@ -2,6 +2,7 @@ package com.jbricx.swing.ui.findbrick;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import com.jbricx.swing.communications.NXTConnectionManager;
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;

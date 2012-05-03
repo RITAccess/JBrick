@@ -77,13 +77,11 @@ public class GoToDialog extends JDialog implements ActionListener{
 		    super("" + null, size);
 		  }
 		 
-		  @Override
-		protected Document createDefaultModel() {
+		  protected Document createDefaultModel() {
 		    return new IntTextDocument();
 		  }
 		 
-		  @Override
-		public boolean isValid() {
+		  public boolean isValid() {
 		    try {
 		    	Integer.parseInt(getText());
 		    	  return true; 
@@ -106,8 +104,7 @@ public class GoToDialog extends JDialog implements ActionListener{
 		 
 
 		  class IntTextDocument extends PlainDocument {
-		    @Override
-			public void insertString(int offs, String str, AttributeSet a)
+		    public void insertString(int offs, String str, AttributeSet a)
 		        throws BadLocationException {
 		      if (str == null)
 		        return;

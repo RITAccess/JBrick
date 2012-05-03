@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import javax.swing.text.StyleContext;
-
-import org.fife.ui.rtextarea.RTextAreaBase;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -120,7 +118,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *
 	 * @return The copy.
 	 */
-	@Override
 	public Object clone() {
 		SyntaxScheme shcs = null;
 		try {
@@ -148,7 +145,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *         <code>otherScheme</code> are the same scheme;
 	 *         <code>false</code> otherwise.
 	 */
-	@Override
 	public boolean equals(Object otherScheme) {
 
 		// No need for null check; instanceof takes care of this for us,
@@ -218,7 +214,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *
 	 * @return The hash code for this object.
 	 */
-	@Override
 	public int hashCode() {
 		// Keep me fast.  Iterating over *all* syntax schemes contained is
 		// probably much slower than a "bad" hash code here.
@@ -247,7 +242,7 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public static SyntaxScheme load(Font baseFont, InputStream in)
 									throws IOException {
 		if (baseFont==null) {
-			baseFont = RTextAreaBase.getDefaultFont();
+			baseFont = RSyntaxTextArea.getDefaultFont();
 		}
 		return XmlParser.load(baseFont, in);
 	}
@@ -382,7 +377,7 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {
-			baseFont = RTextAreaBase.getDefaultFont();
+			baseFont = RSyntaxTextArea.getDefaultFont();
 		}
 		Font commentFont = baseFont;
 		Font keywordFont = baseFont;
@@ -585,7 +580,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 			return parser.scheme;
 		}
 
-		@Override
 		public void startElement(String uri, String localName, String qName,
 								Attributes attrs) {
 

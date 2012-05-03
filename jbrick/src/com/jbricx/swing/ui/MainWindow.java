@@ -11,7 +11,6 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
-import javax.swing.WindowConstants;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -37,7 +36,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 */
 	public void run() {
 		PreferenceStore prefClass = new PreferenceStore();
-		prefs = PreferenceStore.getPrefs();
+		prefs = prefClass.getPrefs();
 		prefs.addPreferenceChangeListener(this);
 		
 		
@@ -52,7 +51,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		      System.out.println("MainWindow.MainWindow(): Fantom driver missing!");
 		    }
 		
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 	}
 	
@@ -68,7 +67,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 
 	}

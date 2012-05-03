@@ -400,7 +400,6 @@ private boolean fractionalFontMetricsEnabled;
 	/**
 	 * Updates the font metrics the first time we're displayed.
 	 */
-	@Override
 	public void addNotify() {
 
 		super.addNotify();
@@ -528,7 +527,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @see #createPopupMenu()
 	 * @see #setPopupMenu(JPopupMenu)
 	 */
-	@Override
 	protected void configurePopupMenu(JPopupMenu popupMenu) {
 
 		super.configurePopupMenu(popupMenu); // Currently does nothing
@@ -615,7 +613,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The document.
 	 */
-	@Override
 	protected Document createDefaultModel() {
 		return new RSyntaxDocument(SYNTAX_STYLE_NONE);
 	}
@@ -626,7 +623,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The caret event/mouse listener.
 	 */
-	@Override
 	protected RTAMouseListener createMouseListener() {
 		return new RSyntaxTextAreaMutableCaretEvent(this);
 	}
@@ -637,7 +633,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The popup menu.
 	 */
-	@Override
 	protected JPopupMenu createPopupMenu() {
 
 		JPopupMenu popup = super.createPopupMenu();
@@ -685,7 +680,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The UI.
 	 */
-	@Override
 	protected RTextAreaUI createRTextAreaUI() {
 		return new RSyntaxTextAreaUI(this);
 	}
@@ -733,7 +727,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param e The caret event.
 	 */
-	@Override
 	protected void fireCaretUpdate(CaretEvent e) {
 		super.fireCaretUpdate(e);
 		if (isBracketMatchingEnabled()) {
@@ -1149,7 +1142,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The height of a line of text in this text area.
 	 */
-	@Override
 	public int getLineHeight() {
 		//System.err.println("... getLineHeight() returning " + lineHeight);
 		return lineHeight;
@@ -1246,7 +1238,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The max ascent value.
 	 */
-	@Override
 	public int getMaxAscent() {
 		return maxAscent;
 	}
@@ -1447,7 +1438,7 @@ private boolean fractionalFontMetricsEnabled;
 				// in getTokenListFor()
 				int docOffs = map.getElement(line).getEndOffset()-1;
 				t = new DefaultToken(new char[] { '\n' }, 0,0, docOffs,
-								TokenTypes.WHITESPACE);
+								Token.WHITESPACE);
 				lastToken.setNextToken(t);
 				lastToken = t;
 			}
@@ -1504,7 +1495,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param e The mouse event.
 	 */
-	@Override
 	public String getToolTipText(MouseEvent e) {
 
 		// Check parsers for tool tips first.
@@ -1709,7 +1699,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * The <code>paintComponent</code> method is overridden so we
 	 * apply any necessary rendering hints to the Graphics object.
 	 */
-	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(getGraphics2D(g));
 	}
@@ -1753,7 +1742,6 @@ private boolean fractionalFontMetricsEnabled;
 	/**
 	 * Overridden so we stop this text area's parsers, if any.
 	 */
-	@Override
 	public void removeNotify() {
 		if (parserManager!=null) {
 			parserManager.stopParsing();
@@ -2020,7 +2008,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @throws IllegalArgumentException If the document is not an
 	 *         <code>RSyntaxDocument</code>.
 	 */
-	@Override
 	public void setDocument(Document document) {
 		if (!(document instanceof RSyntaxDocument))
 			throw new IllegalArgumentException("Documents for " +
@@ -2054,7 +2041,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param font The font.
 	 */
-	@Override
 	public void setFont(Font font) {
 
 		Font old = super.getFont();
@@ -2115,7 +2101,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @throws IllegalArgumentException If <code>h</code> is not an instance
 	 *         of {@link RSyntaxTextAreaHighlighter}.
 	 */
-	@Override
 	public void setHighlighter(Highlighter h) {
 		if (!(h instanceof RSyntaxTextAreaHighlighter)) {
 			throw new IllegalArgumentException("RSyntaxTextArea requires " +
@@ -2535,7 +2520,6 @@ private boolean fractionalFontMetricsEnabled;
 			}
 		}
 
-		@Override
 		public void start() {
 			match.x += 3;
 			match.y += 3;
@@ -2558,7 +2542,6 @@ private boolean fractionalFontMetricsEnabled;
 			super(textArea);
 		}
 
-		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (getHyperlinksEnabled() && isScanningForLinks &&
 					hoveredOverLinkOffset>-1) {
@@ -2582,7 +2565,6 @@ private boolean fractionalFontMetricsEnabled;
 			}
 		}
 
-		@Override
 		public void mouseMoved(MouseEvent e) {
 			super.mouseMoved(e);
 			if (getHyperlinksEnabled()) {

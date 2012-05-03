@@ -266,7 +266,6 @@ public class TokenMap {
 			this.tokenType = tokenType;
 		}
 
-		@Override
 		public String toString() {
 			return "[TokenMapToken: " + new String(text,offset,length) + "]";
 		}

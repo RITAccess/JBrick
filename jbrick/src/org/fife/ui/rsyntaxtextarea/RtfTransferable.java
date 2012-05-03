@@ -74,7 +74,7 @@ class RtfTransferable implements Transferable {
 
 
 	public DataFlavor[] getTransferDataFlavors() {
-		return FLAVORS.clone();
+		return (DataFlavor[])FLAVORS.clone();
 	}
 
 

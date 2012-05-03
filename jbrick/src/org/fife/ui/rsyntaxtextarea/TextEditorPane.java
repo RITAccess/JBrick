@@ -20,7 +20,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 
 import org.fife.io.UnicodeReader;
@@ -317,7 +316,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	public Object getLineSeparator() {
 		return getDocument().getProperty(
-							DefaultEditorKit.EndOfLineStringProperty);
+							RTextAreaEditorKit.EndOfLineStringProperty);
 	}
 
 
@@ -602,7 +601,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 *
 	 * @param doc The new document.
 	 */
-	@Override
 	public void setDocument(Document doc) {
 		Document old = getDocument();
 		if (old!=null) {
@@ -684,9 +682,9 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 		Document doc = getDocument();
 		Object old = doc.getProperty(
-						DefaultEditorKit.EndOfLineStringProperty);
+						RTextAreaEditorKit.EndOfLineStringProperty);
 		if (!separator.equals(old)) {
-			doc.putProperty(DefaultEditorKit.EndOfLineStringProperty,
+			doc.putProperty(RTextAreaEditorKit.EndOfLineStringProperty,
 							separator);
 			if (setDirty) {
 				setDirty(true);

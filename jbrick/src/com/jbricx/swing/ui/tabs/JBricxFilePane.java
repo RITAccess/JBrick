@@ -5,9 +5,12 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.prefs.Preferences;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
+
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
@@ -19,7 +22,7 @@ public class JBricxFilePane extends JScrollPane implements MouseListener{
 	JTree tree;
 	
 	public JBricxFilePane(JBricxManager manager){
-		super( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		super( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		tree = new JTree();
 		this.manager = manager;
 		root = new FileNode(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT));

@@ -1,6 +1,7 @@
 package com.jbricx.swing.ui;
 
 import java.awt.Component;
+import java.awt.FileDialog;
 import java.io.File;
 
 import javax.swing.JFileChooser;

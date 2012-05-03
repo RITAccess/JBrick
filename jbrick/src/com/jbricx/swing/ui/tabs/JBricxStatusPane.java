@@ -8,7 +8,6 @@ import java.util.prefs.Preferences;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
@@ -36,8 +35,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setContentType("text/html");
 
 		this.addTab("Status", new JScrollPane(messagePane,
-				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
 	}
 
 	/**

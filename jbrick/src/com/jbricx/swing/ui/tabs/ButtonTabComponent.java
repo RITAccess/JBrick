@@ -43,8 +43,7 @@ public class ButtonTabComponent extends JPanel {
          
         //make JLabel read titles from JTabbedPane
         JLabel label = new JLabel() {
-            @Override
-			public String getText() {
+            public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
                 if (i != -1) {
                     return pane.getTitleAt(i);
@@ -97,13 +96,11 @@ public class ButtonTabComponent extends JPanel {
     }
 
     //we don't want to update UI for this button
-    @Override
-	public void updateUI() {
+    public void updateUI() {
     }
 
     //paint the cross
-    @Override
-	protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         //shift the image for pressed buttons
@@ -123,8 +120,7 @@ public class ButtonTabComponent extends JPanel {
     
 
  final MouseListener buttonMouseListener = new MouseAdapter() {
-    @Override
-	public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e) {
         Component component = e.getComponent();
         if (component instanceof AbstractButton) {
             AbstractButton button = (AbstractButton) component;
@@ -132,8 +128,7 @@ public class ButtonTabComponent extends JPanel {
         }
     }
 
-    @Override
-	public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e) {
         Component component = e.getComponent();
         if (component instanceof AbstractButton) {
             AbstractButton button = (AbstractButton) component;

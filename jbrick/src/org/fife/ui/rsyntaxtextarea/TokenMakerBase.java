@@ -184,7 +184,7 @@ abstract class TokenMakerBase implements TokenMaker {
 	 *         enabled.
 	 */
 	public boolean getMarkOccurrencesOfTokenType(int type) {
-		return type==TokenTypes.IDENTIFIER;
+		return type==Token.IDENTIFIER;
 	}
 
 

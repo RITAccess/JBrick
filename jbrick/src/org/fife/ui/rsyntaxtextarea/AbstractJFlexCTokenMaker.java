@@ -38,7 +38,6 @@ public abstract class AbstractJFlexCTokenMaker extends AbstractJFlexTokenMaker {
 	 *
 	 * @return <code>true</code> always.
 	 */
-	@Override
 	public boolean getCurlyBracesDenoteCodeBlocks() {
 		return true;
 	}
@@ -51,7 +50,6 @@ public abstract class AbstractJFlexCTokenMaker extends AbstractJFlexTokenMaker {
 	 *
 	 * @return The action.
 	 */
-	@Override
 	public Action getInsertBreakAction() {
 		return INSERT_BREAK_ACTION;
 	}
@@ -60,16 +58,14 @@ public abstract class AbstractJFlexCTokenMaker extends AbstractJFlexTokenMaker {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public boolean getMarkOccurrencesOfTokenType(int type) {
-		return type==TokenTypes.IDENTIFIER || type==TokenTypes.FUNCTION;
+		return type==Token.IDENTIFIER || type==Token.FUNCTION;
 	}
 
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public boolean getShouldIndentNextLineAfter(Token t) {
 		if (t!=null && t.textCount==1) {
 			char ch = t.text[t.textOffset];
@@ -89,7 +85,6 @@ public abstract class AbstractJFlexCTokenMaker extends AbstractJFlexTokenMaker {
 		private static final Pattern p =
 							Pattern.compile("([ \\t]*)(/?[\\*]+)([ \\t]*)");
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -104,8 +99,8 @@ public abstract class AbstractJFlexCTokenMaker extends AbstractJFlexTokenMaker {
 			int type = doc.getLastTokenTypeOnLine(line);
 
 			// Only in MLC's should we try this
-			if (type==TokenTypes.COMMENT_DOCUMENTATION ||
-					type==TokenTypes.COMMENT_MULTILINE) {
+			if (type==Token.COMMENT_DOCUMENTATION ||
+					type==Token.COMMENT_MULTILINE) {
 				insertBreakInMLC(e, rsta, line);
 			}
 			else {

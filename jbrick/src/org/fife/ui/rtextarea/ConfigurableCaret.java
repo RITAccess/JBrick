@@ -178,7 +178,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 *
 	 * @param r The current location of the caret.
 	 */
-	@Override
 	protected synchronized void damage(Rectangle r) {
 		if (r != null) {
 			validateWidth(r); // Check for "0" or "1" caret width
@@ -201,7 +200,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 *        will be thrown.
 	 * @see Caret#deinstall
 	 */
-	@Override
 	public void deinstall(JTextComponent c) {
 		if (!(c instanceof RTextArea))
 			throw new IllegalArgumentException(
@@ -239,7 +237,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 *
 	 * @return The painter.
 	 */
-	@Override
 	protected Highlighter.HighlightPainter getSelectionPainter() {
 		return selectionPainter;
 	}
@@ -263,7 +260,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 *        an <code>Exception</code> will be thrown.
 	 * @see Caret#install
 	 */
-	@Override
 	public void install(JTextComponent c) {
 		if (!(c instanceof RTextArea))
 			throw new IllegalArgumentException(
@@ -279,7 +275,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 * @param e the mouse event
 	 * @see MouseListener#mouseClicked
 	 */
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 		if (! e.isConsumed()) {
@@ -313,7 +308,7 @@ public class ConfigurableCaret extends DefaultCaret {
 							Action a = null;
 							ActionMap map = textArea.getActionMap();
 							if (map != null)
-								a = map.get(DefaultEditorKit.selectLineAction);
+								a = map.get(RTextAreaEditorKit.selectLineAction);
 							if (a == null) {
 								if (selectLine == null) {
 									selectLine = new RTextAreaEditorKit.SelectLineAction();
@@ -372,7 +367,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 *
 	 * @param g The graphics context in which to paint.
 	 */
-	@Override
 	public void paint(Graphics g) {
 
 		// If the cursor is currently visible...
@@ -502,7 +496,7 @@ public class ConfigurableCaret extends DefaultCaret {
 		RTextArea textArea = getTextArea();
 		ActionMap map = textArea.getActionMap();
 		if (map != null) {
-			a = map.get(DefaultEditorKit.selectWordAction);
+			a = map.get(RTextAreaEditorKit.selectWordAction);
 		}
 		if (a == null) {
 			if (selectWord == null) {
@@ -536,7 +530,6 @@ public class ConfigurableCaret extends DefaultCaret {
 	 * @param visible Whether the selection should be visible.  This parameter
 	 *        is ignored.
 	 */
-	@Override
 	public void setSelectionVisible(boolean visible) {
 		super.setSelectionVisible(true);
 	}
@@ -648,8 +641,7 @@ public class ConfigurableCaret extends DefaultCaret {
 	 */
 	private class FoldAwareNavigationFilter extends NavigationFilter {
 
-	    @Override
-		public void setDot(FilterBypass fb, int dot, Position.Bias bias) {
+	    public void setDot(FilterBypass fb, int dot, Position.Bias bias) {
 
 	    	RTextArea textArea = getTextArea();
 	        if (textArea instanceof RSyntaxTextArea) {
@@ -704,8 +696,7 @@ public class ConfigurableCaret extends DefaultCaret {
 
 	    }
 
-	    @Override
-		public void moveDot(FilterBypass fb, int dot, Position.Bias bias) {
+	    public void moveDot(FilterBypass fb, int dot, Position.Bias bias) {
 	        super.moveDot(fb, dot, bias);
 	    }
 

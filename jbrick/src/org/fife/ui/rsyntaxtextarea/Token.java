@@ -611,7 +611,7 @@ public abstract class Token implements TokenTypes {
 	 * @see #isWhitespace()
 	 */
 	public boolean isComment() {
-		return type>=TokenTypes.COMMENT_EOL && type<=TokenTypes.COMMENT_MARKUP;
+		return type>=Token.COMMENT_EOL && type<=Token.COMMENT_MARKUP;
 	}
 
 
@@ -659,7 +659,7 @@ public abstract class Token implements TokenTypes {
 	 * @return Whether or not this token is paintable.
 	 */
 	public boolean isPaintable() {
-		return type>TokenTypes.NULL;
+		return type>Token.NULL;
 	}
 
 
@@ -828,7 +828,7 @@ public abstract class Token implements TokenTypes {
 		// whitespace as identifiers for performance).  But we only paint tab
 		// lines for the leading whitespace in the token.  So, if this isn't a
 		// WHITESPACE token, figure out the leading whitespace's length.
-		if (type!=TokenTypes.WHITESPACE) {
+		if (type!=Token.WHITESPACE) {
 			int offs = textOffset;
 			for (; offs<textOffset+textCount; offs++) {
 				if (!RSyntaxUtilities.isWhitespace(text[offs])) {
@@ -951,10 +951,9 @@ public abstract class Token implements TokenTypes {
 	 *
 	 * @return A string describing this token.
 	 */
-	@Override
 	public String toString() {
 		return "[Token: " +
-			(type==TokenTypes.NULL ? "<null token>" :
+			(type==Token.NULL ? "<null token>" :
 				"text: '" +
 					(text==null ? "<null>" : getLexeme() + "'; " +
 	       		"offset: " + offset + "; type: " + type + "; " +

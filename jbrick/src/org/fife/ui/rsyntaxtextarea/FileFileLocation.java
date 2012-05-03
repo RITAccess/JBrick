@@ -52,7 +52,6 @@ class FileFileLocation extends FileLocation {
 	 *
 	 * @return The last time this file was modified.
 	 */
-	@Override
 	protected long getActualLastModified() {
 		return file.lastModified();
 	}
@@ -64,7 +63,6 @@ class FileFileLocation extends FileLocation {
 	 * @return The full path to the file.
 	 * @see #getFileName()
 	 */
-	@Override
 	public String getFileFullPath() {
 		return file.getAbsolutePath();
 	}
@@ -76,7 +74,6 @@ class FileFileLocation extends FileLocation {
 	 * @return The name of the file.
 	 * @see #getFileFullPath()
 	 */
-	@Override
 	public String getFileName() {
 		return file.getName();
 	}
@@ -89,7 +86,6 @@ class FileFileLocation extends FileLocation {
 	 * @throws IOException If the file does not exist, or some other IO error
 	 *         occurs.
 	 */
-	@Override
 	protected InputStream getInputStream() throws IOException {
 		return new FileInputStream(file);
 	}
@@ -101,7 +97,6 @@ class FileFileLocation extends FileLocation {
 	 * @return An output stream.
 	 * @throws IOException If an IO error occurs.
 	 */
-	@Override
 	protected OutputStream getOutputStream() throws IOException {
 		return new FileOutputStream(file);
 	}
@@ -113,7 +108,6 @@ class FileFileLocation extends FileLocation {
 	 * @return Whether this is a local file.
 	 * @see #isLocalAndExists()
 	 */
-	@Override
 	public boolean isLocal() {
 		return true;
 	}
@@ -126,7 +120,6 @@ class FileFileLocation extends FileLocation {
 	 * @return Whether this file is local and actually exists.
 	 * @see #isLocal()
 	 */
-	@Override
 	public boolean isLocalAndExists() {
 		return file.exists();
 	}

@@ -5,10 +5,7 @@ package com.jbricx.swing.communications;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +21,6 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * this application and is dependent on the operating system. The purpose is for
  * the "upper layers" to not know anything about the compiler and its
  * interaction with the application.
- * 
- * We check if there is nothing set in the preferences, which indicates a default running location for the Jar file. 
  * 
  * @author byktol
  * @see ExitStatus
@@ -44,21 +39,17 @@ public class CompilerRunner {
 	}
 	
 	public ExitStatus download(final String filename, final String port) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT);
-		if(nbcPath.equals("")){
-			nbcPath = getCompilerPath();
-		}
-		
-		return run(nbcPath, port,"-d", filename);
+		return run(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT), port,
+				"-d", filename);
 	}
 
 	public ExitStatus compile(final String filename) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT);
-		if(nbcPath.equals("")){
-			nbcPath = getCompilerPath();
+		if(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT).equals("")){
+			return run(getClass().getResource("nbc.exe").getPath(),
+					filename);
 		}
-		
-		return run(nbcPath,filename);
+		return run(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT),
+				filename);
 	}
 
 	private ExitStatus run(final String... command) {
@@ -112,40 +103,6 @@ public class CompilerRunner {
 			e.printStackTrace();
 			return new ExitStatus(ExitStatus.ERROR, list);
 		}	
-	}
-	
-	/**
-	 * Runs to find the location of the temp file for the jar files usage.
-	 * @return
-	 */
-	private String getCompilerPath(){
-		InputStream src=null;
-		FileOutputStream out=null;
-		File exeTempFile=null;
-		try {
-			src = getClass().getResource("/nbc.exe").openStream();
-		
-			exeTempFile = File.createTempFile("nbc", ".exe");
-			out = new FileOutputStream(exeTempFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte[] temp = new byte[32768];
-		int rc;
-		try {
-			while ((rc = src.read(temp)) > 0){
-				out.write(temp, 0, rc);
-			}
-				src.close();
-				out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		exeTempFile.deleteOnExit();
-		return exeTempFile.getAbsolutePath();
 	}
 
 }

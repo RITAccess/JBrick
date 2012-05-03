@@ -32,7 +32,6 @@ class DefaultTokenMakerFactory extends AbstractTokenMakerFactory
 	 *
 	 * @return The map.
 	 */
-	@Override
 	protected Map createTokenMakerKeyToClassNameMap() {
 
 		HashMap map = new HashMap();

@@ -279,7 +279,6 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
 	 * @param startOffset The offset in the document at which this token
 	 *                    occurs.
 	 */
-	@Override
 	public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
 		super.addToken(array, start,end, tokenType, startOffset);
 		zzStartRead = zzMarkedPos;
@@ -293,7 +292,6 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
 	 * @return The start and end strings to add to a line to "comment"
 	 *         it out.
 	 */
-	@Override
 	public String[] getLineCommentStartAndEnd() {
 		return new String[] { "#", null };
 	}
@@ -317,14 +315,14 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
 		this.offsetShift = -text.offset + startOffset;
 
 		// Start off in the proper state.
-		int state = TokenTypes.NULL;
+		int state = Token.NULL;
 		switch (initialTokenType) {
-			case TokenTypes.LITERAL_STRING_DOUBLE_QUOTE:
+			case Token.LITERAL_STRING_DOUBLE_QUOTE:
 				state = VALUE;
 				start = text.offset;
 				break;
 			default:
-				state = TokenTypes.NULL;
+				state = Token.NULL;
 		}
 
 		s = text;
@@ -605,27 +603,27 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 7: 
-          { addToken(start, zzEndRead, TokenTypes.LITERAL_STRING_DOUBLE_QUOTE); return firstToken;
+          { addToken(start, zzEndRead, Token.LITERAL_STRING_DOUBLE_QUOTE); return firstToken;
           }
         case 9: break;
         case 2: 
-          { start = zzMarkedPos; addToken(TokenTypes.OPERATOR); yybegin(VALUE);
+          { start = zzMarkedPos; addToken(Token.OPERATOR); yybegin(VALUE);
           }
         case 10: break;
         case 8: 
-          { int temp=zzStartRead; addToken(start, zzStartRead-1, TokenTypes.LITERAL_STRING_DOUBLE_QUOTE); addToken(temp, zzMarkedPos-1, TokenTypes.VARIABLE); start = zzMarkedPos;
+          { int temp=zzStartRead; addToken(start, zzStartRead-1, Token.LITERAL_STRING_DOUBLE_QUOTE); addToken(temp, zzMarkedPos-1, Token.VARIABLE); start = zzMarkedPos;
           }
         case 11: break;
         case 3: 
-          { addToken(TokenTypes.WHITESPACE);
+          { addToken(Token.WHITESPACE);
           }
         case 12: break;
         case 6: 
-          { addToken(start, zzMarkedPos-1, TokenTypes.LITERAL_STRING_DOUBLE_QUOTE); start = zzMarkedPos;
+          { addToken(start, zzMarkedPos-1, Token.LITERAL_STRING_DOUBLE_QUOTE); start = zzMarkedPos;
           }
         case 13: break;
         case 1: 
-          { addToken(TokenTypes.RESERVED_WORD);
+          { addToken(Token.RESERVED_WORD);
           }
         case 14: break;
         case 5: 
@@ -633,7 +631,7 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
           }
         case 15: break;
         case 4: 
-          { addToken(TokenTypes.COMMENT_EOL);
+          { addToken(Token.COMMENT_EOL);
           }
         case 16: break;
         default: 
@@ -645,7 +643,7 @@ public class PropertiesFileTokenMaker extends AbstractJFlexTokenMaker implements
             }
             case 14: break;
             case VALUE: {
-              addToken(start,zzStartRead-1, TokenTypes.LITERAL_STRING_DOUBLE_QUOTE); addNullToken(); return firstToken;
+              addToken(start,zzStartRead-1, Token.LITERAL_STRING_DOUBLE_QUOTE); addNullToken(); return firstToken;
             }
             case 15: break;
             default:

@@ -119,7 +119,6 @@ public class DefaultToken extends Token {
 	 *         <code>-1</code is returned; the caller should recognize this and
 	 *         return the actual end position of the (empty) line.
 	 */
-	@Override
 	public int getListOffset(RSyntaxTextArea textArea, TabExpander e,
 								float x0, float x) {
 
@@ -184,7 +183,6 @@ public class DefaultToken extends Token {
 	 * @return The width of the specified number of characters in this token.
 	 * @see #getWidth
 	 */
-	@Override
 	public float getWidthUpTo(int numChars, RSyntaxTextArea textArea,
 							TabExpander e, float x0) {
 		float width = x0;
@@ -230,7 +228,6 @@ public class DefaultToken extends Token {
 	 *        object is reused to keep from frequent memory allocations.
 	 * @return The bounding box for the specified position in the model.
 	 */
-	@Override
 	public Rectangle listOffsetToView(RSyntaxTextArea textArea, TabExpander e,
 										int pos, int x0, Rectangle rect) {
 
@@ -314,7 +311,6 @@ public class DefaultToken extends Token {
 	 *        when this token is "to the left" of the clip rectangle.
 	 * @return The x-coordinate representing the end of the painted text.
 	 */
-	@Override
 	public float paint(Graphics2D g, float x, float y, RSyntaxTextArea host,
 								TabExpander e, float clipStart) {
 

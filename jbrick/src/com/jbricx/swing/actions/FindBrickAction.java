@@ -1,8 +1,12 @@
 package com.jbricx.swing.actions;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
