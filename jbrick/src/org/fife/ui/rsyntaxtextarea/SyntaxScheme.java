@@ -23,6 +23,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 
 /**
  * The set of colors and styles used by an <code>RSyntaxTextArea</code> to
@@ -362,16 +364,16 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public void restoreDefaults(Font baseFont, boolean fontStyles) {
 
 		// Colors used by tokens.
-		Color comment			= new Color(0,128,0);
-		Color docComment		= new Color(164,0,0);
-		Color keyword			= Color.BLUE;
-		Color function			= new Color(173,128,0);
+		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
+		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
+		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
+		Color function			= new Color(0,0,0);
 		Color preprocessor		= new Color(128,64,64);
-		Color regex				= new Color(0,128,164);
+		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));;
 		Color variable			= new Color(255,153,0);
 		Color literalNumber		= new Color(100,0,200);
-		Color literalString		= new Color(220,0,156);
-		Color error			= new Color(148,148,0);
+		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
+		Color error				= new Color(202,25,25);
 
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {

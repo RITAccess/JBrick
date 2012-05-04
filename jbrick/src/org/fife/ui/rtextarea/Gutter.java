@@ -121,10 +121,7 @@ public class Gutter extends JPanel {
 		setBorder(new GutterBorder(0, 0, 0, 1)); // Assume ltr
 
 		Color bg = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT));
-		if (textArea!=null) {
-			bg = textArea.getBackground(); // May return null if image bg
-		}
-		setBackground(bg!=null ? bg : Color.WHITE);
+		setBackground(bg);
 
 	}
 

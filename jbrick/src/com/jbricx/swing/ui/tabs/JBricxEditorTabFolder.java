@@ -315,27 +315,38 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 */
 	public void refreshTabItems() {
 		int paneCount = this.getTabCount();
-		
+
 		for (int i = 0; i < paneCount; i++) {
-			RTextScrollPane scroller = (RTextScrollPane)getComponentAt(i);
-			//Gutter theGutter = scroller.getGutter();
-			//theGutter.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
-			//theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
-			//theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
-			
-			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport().getView());
-			Font font = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
-			  if (font!=null) {
-			      SyntaxScheme ss = tab.getSyntaxScheme();
-			      ss = (SyntaxScheme)ss.clone();
-			      for (int j=0; j<ss.styles.length; j++) {
-			         if (ss.styles[i]!=null) {
-			            ss.styles[i].font = font;
-			         }
-			      }
-			      tab.setSyntaxScheme(ss);
-			      tab.setFont(font);
-			   }
+			//Color for Lines
+			RTextScrollPane scroller = (RTextScrollPane) getComponentAt(i);
+			Gutter theGutter = scroller.getGutter();
+			theGutter.setBackground(new Color(PreferenceStore.getPrefs()
+					.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),
+							PreferenceStore.LINENUMBERBG_DEFAULT)));
+			theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs()
+					.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(),
+							PreferenceStore.LINENUMBERFG_DEFAULT)));
+			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs()
+					.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
+
+			//Fonts
+			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport()
+					.getView());
+			Font font = Font.decode(PreferenceStore.getPrefs().get(
+					PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+			if (font != null) {
+				SyntaxScheme ss = tab.getSyntaxScheme();
+				ss = (SyntaxScheme) ss.clone();
+				for (int j = 0; j < ss.styles.length; j++) {
+					if (ss.styles[i] != null) {
+						ss.styles[i].font = font;
+					}
+				}
+				tab.setSyntaxScheme(ss);
+				tab.setFont(font);
+			}
+			//Colors for main code
+			tab.setSyntaxScheme(tab.getDefaultSyntaxScheme());
 		}
 	}
 	

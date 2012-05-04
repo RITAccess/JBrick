@@ -150,8 +150,6 @@ public class JBricxMenuAndToolBarDelegate {
 		findButton.getAccessibleContext().setAccessibleName("Find");
 		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
-		findButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK), "SetFind");
-		findButton.getActionMap().put("SetFind",compileAction);
 		findButton.setToolTipText("Find and Replace");
 
 		// Compile Button
@@ -161,8 +159,6 @@ public class JBricxMenuAndToolBarDelegate {
 		compileButton.getAccessibleContext().setAccessibleName("Compile");
 		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
-		compileButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK), "SetCompile");
-		compileButton.getActionMap().put("SetCompile",compileAction);
 		compileButton.setToolTipText("Compile");
 		
 		// Find Brick Button
@@ -184,8 +180,6 @@ public class JBricxMenuAndToolBarDelegate {
 		preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
 		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
-		preferencesButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK), "SetPreferences");
-		preferencesButton.getActionMap().put("SetPreferences",prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
@@ -200,8 +194,6 @@ public class JBricxMenuAndToolBarDelegate {
 		helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
 		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
-		compileButton.getInputMap().put(KeyStroke.getKeyStroke((char) KeyEvent.VK_F1), "SetHelp");
-		compileButton.getActionMap().put("SetHelp",compileAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
