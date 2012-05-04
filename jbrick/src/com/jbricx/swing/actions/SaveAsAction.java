@@ -47,6 +47,6 @@ public class SaveAsAction extends JBricxAbstractAction {
 			compileAction.run();
 		}
 		//Refresh file names
-	    getManager().getTabFolder().refreshTabItems();
+	    getManager().getTabFolder().refreshTabTitles();
 	}
 }
