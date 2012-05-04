@@ -118,7 +118,6 @@ public class Style implements Cloneable {
 	 *
 	 * @return The copy.
 	 */
-	@Override
 	public Object clone() {
 		Style clone = null;
 		try {
@@ -143,7 +142,6 @@ public class Style implements Cloneable {
 	 * @return Whether or not these two syntax schemes represent the same
 	 *         scheme.
 	 */
-	@Override
 	public boolean equals(Object o2) {
 		if (o2 instanceof Style) {
 			Style ss2 = (Style)o2;
@@ -167,7 +165,6 @@ public class Style implements Cloneable {
 	 *
 	 * @return The hash code.
 	 */
-	@Override
 	public int hashCode() {
 		int hashCode = underline ? 1 : 0;
 		if (foreground!=null) {
@@ -185,7 +182,6 @@ public class Style implements Cloneable {
 	 *
 	 * @return A string representation of this style.
 	 */
-	@Override
 	public String toString() {
 		return "[Style: foreground: " + foreground +
 			  ", background: " + background + ", underline: " +

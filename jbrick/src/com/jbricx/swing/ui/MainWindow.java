@@ -22,7 +22,7 @@ import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener,WindowListener  {
+public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
 
 	Preferences prefs;
 	
@@ -38,10 +38,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 */
 	public void run() {
 		PreferenceStore prefClass = new PreferenceStore();
-		prefs = PreferenceStore.getPrefs();
-		prefs.addPreferenceChangeListener(this);
-		
-		
+		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
 		
@@ -168,16 +165,6 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	public JSplitPane getSplitPane(){
 		return leftRightSplit;
 	}
-
-
-	/**
-	 * Called by the listener whenever a property has changed.
-	 */
-	public void preferenceChange(PreferenceChangeEvent arg0) {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -215,14 +202,18 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 	}
 
-
-	public void refreshExplorerContent() {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	public void openTab(String FilePath) {
 		editorPane.open(FilePath);
+	}
+
+	public void updatePreferences() {
+		editorPane.refreshTabItems();
+		statusPane.refresh();
+	}
+
+	public void refreshExplorerContent() {
+		editorPane.refreshTabTitles();
+		
 	}
 
 

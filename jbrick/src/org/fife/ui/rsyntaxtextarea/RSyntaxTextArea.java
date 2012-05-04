@@ -57,8 +57,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
-import com.jbricx.swing.ui.preferences.PreferenceStore;
-
 
 
 /**
@@ -79,6 +77,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  *       <li>C#
  *       <li>Clojure
  *       <li>Delphi
+ *       <li>DTD
  *       <li>Fortran
  *       <li>Groovy
  *       <li>HTML
@@ -89,6 +88,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  *   </td>
  *   <td style="vertical-align: top">
  *    <ul>
+ *       <li>LaTeX
  *       <li>Lisp
  *       <li>Lua
  *       <li>Make
@@ -125,7 +125,8 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * bookmarks easily to your text area.
  *
  * @author Robert Futrell
- * @version 2.0.2
+ * @version 2.0.3
+ * @see TextEditorPane
  */
 public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 
@@ -400,7 +401,6 @@ private boolean fractionalFontMetricsEnabled;
 	/**
 	 * Updates the font metrics the first time we're displayed.
 	 */
-	@Override
 	public void addNotify() {
 
 		super.addNotify();
@@ -528,7 +528,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @see #createPopupMenu()
 	 * @see #setPopupMenu(JPopupMenu)
 	 */
-	@Override
 	protected void configurePopupMenu(JPopupMenu popupMenu) {
 
 		super.configurePopupMenu(popupMenu); // Currently does nothing
@@ -615,7 +614,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The document.
 	 */
-	@Override
 	protected Document createDefaultModel() {
 		return new RSyntaxDocument(SYNTAX_STYLE_NONE);
 	}
@@ -626,7 +624,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The caret event/mouse listener.
 	 */
-	@Override
 	protected RTAMouseListener createMouseListener() {
 		return new RSyntaxTextAreaMutableCaretEvent(this);
 	}
@@ -637,7 +634,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The popup menu.
 	 */
-	@Override
 	protected JPopupMenu createPopupMenu() {
 
 		JPopupMenu popup = super.createPopupMenu();
@@ -685,7 +681,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The UI.
 	 */
-	@Override
 	protected RTextAreaUI createRTextAreaUI() {
 		return new RSyntaxTextAreaUI(this);
 	}
@@ -733,7 +728,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param e The caret event.
 	 */
-	@Override
 	protected void fireCaretUpdate(CaretEvent e) {
 		super.fireCaretUpdate(e);
 		if (isBracketMatchingEnabled()) {
@@ -983,7 +977,7 @@ private boolean fractionalFontMetricsEnabled;
 	 * @see #setSyntaxScheme(SyntaxScheme)
 	 */
 	public SyntaxScheme getDefaultSyntaxScheme() {
-		return new SyntaxScheme(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
+		return new SyntaxScheme(getFont());
 	}
 
 
@@ -1149,7 +1143,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The height of a line of text in this text area.
 	 */
-	@Override
 	public int getLineHeight() {
 		//System.err.println("... getLineHeight() returning " + lineHeight);
 		return lineHeight;
@@ -1246,7 +1239,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @return The max ascent value.
 	 */
-	@Override
 	public int getMaxAscent() {
 		return maxAscent;
 	}
@@ -1447,7 +1439,7 @@ private boolean fractionalFontMetricsEnabled;
 				// in getTokenListFor()
 				int docOffs = map.getElement(line).getEndOffset()-1;
 				t = new DefaultToken(new char[] { '\n' }, 0,0, docOffs,
-								TokenTypes.WHITESPACE);
+								Token.WHITESPACE);
 				lastToken.setNextToken(t);
 				lastToken = t;
 			}
@@ -1504,7 +1496,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param e The mouse event.
 	 */
-	@Override
 	public String getToolTipText(MouseEvent e) {
 
 		// Check parsers for tool tips first.
@@ -1530,7 +1521,7 @@ private boolean fractionalFontMetricsEnabled;
 				focusableTip.setImageBase(imageBase);
 				focusableTip.toolTipRequested(e, text);
 			}
-			// No tooltip text at new location - hide tip window if one is
+			// No tool tip text at new location - hide tip window if one is
 			// currently visible
 			else if (focusableTip!=null) {
 				focusableTip.possiblyDisposeOfTipWindow();
@@ -1709,7 +1700,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * The <code>paintComponent</code> method is overridden so we
 	 * apply any necessary rendering hints to the Graphics object.
 	 */
-	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(getGraphics2D(g));
 	}
@@ -1753,7 +1743,6 @@ private boolean fractionalFontMetricsEnabled;
 	/**
 	 * Overridden so we stop this text area's parsers, if any.
 	 */
-	@Override
 	public void removeNotify() {
 		if (parserManager!=null) {
 			parserManager.stopParsing();
@@ -1781,7 +1770,6 @@ private boolean fractionalFontMetricsEnabled;
 
 
 	/**
-	 * MODIFIED FOR JBRICX ( Sets default font and other defaults from preferences.
 	 * Sets the colors used for syntax highlighting to their defaults.
 	 *
 	 * @see #setSyntaxScheme(SyntaxScheme)
@@ -1790,7 +1778,6 @@ private boolean fractionalFontMetricsEnabled;
 	 */
 	public void restoreDefaultSyntaxScheme() {
 		setSyntaxScheme(getDefaultSyntaxScheme());
-		this.setFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
 	}
 
 
@@ -2020,7 +2007,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @throws IllegalArgumentException If the document is not an
 	 *         <code>RSyntaxDocument</code>.
 	 */
-	@Override
 	public void setDocument(Document document) {
 		if (!(document instanceof RSyntaxDocument))
 			throw new IllegalArgumentException("Documents for " +
@@ -2054,7 +2040,6 @@ private boolean fractionalFontMetricsEnabled;
 	 *
 	 * @param font The font.
 	 */
-	@Override
 	public void setFont(Font font) {
 
 		Font old = super.getFont();
@@ -2115,7 +2100,6 @@ private boolean fractionalFontMetricsEnabled;
 	 * @throws IllegalArgumentException If <code>h</code> is not an instance
 	 *         of {@link RSyntaxTextAreaHighlighter}.
 	 */
-	@Override
 	public void setHighlighter(Highlighter h) {
 		if (!(h instanceof RSyntaxTextAreaHighlighter)) {
 			throw new IllegalArgumentException("RSyntaxTextArea requires " +
@@ -2477,6 +2461,23 @@ private boolean fractionalFontMetricsEnabled;
 
 
 	/**
+	 * Resets the editor state after the user clicks on a hyperlink or releases
+	 * the hyperlink modifier.
+	 */
+	private void stopScanningForLinks() {
+		if (isScanningForLinks) {
+			Cursor c = getCursor();
+			isScanningForLinks = false;
+			hoveredOverLinkOffset = -1;
+			if (c!=null && c.getType()==Cursor.HAND_CURSOR) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+				repaint(); // TODO: Repaint just the affected line.
+			}
+		}
+	}
+
+
+	/**
 	 * Returns the token at the specified position in the view.
 	 *
 	 * @param p The position in the view.
@@ -2535,7 +2536,6 @@ private boolean fractionalFontMetricsEnabled;
 			}
 		}
 
-		@Override
 		public void start() {
 			match.x += 3;
 			match.y += 3;
@@ -2558,7 +2558,6 @@ private boolean fractionalFontMetricsEnabled;
 			super(textArea);
 		}
 
-		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (getHyperlinksEnabled() && isScanningForLinks &&
 					hoveredOverLinkOffset>-1) {
@@ -2579,10 +2578,10 @@ private boolean fractionalFontMetricsEnabled;
 						HyperlinkEvent.EventType.ACTIVATED,
 						url, desc);
 				fireHyperlinkUpdate(he);
+				stopScanningForLinks();
 			}
 		}
 
-		@Override
 		public void mouseMoved(MouseEvent e) {
 			super.mouseMoved(e);
 			if (getHyperlinksEnabled()) {
@@ -2606,13 +2605,7 @@ private boolean fractionalFontMetricsEnabled;
 				}
 				else {
 					if (isScanningForLinks) {
-						Cursor c = getCursor();
-						isScanningForLinks = false;
-						hoveredOverLinkOffset = -1;
-						if (c!=null && c.getType()==Cursor.HAND_CURSOR) {
-							setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-							repaint(); // TODO: Repaint just the affected line.
-						}
+						stopScanningForLinks();
 					}
 				}
 			}

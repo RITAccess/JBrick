@@ -315,7 +315,6 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
 	 * @param startOffset The offset in the document at which this token
 	 *        occurs.
 	 */
-	@Override
 	public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
 		super.addToken(array, start,end, tokenType, startOffset);
 		zzStartRead = zzMarkedPos;
@@ -329,7 +328,6 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
 	 * @return Whether closing markup tags are completed.
 	 * @see #setCompleteCloseTags(boolean)
 	 */
-	@Override
 	public boolean getCompleteCloseTags() {
 		return completeCloseTags;
 	}
@@ -340,7 +338,6 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
 	 *
 	 * @return <code>null</code> always.
 	 */
-	@Override
 	public String[] getLineCommentStartAndEnd() {
 		return null;
 	}
@@ -364,14 +361,14 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
 		this.offsetShift = -text.offset + startOffset;
 
 		// Start off in the proper state.
-		int state = TokenTypes.NULL;
+		int state = Token.NULL;
 		switch (initialTokenType) {
 			case INTERNAL_INTAG:
 				state = INTAG;
 				start = text.offset;
 				break;
 			default:
-				state = TokenTypes.NULL;
+				state = Token.NULL;
 		}
 
 		s = text;
@@ -662,35 +659,35 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 1: 
-          { addToken(TokenTypes.IDENTIFIER);
+          { addToken(Token.IDENTIFIER);
           }
         case 11: break;
         case 9: 
-          { addToken(TokenTypes.MARKUP_TAG_DELIMITER);
+          { addToken(Token.MARKUP_TAG_DELIMITER);
           }
         case 12: break;
         case 2: 
-          { addToken(TokenTypes.WHITESPACE);
+          { addToken(Token.WHITESPACE);
           }
         case 13: break;
         case 10: 
-          { addToken(TokenTypes.OPERATOR);
+          { addToken(Token.OPERATOR);
           }
         case 14: break;
         case 8: 
-          { addToken(TokenTypes.MARKUP_TAG_NAME);
+          { addToken(Token.MARKUP_TAG_NAME);
           }
         case 15: break;
         case 4: 
-          { addToken(TokenTypes.MARKUP_TAG_DELIMITER); yybegin(INTAG);
+          { addToken(Token.MARKUP_TAG_DELIMITER); yybegin(INTAG);
           }
         case 16: break;
         case 6: 
-          { addToken(TokenTypes.IDENTIFIER); /* Unhandled chars, not likely */
+          { addToken(Token.IDENTIFIER); /* Unhandled chars, not likely */
           }
         case 17: break;
         case 5: 
-          { addToken(TokenTypes.MARKUP_TAG_ATTRIBUTE);
+          { addToken(Token.MARKUP_TAG_ATTRIBUTE);
           }
         case 18: break;
         case 3: 
@@ -698,7 +695,7 @@ public class BBCodeTokenMaker extends AbstractMarkupTokenMaker {
           }
         case 19: break;
         case 7: 
-          { yybegin(YYINITIAL); addToken(TokenTypes.MARKUP_TAG_DELIMITER);
+          { yybegin(YYINITIAL); addToken(Token.MARKUP_TAG_DELIMITER);
           }
         case 20: break;
         default: 

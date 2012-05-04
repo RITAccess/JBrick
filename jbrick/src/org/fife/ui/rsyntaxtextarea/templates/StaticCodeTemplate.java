@@ -253,7 +253,6 @@ public class StaticCodeTemplate extends AbstractCodeTemplate {
 	 *
 	 * @return A string representation of this template.
 	 */
-	@Override
 	public String toString() {
 		return "[StaticCodeTemplate: id=" + getID() +
 			", text=" + getBeforeCaretText() + "|" + getAfterCaretText() + "]";

@@ -43,9 +43,18 @@ import org.fife.ui.rsyntaxtextarea.parser.TaskTagParser.TaskNotice;
  * colored markers for locations of interest (parser errors, marked
  * occurrences, etc.).<p>
  *
+ * <code>ErrorStrip</code>s display <code>ParserNotice</code>s from
+ * {@link Parser}s.  Currently, the only way to get lines flagged in this
+ * component is to register a <code>Parser</code> on an RSyntaxTextArea and
+ * return <code>ParserNotice</code>s for each line to display an icon for.
+ * The severity of each notice must be at least the threshold set by
+ * {@link #setLevelThreshold(int)} to be displayed in this error strip.  The
+ * default threshold is {@link ParserNotice#WARNING}.<p>
+ *   
  * An <code>ErrorStrip</code> can be added to a UI like so:
  * <pre>
  * textArea = createTextArea();
+ * textArea.addParser(new MyParser(textArea)); // Identifies lines to display
  * scrollPane = new RTextScrollPane(textArea, true);
  * ErrorStrip es = new ErrorStrip(textArea);
  * JPanel temp = new JPanel(new BorderLayout());
@@ -54,7 +63,7 @@ import org.fife.ui.rsyntaxtextarea.parser.TaskTagParser.TaskNotice;
  * </pre>
  *
  * @author Robert Futrell
- * @version 0.1
+ * @version 0.5
  */
 /*
  * Possible improvements:
@@ -146,7 +155,6 @@ public class ErrorStrip extends JComponent {
 	 * Overridden so we only start listening for parser notices when this
 	 * component (and presumably the text area) are visible.
 	 */
-	@Override
 	public void addNotify() {
 		super.addNotify();
 		textArea.addCaretListener(listener);
@@ -163,7 +171,6 @@ public class ErrorStrip extends JComponent {
 	/**
 	 * Manually manages layout since this component uses no layout manager.
 	 */
-	@Override
 	public void doLayout() {
 		for (int i=0; i<getComponentCount(); i++) {
 			Marker m = (Marker)getComponent(i);
@@ -222,7 +229,6 @@ public class ErrorStrip extends JComponent {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public Dimension getPreferredSize() {
 		int height = textArea.getPreferredScrollableViewportSize().height;
 		return new Dimension(PREFERRED_WIDTH, height);
@@ -231,7 +237,8 @@ public class ErrorStrip extends JComponent {
 
 	/**
 	 * Returns the minimum severity a parser notice must be for it to be
-	 * displayed in this error strip.
+	 * displayed in this error strip.  This will be one of the constants
+	 * defined in the <code>ParserNotice</code> class.
 	 *
 	 * @return The minimum severity.
 	 * @see #setLevelThreshold(int)
@@ -255,7 +262,6 @@ public class ErrorStrip extends JComponent {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public String getToolTipText(MouseEvent e) {
 		String text = null;
 		int line = yToLine(e.getY());
@@ -289,7 +295,6 @@ public class ErrorStrip extends JComponent {
 	 *
 	 * @param g The graphics context.
 	 */
-	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (caretLineY>-1) {
@@ -378,7 +383,6 @@ public class ErrorStrip extends JComponent {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void removeNotify() {
 		super.removeNotify();
 		textArea.removeCaretListener(listener);
@@ -426,10 +430,13 @@ public class ErrorStrip extends JComponent {
 
 	/**
 	 * Sets the minimum severity a parser notice must be for it to be displayed
-	 * in this error strip.  The default value is {@link ParserNotice#WARNING}.
+	 * in this error strip.  This should be one of the constants defined in
+	 * the <code>ParserNotice</code> class.  The default value is
+	 * {@link ParserNotice#WARNING}.
 	 *
 	 * @param level The new severity threshold.
 	 * @see #getLevelThreshold()
+	 * @see ParserNotice
 	 */
 	public void setLevelThreshold(int level) {
 		levelThreshold = level;
@@ -496,7 +503,6 @@ public class ErrorStrip extends JComponent {
 			}
 		}
 
-		@Override
 		public void mouseClicked(MouseEvent e) {
 
 			Component source = (Component)e.getSource();
@@ -566,7 +572,6 @@ private static final Color COLOR = new Color(220, 220, 220);
 			return pos>=range.getStartOffset() && pos<range.getEndOffset();
 		}
 
-		@Override
 		public boolean equals(Object o) {
 			// FindBugs - Define equals() when defining compareTo()
 			return compareTo(o)==0;
@@ -622,7 +627,6 @@ private static final Color COLOR = new Color(220, 220, 220);
 			return null;
 		}
 
-		@Override
 		public int hashCode() { // FindBugs, since we override equals()
 			return 0; // Value doesn't matter for us.
 		}
@@ -674,13 +678,11 @@ private static final Color COLOR = new Color(220, 220, 220);
 			return c;
 		}
 
-		@Override
 		public Dimension getPreferredSize() {
 			int w = PREFERRED_WIDTH - 4; // 2-pixel empty border
 			return new Dimension(w, 5);
 		}
 
-		@Override
 		public String getToolTipText() {
 
 			String text = null;
@@ -724,7 +726,6 @@ private static final Color COLOR = new Color(220, 220, 220);
 			}
 		}
 
-		@Override
 		protected void paintComponent(Graphics g) {
 
 			// TODO: Give "priorities" and always pick color of a notice with
@@ -747,7 +748,6 @@ private static final Color COLOR = new Color(220, 220, 220);
 
 		}
 
-		@Override
 		public void removeNotify() {
 			super.removeNotify();
 			ToolTipManager.sharedInstance().unregisterComponent(this);

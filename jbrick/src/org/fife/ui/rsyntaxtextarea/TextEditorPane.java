@@ -20,7 +20,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 
 import org.fife.io.UnicodeReader;
@@ -90,13 +89,12 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * The value returned by {@link #getLastSaveOrLoadTime()} for remote files.
 	 */
 	public static final long LAST_MODIFIED_UNKNOWN		= 0;
-
+	
 	/**
 	 * The default name given to files if none is specified in a constructor.
 	 */
-	private String fileName;
+	private static final String DEFAULT_FILE_NAME = "Untitled.txt";
 
-	
 	/**
 	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 
 	 * 
@@ -105,8 +103,8 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	public TextEditorPane(int newFileNumber){
 		super(INSERT_MODE);
 		String newFileName = "New File " + newFileNumber;
+		setLineWrap(false);
 		try {
-			setLineWrap(false);
 			init(null,null,newFileName);
 		} catch (IOException ioe) { // Never happens
 			ioe.printStackTrace();
@@ -129,7 +127,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			ioe.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Constructor.  The file will be given a default name.
 	 */
@@ -138,15 +136,16 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	}
 
 
-	/**
-	 * Constructor.  The file will be given a default name.
-	 *
-	 * @param textMode Either <code>INSERT_MODE</code> or
-	 *        <code>OVERWRITE_MODE</code>.
-	 */
-	//public TextEditorPane(int textMode) {
-	//	this(textMode, false);
-	//}
+//	/**
+//	 * Constructor.  The file will be given a default name.
+//	 *
+//	 * @param textMode Either <code>INSERT_MODE</code> or
+//	 *        <code>OVERWRITE_MODE</code>.
+//	 */
+//	public TextEditorPane(int textMode) {
+//		this(textMode, false);
+//
+//	}
 
 
 	/**
@@ -266,7 +265,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @return The full path to the document.
 	 */
 	public String getFileFullPath() {
-		return loc.getFileFullPath();
+		return loc==null ? null : loc.getFileFullPath();
 	}
 
 
@@ -317,7 +316,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	public Object getLineSeparator() {
 		return getDocument().getProperty(
-							DefaultEditorKit.EndOfLineStringProperty);
+							RTextAreaEditorKit.EndOfLineStringProperty);
 	}
 
 
@@ -332,13 +331,13 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws IOException If an IO error occurs reading from <code>loc</code>.
 	 *         If <code>loc</code> is <code>null</code>, this cannot happen.
 	 */
-	private void init(FileLocation loc, String defaultEnc,String newFileName) throws IOException {
+	private void init(FileLocation loc, String defaultEnc, String theFileName) throws IOException {
 
 		if (loc==null) {
 			// Don't call load() just in case Untitled.txt actually exists,
 			// just to ensure there is no chance of an IOException being thrown
 			// in the default case.
-			this.loc = FileLocation.create(newFileName);
+			this.loc = FileLocation.create(theFileName);
 			charSet = defaultEnc==null ? getDefaultEncoding() : defaultEnc;
 			// Ensure that line separator always has a value, even if the file
 			// does not exist (or is the "default" file).  This makes life
@@ -436,7 +435,8 @@ public class TextEditorPane extends RSyntaxTextArea implements
 
 
 	/**
-	 * Loads the specified file in this editor.
+	 * Loads the specified file in this editor.  This method fires a property
+	 * change event of type {@link #FULL_PATH_PROPERTY}.
 	 *
 	 * @param loc The location of the file to load.  This cannot be
 	 *        <code>null</code>.
@@ -449,12 +449,11 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @see #saveAs(FileLocation)
 	 */
 	public void load(FileLocation loc, String defaultEnc) throws IOException {
-
 		this.loc = loc;
-
 		// For new local files, just go with it.
 		if (loc.isLocal() && !loc.isLocalAndExists()) {
 			this.charSet = defaultEnc!=null ? defaultEnc : getDefaultEncoding();
+			this.loc = loc;
 			return;
 		}
 
@@ -462,7 +461,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		// check for BOMs and handle them correctly in all cases, then pass
 		// rest of stream down to InputStreamReader.
 		UnicodeReader ur = new UnicodeReader(loc.getInputStream(), defaultEnc);
-		charSet = ur.getEncoding();
 
 		// Remove listener so dirty flag doesn't get set when loading a file.
 		Document doc = getDocument();
@@ -474,6 +472,12 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			doc.addDocumentListener(this);
 			r.close();
 		}
+
+		// No IOException thrown, so we can finally change the location.
+		charSet = ur.getEncoding();
+		String old = getFileFullPath();
+		this.loc = loc;
+		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
 
 	}
 
@@ -521,8 +525,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		if (!dirty) {
 			setDirty(true);
 		}
-		
-		
 	}
 
 
@@ -557,11 +559,11 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		saveImpl(loc);
 		// No exception thrown - we can "rename" the file.
 		String old = getFileFullPath();
+
 		setDirty(false);
 		lastSaveOrLoadTime = loc.getActualLastModified();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
 	}
-	
 
 
 	/**
@@ -586,7 +588,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * Sets whether or not this text in this editor has unsaved changes.
 	 * This fires a property change event of type {@link #DIRTY_PROPERTY}.
 	 *
-	 * @param dirty Whether or not the text has beeen modified.
+	 * @param dirty Whether or not the text has been modified.
 	 * @see #isDirty()
 	 */
 	private void setDirty(boolean dirty) {
@@ -602,7 +604,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 *
 	 * @param doc The new document.
 	 */
-	@Override
 	public void setDocument(Document doc) {
 		Document old = getDocument();
 		if (old!=null) {
@@ -684,9 +685,9 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 		Document doc = getDocument();
 		Object old = doc.getProperty(
-						DefaultEditorKit.EndOfLineStringProperty);
+						RTextAreaEditorKit.EndOfLineStringProperty);
 		if (!separator.equals(old)) {
-			doc.putProperty(DefaultEditorKit.EndOfLineStringProperty,
+			doc.putProperty(RTextAreaEditorKit.EndOfLineStringProperty,
 							separator);
 			if (setDirty) {
 				setDirty(true);

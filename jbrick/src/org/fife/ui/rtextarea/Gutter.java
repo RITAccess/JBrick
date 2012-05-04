@@ -99,12 +99,9 @@ public class Gutter extends JPanel {
 
 
 	/**
-	 * Constructor. MODIFIED FOR JBRICX
+	 * Constructor.
 	 *
-	 * @param textArea The parent text area.  If this is
-	 *        <code>null</code>, you must call
-	 *        {@link #setTextArea(Component)}, passing in an
-	 *        {@link RTextArea}.
+	 * @param textArea The parent text area.
 	 */
 	public Gutter(RTextArea textArea) {
 
@@ -123,9 +120,12 @@ public class Gutter extends JPanel {
 
 		setBorder(new GutterBorder(0, 0, 0, 1)); // Assume ltr
 
-		//JBRICX MODIFICATION
-		setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT)));
-		
+		Color bg = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT));
+		if (textArea!=null) {
+			bg = textArea.getBackground(); // May return null if image bg
+		}
+		setBackground(bg!=null ? bg : Color.WHITE);
+
 	}
 
 
@@ -463,7 +463,6 @@ public class Gutter extends JPanel {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void setComponentOrientation(ComponentOrientation o) {
 		// Reuse the border to preserve its color.
 		if (o.isLeftToRight()) {
@@ -704,7 +703,6 @@ public class Gutter extends JPanel {
 			return color;
 		}
 
-		@Override
 		public void paintBorder(Component c, Graphics g, int x, int y,
 								int width, int height) {
 			g.setColor(color);
@@ -764,7 +762,6 @@ public class Gutter extends JPanel {
 
 		public void changedUpdate(DocumentEvent e) {}
 
-		@Override
 		public void componentResized(java.awt.event.ComponentEvent e) {
 			revalidate();
 		}

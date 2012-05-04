@@ -23,6 +23,12 @@ public class JBricxTabItem extends TextEditorPane {
 	private JBricxEditorTabFolder parent;
 
 	
+	/** 
+	 * Constructor to open a new file.
+	 * 
+	 * @param parent
+	 * @param newFileNumber
+	 */
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
 		
 		super(newFileNumber);
@@ -31,6 +37,11 @@ public class JBricxTabItem extends TextEditorPane {
 		setShortcuts();
 	}
 	
+	/**
+	 * Constructor to open an already existing file.
+	 * @param parent
+	 * @param fileName
+	 */
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
 		isNewFile = false;

@@ -16,16 +16,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import javax.swing.text.StyleContext;
-
-import org.fife.ui.rtextarea.RTextAreaBase;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 
 /**
@@ -40,7 +36,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  */
 public class SyntaxScheme implements Cloneable, TokenTypes {
 
-	private Style[] styles;
+	public Style[] styles;
 
 	private static final String VERSION			= "*ver1";
 
@@ -120,7 +116,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *
 	 * @return The copy.
 	 */
-	@Override
 	public Object clone() {
 		SyntaxScheme shcs = null;
 		try {
@@ -148,7 +143,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *         <code>otherScheme</code> are the same scheme;
 	 *         <code>false</code> otherwise.
 	 */
-	@Override
 	public boolean equals(Object otherScheme) {
 
 		// No need for null check; instanceof takes care of this for us,
@@ -218,7 +212,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *
 	 * @return The hash code for this object.
 	 */
-	@Override
 	public int hashCode() {
 		// Keep me fast.  Iterating over *all* syntax schemes contained is
 		// probably much slower than a "bad" hash code here.
@@ -247,7 +240,7 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public static SyntaxScheme load(Font baseFont, InputStream in)
 									throws IOException {
 		if (baseFont==null) {
-			baseFont = RTextAreaBase.getDefaultFont();
+			baseFont = RSyntaxTextArea.getDefaultFont();
 		}
 		return XmlParser.load(baseFont, in);
 	}
@@ -369,20 +362,20 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public void restoreDefaults(Font baseFont, boolean fontStyles) {
 
 		// Colors used by tokens.
-		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
-		Color function			= new Color(0,0,0);
+		Color comment			= new Color(0,128,0);
+		Color docComment		= new Color(164,0,0);
+		Color keyword			= Color.BLUE;
+		Color function			= new Color(173,128,0);
 		Color preprocessor		= new Color(128,64,64);
-		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));;
+		Color regex				= new Color(0,128,164);
 		Color variable			= new Color(255,153,0);
 		Color literalNumber		= new Color(100,0,200);
-		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
-		Color error			= new Color(202,25,25);
+		Color literalString		= new Color(220,0,156);
+		Color error			= new Color(148,148,0);
 
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {
-			baseFont = RTextAreaBase.getDefaultFont();
+			baseFont = RSyntaxTextArea.getDefaultFont();
 		}
 		Font commentFont = baseFont;
 		Font keywordFont = baseFont;
@@ -585,7 +578,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 			return parser.scheme;
 		}
 
-		@Override
 		public void startElement(String uri, String localName, String qName,
 								Attributes attrs) {
 

@@ -48,7 +48,6 @@ class VisibleWhitespaceTokenFactory extends DefaultTokenFactory {
 	 *
 	 * @return A token to add to this token factory's internal stack.
 	 */
-	@Override
 	protected Token createInternalUseOnlyToken() {
 		return new VisibleWhitespaceToken();
 	}

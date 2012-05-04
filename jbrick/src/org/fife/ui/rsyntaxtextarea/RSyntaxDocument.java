@@ -12,6 +12,7 @@ package org.fife.ui.rsyntaxtextarea;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.Action;
 import javax.swing.event.*;
 import javax.swing.text.*;
@@ -38,7 +39,7 @@ import org.fife.util.DynamicIntArray;
  * type <code>CHANGE</code> use their offset and length values to represent the
  * first and last lines, respectively, that have had their syntax coloring
  * change.  This is really a hack to increase the speed of the painting code
- * and should really be corrected, but oh well.
+ * and should really be corrected, but oh well. 
  *
  * @author Robert Futrell
  * @version 0.1
@@ -54,7 +55,12 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	/**
 	 * Splits text into tokens for the current programming language.
 	 */
-	private TokenMaker tokenMaker;
+	private transient TokenMaker tokenMaker;
+
+	/**
+	 * The current syntax style.  Only cached to keep this class serializable.
+	 */
+	private String syntaxStyle;
 
 	/**
 	 * Array of values representing the "last token type" on each line.  This
@@ -63,7 +69,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	 * and start the current line's syntax highlighting in multiline comment
 	 * state.
 	 */
-	protected DynamicIntArray lastTokensOnLines;
+	protected transient DynamicIntArray lastTokensOnLines;
 
 	private transient Segment s;
 
@@ -91,7 +97,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		super(new RGapContent());
 		putProperty(tabSizeAttribute, new Integer(5));
 		lastTokensOnLines = new DynamicIntArray(400);
-		lastTokensOnLines.add(TokenTypes.NULL); // Initial (empty) line.
+		lastTokensOnLines.add(Token.NULL); // Initial (empty) line.
 		s = new Segment();
 		setTokenMakerFactory(tmf);
 		setSyntaxStyle(syntaxStyle);
@@ -119,7 +125,6 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	 *
 	 * @param e The change.
 	 */
-	@Override
 	protected void fireInsertUpdate(DocumentEvent e) {
 
 		/*
@@ -136,7 +141,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		int line = lineMap.getElementIndex(e.getOffset());
 		int previousLine = line - 1;
 		int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
+					lastTokensOnLines.get(previousLine) : Token.NULL);
 
 		// If entire lines were added...
 		if (added!=null && added.length>0) {
@@ -192,7 +197,6 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	 * @param chng The change that occurred.
 	 * @see #removeUpdate
 	 */
-	@Override
 	protected void fireRemoveUpdate(DocumentEvent chng) {
 
 		Element lineMap = getDefaultRootElement();
@@ -207,7 +211,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 			int line = change.getIndex();	// First line entirely removed.
 			int previousLine = line - 1;	// Line before that.
 			int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
+					lastTokensOnLines.get(previousLine) : Token.NULL);
 
 			Element[] added = change.getChildrenAdded();
 			int numAdded = added==null ? 0 : added.length;
@@ -234,7 +238,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 
 			int previousLine = line - 1;
 			int previousTokenType = (previousLine>-1 ?
-					lastTokensOnLines.get(previousLine) : TokenTypes.NULL);
+					lastTokensOnLines.get(previousLine) : Token.NULL);
 			//System.err.println("previousTokenType for line : " + previousLine + " is " + previousTokenType);
 			// Update last tokens for lines below until they've stopped changing.
 			updateLastTokensBelow(line, numLines, previousTokenType);
@@ -360,7 +364,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 			ble.printStackTrace();
 			return null;
 		}
-		int initialTokenType = line==0 ? TokenTypes.NULL :
+		int initialTokenType = line==0 ? Token.NULL :
 								getLastTokenTypeOnLine(line-1);
 		return tokenMaker.getTokenList(s, initialTokenType, startOffset);
 	}
@@ -390,14 +394,27 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 	/**
 	 * Deserializes a document.
 	 *
-	 * @param s The stream to read from.
+	 * @param in The stream to read from.
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	private void readObject(ObjectInputStream s)
+	private void readObject(ObjectInputStream in)
 						throws ClassNotFoundException, IOException {
-		s.defaultReadObject();
+
+		in.defaultReadObject();
+
+		// Install default TokenMakerFactory.  To support custom TokenMakers,
+		// both JVM's should install default TokenMakerFactories that support
+		// the language they want to use beforehand.
+		setTokenMakerFactory(null);
+
+		// Handle other transient stuff
 		this.s = new Segment();
+		int lineCount = getDefaultRootElement().getElementCount();
+		lastTokensOnLines = new DynamicIntArray(lineCount);
+		setSyntaxStyle(syntaxStyle); // Actually install (transient) TokenMaker
+		setWhitespaceVisible(in.readBoolean()); // Do after setSyntaxStyle()
+
 	}
 
 
@@ -446,6 +463,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		tokenMaker = tokenMakerFactory.getTokenMaker(styleKey);
 		tokenMaker.setWhitespaceVisible(wsVisible);
 		updateSyntaxHighlightingInformation();
+		this.syntaxStyle = styleKey;
 	}
 
 
@@ -570,7 +588,7 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 		// is the same.
 		Element map = getDefaultRootElement();
 		int numLines = map.getElementCount();
-		int lastTokenType = TokenTypes.NULL;
+		int lastTokenType = Token.NULL;
 		for (int i=0; i<numLines; i++) {
 			setSharedSegment(i);
 			lastTokenType = tokenMaker.getLastTokenTypeOnLine(s, lastTokenType);
@@ -585,7 +603,19 @@ public class RSyntaxDocument extends PlainDocument implements SyntaxConstants {
 
 
 	/**
-	 * Document content that provides access to individual characters.
+	 * Overridden for custom serialization purposes.
+	 *
+	 * @param out The stream to write to.
+	 * @throws IOException If an IO error occurs.
+	 */
+	private void writeObject(ObjectOutputStream out)throws IOException {
+		out.defaultWriteObject();
+		out.writeBoolean(isWhitespaceVisible());
+	}
+
+
+	/**
+	 * Document content that provides fast access to individual characters.
 	 *
 	 * @author Robert Futrell
 	 * @version 1.0

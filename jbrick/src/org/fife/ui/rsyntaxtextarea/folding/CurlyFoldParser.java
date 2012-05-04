@@ -15,7 +15,6 @@ import javax.swing.text.BadLocationException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMaker;
-import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 
 /**
@@ -178,7 +177,7 @@ public class CurlyFoldParser implements FoldParser {
 						}
 						else {
 							// If we're an MLC that ends on a later line...
-							if (t.type!=TokenTypes.COMMENT_EOL && !t.endsWith(C_MLC_END)) {
+							if (t.type!=Token.COMMENT_EOL && !t.endsWith(C_MLC_END)) {
 								//System.out.println("Starting MLC at: " + t.offset);
 								inMLC = true;
 								mlcStart = t.offset;
@@ -249,7 +248,7 @@ public class CurlyFoldParser implements FoldParser {
 					// Java-specific folding rules
 					else if (java) {
 
-						if (t.is(TokenTypes.RESERVED_WORD, KEYWORD_IMPORT)) {
+						if (t.is(Token.RESERVED_WORD, KEYWORD_IMPORT)) {
 							if (importStartLine==-1) {
 								importStartLine = line;
 								importGroupStartOffs = t.offset;
@@ -259,7 +258,7 @@ public class CurlyFoldParser implements FoldParser {
 						}
 
 						else if (importStartLine>-1 &&
-								t.type==TokenTypes.IDENTIFIER &&//SEPARATOR &&
+								t.isIdentifier() &&//SEPARATOR &&
 								t.isSingleChar(';')) {
 							importGroupEndOffs = t.offset;
 						}

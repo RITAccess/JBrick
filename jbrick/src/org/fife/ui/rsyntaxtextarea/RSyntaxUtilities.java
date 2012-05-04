@@ -89,6 +89,79 @@ public class RSyntaxUtilities implements SwingConstants {
 
 
 	/**
+	 * Returns a string with characters that are special to HTML (such as
+	 * <code>&lt;</code>, <code>&gt;</code> and <code>&amp;</code>) replaced
+	 * by their HTML escape sequences.
+	 *
+	 * @param s The input string.
+	 * @param newlineReplacement What to replace newline characters with.
+	 *        If this is <code>null</code>, they are simply removed.
+	 * @param inPreBlock Whether this HTML will be in within <code>pre</code>
+	 *        tags.  If this is <code>true</code>, spaces will be kept as-is;
+	 *        otherwise, they will be converted to "<code>&nbsp;</code>".
+	 * @return The escaped version of <code>s</code>.
+	 */
+	public static final String escapeForHtml(String s,
+						String newlineReplacement, boolean inPreBlock) {
+
+		if (s==null) {
+			return null;
+		}
+		if (newlineReplacement==null) {
+			newlineReplacement = "";
+		}
+		final String tabString = "   ";
+		boolean lastWasSpace = false;
+
+		// TODO: When updating to 1.5, replace with StringBuilder, and change
+		// loop to use new append(str, offs,len) method.
+		StringBuffer sb = new StringBuffer();
+
+		for (int i=0; i<s.length(); i++) {
+			char ch = s.charAt(i);
+			switch (ch) {
+				case ' ':
+					if (inPreBlock || !lastWasSpace) {
+						sb.append(' ');
+					}
+					else {
+						sb.append("&nbsp;");
+					}
+					lastWasSpace = true;
+					break;
+				case '\n':
+					sb.append(newlineReplacement);
+					lastWasSpace = false;
+					break;
+				case '&':
+					sb.append("&amp;");
+					lastWasSpace = false;
+					break;
+				case '\t':
+					sb.append(tabString);
+					lastWasSpace = false;
+					break;
+				case '<':
+					sb.append("&lt;");
+					lastWasSpace = false;
+					break;
+				case '>':
+					sb.append("&gt;");
+					lastWasSpace = false;
+					break;
+				default:
+					sb.append(ch);
+					lastWasSpace = false;
+					break;
+			}
+		}
+
+		return sb.toString();
+
+	}
+
+
+	/**
 	 * Returns the rendering hints for text that will most accurately reflect
 	 * those of the native windowing system.
 	 *
@@ -279,7 +352,7 @@ public class RSyntaxUtilities implements SwingConstants {
 						token = doc.getTokenListForLine(curLine);
 						token = RSyntaxUtilities.getTokenAtOffset(token, caretPosition);
 						// All brackets are always returned as "separators."
-						if (token.type!=TokenTypes.SEPARATOR) {
+						if (token.type!=Token.SEPARATOR) {
 							return -1;
 						}
 						bracketMatch = bracket=='{' ? '}' : (bracket=='(' ? ')' : ']');
@@ -299,7 +372,7 @@ public class RSyntaxUtilities implements SwingConstants {
 						token = doc.getTokenListForLine(curLine);
 						token = RSyntaxUtilities.getTokenAtOffset(token, caretPosition);
 						// All brackets are always returned as "separators."
-						if (token.type!=TokenTypes.SEPARATOR) {
+						if (token.type!=Token.SEPARATOR) {
 							return -1;
 						}
 						bracketMatch = bracket=='}' ? '{' : (bracket==')' ? '(' : '[');
@@ -337,7 +410,7 @@ public class RSyntaxUtilities implements SwingConstants {
 								}
 								int offset = start + (i-segOffset);
 								token = RSyntaxUtilities.getTokenAtOffset(token, offset);
-								if (token.type==TokenTypes.SEPARATOR)
+								if (token.type==Token.SEPARATOR)
 									numEmbedded++;
 							}
 
@@ -348,7 +421,7 @@ public class RSyntaxUtilities implements SwingConstants {
 								}
 								int offset = start + (i-segOffset);
 								token = RSyntaxUtilities.getTokenAtOffset(token, offset);
-								if (token.type==TokenTypes.SEPARATOR) {
+								if (token.type==Token.SEPARATOR) {
 									if (numEmbedded==0) {
 										if (textArea.isCodeFoldingEnabled() &&
 												textArea.getFoldManager().isLineHidden(curLine)) {
@@ -406,7 +479,7 @@ public class RSyntaxUtilities implements SwingConstants {
 								}
 								int offset = start + (i-segOffset);
 								t2 = RSyntaxUtilities.getTokenAtOffset(token, offset);
-								if (t2.type==TokenTypes.SEPARATOR)
+								if (t2.type==Token.SEPARATOR)
 									numEmbedded++;
 							}
 
@@ -417,7 +490,7 @@ public class RSyntaxUtilities implements SwingConstants {
 								}
 								int offset = start + (i-segOffset);
 								t2 = RSyntaxUtilities.getTokenAtOffset(token, offset);
-								if (t2.type==TokenTypes.SEPARATOR) {
+								if (t2.type==Token.SEPARATOR) {
 									if (numEmbedded==0)
 										return offset;
 									numEmbedded--;
@@ -600,7 +673,7 @@ public class RSyntaxUtilities implements SwingConstants {
 			return -1;
 
 		// A line containing only Token.NULL is an empty line.
-		else if (token.type==TokenTypes.NULL) {
+		else if (token.type==Token.NULL) {
 			int line = c.getLineOfOffset(offs);	// Sure to be >0 ??
 			return c.getLineStartOffset(line-1);
 		}
@@ -634,7 +707,7 @@ public class RSyntaxUtilities implements SwingConstants {
 			return -1;
 
 		// A line containing only Token.NULL is an empty line.
-		else if (token.type==TokenTypes.NULL) {
+		else if (token.type==Token.NULL) {
 			int line = c.getLineOfOffset(offs);	// Sure to be > c.getLineCount()-1 ??
 //			return c.getLineStartOffset(line+1);
 FoldManager fm = c.getFoldManager();
@@ -1031,9 +1104,9 @@ return c.getLineStartOffset(line);
 					ch=='&'
 				)) ||
 				/* Operators "==", "===", "!=", "!==" */
-				(t.type==TokenTypes.OPERATOR &&
+				(t.type==Token.OPERATOR &&
 						t.text[t.textOffset+t.textCount-1]=='=') ||
-				t.is(TokenTypes.RESERVED_WORD, JS_KEYWORD_RETURN);
+				t.is(Token.RESERVED_WORD, JS_KEYWORD_RETURN);
 	}
 
 

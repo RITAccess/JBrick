@@ -20,14 +20,15 @@ import javax.swing.text.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 
+
 /**
  * An extension of <code>DefaultEditorKit</code> that adds functionality found
  * in <code>RTextArea</code>.
- * 
+ *
  * @author Robert Futrell
  * @version 0.1
  */
-// FIXME: Replace Utilities calls with custom versions (in RSyntaxUtilities) to
+// FIXME:  Replace Utilities calls with custom versions (in RSyntaxUtilities) to
 // cut down on all of the modelToViews, as each call causes
 // a getTokenList => expensive!
 public class RTextAreaEditorKit extends DefaultEditorKit {
@@ -35,243 +36,246 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 	/**
 	 * The name of the action that begins recording a macro.
 	 */
-	public static final String rtaBeginRecordingMacroAction = "RTA.BeginRecordingMacroAction";
+	public static final String rtaBeginRecordingMacroAction	= "RTA.BeginRecordingMacroAction";
 
 	/**
 	 * The name of the action to decrease the font size.
 	 */
-	public static final String rtaDecreaseFontSizeAction = "RTA.DecreaseFontSizeAction";
+	public static final String rtaDecreaseFontSizeAction		= "RTA.DecreaseFontSizeAction";
 
 	/**
 	 * The name of the action that deletes the current line.
 	 */
-	public static final String rtaDeleteLineAction = "RTA.DeleteLineAction";
+	public static final String rtaDeleteLineAction			= "RTA.DeleteLineAction";
 
 	/**
 	 * The name of the action to delete the word before the caret.
 	 */
-	public static final String rtaDeletePrevWordAction = "RTA.DeletePrevWordAction";
+	public static final String rtaDeletePrevWordAction		= "RTA.DeletePrevWordAction";
 
 	/**
 	 * The name of the action taken to delete the remainder of the line (from
 	 * the caret position to the end of the line).
 	 */
-	public static final String rtaDeleteRestOfLineAction = "RTA.DeleteRestOfLineAction";
+	public static final String rtaDeleteRestOfLineAction		= "RTA.DeleteRestOfLineAction";
 
 	/**
-	 * The name of the action that completes the word at the caret position with
-	 * the last word in the document that starts with the text up to the caret.
+	 * The name of the action that completes the word at the caret position
+	 * with the last word in the document that starts with the text up to the
+	 * caret.
 	 */
-	public static final String rtaDumbCompleteWordAction = "RTA.DumbCompleteWordAction";
+	public static final String rtaDumbCompleteWordAction		= "RTA.DumbCompleteWordAction";
 
 	/**
 	 * The name of the action that ends recording a macro.
 	 */
-	public static final String rtaEndRecordingMacroAction = "RTA.EndRecordingMacroAction";
+	public static final String rtaEndRecordingMacroAction		= "RTA.EndRecordingMacroAction";
 
 	/**
 	 * The name of the action to increase the font size.
 	 */
-	public static final String rtaIncreaseFontSizeAction = "RTA.IncreaseFontSizeAction";
+	public static final String rtaIncreaseFontSizeAction		= "RTA.IncreaseFontSizeAction";
 
 	/**
 	 * The name of the action that inverts the case of the current selection.
 	 */
-	public static final String rtaInvertSelectionCaseAction = "RTA.InvertCaseAction";
+	public static final String rtaInvertSelectionCaseAction	= "RTA.InvertCaseAction";
 
 	/**
 	 * The name of the action to join two lines.
 	 */
-	public static final String rtaJoinLinesAction = "RTA.JoinLinesAction";
+	public static final String rtaJoinLinesAction			= "RTA.JoinLinesAction";
 
 	/**
 	 * Action to move a line down.
 	 */
-	public static final String rtaLineDownAction = "RTA.LineDownAction";
+	public static final String rtaLineDownAction				= "RTA.LineDownAction";
 
 	/**
 	 * Action to move a line up.
 	 */
-	public static final String rtaLineUpAction = "RTA.LineUpAction";
+	public static final String rtaLineUpAction				= "RTA.LineUpAction";
 
 	/**
 	 * The name of the action to make the current selection lower-case.
 	 */
-	public static final String rtaLowerSelectionCaseAction = "RTA.LowerCaseAction";
+	public static final String rtaLowerSelectionCaseAction		= "RTA.LowerCaseAction";
 
 	/**
 	 * Action to select the next occurrence of the selected text.
 	 */
-	public static final String rtaNextOccurrenceAction = "RTA.NextOccurrenceAction";
+	public static final String rtaNextOccurrenceAction		= "RTA.NextOccurrenceAction";
 
 	/**
-	 * Action to select the previous occurrence of the selected text.
+     * Action to select the previous occurrence of the selected text.
 	 */
-	public static final String rtaPrevOccurrenceAction = "RTA.PrevOccurrenceAction";
+	public static final String rtaPrevOccurrenceAction		= "RTA.PrevOccurrenceAction";
 
 	/**
 	 * Action to jump to the next bookmark.
 	 */
-	public static final String rtaNextBookmarkAction = "RTA.NextBookmarkAction";
+	public static final String rtaNextBookmarkAction		= "RTA.NextBookmarkAction";
 
 	/**
 	 * Action to jump to the previous bookmark.
 	 */
-	public static final String rtaPrevBookmarkAction = "RTA.PrevBookmarkAction";
+	public static final String rtaPrevBookmarkAction		= "RTA.PrevBookmarkAction";
 
 	/**
 	 * The name of the action that "plays back" the last macro.
 	 */
-	public static final String rtaPlaybackLastMacroAction = "RTA.PlaybackLastMacroAction";
+	public static final String rtaPlaybackLastMacroAction		= "RTA.PlaybackLastMacroAction";
 
 	/**
 	 * The name of the action for "redoing" the last action undone.
 	 */
-	public static final String rtaRedoAction = "RTA.RedoAction";
+	public static final String rtaRedoAction				= "RTA.RedoAction";
 
 	/**
-	 * The name of the action to scroll the text area down one line without
-	 * changing the caret's position.
+	 * The name of the action to scroll the text area down one line
+	 * without changing the caret's position.
 	 */
-	public static final String rtaScrollDownAction = "RTA.ScrollDownAction";
+	public static final String rtaScrollDownAction			= "RTA.ScrollDownAction";
 
 	/**
-	 * The name of the action to scroll the text area up one line without
-	 * changing the caret's position.
+	 * The name of the action to scroll the text area up one line
+	 * without changing the caret's position.
 	 */
-	public static final String rtaScrollUpAction = "RTA.ScrollUpAction";
+	public static final String rtaScrollUpAction				= "RTA.ScrollUpAction";
 
 	/**
 	 * The name of the action for "paging up" with the selection.
 	 */
-	public static final String rtaSelectionPageUpAction = "RTA.SelectionPageUpAction";
+	public static final String rtaSelectionPageUpAction		= "RTA.SelectionPageUpAction";
 
 	/**
 	 * The name of the action for "paging down" with the selection.
 	 */
-	public static final String rtaSelectionPageDownAction = "RTA.SelectionPageDownAction";
+	public static final String rtaSelectionPageDownAction		= "RTA.SelectionPageDownAction";
 
 	/**
 	 * The name of the action for "paging left" with the selection.
 	 */
-	public static final String rtaSelectionPageLeftAction = "RTA.SelectionPageLeftAction";
+	public static final String rtaSelectionPageLeftAction		= "RTA.SelectionPageLeftAction";
 
 	/**
 	 * The name of the action for "paging right" with the selection.
 	 */
-	public static final String rtaSelectionPageRightAction = "RTA.SelectionPageRightAction";
+	public static final String rtaSelectionPageRightAction		= "RTA.SelectionPageRightAction";
 
 	/**
 	 * The name of the action for inserting a time/date stamp.
 	 */
-	public static final String rtaTimeDateAction = "RTA.TimeDateAction";
+	public static final String rtaTimeDateAction				= "RTA.TimeDateAction";
 
 	/**
-	 * Toggles whether the current line has a bookmark, if this text area is in
-	 * an {@link RTextScrollPane}.
+	 * Toggles whether the current line has a bookmark, if this text area
+	 * is in an {@link RTextScrollPane}.
 	 */
-	public static final String rtaToggleBookmarkAction = "RTA.ToggleBookmarkAction";
+	public static final String rtaToggleBookmarkAction		= "RTA.ToggleBookmarkAction";
 
 	/**
 	 * The name of the action taken when the user hits the Insert key (thus
 	 * toggling between insert and overwrite modes).
 	 */
-	public static final String rtaToggleTextModeAction = "RTA.ToggleTextModeAction";
+	public static final String rtaToggleTextModeAction		= "RTA.ToggleTextModeAction";
 
 	/**
 	 * The name of the action for "undoing" the last action done.
 	 */
-	public static final String rtaUndoAction = "RTA.UndoAction";
+	public static final String rtaUndoAction				= "RTA.UndoAction";
 
 	/**
 	 * The name of the action for unselecting any selected text in the text
 	 * area.
 	 */
-	public static final String rtaUnselectAction = "RTA.UnselectAction";
+	public static final String rtaUnselectAction				= "RTA.UnselectAction";
 
 	/**
 	 * The name of the action for making the current selection upper-case.
 	 */
-	public static final String rtaUpperSelectionCaseAction = "RTA.UpperCaseAction";
+	public static final String rtaUpperSelectionCaseAction		= "RTA.UpperCaseAction";
 
 	/**
-	 * The actions that <code>RTextAreaEditorKit</code> adds to those of the
-	 * default editor kit.
+	 * The actions that <code>RTextAreaEditorKit</code> adds to those of
+	 * the default editor kit.
 	 */
 	private static final RecordableTextAction[] defaultActions = {
-			new BeginAction(beginAction, false),
-			new BeginAction(selectionBeginAction, true),
-			new BeginLineAction(beginLineAction, false),
-			new BeginLineAction(selectionBeginLineAction, true),
-			new BeginRecordingMacroAction(),
-			new BeginWordAction(beginWordAction, false),
-			new BeginWordAction(selectionBeginWordAction, true),
-			new CopyAction(),
-			new CutAction(),
-			new DefaultKeyTypedAction(),
-			new DeleteLineAction(),
-			new DeleteNextCharAction(),
-			new DeletePrevCharAction(),
-			new DeletePrevWordAction(),
-			new DeleteRestOfLineAction(),
-			new DumbCompleteWordAction(),
-			new EndAction(endAction, false),
-			new EndAction(selectionEndAction, true),
-			new EndLineAction(endLineAction, false),
-			new EndLineAction(selectionEndLineAction, true),
-			new EndRecordingMacroAction(),
-			new EndWordAction(endWordAction, false),
-			new EndWordAction(endWordAction, true),
-			new InsertBreakAction(),
-			new InsertContentAction(),
-			new InsertTabAction(),
-			new InvertSelectionCaseAction(),
-			new JoinLinesAction(),
-			new LowerSelectionCaseAction(),
-			new LineMoveAction(rtaLineUpAction, -1),
-			new LineMoveAction(rtaLineDownAction, 1),
-			new NextBookmarkAction(rtaNextBookmarkAction, true),
-			new NextBookmarkAction(rtaPrevBookmarkAction, false),
-			new NextVisualPositionAction(forwardAction, false,
-					SwingConstants.EAST),
-			new NextVisualPositionAction(backwardAction, false,
-					SwingConstants.WEST),
-			new NextVisualPositionAction(selectionForwardAction, true,
-					SwingConstants.EAST),
-			new NextVisualPositionAction(selectionBackwardAction, true,
-					SwingConstants.WEST),
-			new NextVisualPositionAction(upAction, false, SwingConstants.NORTH),
-			new NextVisualPositionAction(downAction, false,
-					SwingConstants.SOUTH),
-			new NextVisualPositionAction(selectionUpAction, true,
-					SwingConstants.NORTH),
-			new NextVisualPositionAction(selectionDownAction, true,
-					SwingConstants.SOUTH),
-			new NextOccurrenceAction(rtaNextOccurrenceAction),
-			new PreviousOccurrenceAction(rtaPrevOccurrenceAction),
-			new NextWordAction(nextWordAction, false),
-			new NextWordAction(selectionNextWordAction, true),
-			new PageAction(rtaSelectionPageLeftAction, true, true),
-			new PageAction(rtaSelectionPageRightAction, false, true),
-			new PasteAction(), new PlaybackLastMacroAction(),
-			new PreviousWordAction(previousWordAction, false),
-			new PreviousWordAction(selectionPreviousWordAction, true),
-			new RedoAction(), new ScrollAction(rtaScrollUpAction, -1),
-			new ScrollAction(rtaScrollDownAction, 1), new SelectAllAction(),
-			new SelectLineAction(), new SelectWordAction(),
-			new SetReadOnlyAction(), new SetWritableAction(),
-			new ToggleBookmarkAction(), new ToggleTextModeAction(),
-			new UndoAction(), new UnselectAction(),
-			new UpperSelectionCaseAction(),
-			new VerticalPageAction(pageUpAction, -1, false),
-			new VerticalPageAction(pageDownAction, 1, false),
-			new VerticalPageAction(rtaSelectionPageUpAction, -1, true),
-			new VerticalPageAction(rtaSelectionPageDownAction, 1, true) };
+		new BeginAction(beginAction, false), 
+		new BeginAction(selectionBeginAction, true), 
+		new BeginLineAction(beginLineAction, false),  
+		new BeginLineAction(selectionBeginLineAction, true),  
+		new BeginRecordingMacroAction(),
+		new BeginWordAction(beginWordAction, false),
+		new BeginWordAction(selectionBeginWordAction, true),
+		new CopyAction(),
+		new CutAction(),
+		new DefaultKeyTypedAction(),
+		new DeleteLineAction(),
+		new DeleteNextCharAction(),
+		new DeletePrevCharAction(),
+		new DeletePrevWordAction(),
+		new DeleteRestOfLineAction(),
+		new DumbCompleteWordAction(),
+		new EndAction(endAction, false),
+		new EndAction(selectionEndAction, true),
+		new EndLineAction(endLineAction, false),
+		new EndLineAction(selectionEndLineAction, true),
+		new EndRecordingMacroAction(),
+		new EndWordAction(endWordAction, false),
+		new EndWordAction(endWordAction, true),
+		new InsertBreakAction(),
+		new InsertContentAction(),
+		new InsertTabAction(),
+		new InvertSelectionCaseAction(),
+		new JoinLinesAction(),
+		new LowerSelectionCaseAction(),
+		new LineMoveAction(rtaLineUpAction, -1),
+		new LineMoveAction(rtaLineDownAction, 1),
+		new NextBookmarkAction(rtaNextBookmarkAction, true),
+		new NextBookmarkAction(rtaPrevBookmarkAction, false),
+		new NextVisualPositionAction(forwardAction, false, SwingConstants.EAST),
+		new NextVisualPositionAction(backwardAction, false, SwingConstants.WEST),
+		new NextVisualPositionAction(selectionForwardAction, true, SwingConstants.EAST),
+		new NextVisualPositionAction(selectionBackwardAction, true, SwingConstants.WEST),
+		new NextVisualPositionAction(upAction, false, SwingConstants.NORTH),
+		new NextVisualPositionAction(downAction, false, SwingConstants.SOUTH),
+		new NextVisualPositionAction(selectionUpAction, true, SwingConstants.NORTH),
+		new NextVisualPositionAction(selectionDownAction, true, SwingConstants.SOUTH),
+        new NextOccurrenceAction(rtaNextOccurrenceAction),
+        new PreviousOccurrenceAction(rtaPrevOccurrenceAction),
+		new NextWordAction(nextWordAction, false),
+		new NextWordAction(selectionNextWordAction, true),
+		new PageAction(rtaSelectionPageLeftAction, true, true), 
+		new PageAction(rtaSelectionPageRightAction, false, true),
+		new PasteAction(),
+		new PlaybackLastMacroAction(),
+		new PreviousWordAction(previousWordAction, false),  
+		new PreviousWordAction(selectionPreviousWordAction, true),
+		new RedoAction(),
+		new ScrollAction(rtaScrollUpAction, -1),
+		new ScrollAction(rtaScrollDownAction, 1),
+		new SelectAllAction(),
+		new SelectLineAction(),
+		new SelectWordAction(),
+		new SetReadOnlyAction(),
+		new SetWritableAction(),
+		new ToggleBookmarkAction(),
+		new ToggleTextModeAction(),
+		new UndoAction(),
+		new UnselectAction(),
+		new UpperSelectionCaseAction(),
+		new VerticalPageAction(pageUpAction, -1, false), 
+		new VerticalPageAction(pageDownAction, 1, false),
+		new VerticalPageAction(rtaSelectionPageUpAction, -1, true), 
+		new VerticalPageAction(rtaSelectionPageDownAction, 1, true)
+	};
 
 	/**
 	 * The amount of characters read at a time when reading a file.
 	 */
-	private static final int READBUFFER_SIZE = 32768;
+	private static final int READBUFFER_SIZE	= 32768;
+
 
 	/**
 	 * Constructor.
@@ -280,58 +284,56 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		super();
 	}
 
+
 	/**
 	 * Creates an icon row header to use in the gutter for a text area.
-	 * 
-	 * @param textArea
-	 *            The text area.
+	 *
+	 * @param textArea The text area.
 	 * @return The icon row header.
 	 */
 	public IconRowHeader createIconRowHeader(RTextArea textArea) {
 		return new IconRowHeader(textArea);
 	}
 
+
 	/**
 	 * Creates a line number list to use in the gutter for a text area.
-	 * 
-	 * @param textArea
-	 *            The text area.
+	 *
+	 * @param textArea The text area.
 	 * @return The line number list.
 	 */
 	public LineNumberList createLineNumberList(RTextArea textArea) {
 		return new LineNumberList(textArea);
 	}
 
+
 	/**
-	 * Fetches the set of commands that can be used on a text component that is
-	 * using a model and view produced by this kit.
-	 * 
+	 * Fetches the set of commands that can be used
+	 * on a text component that is using a model and
+	 * view produced by this kit.
+	 *
 	 * @return the command list
-	 */
-	@Override
+	 */ 
 	public Action[] getActions() {
 		return defaultActions;
 	}
 
+
 	/**
-	 * Inserts content from the given stream, which will be treated as plain
-	 * text. This method is overridden merely so we can increase the number of
-	 * characters read at a time.
+	 * Inserts content from the given stream, which will be 
+	 * treated as plain text.  This method is overridden merely
+	 * so we can increase the number of characters read at a time.
 	 * 
-	 * @param in
-	 *            The stream to read from
-	 * @param doc
-	 *            The destination for the insertion.
-	 * @param pos
-	 *            The location in the document to place the content >= 0.
-	 * @exception IOException
-	 *                on any I/O error
-	 * @exception BadLocationException
-	 *                if pos represents an invalid location within the document.
-	 */
-	@Override
-	public void read(Reader in, Document doc, int pos) throws IOException,
-			BadLocationException {
+	 * @param in  The stream to read from
+	 * @param doc The destination for the insertion.
+	 * @param pos The location in the document to place the
+	 *   content >= 0.
+	 * @exception IOException on any I/O error
+	 * @exception BadLocationException if pos represents an invalid
+	 *   location within the document.
+	*/
+	public void read(Reader in, Document doc, int pos) 
+				throws IOException, BadLocationException {
 
 		char[] buff = new char[READBUFFER_SIZE];
 		int nch;
@@ -350,58 +352,62 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			last = 0;
 			for (int counter = 0; counter < nch; counter++) {
 				switch (buff[counter]) {
-				case '\r':
-					if (lastWasCR) {
-						isCR = true;
-						if (counter == 0) {
-							doc.insertString(pos, "\n", null);
-							pos++;
-						} else {
-							buff[counter - 1] = '\n';
+					case '\r':
+						if (lastWasCR) {
+							isCR = true;
+							if (counter == 0) {
+								doc.insertString(pos, "\n", null);
+								pos++;
+							}
+							else {
+								buff[counter - 1] = '\n';
+							}
 						}
-					} else {
-						lastWasCR = true;
-					}
-					break;
-				case '\n':
-					if (lastWasCR) {
-						if (counter > (last + 1)) {
-							doc.insertString(pos, new String(buff, last,
-									counter - last - 1), null);
-							pos += (counter - last - 1);
+						else {
+							lastWasCR = true;
 						}
-						// else nothing to do, can skip \r, next write will
-						// write \n
-						lastWasCR = false;
-						last = counter;
-						isCRLF = true;
-					}
-					break;
-				default:
-					if (lastWasCR) {
-						isCR = true;
-						if (counter == 0) {
-							doc.insertString(pos, "\n", null);
-							pos++;
-						} else {
-							buff[counter - 1] = '\n';
+						break;
+					case '\n':
+						if (lastWasCR) {
+							if (counter > (last + 1)) {
+								doc.insertString(pos, new String(buff, last,
+												counter - last - 1), null);
+								pos += (counter - last - 1);
+							}
+							// else nothing to do, can skip \r, next write will
+							// write \n
+							lastWasCR = false;
+							last = counter;
+							isCRLF = true;
 						}
-						lastWasCR = false;
-					}
-					break;
+						break;
+					default:
+						if (lastWasCR) {
+							isCR = true;
+							if (counter == 0) {
+								doc.insertString(pos, "\n", null);
+								pos++;
+							}
+							else {
+								buff[counter - 1] = '\n';
+							}
+							lastWasCR = false;
+						}
+						break;
 				} // End of switch (buff[counter]).
 			} // End of for (int counter = 0; counter < nch; counter++).
 
 			if (last < nch) {
-				if (lastWasCR) {
+				if(lastWasCR) {
 					if (last < (nch - 1)) {
-						doc.insertString(pos, new String(buff, last, nch - last
-								- 1), null);
+						doc.insertString(pos, new String(buff, last,
+										nch - last - 1), null);
 						pos += (nch - last - 1);
 					}
-				} else {
-					doc.insertString(pos, new String(buff, last, nch - last),
-							null);
+				}
+				else {
+					doc.insertString(pos, new String(buff, last,
+									nch - last), null);
 					pos += (nch - last);
 				}
 			}
@@ -416,14 +422,17 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		if (wasEmpty) {
 			if (isCRLF) {
 				doc.putProperty(EndOfLineStringProperty, "\r\n");
-			} else if (isCR) {
+			}
+			else if (isCR) {
 				doc.putProperty(EndOfLineStringProperty, "\r");
-			} else {
+			}
+			else {
 				doc.putProperty(EndOfLineStringProperty, "\n");
 			}
 		}
 
 	}
+
 
 	/**
 	 * Creates a beep.
@@ -434,31 +443,29 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			super(beepAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 		}
 
-		@Override
 		public final String getMacroID() {
 			return beepAction;
 		}
 
 	}
 
+
 	/**
 	 * Moves the caret to the beginning of the document.
 	 */
 	public static class BeginAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		public BeginAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (select)
 				textArea.moveCaretPosition(0);
@@ -466,28 +473,27 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				textArea.setCaretPosition(0);
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
 
+
 	/**
-	 * Toggles the position of the caret between the beginning of the line, and
-	 * the first non-whitespace character on the line.
+	 * Toggles the position of the caret between the beginning of the line,
+	 * and the first non-whitespace character on the line.
 	 */
 	public static class BeginLineAction extends RecordableTextAction {
 
-		private Segment currentLine = new Segment(); // For speed.
-		private boolean select;
+ 		private Segment currentLine = new Segment(); // For speed.
+ 		private boolean select;
 
 		public BeginLineAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			int newPos = 0;
@@ -497,7 +503,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				// Is line wrap enabled?
 				if (textArea.getLineWrap()) {
 					int offs = textArea.getCaretPosition();
-					// TODO: Replace Utilities call with custom version
+					// TODO:  Replace Utilities call with custom version
 					// to cut down on all of the modelToViews, as each call
 					// causes TokenList => expensive!
 					int begOffs = Utilities.getRowStart(textArea, offs);
@@ -521,17 +527,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					int currentLineStart = currentLineElement.getStartOffset();
 					int currentLineEnd = currentLineElement.getEndOffset();
 					int count = currentLineEnd - currentLineStart;
-					if (count > 0) { // If there are chars in the line...
+					if (count>0) { // If there are chars in the line...
 						document.getText(currentLineStart, count, currentLine);
 						int firstNonWhitespace = getFirstNonWhitespacePos();
-						firstNonWhitespace = currentLineStart
-								+ (firstNonWhitespace - currentLine.offset);
-						if (caretPosition != firstNonWhitespace) {
+						firstNonWhitespace = currentLineStart +
+								(firstNonWhitespace - currentLine.offset);
+						if (caretPosition!=firstNonWhitespace) {
 							newPos = firstNonWhitespace;
-						} else {
+						}
+						else {
 							newPos = currentLineStart;
 						}
-					} else { // Empty line (at end of the document only).
+					}
+					else { // Empty line (at end of the document only).
 						newPos = currentLineStart;
 					}
 
@@ -539,10 +547,11 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 				if (select) {
 					textArea.moveCaretPosition(newPos);
-				} else {
+				}
+				else {
 					textArea.setCaretPosition(newPos);
 				}
-				// e.consume();
+				//e.consume();
 
 			} catch (BadLocationException ble) {
 				/* Shouldn't ever happen. */
@@ -558,62 +567,60 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			int pos = offset;
 			char[] array = currentLine.array;
 			char currentChar = array[pos];
-			while ((currentChar == '\t' || currentChar == ' ') && (++pos < end))
+			while ((currentChar=='\t' || currentChar==' ') && (++pos<end))
 				currentChar = array[pos];
 			return pos;
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
 
+
 	/**
 	 * Action that begins recording a macro.
 	 */
 	public static class BeginRecordingMacroAction extends RecordableTextAction {
 
+ 
 		public BeginRecordingMacroAction() {
 			super(rtaBeginRecordingMacroAction);
 		}
 
-		public BeginRecordingMacroAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+		public BeginRecordingMacroAction(String name, Icon icon,
+					String desc, Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RTextArea.beginRecordingMacro();
 		}
 
-		@Override
 		public boolean isRecordable() {
 			return false; // Never record the recording of a macro!
 		}
 
-		@Override
 		public final String getMacroID() {
 			return rtaBeginRecordingMacroAction;
 		}
 
 	}
 
+
 	/**
 	 * Positions the caret at the beginning of the word.
 	 */
 	protected static class BeginWordAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		protected BeginWordAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			try {
 				int offs = textArea.getCaretPosition();
@@ -627,44 +634,44 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			}
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 		protected int getWordStart(RTextArea textArea, int offs)
-				throws BadLocationException {
+										throws BadLocationException {
 			return Utilities.getWordStart(textArea, offs);
 		}
 
 	}
+
 
 	/**
 	 * Action for copying text.
 	 */
 	public static class CopyAction extends RecordableTextAction {
 
+ 
 		public CopyAction() {
 			super(DefaultEditorKit.copyAction);
 		}
 
 		public CopyAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			textArea.copy();
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.copyAction;
 		}
 
 	}
+
 
 	/**
 	 * Action for cutting text.
@@ -675,32 +682,32 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			super(DefaultEditorKit.cutAction);
 		}
 
-		public CutAction(String name, Icon icon, String desc, Integer mnemonic,
-				KeyStroke accelerator) {
+		public CutAction(String name, Icon icon, String desc,
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			textArea.cut();
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.cutAction;
 		}
 
 	}
 
+
 	/**
 	 * Action for decreasing the font size.
 	 */
 	public static class DecreaseFontSizeAction extends RecordableTextAction {
 
+ 
 		protected float decreaseAmount;
 
-		protected static final float MINIMUM_SIZE = 2.0f;
+		protected static final float MINIMUM_SIZE	= 2.0f;
 
 		public DecreaseFontSizeAction() {
 			super(rtaDecreaseFontSizeAction);
@@ -708,33 +715,33 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 		public DecreaseFontSizeAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+							Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 			initialize();
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			Font font = textArea.getFont();
 			float oldSize = font.getSize2D();
 			float newSize = oldSize - decreaseAmount;
-			if (newSize >= MINIMUM_SIZE) {
+			if (newSize>=MINIMUM_SIZE) {
 				// Shrink by decreaseAmount.
 				font = font.deriveFont(newSize);
 				textArea.setFont(font);
-			} else if (oldSize > MINIMUM_SIZE) {
+			}
+			else if (oldSize>MINIMUM_SIZE) {
 				// Can't shrink by full decreaseAmount, but can shrink a
 				// little bit.
 				font = font.deriveFont(MINIMUM_SIZE);
 				textArea.setFont(font);
-			} else {
+			}
+			else {
 				// Our font size must be at or below MINIMUM_SIZE.
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 			}
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return rtaDecreaseFontSizeAction;
 		}
@@ -745,9 +752,10 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * The action to use when no actions in the input/action map meet the key
-	 * pressed. This is actually called from the keymap I believe.
+	 * pressed.  This is actually called from the keymap I believe.
 	 */
 	public static class DefaultKeyTypedAction extends RecordableTextAction {
 
@@ -759,23 +767,22 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			delegate = new DefaultEditorKit.DefaultKeyTypedAction();
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			// DefaultKeyTypedAction *is* different across different JVM's
 			// (at least the OSX implementation must be different - Alt+Numbers
 			// inputs symbols such as '[', '{', etc., which is a *required*
 			// feature on MacBooks running with non-English input, such as
-			// German or Swedish Pro). So we can't just copy the
+			// German or Swedish Pro).  So we can't just copy the
 			// implementation, we must delegate to it.
 			delegate.actionPerformed(e);
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.defaultKeyTypedAction;
 		}
 
 	}
+
 
 	/**
 	 * Deletes the current line(s).
@@ -784,10 +791,9 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		public DeleteLineAction() {
 			super(RTextAreaEditorKit.rtaDeleteLineAction, null, null, null,
-					null);
+						null);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -796,18 +802,18 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			}
 
 			int selStart = textArea.getSelectionStart();
-			int selEnd = textArea.getSelectionEnd();
+			int selEnd   = textArea.getSelectionEnd();
 
 			try {
 
-				int line1 = textArea.getLineOfOffset(selStart);
+				int line1     = textArea.getLineOfOffset(selStart);
 				int startOffs = textArea.getLineStartOffset(line1);
-				int line2 = textArea.getLineOfOffset(selEnd);
-				int endOffs = textArea.getLineEndOffset(line2);
+				int line2     = textArea.getLineOfOffset(selEnd);
+				int endOffs   = textArea.getLineEndOffset(line2);
 
 				// Don't remove the last line if no actual chars are selected
-				if (line2 > line1) {
-					if (selEnd == textArea.getLineStartOffset(line2)) {
+				if (line2>line1) {
+					if (selEnd==textArea.getLineStartOffset(line2)) {
 						endOffs = selEnd;
 					}
 				}
@@ -820,28 +826,29 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		}
 
-		@Override
 		public final String getMacroID() {
 			return RTextAreaEditorKit.rtaDeleteLineAction;
 		}
 
 	}
 
+
 	/**
-	 * Deletes the character of content that follows the current caret position.
+	 * Deletes the character of content that follows the current caret
+	 * position.
 	 */
 	public static class DeleteNextCharAction extends RecordableTextAction {
 
 		public DeleteNextCharAction() {
-			super(DefaultEditorKit.deleteNextCharAction, null, null, null, null);
+			super(DefaultEditorKit.deleteNextCharAction, null, null,
+												null, null);
 		}
 
 		public DeleteNextCharAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			boolean beep = true;
@@ -854,14 +861,15 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					if (dot != mark) {
 						doc.remove(Math.min(dot, mark), Math.abs(dot - mark));
 						beep = false;
-					} else if (dot < doc.getLength()) {
+					}
+					else if (dot < doc.getLength()) {
 						int delChars = 1;
 						if (dot < doc.getLength() - 1) {
 							String dotChars = doc.getText(dot, 2);
 							char c0 = dotChars.charAt(0);
 							char c1 = dotChars.charAt(1);
-							if (c0 >= '\uD800' && c0 <= '\uDBFF'
-									&& c1 >= '\uDC00' && c1 <= '\uDFFF') {
+							if (c0 >= '\uD800' && c0 <= '\uDBFF' &&
+								c1 >= '\uDC00' && c1 <= '\uDFFF') {
 								delChars = 2;
 							}
 						}
@@ -879,24 +887,23 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.deleteNextCharAction;
 		}
 
 	}
 
+
 	/**
 	 * Deletes the character of content that precedes the current caret
 	 * position.
 	 */
 	public static class DeletePrevCharAction extends RecordableTextAction {
-
+ 
 		public DeletePrevCharAction() {
 			super(deletePrevCharAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			boolean beep = true;
@@ -909,14 +916,15 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					if (dot != mark) {
 						doc.remove(Math.min(dot, mark), Math.abs(dot - mark));
 						beep = false;
-					} else if (dot > 0) {
+					}
+					else if (dot > 0) {
 						int delChars = 1;
 						if (dot > 1) {
 							String dotChars = doc.getText(dot - 2, 2);
 							char c0 = dotChars.charAt(0);
 							char c1 = dotChars.charAt(1);
-							if (c0 >= '\uD800' && c0 <= '\uDBFF'
-									&& c1 >= '\uDC00' && c1 <= '\uDFFF') {
+							if (c0 >= '\uD800' && c0 <= '\uDBFF' &&
+								c1 >= '\uDC00' && c1 <= '\uDFFF') {
 								delChars = 2;
 							}
 						}
@@ -932,12 +940,12 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.deletePrevCharAction;
 		}
 
 	}
+
 
 	/**
 	 * Action that deletes the previous word in the text area.
@@ -948,7 +956,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			super(rtaDeletePrevWordAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -957,21 +964,20 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			try {
 				int end = textArea.getSelectionStart();
 				int start = getPreviousWordStart(textArea, end);
-				if (end > start) {
-					textArea.getDocument().remove(start, end - start);
+				if (end>start) {
+					textArea.getDocument().remove(start, end-start);
 				}
 			} catch (BadLocationException ex) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 			}
 		}
 
-		@Override
 		public String getMacroID() {
 			return rtaDeletePrevWordAction;
 		}
 
 		/**
-		 * Returns the starting offset to delete. Exists so subclasses can
+		 * Returns the starting offset to delete.  Exists so subclasses can
 		 * override.
 		 */
 		protected int getPreviousWordStart(RTextArea textArea, int end)
@@ -981,17 +987,18 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Action that deletes all text from the caret position to the end of the
 	 * caret's line.
 	 */
 	public static class DeleteRestOfLineAction extends RecordableTextAction {
 
+ 
 		public DeleteRestOfLineAction() {
 			super(rtaDeleteRestOfLineAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			try {
@@ -1004,10 +1011,10 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				int currentLineNum = map.getElementIndex(caretPosition);
 				Element currentLineElement = map.getElement(currentLineNum);
 				// Always take -1 as we don't want to remove the newline.
-				int currentLineEnd = currentLineElement.getEndOffset() - 1;
-				if (caretPosition < currentLineEnd) {
-					document.remove(caretPosition, currentLineEnd
-							- caretPosition);
+				int currentLineEnd = currentLineElement.getEndOffset()-1;
+				if (caretPosition<currentLineEnd) {
+					document.remove(caretPosition,
+									currentLineEnd-caretPosition);
 				}
 
 			} catch (BadLocationException ble) {
@@ -1016,18 +1023,18 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		}
 
-		@Override
 		public final String getMacroID() {
 			return rtaDeleteRestOfLineAction;
 		}
 
 	}
 
+
 	/**
-	 * Finds the most recent word in the document that matches the "word" up to
-	 * the current caret position, and auto-completes the rest. Repeatedly
-	 * calling this action at the same location in the document goes one match
-	 * back each time it is called.
+	 * Finds the most recent word in the document that matches the "word" up
+	 * to the current caret position, and auto-completes the rest.  Repeatedly
+	 * calling this action at the same location in the document goes one
+	 * match back each time it is called.
 	 */
 	public static class DumbCompleteWordAction extends RecordableTextAction {
 
@@ -1041,7 +1048,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			lastWordStart = searchOffs = lastDot = -1;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
@@ -1057,16 +1063,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 				int curWordStart = Utilities.getWordStart(textArea, dot - 1);
 
-				if (lastWordStart != curWordStart || dot != lastDot) {
-					lastPrefix = textArea.getText(curWordStart, dot
-							- curWordStart);
+				if (lastWordStart!=curWordStart || dot!=lastDot) {
+					lastPrefix = textArea.getText(curWordStart,dot-curWordStart);
 					// Utilities.getWordStart() treats spans of whitespace and
 					// single non-letter chars as "words."
-					if (lastPrefix.length() == 0
-							|| !Character.isLetter(lastPrefix.charAt(lastPrefix
-									.length() - 1))) {
-						UIManager.getLookAndFeel().provideErrorFeedback(
-								textArea);
+					if (lastPrefix.length()==0 ||
+							!Character.isLetter(lastPrefix.charAt(lastPrefix.length()-1))) {
+						UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 						return;
 					}
 					lastWordStart = dot - lastPrefix.length();
@@ -1076,7 +1079,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				while (searchOffs > 0) {
 					int wordStart = Utilities.getPreviousWord(textArea,
 							searchOffs);
-					if (wordStart == BreakIterator.DONE) {
+					if (wordStart==BreakIterator.DONE) {
 						UIManager.getLookAndFeel().provideErrorFeedback(
 								textArea);
 						break;
@@ -1097,26 +1100,25 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
 
+
 	/**
 	 * Moves the caret to the end of the document.
 	 */
 	public static class EndAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		public EndAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			int dot = getVisibleEnd(textArea);
 			if (select)
@@ -1125,7 +1127,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				textArea.setCaretPosition(dot);
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
@@ -1136,19 +1137,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Positions the caret at the end of the line.
 	 */
 	public static class EndLineAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		public EndLineAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			int offs = textArea.getCaretPosition();
 			int endOffs = 0;
@@ -1156,19 +1157,20 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				if (textArea.getLineWrap()) {
 					// Must check per character, since one logical line may be
 					// many physical lines.
-					// FIXME: Replace Utilities call with custom version to
+					// FIXME:  Replace Utilities call with custom version to
 					// cut down on all of the modelToViews, as each call causes
 					// a getTokenList => expensive!
 					endOffs = Utilities.getRowEnd(textArea, offs);
-				} else {
-					Element root = textArea.getDocument()
-							.getDefaultRootElement();
+				}
+				else {
+					Element root = textArea.getDocument().getDefaultRootElement();
 					int line = root.getElementIndex(offs);
 					endOffs = root.getElement(line).getEndOffset() - 1;
 				}
 				if (select) {
 					textArea.moveCaretPosition(endOffs);
-				} else {
+				}
+				else {
 					textArea.setCaretPosition(endOffs);
 				}
 			} catch (Exception ex) {
@@ -1176,57 +1178,55 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			}
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
 
+
 	/**
 	 * Action that ends recording a macro.
 	 */
 	public static class EndRecordingMacroAction extends RecordableTextAction {
 
+ 
 		public EndRecordingMacroAction() {
 			super(rtaEndRecordingMacroAction);
 		}
 
-		public EndRecordingMacroAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+		public EndRecordingMacroAction(String name, Icon icon,
+					String desc, Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			RTextArea.endRecordingMacro();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return rtaEndRecordingMacroAction;
 		}
 
-		@Override
 		public boolean isRecordable() {
 			return false; // Never record the recording of a macro!
 		}
 
 	}
 
+
 	/**
 	 * Positions the caret at the end of the word.
 	 */
 	protected static class EndWordAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		protected EndWordAction(String name, boolean select) {
 			super(name);
 			this.select = select;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			try {
 				int offs = textArea.getCaretPosition();
@@ -1240,26 +1240,27 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			}
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 		protected int getWordEnd(RTextArea textArea, int offs)
-				throws BadLocationException {
+									throws BadLocationException {
 			return Utilities.getWordEnd(textArea, offs);
 		}
 
 	}
+
 
 	/**
 	 * Action for increasing the font size.
 	 */
 	public static class IncreaseFontSizeAction extends RecordableTextAction {
 
+ 
 		protected float increaseAmount;
 
-		protected static final float MAXIMUM_SIZE = 40.0f;
+		protected static final float MAXIMUM_SIZE	= 40.0f;
 
 		public IncreaseFontSizeAction() {
 			super(rtaIncreaseFontSizeAction);
@@ -1267,33 +1268,33 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 		public IncreaseFontSizeAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+							Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 			initialize();
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			Font font = textArea.getFont();
 			float oldSize = font.getSize2D();
 			float newSize = oldSize + increaseAmount;
-			if (newSize <= MAXIMUM_SIZE) {
+			if (newSize<=MAXIMUM_SIZE) {
 				// Grow by increaseAmount.
 				font = font.deriveFont(newSize);
 				textArea.setFont(font);
-			} else if (oldSize < MAXIMUM_SIZE) {
+			}
+			else if (oldSize<MAXIMUM_SIZE) {
 				// Can't grow by full increaseAmount, but can grow a
 				// little bit.
 				font = font.deriveFont(MAXIMUM_SIZE);
 				textArea.setFont(font);
-			} else {
+			}
+			else {
 				// Our font size must be at or bigger than MAXIMUM_SIZE.
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 			}
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return rtaIncreaseFontSizeAction;
 		}
@@ -1304,16 +1305,17 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Action for when the user presses the Enter key.
 	 */
 	public static class InsertBreakAction extends RecordableTextAction {
 
+ 
 		public InsertBreakAction() {
 			super(DefaultEditorKit.insertBreakAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -1322,34 +1324,34 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			textArea.replaceSelection("\n");
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.insertBreakAction;
 		}
 
 		/*
-		 * Overridden for Sun bug 4515750. Sun fixed this in a more complicated
-		 * way, but I'm not sure why. See BasicTextUI#getActionMap() and
+		 * Overridden for Sun bug 4515750.  Sun fixed this in a more complicated
+		 * way, but I'm not sure why.  See BasicTextUI#getActionMap() and
 		 * BasicTextUI.TextActionWrapper.
 		 */
-		@Override
 		public boolean isEnabled() {
 			JTextComponent tc = getTextComponent(null);
-			return (tc == null || tc.isEditable()) ? super.isEnabled() : false;
+			return (tc==null || tc.isEditable()) ? super.isEnabled() : false;
 		}
 
 	}
+
 
 	/**
 	 * Action taken when content is to be inserted.
 	 */
 	public static class InsertContentAction extends RecordableTextAction {
 
+ 
 		public InsertContentAction() {
-			super(DefaultEditorKit.insertContentAction, null, null, null, null);
+			super(DefaultEditorKit.insertContentAction, null, null, null,
+					null);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -1362,24 +1364,24 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.insertContentAction;
 		}
 
 	}
 
+
 	/**
-	 * Places a tab character into the document. If there is a selection, it is
-	 * removed before the tab is added.
+	 * Places a tab character into the document. If there is a selection, it
+	 * is removed before the tab is added.
 	 */
 	public static class InsertTabAction extends RecordableTextAction {
 
+ 
 		public InsertTabAction() {
 			super(insertTabAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -1388,33 +1390,33 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			textArea.replaceSelection("\t");
 		}
 
-		@Override
 		public final String getMacroID() {
 			return DefaultEditorKit.insertTabAction;
 		}
 
 	}
 
+
 	/**
 	 * Action to invert the selection's case.
 	 */
 	public static class InvertSelectionCaseAction extends RecordableTextAction {
 
+ 
 		public InvertSelectionCaseAction() {
 			super(rtaInvertSelectionCaseAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 				return;
 			}
 			String selection = textArea.getSelectedText();
-			if (selection != null) {
+			if (selection!=null) {
 				StringBuffer buffer = new StringBuffer(selection);
 				int length = buffer.length();
-				for (int i = 0; i < length; i++) {
+				for (int i=0; i<length; i++) {
 					char c = buffer.charAt(i);
 					if (Character.isUpperCase(c))
 						buffer.setCharAt(i, Character.toLowerCase(c));
@@ -1426,12 +1428,12 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
+
 
 	/**
 	 * Action to join the current line and the following line.
@@ -1442,7 +1444,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			super(rtaJoinLinesAction);
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -1455,14 +1456,15 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				Element map = doc.getDefaultRootElement();
 				int lineCount = map.getElementCount();
 				int line = map.getElementIndex(caretPos);
-				if (line == lineCount - 1) {
-					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+				if (line==lineCount-1) {
+					UIManager.getLookAndFeel().
+								provideErrorFeedback(textArea);
 					return;
 				}
 				Element lineElem = map.getElement(line);
 				caretPos = lineElem.getEndOffset() - 1;
-				c.setDot(caretPos); // Gets rid of any selection.
-				doc.remove(caretPos, 1); // Should be '\n'.
+				c.setDot(caretPos);		// Gets rid of any selection.
+				doc.remove(caretPos, 1);	// Should be '\n'.
 			} catch (BadLocationException ble) {
 				/* Shouldn't ever happen. */
 				ble.printStackTrace();
@@ -1470,12 +1472,12 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			textArea.requestFocusInWindow();
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 	}
+
 
 	/**
 	 * Action that moves a line up or down.
@@ -1489,7 +1491,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			this.moveAmt = moveAmt;
 		}
 
-		@Override
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			if (!textArea.isEditable() || !textArea.isEnabled()) {
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
@@ -1500,11 +1501,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				Document doc = textArea.getDocument();
 				Element root = doc.getDefaultRootElement();
 				int line = root.getElementIndex(caret);
-				if (moveAmt == -1 && line > 0) {
+				if (moveAmt==-1 && line>0) {
 					moveLineUp(textArea, line);
-				} else if (moveAmt == 1 && line < root.getElementCount() - 1) {
+				}
+				else if (moveAmt==1 && line<root.getElementCount()-1) {
 					moveLineDown(textArea, line);
-				} else {
+				}
+				else {
 					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 					return;
 				}
@@ -1516,13 +1519,12 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			}
 		}
 
-		@Override
 		public final String getMacroID() {
 			return getName();
 		}
 
 		private final void moveLineDown(RTextArea textArea, int line)
-				throws BadLocationException {
+									throws BadLocationException {
 			Document doc = textArea.getDocument();
 			Element root = doc.getDefaultRootElement();
 			Element elem = root.getElement(line);
@@ -1530,44 +1532,45 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			int end = elem.getEndOffset();
 			int caret = textArea.getCaretPosition();
 			int caretOffset = caret - start;
-			String text = doc.getText(start, end - start);
-			doc.remove(start, end - start);
+			String text = doc.getText(start, end-start);
+			doc.remove(start, end-start);
 			Element elem2 = root.getElement(line); // not "line+1" - removed.
-			// int start2 = elem2.getStartOffset();
+			//int start2 = elem2.getStartOffset();
 			int end2 = elem2.getEndOffset();
 			doc.insertString(end2, text, null);
-			elem = root.getElement(line + 1);
-			textArea.setCaretPosition(elem.getStartOffset() + caretOffset);
+			elem = root.getElement(line+1);
+			textArea.setCaretPosition(elem.getStartOffset()+caretOffset);
 		}
 
 		private final void moveLineUp(RTextArea textArea, int line)
-				throws BadLocationException {
+									throws BadLocationException {
 			Document doc = textArea.getDocument();
 			Element root = doc.getDefaultRootElement();
 			int lineCount = root.getElementCount();
 			Element elem = root.getElement(line);
 			int start = elem.getStartOffset();
-			int end = line == lineCount - 1 ? elem.getEndOffset() - 1 : elem
-					.getEndOffset();
+			int end = line==lineCount-1 ? elem.getEndOffset()-1 :
+									elem.getEndOffset();
 			int caret = textArea.getCaretPosition();
 			int caretOffset = caret - start;
-			String text = doc.getText(start, end - start);
-			if (line == lineCount - 1) {
+			String text = doc.getText(start, end-start);
+			if (line==lineCount-1) {
 				start--; // Remove previous line's ending \n
 			}
-			doc.remove(start, end - start);
-			Element elem2 = root.getElement(line - 1);
+			doc.remove(start, end-start);
+			Element elem2 = root.getElement(line-1);
 			int start2 = elem2.getStartOffset();
-			// int end2 = elem2.getEndOffset();
-			if (line == lineCount - 1) {
+			//int end2 = elem2.getEndOffset();
+			if (line==lineCount-1) {
 				text += '\n';
 			}
 			doc.insertString(start2, text, null);
-			// caretOffset = Math.min(start2+caretOffset, end2-1);
-			textArea.setCaretPosition(start2 + caretOffset);
+			//caretOffset = Math.min(start2+caretOffset, end2-1);
+			textArea.setCaretPosition(start2+caretOffset);
 		}
 
 	}
+
 
 	/**
 	 * Action to make the selection lower-case.
@@ -1584,7 +1587,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				return;
 			}
 			String selection = textArea.getSelectedText();
-			if (selection != null)
+			if (selection!=null)
 				textArea.replaceSelection(selection.toLowerCase());
 			textArea.requestFocusInWindow();
 		}
@@ -1594,6 +1597,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 	}
+
 
 	/**
 	 * Action that moves the caret to the next (or previous) bookmark.
@@ -1610,14 +1614,14 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 
 			Gutter gutter = RSyntaxUtilities.getGutter(textArea);
-			if (gutter != null) {
+			if (gutter!=null) {
 
 				try {
 
 					GutterIconInfo[] bookmarks = gutter.getBookmarks();
-					if (bookmarks.length == 0) {
-						UIManager.getLookAndFeel().provideErrorFeedback(
-								textArea);
+					if (bookmarks.length==0) {
+						UIManager.getLookAndFeel().
+									provideErrorFeedback(textArea);
 						return;
 					}
 
@@ -1625,39 +1629,40 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					int curLine = textArea.getCaretLineNumber();
 
 					if (forward) {
-						for (int i = 0; i < bookmarks.length; i++) {
+						for (int i=0; i<bookmarks.length; i++) {
 							GutterIconInfo bookmark = bookmarks[i];
 							int offs = bookmark.getMarkedOffset();
 							int line = textArea.getLineOfOffset(offs);
-							if (line > curLine) {
+							if (line>curLine) {
 								moveTo = bookmark;
 								break;
 							}
 						}
-						if (moveTo == null) { // Loop back to beginning
+						if (moveTo==null) { // Loop back to beginning
 							moveTo = bookmarks[0];
 						}
-					} else {
-						for (int i = bookmarks.length - 1; i >= 0; i--) {
+					}
+					else {
+						for (int i=bookmarks.length-1; i>=0; i--) {
 							GutterIconInfo bookmark = bookmarks[i];
 							int offs = bookmark.getMarkedOffset();
 							int line = textArea.getLineOfOffset(offs);
-							if (line < curLine) {
+							if (line<curLine) {
 								moveTo = bookmark;
 								break;
 							}
 						}
-						if (moveTo == null) { // Loop back to end
-							moveTo = bookmarks[bookmarks.length - 1];
+						if (moveTo==null) { // Loop back to end
+							moveTo = bookmarks[bookmarks.length-1];
 						}
 					}
 
 					int offs = moveTo.getMarkedOffset();
 					if (textArea instanceof RSyntaxTextArea) {
-						RSyntaxTextArea rsta = (RSyntaxTextArea) textArea;
+						RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
 						if (rsta.isCodeFoldingEnabled()) {
-							rsta.getFoldManager().ensureOffsetNotInClosedFold(
-									offs);
+							rsta.getFoldManager().
+										ensureOffsetNotInClosedFold(offs);
 						}
 					}
 					int line = textArea.getLineOfOffset(offs);
@@ -1665,7 +1670,8 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					textArea.setCaretPosition(offs);
 
 				} catch (BadLocationException ble) { // Never happens
-					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+					UIManager.getLookAndFeel().
+								provideErrorFeedback(textArea);
 					ble.printStackTrace();
 				}
 			}
@@ -1677,6 +1683,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 	}
+
 
 	/**
 	 * Selects the next occurrence of the text last selected.
@@ -1709,6 +1716,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Action to move the selection and/or caret. Constructor indicates
 	 * direction to use.
@@ -1730,28 +1738,28 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			int dot = caret.getDot();
 
 			/*
-			 * Move to the beginning/end of selection on a "non-shifted" left-
-			 * or right-keypress. We shouldn't have to worry about navigation
-			 * filters as, if one is being used, it let us get to that position
-			 * before.
+			 * Move to the beginning/end of selection on a "non-shifted"
+			 * left- or right-keypress.  We shouldn't have to worry about
+			 * navigation filters as, if one is being used, it let us get
+			 * to that position before.
 			 */
 			if (!select) {
 				switch (direction) {
-				case SwingConstants.EAST:
-					int mark = caret.getMark();
-					if (dot != mark) {
-						caret.setDot(Math.max(dot, mark));
-						return;
-					}
-					break;
-				case SwingConstants.WEST:
-					mark = caret.getMark();
-					if (dot != mark) {
-						caret.setDot(Math.min(dot, mark));
-						return;
-					}
-					break;
-				default:
+					case SwingConstants.EAST:
+						int mark = caret.getMark();
+						if (dot!=mark) {
+							caret.setDot(Math.max(dot, mark));
+							return;
+						}
+						break;
+					case SwingConstants.WEST:
+						mark = caret.getMark();
+						if (dot!=mark) {
+							caret.setDot(Math.min(dot, mark));
+							return;
+						}
+						break;
+					default:
 				}
 			}
 
@@ -1760,8 +1768,9 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 			try {
 
-				if (magicPosition == null
-						&& (direction == SwingConstants.NORTH || direction == SwingConstants.SOUTH)) {
+				if(magicPosition == null &&
+					(direction == SwingConstants.NORTH ||
+					direction == SwingConstants.SOUTH)) {
 					Rectangle r = textArea.modelToView(dot);
 					magicPosition = new Point(r.x, r.y);
 				}
@@ -1770,19 +1779,22 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 				if (filter != null) {
 					dot = filter.getNextVisualPositionFrom(textArea, dot,
-							Position.Bias.Forward, direction, bias);
-				} else {
-					dot = textArea.getUI().getNextVisualPositionFrom(textArea,
-							dot, Position.Bias.Forward, direction, bias);
+								Position.Bias.Forward, direction, bias);
+				}
+				else {
+					dot = textArea.getUI().getNextVisualPositionFrom(
+								textArea, dot,
+								Position.Bias.Forward, direction, bias);
 				}
 				if (select)
 					caret.moveDot(dot);
 				else
 					caret.setDot(dot);
 
-				if (magicPosition != null
-						&& (direction == SwingConstants.NORTH || direction == SwingConstants.SOUTH)) {
-					caret.setMagicCaretPosition(magicPosition);
+				if(magicPosition != null &&
+					(direction == SwingConstants.NORTH ||
+					direction == SwingConstants.SOUTH)) {
+						caret.setMagicCaretPosition(magicPosition);
 				}
 
 			} catch (BadLocationException ble) {
@@ -1795,14 +1807,15 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			return getName();
 		}
 
-	}
+    }
+
 
 	/**
 	 * Positions the caret at the next word.
 	 */
 	public static class NextWordAction extends RecordableTextAction {
 
-		private boolean select;
+ 		private boolean select;
 
 		public NextWordAction(String name, boolean select) {
 			super(name);
@@ -1817,8 +1830,8 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 			try {
 				offs = getNextWord(textArea, offs);
-				if (offs >= curPara.getEndOffset()
-						&& oldOffs != curPara.getEndOffset() - 1) {
+				if(offs >= curPara.getEndOffset() &&
+							oldOffs != curPara.getEndOffset() - 1) {
 					// we should first move to the end of current paragraph
 					// http://bugs.sun.com/view_bug.do?bug_id=4278839
 					offs = curPara.getEndOffset() - 1;
@@ -1826,7 +1839,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			} catch (BadLocationException ble) {
 				int end = textArea.getDocument().getLength();
 				if (offs != end) {
-					if (oldOffs != curPara.getEndOffset() - 1)
+					if(oldOffs != curPara.getEndOffset() - 1)
 						offs = curPara.getEndOffset() - 1;
 					else
 						offs = end;
@@ -1845,17 +1858,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 		protected int getNextWord(RTextArea textArea, int offs)
-				throws BadLocationException {
+									throws BadLocationException {
 			return Utilities.getNextWord(textArea, offs);
 		}
 
 	}
+
 
 	/**
 	 * Pages one view to the left or right.
 	 */
 	static class PageAction extends RecordableTextAction {
 
+ 
 		private boolean select;
 		private boolean left;
 
@@ -1874,22 +1889,24 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				visible.x = Math.max(0, visible.x - visible.width);
 			else
 				visible.x += visible.width;
-
+		
 			selectedIndex = textArea.getCaretPosition();
-			if (selectedIndex != -1) {
+			if(selectedIndex != -1) {
 				if (left) {
-					selectedIndex = textArea.viewToModel(new Point(visible.x,
-							visible.y));
-				} else {
-					selectedIndex = textArea
-							.viewToModel(new Point(visible.x + visible.width
-									- 1, visible.y + visible.height - 1));
+					selectedIndex = textArea.viewToModel(
+									new Point(visible.x, visible.y));
+				}
+				else {
+					selectedIndex = textArea.viewToModel(
+							new Point(visible.x + visible.width - 1,
+									visible.y + visible.height - 1));
 				}
 				Document doc = textArea.getDocument();
-				if ((selectedIndex != 0)
-						&& (selectedIndex > (doc.getLength() - 1))) {
-					selectedIndex = doc.getLength() - 1;
-				} else if (selectedIndex < 0) {
+				if ((selectedIndex != 0) && 
+					(selectedIndex  > (doc.getLength()-1))) {
+					selectedIndex = doc.getLength()-1;
+				}
+				else if(selectedIndex  < 0) {
 					selectedIndex = 0;
 				}
 				if (select)
@@ -1906,17 +1923,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Action for pasting text.
 	 */
 	public static class PasteAction extends RecordableTextAction {
 
+ 
 		public PasteAction() {
 			super(DefaultEditorKit.pasteAction);
 		}
 
 		public PasteAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -1931,17 +1950,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * "Plays back" the last macro recorded.
 	 */
 	public static class PlaybackLastMacroAction extends RecordableTextAction {
 
+ 
 		public PlaybackLastMacroAction() {
 			super(rtaPlaybackLastMacroAction);
 		}
 
-		public PlaybackLastMacroAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+		public PlaybackLastMacroAction(String name, Icon icon,
+					String desc, Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -1958,6 +1979,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 	}
+
 
 	/**
 	 * Select the previous occurrence of the text last selected.
@@ -1991,12 +2013,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
-	/**
-	 * Positions the caret at the beginning of the previous word.
-	 */
-	public static class PreviousWordAction extends RecordableTextAction {
 
-		private boolean select;
+    /**
+     * Positions the caret at the beginning of the previous word.
+     */
+    public static class PreviousWordAction extends RecordableTextAction {
+
+ 		private boolean select;
 
 		public PreviousWordAction(String name, boolean select) {
 			super(name);
@@ -2011,9 +2034,9 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 				Element curPara = Utilities.getParagraphElement(textArea, offs);
 				offs = getPreviousWord(textArea, offs);
-				if (offs < curPara.getStartOffset()) {
-					offs = Utilities.getParagraphElement(textArea, offs)
-							.getEndOffset() - 1;
+				if(offs < curPara.getStartOffset()) {
+					offs = Utilities.getParagraphElement(textArea, offs).
+												getEndOffset() - 1;
 				}
 
 			} catch (BadLocationException bl) {
@@ -2028,7 +2051,8 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 					textArea.moveCaretPosition(offs);
 				else
 					textArea.setCaretPosition(offs);
-			} else
+			}
+			else
 				UIManager.getLookAndFeel().provideErrorFeedback(textArea);
 
 		}
@@ -2038,23 +2062,25 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 		protected int getPreviousWord(RTextArea textArea, int offs)
-				throws BadLocationException {
+										throws BadLocationException {
 			return Utilities.getPreviousWord(textArea, offs);
 		}
 
 	}
+
 
 	/**
 	 * Re-does the last action undone.
 	 */
 	public static class RedoAction extends RecordableTextAction {
 
+ 
 		public RedoAction() {
 			super(rtaRedoAction);
 		}
 
 		public RedoAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -2071,9 +2097,10 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
-	 * Scrolls the text area one line up or down, without changing the caret
-	 * position.
+	 * Scrolls the text area one line up or down, without changing
+	 * the caret position.
 	 */
 	public static class ScrollAction extends RecordableTextAction {
 
@@ -2087,15 +2114,16 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			Container parent = textArea.getParent();
 			if (parent instanceof JViewport) {
-				JViewport viewport = (JViewport) parent;
+				JViewport viewport = (JViewport)parent;
 				Point p = viewport.getViewPosition();
-				p.y += delta * textArea.getLineHeight();
-				if (p.y < 0) {
+				p.y += delta*textArea.getLineHeight();
+				if (p.y<0) {
 					p.y = 0;
-				} else {
+				}
+				else {
 					Rectangle viewRect = viewport.getViewRect();
 					int visibleEnd = p.y + viewRect.height;
-					if (visibleEnd >= textArea.getHeight()) {
+					if (visibleEnd>=textArea.getHeight()) {
 						p.y = textArea.getHeight() - viewRect.height;
 					}
 				}
@@ -2109,17 +2137,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Selects the entire document.
 	 */
 	public static class SelectAllAction extends RecordableTextAction {
 
+ 
 		public SelectAllAction() {
 			super(selectAllAction);
 		}
 
 		public SelectAllAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -2135,12 +2165,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Selects the line around the caret.
 	 */
 	public static class SelectLineAction extends RecordableTextAction {
 
-		private Action start;
+ 		private Action start;
 		private Action end;
 
 		public SelectLineAction() {
@@ -2160,12 +2191,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Selects the word around the caret.
 	 */
 	public static class SelectWordAction extends RecordableTextAction {
 
-		protected Action start;
+ 		protected Action start;
 		protected Action end;
 
 		public SelectWordAction() {
@@ -2189,11 +2221,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Puts the text area into read-only mode.
 	 */
 	public static class SetReadOnlyAction extends RecordableTextAction {
 
+ 
 		public SetReadOnlyAction() {
 			super(readOnlyAction);
 		}
@@ -2212,11 +2246,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Puts the text area into writable (from read-only) mode.
 	 */
 	public static class SetWritableAction extends RecordableTextAction {
 
+ 
 		public SetWritableAction() {
 			super(writableAction);
 		}
@@ -2235,17 +2271,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * The action for inserting a time/date stamp.
 	 */
 	public static class TimeDateAction extends RecordableTextAction {
 
+ 
 		public TimeDateAction() {
 			super(rtaTimeDateAction);
 		}
 
 		public TimeDateAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -2266,23 +2304,25 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Toggles whether the current line has a bookmark.
 	 */
 	public static class ToggleBookmarkAction extends RecordableTextAction {
-
+ 
 		public ToggleBookmarkAction() {
 			super(rtaToggleBookmarkAction);
 		}
 
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			Gutter gutter = RSyntaxUtilities.getGutter(textArea);
-			if (gutter != null) {
+			if (gutter!=null) {
 				int line = textArea.getCaretLineNumber();
 				try {
 					gutter.toggleBookmark(line);
 				} catch (BadLocationException ble) { // Never happens
-					UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+					UIManager.getLookAndFeel().
+								provideErrorFeedback(textArea);
 					ble.printStackTrace();
 				}
 			}
@@ -2294,18 +2334,19 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * The action for the insert key toggling insert/overwrite modes.
 	 */
 	public static class ToggleTextModeAction extends RecordableTextAction {
-
+ 
 		public ToggleTextModeAction() {
 			super(rtaToggleTextModeAction);
 		}
 
 		public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
 			int textMode = textArea.getTextMode();
-			if (textMode == RTextArea.INSERT_MODE)
+			if (textMode==RTextArea.INSERT_MODE)
 				textArea.setTextMode(RTextArea.OVERWRITE_MODE);
 			else
 				textArea.setTextMode(RTextArea.INSERT_MODE);
@@ -2317,17 +2358,18 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Undoes the last action done.
 	 */
 	public static class UndoAction extends RecordableTextAction {
 
-		public UndoAction() {
+ 		public UndoAction() {
 			super(rtaUndoAction);
 		}
 
 		public UndoAction(String name, Icon icon, String desc,
-				Integer mnemonic, KeyStroke accelerator) {
+					Integer mnemonic, KeyStroke accelerator) {
 			super(name, icon, desc, mnemonic, accelerator);
 		}
 
@@ -2344,11 +2386,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
 	 * Removes the selection, if any.
 	 */
 	public static class UnselectAction extends RecordableTextAction {
 
+ 
 		public UnselectAction() {
 			super(rtaUnselectAction);
 		}
@@ -2363,11 +2407,13 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+ 
 	/**
 	 * Action to make the selection upper-case.
 	 */
 	public static class UpperSelectionCaseAction extends RecordableTextAction {
 
+ 
 		public UpperSelectionCaseAction() {
 			super(rtaUpperSelectionCaseAction);
 		}
@@ -2378,7 +2424,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 				return;
 			}
 			String selection = textArea.getSelectedText();
-			if (selection != null)
+			if (selection!=null)
 				textArea.replaceSelection(selection.toUpperCase());
 			textArea.requestFocusInWindow();
 		}
@@ -2389,9 +2435,10 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 
 	}
 
+
 	/**
-	 * Scrolls up/down vertically. The select version of this action extends the
-	 * selection, instead of simply moving the caret.
+	 * Scrolls up/down vertically.  The select version of this action extends
+	 * the selection, instead of simply moving the caret.
 	 */
 	public static class VerticalPageAction extends RecordableTextAction {
 
@@ -2409,43 +2456,43 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			Rectangle visible = textArea.getVisibleRect();
 			Rectangle newVis = new Rectangle(visible);
 			int selectedIndex = textArea.getCaretPosition();
-			int scrollAmount = textArea.getScrollableBlockIncrement(visible,
-					SwingConstants.VERTICAL, direction);
+			int scrollAmount = textArea.getScrollableBlockIncrement(
+							visible, SwingConstants.VERTICAL, direction); 
 			int initialY = visible.y;
 			Caret caret = textArea.getCaret();
 			Point magicPosition = caret.getMagicCaretPosition();
-			int yOffset;
+			int yOffset;   
 
-			if (selectedIndex != -1) {
+			if (selectedIndex!=-1) {
 
 				try {
 
 					Rectangle dotBounds = textArea.modelToView(selectedIndex);
-					int x = (magicPosition != null) ? magicPosition.x
-							: dotBounds.x;
+					int x = (magicPosition != null) ? magicPosition.x :
+												dotBounds.x;
 					int h = dotBounds.height;
-					yOffset = direction
-							* ((int) Math.ceil(scrollAmount / (double) h) - 1)
-							* h;
-					newVis.y = constrainY(textArea, initialY + yOffset,
-							yOffset, visible.height);
+					yOffset = direction *
+							((int)Math.ceil(scrollAmount/(double)h)-1)*h; 
+					newVis.y = constrainY(textArea, initialY+yOffset, yOffset, visible.height);                        
 					int newIndex;
 
 					if (visible.contains(dotBounds.x, dotBounds.y)) {
 						// Dot is currently visible, base the new
 						// location off the old, or
-						newIndex = textArea.viewToModel(new Point(x,
-								constrainY(textArea, dotBounds.y + yOffset, 0,
-										0)));
-					} else {
+						newIndex = textArea.viewToModel(
+									new Point(x, constrainY(textArea,
+										dotBounds.y + yOffset, 0, 0)));
+										}
+					else {
 						// Dot isn't visible, choose the top or the bottom
 						// for the new location.
 						if (direction == -1) {
-							newIndex = textArea.viewToModel(new Point(x,
-									newVis.y));
-						} else {
-							newIndex = textArea.viewToModel(new Point(x,
-									newVis.y + visible.height));
+							newIndex = textArea.viewToModel(new Point(
+													x, newVis.y));
+						}
+						else {
+							newIndex = textArea.viewToModel(new Point(
+									x, newVis.y + visible.height));
 						}
 					}
 					newIndex = constrainOffset(textArea, newIndex);
@@ -2454,22 +2501,20 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 						// the location of dot, otherwise Caret will
 						// cause an additional scroll.
 						adjustScrollIfNecessary(textArea, newVis, initialY,
-								newIndex);
+											newIndex);
 						if (select)
 							textArea.moveCaretPosition(newIndex);
 						else
 							textArea.setCaretPosition(newIndex);
 					}
 
-				} catch (BadLocationException ble) {
-				}
+				} catch (BadLocationException ble) { }
 
 			} // End of if (selectedIndex!=-1).
 
 			else {
 				yOffset = direction * scrollAmount;
-				newVis.y = constrainY(textArea, initialY + yOffset, yOffset,
-						visible.height);
+				newVis.y = constrainY(textArea, initialY + yOffset, yOffset, visible.height);
 			}
 
 			if (magicPosition != null)
@@ -2478,13 +2523,12 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			textArea.scrollRectToVisible(newVis);
 		}
 
-		private int constrainY(JTextComponent textArea, int y, int vis,
-				int screenHeight) {
+		private int constrainY(JTextComponent textArea, int y, int vis, int screenHeight) {
 			if (y < 0)
 				y = 0;
 			else if (y + vis > textArea.getHeight()) {
-				// y = Math.max(0, textArea.getHeight() - vis);
-				y = Math.max(0, textArea.getHeight() - screenHeight);
+				//y = Math.max(0, textArea.getHeight() - vis);
+				y = Math.max(0, textArea.getHeight()-screenHeight);
 			}
 			return y;
 		}
@@ -2493,30 +2537,31 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 			Document doc = text.getDocument();
 			if ((offset != 0) && (offset > doc.getLength()))
 				offset = doc.getLength();
-			if (offset < 0)
+			if (offset  < 0)
 				offset = 0;
 			return offset;
 		}
 
 		private void adjustScrollIfNecessary(JTextComponent text,
-				Rectangle visible, int initialY, int index) {
+									Rectangle visible, int initialY,
+									int index) {
 			try {
 				Rectangle dotBounds = text.modelToView(index);
-				if (dotBounds.y < visible.y
-						|| (dotBounds.y > (visible.y + visible.height))
-						|| (dotBounds.y + dotBounds.height) > (visible.y + visible.height)) {
+	                if (dotBounds.y < visible.y ||
+					(dotBounds.y > (visible.y + visible.height)) ||
+					(dotBounds.y + dotBounds.height) >
+					(visible.y + visible.height)) {
 					int y;
 					if (dotBounds.y < visible.y)
 						y = dotBounds.y;
 					else
 						y = dotBounds.y + dotBounds.height - visible.height;
-					if ((direction == -1 && y < initialY)
-							|| (direction == 1 && y > initialY))
+					if ((direction == -1 && y < initialY) ||
+						(direction == 1 && y > initialY))
 						// Only adjust if won't cause scrolling upward.
 						visible.y = y;
 				}
-			} catch (BadLocationException ble) {
-			}
+			} catch (BadLocationException ble) {}
 		}
 
 		public final String getMacroID() {
@@ -2524,5 +2569,6 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 		}
 
 	}
+
 
 }

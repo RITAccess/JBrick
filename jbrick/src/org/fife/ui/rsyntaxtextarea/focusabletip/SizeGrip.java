@@ -58,7 +58,6 @@ class SizeGrip extends JPanel {
 	 *
 	 * @param o The new orientation.
 	 */
-	@Override
 	public void applyComponentOrientation(ComponentOrientation o) {
 		possiblyFixCursor(o.isLeftToRight());
 		super.applyComponentOrientation(o);
@@ -104,7 +103,6 @@ class SizeGrip extends JPanel {
 	 *
 	 * @param g The graphics context.
 	 */
-	@Override
 	protected void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
@@ -176,7 +174,6 @@ class SizeGrip extends JPanel {
 	}
 
 
-	@Override
 	public void updateUI() {
 		super.updateUI();
 		// TODO: Key off of Aqua LaF, not just OS X, as this size grip looks
@@ -210,7 +207,6 @@ class SizeGrip extends JPanel {
 
 		private Point origPos;
 
-		@Override
 		public void mouseDragged(MouseEvent e) {
 			Point newPos = e.getPoint();
 			SwingUtilities.convertPointToScreen(newPos, SizeGrip.this);
@@ -241,13 +237,11 @@ class SizeGrip extends JPanel {
 			origPos.setLocation(newPos);
 		}
 
-		@Override
 		public void mousePressed(MouseEvent e) {
 			origPos = e.getPoint();
 			SwingUtilities.convertPointToScreen(origPos, SizeGrip.this);
 		}
 
-		@Override
 		public void mouseReleased(MouseEvent e) {
 			origPos = null;
 		}

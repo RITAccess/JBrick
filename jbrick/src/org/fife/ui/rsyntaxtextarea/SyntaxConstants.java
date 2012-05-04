@@ -57,10 +57,6 @@ public interface SyntaxConstants {
 	 */
 	public static final String SYNTAX_STYLE_C				= "text/c";
 
-	/**
-	 * Style for highlighting NXC.
-	 */
-	public static final String SYNTAX_STYLE_NXC				= "text/nxc";
 
 	/**
 	 * Style for highlighting Clojure.
@@ -90,6 +86,12 @@ public interface SyntaxConstants {
 	 * Style for highlighting Delphi/Pascal.
 	 */
 	public static final String SYNTAX_STYLE_DELPHI			= "text/delphi";
+
+
+	/**
+	 * Style for highlighting DTD files.
+	 */
+	public static final String SYNTAX_STYLE_DTD			= "text/dtd";
 
 
 	/**
@@ -126,6 +128,12 @@ public interface SyntaxConstants {
 	 * Style for highlighting JSP.
 	 */
 	public static final String SYNTAX_STYLE_JSP			= "text/jsp";
+
+
+	/**
+	 * Style for highlighting LaTeX.
+	 */
+	public static final String SYNTAX_STYLE_LATEX		= "text/latex";
 
 
 	/**

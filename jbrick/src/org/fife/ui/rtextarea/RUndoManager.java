@@ -114,7 +114,6 @@ public class RUndoManager extends UndoManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void redo() throws CannotRedoException {
 		super.redo();
 		updateActions();
@@ -133,14 +132,12 @@ public class RUndoManager extends UndoManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public void undo() throws CannotUndoException {
 		super.undo();
 		updateActions();
 	}
 
 
-	@Override
 	public void undoableEditHappened(UndoableEditEvent e) {
 
 		// This happens when the first undoable edit occurs, and
@@ -232,22 +229,18 @@ public class RUndoManager extends UndoManager {
 	 */
 	class RCompoundEdit extends CompoundEdit {
 
-		@Override
 		public String getUndoPresentationName() {
 			return UIManager.getString("AbstractUndoableEdit.undoText");
 		}
 
-		@Override
 		public String getRedoPresentationName() {
 			return UIManager.getString("AbstractUndoableEdit.redoText");
 		}
 
-		@Override
 		public boolean isInProgress() {
 			return false;
 		}
 
-		@Override
 		public void undo() throws CannotUndoException {
 			if (compoundEdit!=null)
 				compoundEdit.end();

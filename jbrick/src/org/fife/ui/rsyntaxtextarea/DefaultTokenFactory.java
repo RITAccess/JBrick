@@ -107,7 +107,7 @@ class DefaultTokenFactory implements TokenFactory {
 	public Token createToken() {
 		Token token = tokenList[currentFreeToken];
 		token.text = null;
-		token.type = TokenTypes.NULL;
+		token.type = Token.NULL;
 		token.offset = -1;
 		token.setNextToken(null);
 		currentFreeToken++;

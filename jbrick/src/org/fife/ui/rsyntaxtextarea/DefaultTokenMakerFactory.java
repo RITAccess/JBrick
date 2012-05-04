@@ -32,7 +32,6 @@ class DefaultTokenMakerFactory extends AbstractTokenMakerFactory
 	 *
 	 * @return The map.
 	 */
-	@Override
 	protected Map createTokenMakerKeyToClassNameMap() {
 
 		HashMap map = new HashMap();
@@ -44,18 +43,19 @@ class DefaultTokenMakerFactory extends AbstractTokenMakerFactory
 		map.put(SYNTAX_STYLE_ASSEMBLER_X86,		pkg + "AssemblerX86TokenMaker");
 		map.put(SYNTAX_STYLE_BBCODE,			pkg + "BBCodeTokenMaker");
 		map.put(SYNTAX_STYLE_C,					pkg + "CTokenMaker");
-		map.put(SYNTAX_STYLE_NXC,				pkg + "NXCTokenMaker");
 		map.put(SYNTAX_STYLE_CLOJURE,			pkg + "ClojureTokenMaker");
 		map.put(SYNTAX_STYLE_CPLUSPLUS,			pkg + "CPlusPlusTokenMaker");
 		map.put(SYNTAX_STYLE_CSHARP,			pkg + "CSharpTokenMaker");
 		map.put(SYNTAX_STYLE_CSS,				pkg + "CSSTokenMaker");
 		map.put(SYNTAX_STYLE_DELPHI,			pkg + "DelphiTokenMaker");
+		map.put(SYNTAX_STYLE_DTD,				pkg + "DtdTokenMaker");
 		map.put(SYNTAX_STYLE_FORTRAN,			pkg + "FortranTokenMaker");
 		map.put(SYNTAX_STYLE_GROOVY,			pkg + "GroovyTokenMaker");
 		map.put(SYNTAX_STYLE_HTML,				pkg + "HTMLTokenMaker");
 		map.put(SYNTAX_STYLE_JAVA,				pkg + "JavaTokenMaker");
 		map.put(SYNTAX_STYLE_JAVASCRIPT,		pkg + "JavaScriptTokenMaker");
 		map.put(SYNTAX_STYLE_JSP,				pkg + "JSPTokenMaker");
+		map.put(SYNTAX_STYLE_LATEX,				pkg + "LatexTokenMaker");
 		map.put(SYNTAX_STYLE_LISP,				pkg + "LispTokenMaker");
 		map.put(SYNTAX_STYLE_LUA,				pkg + "LuaTokenMaker");
 		map.put(SYNTAX_STYLE_MAKEFILE,			pkg + "MakefileTokenMaker");

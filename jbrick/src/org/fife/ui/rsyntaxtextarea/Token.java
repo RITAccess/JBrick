@@ -307,6 +307,7 @@ public abstract class Token implements TokenTypes {
 	 *
 	 * @param ch The characters.
 	 * @return Whether this token's lexeme ends with the specified characters.
+	 * @see #startsWith(char[])
 	 */
 	public boolean endsWith(char[] ch) {
 		if (ch==null || ch.length>textCount) {
@@ -572,6 +573,7 @@ public abstract class Token implements TokenTypes {
 	 * @param lexeme The lexeme to check for.
 	 * @return Whether this token has that type and lexeme.
 	 * @see #is(int, String)
+	 * @see #startsWith(char[])
 	 */
 	public boolean is(int type, char[] lexeme) {
 		if (this.type==type && textCount==lexeme.length) {
@@ -611,7 +613,7 @@ public abstract class Token implements TokenTypes {
 	 * @see #isWhitespace()
 	 */
 	public boolean isComment() {
-		return type>=TokenTypes.COMMENT_EOL && type<=TokenTypes.COMMENT_MARKUP;
+		return type>=Token.COMMENT_EOL && type<=Token.COMMENT_MARKUP;
 	}
 
 
@@ -623,6 +625,16 @@ public abstract class Token implements TokenTypes {
 	 */
 	public boolean isHyperlink() {
 		return hyperlink;
+	}
+
+
+	/**
+	 * Returns whether this token is an identifier.
+	 *
+	 * @return Whether this token is an identifier.
+	 */
+	public boolean isIdentifier() {
+		return type==IDENTIFIER;
 	}
 
 
@@ -659,7 +671,7 @@ public abstract class Token implements TokenTypes {
 	 * @return Whether or not this token is paintable.
 	 */
 	public boolean isPaintable() {
-		return type>TokenTypes.NULL;
+		return type>Token.NULL;
 	}
 
 
@@ -828,7 +840,7 @@ public abstract class Token implements TokenTypes {
 		// whitespace as identifiers for performance).  But we only paint tab
 		// lines for the leading whitespace in the token.  So, if this isn't a
 		// WHITESPACE token, figure out the leading whitespace's length.
-		if (type!=TokenTypes.WHITESPACE) {
+		if (type!=Token.WHITESPACE) {
 			int offs = textOffset;
 			for (; offs<textOffset+textCount; offs++) {
 				if (!RSyntaxUtilities.isWhitespace(text[offs])) {
@@ -919,10 +931,31 @@ public abstract class Token implements TokenTypes {
 	 * token.
 	 *
 	 * @param nextToken The new next token.
-	 * @see #getNextToken
+	 * @see #getNextToken()
 	 */
 	public void setNextToken(Token nextToken) {
 		this.nextToken = nextToken;
+	}
+
+
+	/**
+	 * Returns whether this token starts with the specified characters.
+	 *
+	 * @param chars The characters.
+	 * @return Whether this token starts with those characters.
+	 * @see #endsWith(char[])
+	 * @see #is(int, char[])
+	 */
+	public boolean startsWith(char[] chars) {
+		if (chars.length<=textCount){
+			for (int i=0; i<chars.length; i++) {
+				if (text[textOffset+i]!=chars[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 
@@ -938,7 +971,7 @@ public abstract class Token implements TokenTypes {
 	 * @param pos A position in the token's internal char array
 	 *        (<code>textOffset</code> - <code>textOffset+textCount</code>).
 	 * @return The corresponding position in the document.
-	 * @see #documentToToken
+	 * @see #documentToToken(int)
 	 */
 	public int tokenToDocument(int pos) {
 		return pos + (offset-textOffset);
@@ -951,10 +984,9 @@ public abstract class Token implements TokenTypes {
 	 *
 	 * @return A string describing this token.
 	 */
-	@Override
 	public String toString() {
 		return "[Token: " +
-			(type==TokenTypes.NULL ? "<null token>" :
+			(type==Token.NULL ? "<null token>" :
 				"text: '" +
 					(text==null ? "<null>" : getLexeme() + "'; " +
 	       		"offset: " + offset + "; type: " + type + "; " +

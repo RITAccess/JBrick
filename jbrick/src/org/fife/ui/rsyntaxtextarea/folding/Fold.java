@@ -151,7 +151,6 @@ public class Fold implements Comparable {
 	 * @return Whether the two folds are equal.
 	 * @see #compareTo(Object)
 	 */
-	@Override
 	public boolean equals(Object otherFold) {
 		return compareTo(otherFold)==0;
 	}
@@ -404,7 +403,6 @@ public class Fold implements Comparable {
 	}
 
 
-	@Override
 	public int hashCode() {
 		return getStartLine();
 	}
@@ -535,7 +533,10 @@ public class Fold implements Comparable {
 
 	private void updateChildCollapsedLineCount(int count) {
 		childCollapsedLineCount += count;
-		if (parent!=null) {
+		//if (childCollapsedLineCount>getLineCount()) {
+		//	Thread.dumpStack();
+		//}
+		if (!collapsed && parent!=null) {
 			parent.updateChildCollapsedLineCount(count);
 		}
 	}
@@ -546,7 +547,6 @@ public class Fold implements Comparable {
 	 *
 	 * @return A string representation of this <code>Fold</code>.
 	 */
-	@Override
 	public String toString() {
 		return "[Fold: " +
 				"startOffs=" + getStartOffset() +
