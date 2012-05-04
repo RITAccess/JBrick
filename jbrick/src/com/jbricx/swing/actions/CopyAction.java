@@ -19,8 +19,7 @@ public class CopyAction extends JBricxAbstractAction {
 	 * CopyAction constructor
 	 */
 	public CopyAction(final JBricxManager manager) {
-		super("", new ImageIcon(CopyAction.class.getResource(
-				"/images/edit-copy.png")), manager);
+		super("", new ImageIcon("./resources/images/edit-copy.png"), manager);
 	}
 
 	@Override

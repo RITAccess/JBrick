@@ -21,7 +21,7 @@ public class DownloadAction extends AbstractCompilerAction implements NXTObserve
 	 * Constructor
 	 */
 	public DownloadAction(final JBricxManager manager) {
-		super("", new ImageIcon(DownloadAction.class.getResource("/images/download.png")), manager);
+		super("", new ImageIcon("./resources/images/download.png"), manager);
 		//System.out.println(NXTManager.isConnected());
 		setEnabled(NXTManager.isFantomDriverLoaded());
 	}

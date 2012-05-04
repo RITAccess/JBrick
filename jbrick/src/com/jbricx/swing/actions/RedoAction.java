@@ -18,7 +18,7 @@ public class RedoAction extends JBricxAbstractAction {
    * RedoAction constructor
    */
   public RedoAction(final JBricxManager manager) {
-	  super("", new ImageIcon(RedoAction.class.getResource("/images/edit-redo.png")), manager);
+	  super("", new ImageIcon("./resources/images/edit-redo.png"), manager);
   }
 
   /**

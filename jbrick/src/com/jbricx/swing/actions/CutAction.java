@@ -19,7 +19,7 @@ public class CutAction extends JBricxAbstractAction {
 	 * CutAction constructor
 	 */
 	public CutAction(final JBricxManager manager) {
-		super("", new ImageIcon(CopyAction.class.getResource("/images/edit-cut.png")), manager);
+		super("", new ImageIcon("./resources/images/edit-cut.png"), manager);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public class NewAction extends JBricxAbstractAction {
    * NewAction constructor
    */
   public NewAction(final JBricxManager manager) {
-	  super("", new ImageIcon(NewAction.class.getResource("/images/document-new.png")), manager);
+	  super("", new ImageIcon("./resources/images/document-new.png"), manager);
   }
 
   /**

@@ -20,7 +20,7 @@ public class FindAction extends JBricxAbstractAction {
 	 * FindAction constructor
 	 */
 	public FindAction(final JBricxManager manager) {
-		super("", new ImageIcon(FindAction.class.getResource("/images/edit-find.png")), manager);
+		super("", new ImageIcon("./resources/images/edit-find.png"), manager);
 	}
 
 	@Override

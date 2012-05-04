@@ -1,6 +1,6 @@
 package com.jbricx.swing.actions;
 
-//import com.jbricx.help.HelpBrowser;
+import com.jbricx.help.HelpBrowser;
 
 import java.awt.event.ActionEvent;
 
@@ -12,7 +12,7 @@ import com.jbricx.swing.ui.JBricxManager;
 public class HelpContentAction extends JBricxAbstractAction {
 
   public HelpContentAction(final JBricxManager manager) {
-    super("", new ImageIcon(HelpContentAction.class.getResource("/images/help-browser.png")), manager);
+    super("", new ImageIcon("./resources/images/help-browser.png"), manager);
   }
 
   /**

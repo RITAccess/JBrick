@@ -19,8 +19,8 @@ public class CompileAction extends AbstractCompilerAction {
 	 * Constructor
 	 */
 	public CompileAction(final JBricxManager manager) {
-		super("", new ImageIcon(CompileAction.class.getResource(
-				"/images/compile.png")), manager);
+		super("", new ImageIcon(
+				"./resources/images/compile.png"), manager);
 	}
 
 	@Override

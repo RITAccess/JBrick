@@ -21,6 +21,7 @@ import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
+import com.jbricx.swing.actions.DirectControlAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
@@ -33,6 +34,7 @@ import com.jbricx.swing.actions.MaxViewerAction;
 import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PasteAction;
+import com.jbricx.swing.actions.PianoAction;
 import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
@@ -53,6 +55,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private CompileAction compileAction;
 	private CopyAction copyAction;
 	private CutAction cutAction;
+	private DirectControlAction directControlAction;
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
@@ -65,6 +68,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private NewAction newAction;
 	private OpenAction openAction;
 	private PasteAction pasteAction;
+	private PianoAction pianoAction;
 	private PreferencesAction prefsAction;
 	private PrintAction printAction;
 	private PrintPreviewAction printPreviewAction;
@@ -431,13 +435,13 @@ public class JBricxMenuAndToolBarDelegate {
 		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 		toolsMenu.add(gt);
 		
-//		JMenuItem piano = new JMenuItem(pianoAction);
-//		piano.setText("Piano");
-//		toolsMenu.add(piano);
-//		
-//		JMenuItem directControl = new JMenuItem(directControlAction);
-//		directControl.setText("Direct Control");
-//		toolsMenu.add(directControl);
+		JMenuItem piano = new JMenuItem(pianoAction);
+		piano.setText("Piano");
+		toolsMenu.add(piano);
+		
+		JMenuItem directControl = new JMenuItem(directControlAction);
+		directControl.setText("Direct Control");
+		toolsMenu.add(directControl);
 
 		// View
 		JMenuItem showHideViewer = new JMenuItem(showHideFileViewerAction);

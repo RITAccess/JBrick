@@ -28,7 +28,7 @@ public class PreferenceStore {
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
-	public static final String NBCTOOL_DEFAULT = "";
+	public static final String NBCTOOL_DEFAULT = "./lib/nbc.exe";
  
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
@@ -76,7 +76,7 @@ public class PreferenceStore {
 	public PreferenceStore(){
 		final String NAME = "allPreferences";
 		prefs = Preferences.userRoot().node(NAME);
-		if(prefs.getBoolean("ranPreviously", false)){
+		if(!prefs.getBoolean("ranPreviously", false)){
 			setPreferencesAndDefaults();
 		}
 	}
@@ -96,7 +96,6 @@ public class PreferenceStore {
 		prefs.put(FONT, FONT_DEFAULT);
 		prefs.putBoolean(AUTOCOMPILE, AUTOCOMPILE_DEFAULT);
 		prefs.put(WRKSPC,WRKSPC_DEFAULT);
-		prefs.put(NBCTOOL,"");
 		prefs.putBoolean("ranPreviously",true);	
 	}
 	

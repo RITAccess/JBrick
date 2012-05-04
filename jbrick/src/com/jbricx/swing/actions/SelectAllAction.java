@@ -16,7 +16,7 @@ public class SelectAllAction extends JBricxAbstractAction {
    * CopyAction constructor
    */
   public SelectAllAction(final JBricxManager manager) {
-	  super("", new ImageIcon(SelectAllAction.class.getResource("/images/edit-selectall.png")), manager);
+	  super("", new ImageIcon("./resources/images/edit-selectall.png"), manager);
   }
 
   /**

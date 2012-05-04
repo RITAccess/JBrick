@@ -44,10 +44,6 @@ public class CompilerRunner {
 	}
 
 	public ExitStatus compile(final String filename) {
-		if(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT).equals("")){
-			return run(getClass().getResource("nbc.exe").getPath(),
-					filename);
-		}
 		return run(preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT),
 				filename);
 	}
