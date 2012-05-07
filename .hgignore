@@ -1,0 +1,7 @@
+syntax: glob
+jbrick/bin/*
+*.metadata
+*.orig
+*.DS_Store
+*.properties
+*.class
