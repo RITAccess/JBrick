@@ -29,7 +29,6 @@ public class CompilerError {
                 fileline.indexOf("File \"") + 6,
                 fileline.indexOf("\" ; ")
                );
-   		System.out.println(file);
 
     } catch (StringIndexOutOfBoundsException e) {
       e.printStackTrace();

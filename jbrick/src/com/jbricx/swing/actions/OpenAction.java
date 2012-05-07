@@ -1,7 +1,5 @@
 package com.jbricx.swing.actions;
 
-import java.awt.FileDialog;
-
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.prefs.Preferences;
@@ -9,8 +7,6 @@ import java.util.prefs.Preferences;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
@@ -24,7 +20,7 @@ public class OpenAction extends JBricxAbstractAction {
    * OpenAction constructor
    */
   public OpenAction(final JBricxManager manager) {
-	    super("", new ImageIcon("./resources//images/document-open.png"), manager);
+	    super("", new ImageIcon(OpenAction.class.getResource("/images/document-open.png")), manager);
 	  }
 
 	@Override

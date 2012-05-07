@@ -14,10 +14,10 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 @SuppressWarnings("serial")
 public class GotoAction extends JBricxAbstractAction {
   /**
-   * GotoAction constructor
+   * FindAction constructor
    */
   public GotoAction(final JBricxManager manager) {
-	  super("", new ImageIcon("./resources/images/edit-find.png"), manager);
+	  super("", new ImageIcon(GotoAction.class.getResource("/images/edit-find.png")), manager);
   }
 
   /**

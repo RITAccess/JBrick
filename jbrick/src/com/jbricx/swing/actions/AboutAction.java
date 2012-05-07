@@ -18,7 +18,7 @@ public class AboutAction extends JBricxAbstractAction {
 	 */
 	public AboutAction(final JBricxManager manager) {
 		//Name set to "" so that "About" does not show in toolbar icon.
-		super("", new ImageIcon("./resources/images/help-browser.png"), manager);
+		super("", new ImageIcon(AboutAction.class.getResource("/images/help-browser.png")), manager);
 	}
 
 	/**

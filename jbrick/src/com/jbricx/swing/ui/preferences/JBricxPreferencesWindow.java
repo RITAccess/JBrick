@@ -625,7 +625,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		// User wishes to leave. Saves changes and leaves	
 		}else if(arg0.getActionCommand().equals("OK")){
 			saveValues();
-			//manager.updatePreferences(); //Should automatically Update
+			manager.updatePreferences(); //Should automatically Update
 			this.dispose();
 		//User wishes to reset all items to default. Makes sure with another dialog, then does so if necessary.
 		}else if(arg0.getActionCommand().equals("reset")){
@@ -640,6 +640,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		//User wishes to apply settings but stay in window.
 		}else if(arg0.getActionCommand().equals("apply")){
 			saveValues();
+			manager.updatePreferences();
 		}
 	}
 

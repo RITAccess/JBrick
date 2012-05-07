@@ -62,10 +62,8 @@ public class FindBrickFileIO {
       BufferedWriter out = new BufferedWriter(new FileWriter(file));
       if (str.equals("USB")) {
         out.write("USB");
-        System.out.println("Saved 'USB' to File");
       } else {
         out.write("BT");
-        System.out.println("Saved 'BT' to File");
       }
       out.close();
     } catch (IOException e) {

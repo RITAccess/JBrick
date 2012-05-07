@@ -77,9 +77,6 @@ public class RTextScrollPane extends JScrollPane {
 
 
 	/**
-	 * 
-	 * MODIFIED FOR JBRICX 
-	 * 
 	 * Creates a scroll pane with preferred size (width, height).
 	 *
 	 * @param area The text area this scroll pane will contain.  If this is
@@ -98,9 +95,12 @@ public class RTextScrollPane extends JScrollPane {
 		textArea = area;
 
 		// Create the gutter for this document.
+		Font defaultFont = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
 		gutter = new Gutter(textArea);
-		gutter.setLineNumberColor(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
-		gutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
+		gutter.setLineNumberFont(defaultFont);
+		
+		gutter.setLineNumberColor( new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		
 		setLineNumbersEnabled(lineNumbers);
 
 		// Set miscellaneous properties.

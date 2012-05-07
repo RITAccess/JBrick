@@ -99,12 +99,9 @@ public class Gutter extends JPanel {
 
 
 	/**
-	 * Constructor. MODIFIED FOR JBRICX
+	 * Constructor.
 	 *
-	 * @param textArea The parent text area.  If this is
-	 *        <code>null</code>, you must call
-	 *        {@link #setTextArea(Component)}, passing in an
-	 *        {@link RTextArea}.
+	 * @param textArea The parent text area.
 	 */
 	public Gutter(RTextArea textArea) {
 
@@ -123,9 +120,9 @@ public class Gutter extends JPanel {
 
 		setBorder(new GutterBorder(0, 0, 0, 1)); // Assume ltr
 
-		//JBRICX MODIFICATION
-		setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT)));
-		
+		Color bg = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT));
+		setBackground(bg);
+
 	}
 
 

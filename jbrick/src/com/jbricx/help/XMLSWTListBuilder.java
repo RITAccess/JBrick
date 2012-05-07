@@ -12,6 +12,7 @@ public class XMLSWTListBuilder{
 
 	private class SAX extends DefaultHandler{
 	
+		@Override
 		public void startElement(String uri, String localName, String rawName, Attributes attributes){
 			if(rawName.equals("toc")){
 				System.out.println("Inside TOC");
@@ -21,6 +22,7 @@ public class XMLSWTListBuilder{
 			}
 		}
 		
+		@Override
 		public void endElement(String uri, String localName, String qname){
 			if(qname.equals("toc")){
 				System.out.println("Leaving TOC");
@@ -30,10 +32,12 @@ public class XMLSWTListBuilder{
 			}
 		}
 		
+		@Override
 		public void endDocument(){
 			System.out.println("End of doc");
 		}
 		
+		@Override
 		public void characters(char[] ch, int start, int length) {
 			System.out.println("Characters: " + new String(ch, start, length));
 		}

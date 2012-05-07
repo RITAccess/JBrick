@@ -10,7 +10,9 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.WindowConstants;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -20,7 +22,7 @@ import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener,WindowListener  {
+public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
 
 	Preferences prefs;
 	
@@ -36,10 +38,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 */
 	public void run() {
 		PreferenceStore prefClass = new PreferenceStore();
-		prefs = prefClass.getPrefs();
-		prefs.addPreferenceChangeListener(this);
-		
-		
+		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
 		
@@ -48,10 +47,10 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		      System.out.println("MainWindow.MainWindow(): Fantom driver missing!");
+		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 	}
 	
@@ -67,7 +66,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 
 	}
@@ -90,7 +89,9 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
 		leftRightSplit.setOneTouchExpandable(true);
-		leftRightSplit.setResizeWeight(.05);
+		leftRightSplit.setResizeWeight(.5);
+		leftRightSplit.setDividerLocation(250);
+		
 		
 		this.add(leftRightSplit);
 	}
@@ -164,16 +165,6 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	public JSplitPane getSplitPane(){
 		return leftRightSplit;
 	}
-
-
-	/**
-	 * Called by the listner whenever a property has changed.
-	 */
-	public void preferenceChange(PreferenceChangeEvent arg0) {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -211,14 +202,18 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 	}
 
-
-	public void refreshExplorerContent() {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	public void openTab(String FilePath) {
 		editorPane.open(FilePath);
+	}
+
+	public void updatePreferences() {
+		editorPane.refreshTabItems();
+		statusPane.refresh();
+	}
+
+	public void refreshExplorerContent() {
+		editorPane.refreshTabTitles();
+		
 	}
 
 

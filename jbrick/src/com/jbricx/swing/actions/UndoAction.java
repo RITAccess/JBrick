@@ -2,13 +2,9 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import org.fife.ui.rtextarea.RTextAreaEditorKit;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.RecordableTextAction;
-
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
@@ -21,7 +17,7 @@ public class UndoAction extends JBricxAbstractAction {
    * UndoAction constructor
    */
   public UndoAction(final JBricxManager manager) {
-	  super("", new ImageIcon("./resources/images/edit-undo.png"), manager);
+	  super("", new ImageIcon(UndoAction.class.getResource("/images/edit-undo.png")), manager);
   }
 
   /**

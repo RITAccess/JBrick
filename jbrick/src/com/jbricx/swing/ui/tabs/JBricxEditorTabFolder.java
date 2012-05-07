@@ -12,7 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -48,7 +52,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 		if(prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, PreferenceStore.BOOLRECENTFILES_DEFAULT)){
 			ArrayList<String>recentFiles = getRecentFiles();
-				if (recentFiles.size() > 1) {
+				if (recentFiles.size() > 0 && recentFiles.get(0).length()>1) {
 				      for (String file : recentFiles) {
 				        if (new File(file).exists()) {
 				          open(file);
@@ -97,6 +101,8 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		int tabIndex = getTabIndexByFilepath(absoluteFilePath);
 		//Make a new file because it was not currently found in the list of open files
 		if(tabIndex == -1){
+			
+			
 				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
 				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
 				newItem.setCodeFoldingEnabled(true);
@@ -305,24 +311,57 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	/**
-	 * Refreshes tab items (file names), text and color etc.
+	 * Refreshes tab items text and color etc.
 	 */
 	public void refreshTabItems() {
 		int paneCount = this.getTabCount();
-		
+
+		for (int i = 0; i < paneCount; i++) {
+			//Color for Lines
+			RTextScrollPane scroller = (RTextScrollPane) getComponentAt(i);
+			Gutter theGutter = scroller.getGutter();
+			theGutter.setBackground(new Color(PreferenceStore.getPrefs()
+					.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),
+							PreferenceStore.LINENUMBERBG_DEFAULT)));
+			theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs()
+					.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(),
+							PreferenceStore.LINENUMBERFG_DEFAULT)));
+			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs()
+					.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
+
+			//Fonts
+			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport()
+					.getView());
+			Font font = Font.decode(PreferenceStore.getPrefs().get(
+					PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+			if (font != null) {
+				SyntaxScheme ss = tab.getSyntaxScheme();
+				ss = (SyntaxScheme) ss.clone();
+				for (int j = 0; j < ss.styles.length; j++) {
+					if (ss.styles[i] != null) {
+						ss.styles[i].font = font;
+					}
+				}
+				tab.setSyntaxScheme(ss);
+				tab.setFont(font);
+			}
+			//Colors for main code
+			tab.setSyntaxScheme(tab.getDefaultSyntaxScheme());
+		}
+	}
+	
+	/**
+	 * Refreshes the tabs title names
+	 */
+	public void refreshTabTitles(){
+		int paneCount = this.getTabCount();
 		for (int i = 0; i < paneCount; i++) {
 			RTextScrollPane scroller = (RTextScrollPane)getComponentAt(i);
-			Gutter theGutter = scroller.getGutter();
-			theGutter.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
-			theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
-			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
-			
 			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport().getView());
-			tab.updateText();
-			if (tab.getFileName() != null) {
-				this.setTitleAt(i, tab.getFileName());
-				this.setTabComponentAt(i, new ButtonTabComponent(this));
-			}
+		if (tab.getFileName() != null) {
+			this.setTitleAt(i, tab.getFileName());
+			this.setTabComponentAt(i, new ButtonTabComponent(this));
+		}
 		}
 	}
 	
@@ -350,7 +389,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 	/**
 	 * Gets the list of files currently open in order to open them next time.
-	 * @return
+	 * @return StringBuilder of Recent Files
 	 */
 	public StringBuilder getFileList() {
 		StringBuilder recentFiles = new StringBuilder();
