@@ -46,6 +46,7 @@ public class NXTBrickConnector {
             }
 
           } catch (InterruptedException e) {
+        	  return;
             // IGNORE: The disconnect() method intentionally interrupts the
             // thread.
           }
@@ -98,6 +99,7 @@ public class NXTBrickConnector {
     }
 
     if (thread != null) {
+    	System.out.println("Interupting Thread");
       thread.interrupt();
     }
   }

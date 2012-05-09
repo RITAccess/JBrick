@@ -165,7 +165,6 @@ public class FindReplaceDialog extends javax.swing.JDialog
 				!replaceTextField.getText().isEmpty() &&
 					!(textArea.getSelectedText()== null))
 		{
-			System.out.println(!(textArea.getSelectedText()== null));
 
 			String replaceWord = replaceTextField.getText();
 
