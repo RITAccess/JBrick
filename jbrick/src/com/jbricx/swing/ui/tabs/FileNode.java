@@ -2,6 +2,7 @@ package com.jbricx.swing.ui.tabs;
 
 import java.io.File;
 
+@SuppressWarnings("serial")
 public class FileNode extends File{
 
 	public FileNode(String pathname) {

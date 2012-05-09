@@ -11,6 +11,7 @@ import javax.swing.ScrollPaneConstants;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
+@SuppressWarnings("serial")
 public class JBricxFilePane extends JScrollPane implements MouseListener{
 	
 	Preferences prefs;
