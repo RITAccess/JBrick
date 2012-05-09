@@ -17,8 +17,14 @@ public class FileNode extends File{
 
 	@Override
 	public String toString(){
-		String[] list = getPath().split("\\\\");
-		return list[list.length-1];
+		if( System.getProperty("os.name").startsWith("Windows")){
+			String[] list = getPath().split("\\\\");
+			return list[list.length-1];
+		}
+		else{
+			String[] list = getPath().split("/");
+			return list[list.length-1];
+		}
 	}
 
 }
