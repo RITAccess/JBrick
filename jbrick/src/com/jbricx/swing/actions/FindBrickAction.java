@@ -1,12 +1,8 @@
 package com.jbricx.swing.actions;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
@@ -21,7 +17,7 @@ public class FindBrickAction extends JBricxAbstractAction {
 	 * AboutAction constructor
 	 */
 	public FindBrickAction(JBricxManager manager) {
-		super("", new ImageIcon("./resources/images/find_brick.png"), manager);
+		super("", new ImageIcon(FindBrickAction.class.getResource("/images/find_brick.png")), manager);
 		setEnabled(NXTManager.isFantomDriverLoaded());
 		// try {
 		// NXTManager.getInstance().getFantom();

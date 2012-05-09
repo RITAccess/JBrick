@@ -9,8 +9,13 @@ import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
+import javax.swing.InputMap;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -20,7 +25,7 @@ import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager,PreferenceChangeListener,WindowListener  {
+public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
 
 	Preferences prefs;
 	
@@ -35,11 +40,12 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	 * Runs the application. Called by initial class
 	 */
 	public void run() {
+
 		PreferenceStore prefClass = new PreferenceStore();
-		prefs = prefClass.getPrefs();
-		prefs.addPreferenceChangeListener(this);
+		prefs = PreferenceStore.getPrefs();		
 		
 		
+		setupEnterActionForAllButtons();
 		
 		initMainWindow();
 		
@@ -48,14 +54,24 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		      System.out.println("MainWindow.MainWindow(): Fantom driver missing!");
+		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 	}
 	
-	
+	/**
+	 * Kinda hackey to allow buttons to work with enter press. Overwrides lookandfeel.
+	 */
+	private void setupEnterActionForAllButtons() {
+        InputMap im = (InputMap) UIManager.getDefaults().get("Button.focusInputMap");
+        Object pressedAction = im.get(KeyStroke.getKeyStroke("pressed SPACE"));
+        Object releasedAction = im.get(KeyStroke.getKeyStroke("released SPACE"));
+
+        im.put(KeyStroke.getKeyStroke("pressed ENTER"), pressedAction);
+        im.put(KeyStroke.getKeyStroke("released ENTER"), releasedAction);
+    }
 	
 	/**
 	 * Configures settings of the main window and builds components.
@@ -67,7 +83,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 
 	}
@@ -78,7 +94,7 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	private void buildMainWindow() {
 		
 		editorPane = new JBricxEditorTabFolder(this);
-		statusPane = new JBricxStatusPane();
+		statusPane = new JBricxStatusPane(this);
 		filePane = new JBricxFilePane(this);				
 		
 		//Contains the main Editor component, and the status component
@@ -90,7 +106,9 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
 		leftRightSplit.setOneTouchExpandable(true);
-		leftRightSplit.setResizeWeight(.05);
+		leftRightSplit.setResizeWeight(.5);
+		leftRightSplit.setDividerLocation(250);
+		
 		
 		this.add(leftRightSplit);
 	}
@@ -164,16 +182,6 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 	public JSplitPane getSplitPane(){
 		return leftRightSplit;
 	}
-
-
-	/**
-	 * Called by the listner whenever a property has changed.
-	 */
-	public void preferenceChange(PreferenceChangeEvent arg0) {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -211,14 +219,18 @@ public class MainWindow extends JFrame implements JBricxManager,PreferenceChange
 		
 	}
 
-
-	public void refreshExplorerContent() {
-		editorPane.refreshTabItems();
-		statusPane.refresh();	
-	}
-	
 	public void openTab(String FilePath) {
 		editorPane.open(FilePath);
+	}
+
+	public void updatePreferences() {
+		editorPane.refreshTabItems();
+		statusPane.refresh();
+	}
+
+	public void refreshExplorerContent() {
+		editorPane.refreshTabTitles();
+		
 	}
 
 

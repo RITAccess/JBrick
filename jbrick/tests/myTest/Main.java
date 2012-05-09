@@ -4,13 +4,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Image;
 
-import annotation.AnnotationConfiguration;
-import annotation.AnnotationHover;
-import annotation.AnnotationMarkerAccess;
-import annotation.CodeViewerConfiguration;
-import annotation.ColorCache;
-import annotation.ErrorAnnotation;
-
 public class Main {
 
 	// error identifiers, images and colors

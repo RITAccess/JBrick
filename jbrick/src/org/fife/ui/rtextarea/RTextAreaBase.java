@@ -411,24 +411,24 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 */
 	public static final Font getDefaultFont() {
 
-		Font font = null;
+		Font font = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
 
-		if (isOSX()) {
-			// Snow Leopard (1.6) uses Menlo as default monospaced font,
-			// pre-Snow Leopard used Monaco.
-			font = new Font("Menlo", Font.PLAIN, 12);
-			if (!"Menlo".equals(font.getFamily())) {
-				font = new Font("Monaco", Font.PLAIN, 12);
-				if (!"Monaco".equals(font.getFamily())) { // Shouldn't happen
-					font = new Font("Monospaced", Font.PLAIN, 13);
-				}
-			}
-		}
-		else {
-			font = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT));
-		}
+//		if (isOSX()) {
+//			// Snow Leopard (1.6) uses Menlo as default monospaced font,
+//			// pre-Snow Leopard used Monaco.
+//			font = new Font("Menlo", Font.PLAIN, 12);
+//			if (!"Menlo".equals(font.getFamily())) {
+//				font = new Font("Monaco", Font.PLAIN, 12);
+//				if (!"Monaco".equals(font.getFamily())) { // Shouldn't happen
+//					font = new Font("Monospaced", Font.PLAIN, 13);
+//				}
+//			}
+//		}
+//		else {
+//			font = new Font("Monospaced", Font.PLAIN, 13);
+//		}
 
-		
+		//System.out.println(font.getFamily() + ", " + font.getName());
 		return font;
 
 	}
@@ -440,7 +440,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 * @return The default foreground color.
 	 */
 	public static final Color getDefaultForeground() {
-		return Color.BLACK;
+		return new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT));
 	}
 
 

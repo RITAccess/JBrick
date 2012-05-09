@@ -19,7 +19,7 @@ public class SaveAction extends JBricxAbstractAction {
    * SaveAction constructor
    */
   public SaveAction(final JBricxManager manager) {
-	  super("", new ImageIcon("./resources/images/document-save.png"), manager);
+	  super("", new ImageIcon(SaveAction.class.getResource("/images/document-save.png")), manager);
 
     // setToolTipText("Save");
     // setAccelerator(SWT.CTRL + 's');
@@ -61,7 +61,7 @@ public class SaveAction extends JBricxAbstractAction {
     }
     
     //Refresh file names
-    getManager().getTabFolder().refreshTabItems();
+    getManager().getTabFolder().refreshTabTitles();
     
   }
 }

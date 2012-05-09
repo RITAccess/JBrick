@@ -57,8 +57,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
-import com.jbricx.swing.ui.preferences.PreferenceStore;
-
 
 
 /**
@@ -79,6 +77,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  *       <li>C#
  *       <li>Clojure
  *       <li>Delphi
+ *       <li>DTD
  *       <li>Fortran
  *       <li>Groovy
  *       <li>HTML
@@ -89,6 +88,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  *   </td>
  *   <td style="vertical-align: top">
  *    <ul>
+ *       <li>LaTeX
  *       <li>Lisp
  *       <li>Lua
  *       <li>Make
@@ -125,7 +125,8 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * bookmarks easily to your text area.
  *
  * @author Robert Futrell
- * @version 2.0.2
+ * @version 2.0.3
+ * @see TextEditorPane
  */
 public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 
@@ -976,7 +977,7 @@ private boolean fractionalFontMetricsEnabled;
 	 * @see #setSyntaxScheme(SyntaxScheme)
 	 */
 	public SyntaxScheme getDefaultSyntaxScheme() {
-		return new SyntaxScheme(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
+		return new SyntaxScheme(getFont());
 	}
 
 
@@ -1520,7 +1521,7 @@ private boolean fractionalFontMetricsEnabled;
 				focusableTip.setImageBase(imageBase);
 				focusableTip.toolTipRequested(e, text);
 			}
-			// No tooltip text at new location - hide tip window if one is
+			// No tool tip text at new location - hide tip window if one is
 			// currently visible
 			else if (focusableTip!=null) {
 				focusableTip.possiblyDisposeOfTipWindow();
@@ -1769,7 +1770,6 @@ private boolean fractionalFontMetricsEnabled;
 
 
 	/**
-	 * MODIFIED FOR JBRICX ( Sets default font and other defaults from preferences.
 	 * Sets the colors used for syntax highlighting to their defaults.
 	 *
 	 * @see #setSyntaxScheme(SyntaxScheme)
@@ -1778,7 +1778,6 @@ private boolean fractionalFontMetricsEnabled;
 	 */
 	public void restoreDefaultSyntaxScheme() {
 		setSyntaxScheme(getDefaultSyntaxScheme());
-		this.setFont(Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT,PreferenceStore.FONT_DEFAULT)));
 	}
 
 
@@ -2462,6 +2461,23 @@ private boolean fractionalFontMetricsEnabled;
 
 
 	/**
+	 * Resets the editor state after the user clicks on a hyperlink or releases
+	 * the hyperlink modifier.
+	 */
+	private void stopScanningForLinks() {
+		if (isScanningForLinks) {
+			Cursor c = getCursor();
+			isScanningForLinks = false;
+			hoveredOverLinkOffset = -1;
+			if (c!=null && c.getType()==Cursor.HAND_CURSOR) {
+				setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+				repaint(); // TODO: Repaint just the affected line.
+			}
+		}
+	}
+
+
+	/**
 	 * Returns the token at the specified position in the view.
 	 *
 	 * @param p The position in the view.
@@ -2562,6 +2578,7 @@ private boolean fractionalFontMetricsEnabled;
 						HyperlinkEvent.EventType.ACTIVATED,
 						url, desc);
 				fireHyperlinkUpdate(he);
+				stopScanningForLinks();
 			}
 		}
 
@@ -2588,13 +2605,7 @@ private boolean fractionalFontMetricsEnabled;
 				}
 				else {
 					if (isScanningForLinks) {
-						Cursor c = getCursor();
-						isScanningForLinks = false;
-						hoveredOverLinkOffset = -1;
-						if (c!=null && c.getType()==Cursor.HAND_CURSOR) {
-							setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-							repaint(); // TODO: Repaint just the affected line.
-						}
+						stopScanningForLinks();
 					}
 				}
 			}

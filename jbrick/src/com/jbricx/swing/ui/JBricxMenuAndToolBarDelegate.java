@@ -11,17 +11,16 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.CloseAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
-import com.jbricx.swing.actions.DirectControlAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
@@ -34,7 +33,6 @@ import com.jbricx.swing.actions.MaxViewerAction;
 import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PasteAction;
-import com.jbricx.swing.actions.PianoAction;
 import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
@@ -55,7 +53,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private CompileAction compileAction;
 	private CopyAction copyAction;
 	private CutAction cutAction;
-	private DirectControlAction directControlAction;
+	private CloseAction closeAction;
 	private DownloadAction downloadAction;
 	private ExitAction exitAction;
 	private FindAction findAction;
@@ -68,7 +66,6 @@ public class JBricxMenuAndToolBarDelegate {
 	private NewAction newAction;
 	private OpenAction openAction;
 	private PasteAction pasteAction;
-	private PianoAction pianoAction;
 	private PreferencesAction prefsAction;
 	private PrintAction printAction;
 	private PrintPreviewAction printPreviewAction;
@@ -92,6 +89,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private JMenu helpMenu;
 
 	public JBricxMenuAndToolBarDelegate(JBricxManager manager) {
+		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		this.manager = manager;
 
 		// TODO Alphabetize as you add more!!!
@@ -99,6 +97,7 @@ public class JBricxMenuAndToolBarDelegate {
 		compileAction = new CompileAction(manager);
 		copyAction = new CopyAction(manager);
 		cutAction = new CutAction(manager);
+		closeAction = new CloseAction(manager);
 		//directControlAction = new DirectControlAction(manager);
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
@@ -154,8 +153,6 @@ public class JBricxMenuAndToolBarDelegate {
 		findButton.getAccessibleContext().setAccessibleName("Find");
 		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
-		findButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK), "SetFind");
-		findButton.getActionMap().put("SetFind",compileAction);
 		findButton.setToolTipText("Find and Replace");
 
 		// Compile Button
@@ -165,8 +162,6 @@ public class JBricxMenuAndToolBarDelegate {
 		compileButton.getAccessibleContext().setAccessibleName("Compile");
 		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
-		compileButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK), "SetCompile");
-		compileButton.getActionMap().put("SetCompile",compileAction);
 		compileButton.setToolTipText("Compile");
 		
 		// Find Brick Button
@@ -188,8 +183,6 @@ public class JBricxMenuAndToolBarDelegate {
 		preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
 		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
-		preferencesButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK), "SetPreferences");
-		preferencesButton.getActionMap().put("SetPreferences",prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
@@ -204,8 +197,6 @@ public class JBricxMenuAndToolBarDelegate {
 		helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
 		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
-		compileButton.getInputMap().put(KeyStroke.getKeyStroke((char) KeyEvent.VK_F1), "SetHelp");
-		compileButton.getActionMap().put("SetHelp",compileAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
@@ -228,13 +219,6 @@ public class JBricxMenuAndToolBarDelegate {
 		pasteButton.getAccessibleContext().setAccessibleDescription("Paste text");
 		pasteButton.setAction(pasteAction);
 		pasteButton.setToolTipText("Paste");
-		
-		// Print Button
-		JButton printButton = new JButton();
-		printButton.getAccessibleContext().setAccessibleName("Print");
-		printButton.getAccessibleContext().setAccessibleDescription("Print file");
-		printButton.setAction(printAction);
-		printButton.setToolTipText("Print");
 		
 		// redo Button
 		JButton redoButton = new JButton();
@@ -270,7 +254,6 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(openButton);
 		mainToolBar.add(saveButton);
 		mainToolBar.add(saveAsButton);
-		mainToolBar.add(printButton);
 		mainToolBar.add( new JToolBar.Separator());
 		//mainToolBar.add(Box.createHorizontalStrut(45));
 		mainToolBar.add(Box.createHorizontalGlue());
@@ -367,6 +350,13 @@ public class JBricxMenuAndToolBarDelegate {
 		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		fileMenu.add(print);
 		
+		JMenuItem close = new JMenuItem(closeAction);
+		close.setText("Close");
+		close.getAccessibleContext().setAccessibleName("Close File");
+		close.getAccessibleContext().setAccessibleDescription("Close the current File");
+		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		fileMenu.add(close);
+		
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit");
@@ -412,8 +402,8 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
-		compile.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_C, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+		
+		compile.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5,0));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 		
@@ -424,8 +414,7 @@ public class JBricxMenuAndToolBarDelegate {
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
-		dl.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_D, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,0));
 		dl.setText("Download");
 		compileMenu.add(dl);
 
@@ -435,13 +424,13 @@ public class JBricxMenuAndToolBarDelegate {
 		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 		toolsMenu.add(gt);
 		
-		JMenuItem piano = new JMenuItem(pianoAction);
-		piano.setText("Piano");
-		toolsMenu.add(piano);
-		
-		JMenuItem directControl = new JMenuItem(directControlAction);
-		directControl.setText("Direct Control");
-		toolsMenu.add(directControl);
+//		JMenuItem piano = new JMenuItem(pianoAction);
+//		piano.setText("Piano");
+//		toolsMenu.add(piano);
+//		
+//		JMenuItem directControl = new JMenuItem(directControlAction);
+//		directControl.setText("Direct Control");
+//		toolsMenu.add(directControl);
 
 		// View
 		JMenuItem showHideViewer = new JMenuItem(showHideFileViewerAction);
@@ -473,7 +462,6 @@ public class JBricxMenuAndToolBarDelegate {
 		help.setText("Help Content");
 		help.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1,0));
 		helpMenu.add(help);
-
 	}
 
 }

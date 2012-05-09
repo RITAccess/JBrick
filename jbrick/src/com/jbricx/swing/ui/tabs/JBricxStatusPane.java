@@ -8,20 +8,30 @@ import java.util.prefs.Preferences;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import com.jbricx.swing.communications.CompilerError;
+import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	JEditorPane messagePane;
 	private Preferences prefs;
-	
-	public JBricxStatusPane(){
+	private JBricxEditorTabFolder tab;
+	// Using this as a hack because preferences update too many times(one update
+	// fired per preference changed.)
+	private int timesRefreshed = 0;
+	private List<CompilerError> errorList;
+
+	public JBricxStatusPane(MainWindow main) {
+		tab = main.getTabFolder();
 		messagePane = new JEditorPane();
 		messagePane.setEditable(false);
 		messagePane.setBackground(Color.WHITE);
@@ -30,35 +40,42 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
 				PreferenceStore.FONT_DEFAULT)));
 		messagePane.setContentType("text/html");
-		
 		this.addTab("Status", new JScrollPane(messagePane,
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
 	}
 
 	/**
-	 * Proposed function for pushing a message to the console. 
-	 * Not tested yet how to put links from compiler errors to jump to line. 
-	 * @param list Message to **append** to the current text.
+	 * Proposed function for pushing a message to the console. Not tested yet
+	 * how to put links from compiler errors to jump to line.
+	 * 
+	 * @param list
+	 *            Message to **append** to the current text.
 	 */
-	public void pushMessage(List<CompilerError> list){
-		Document doc = messagePane.getDocument();
-		StringBuffer sb = new StringBuffer();
-		for(CompilerError ce : list) {
-			String m = ce.toString();
-			int ln = Integer.parseInt(m.split(" ")[3].split(":")[0]);
-			String[] mess = m.split(":");
-			m = "<a href=\"error\">"+ mess[0] + "</a>:";
-			for(int i = 1; i < mess.length; ++i) {
-				m += mess[i];
-				if (i == 1)
-					m += ":";
+	public void pushMessage(List<CompilerError> list) {
+		if (list != null) {
+			messagePane.getCaret().setVisible(true);
+			messagePane.getCaret().setDot(0);
+			errorList = list;
+			StringBuffer sb = new StringBuffer();
+			for (CompilerError ce : errorList) {
+				String m = ce.toString();
+				String[] mess = m.split(":");
+				m = "<a href=\"" + mess[0] + "\">" + mess[0] + "</a>:";
+				for (int i = 1; i < mess.length; ++i) {
+					m += mess[i];
+					if (i == 1)
+						m += ":";
+				}
+				m += "<br>";
+				sb.append(m);
 			}
-			m += "<br>";
-			sb.append(m);
+			messagePane.addHyperlinkListener(this);
+			Font newFont = Font.decode(prefs.get(PreferenceStore.FONT,
+					PreferenceStore.FONT_DEFAULT));
+			messagePane.setText("<p style=\"font-size:" + newFont.getSize()
+					+ "px\">" + sb.toString() + "</p>");
 		}
-		messagePane.addHyperlinkListener(this);
-		messagePane.setText(sb.toString());
 	}
 
 	public void clearOldMessages() {
@@ -66,32 +83,38 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		try {
 			doc.remove(0, doc.getLength());
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void refresh(){
-		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
-				PreferenceStore.FONT_DEFAULT)));
-	}
-	
-	class StatusPaneHyperlinkListener implements HyperlinkListener {
-	    public void hyperlinkUpdate(HyperlinkEvent e) {
-//	      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-//	        StringTokenizer st = new StringTokenizer(e.getDescription(), " ");
-//	        if (st.hasMoreTokens()) {
-//	          String s = st.nextToken();
-//	          System.err.println("token: " + s);
-//	        }
-//	      }
-	    	System.out.println("Hyperlink event");
-	    }
+
+	/**
+	 * We clear the list, then repush it with the existing error set. Easiest
+	 * way to do this and change the font with html in mind.
+	 */
+	public void refresh() {
+		clearOldMessages();
+		pushMessage(errorList);
 	}
 
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent arg0) {
-		// TODO Auto-generated method stub
-    	System.out.println("Hyperlink event");
+		int ln = Integer.parseInt(arg0.getDescription().split(" ")[3]
+				.split(":")[0]);
+
+		JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
+				.getSelectedComponent()).getViewport().getView();
+		try {
+			ln -= 1;
+			if (ln >= 0 && ln < tab.getLineCount()) {
+				tab.scrollRectToVisible(tab.modelToView(tab
+						.getLineStartOffset(ln)));
+				tab.setCaretPosition(tab.getLineStartOffset(ln));
+
+				// TODO this will not jump to the right file if it isn't
+				// currently open
+				this.tab.getSelection().requestFocusInWindow();
+			}
+		} catch (Exception e1) {
+		}
 	}
 }

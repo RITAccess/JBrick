@@ -38,7 +38,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  */
 public class SyntaxScheme implements Cloneable, TokenTypes {
 
-	private Style[] styles;
+	public Style[] styles;
 
 	private static final String VERSION			= "*ver1";
 
@@ -373,7 +373,7 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 		Color variable			= new Color(255,153,0);
 		Color literalNumber		= new Color(100,0,200);
 		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
-		Color error			= new Color(202,25,25);
+		Color error				= new Color(202,25,25);
 
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {

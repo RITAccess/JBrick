@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
-import com.jbricx.swing.communications.CompilerError;
 import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -70,7 +69,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			} else {
 				if(run.getCompilerErrors().size() > 0) {
 					displayErrors(run);
-					onFailure();
+					onFailure(run);
 				}
 			}
 		}
@@ -91,7 +90,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 
 		JBricxTabItem tabItem = getCurrentTab();
 		String filename="";
-		if (tabItem.isNewFile()) {
+		if (tabItem.isNewFile()&&(!tabItem.getFileAbsolutePath().endsWith(".bak.nxc"))) {
 			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
 			+ (System.getProperty("os.name").contains("OS X") ? "" : System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
@@ -103,7 +102,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			try {
 				
 				tabItem.saveAs(filename);
-				getManager().getTabFolder().refreshTabItems();
+				getManager().getTabFolder().refreshTabTitles();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(getManager().getShell(),
 					    "There was an error saving the current file"+
@@ -155,6 +154,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 
 	/**
 	 * Execute after a failed operation.
+	 * @param run 
 	 */
-	protected abstract void onFailure();
+	protected abstract void onFailure(ExitStatus run);
 }
