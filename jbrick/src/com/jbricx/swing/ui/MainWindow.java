@@ -9,9 +9,12 @@ import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
+import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import com.jbricx.swing.communications.NXTManager;
@@ -62,7 +65,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public void initMainWindow(){
 		buildMenuAndToolbar();
 		buildMainWindow();
-		
+		setupEnterActionForAllButtons();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
@@ -96,6 +99,17 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		this.add(leftRightSplit);
 	}
 
+	/**
+	 * Kinda hackey to allow buttons to work with enter press. Overwrides lookandfeel.
+	 */
+	private void setupEnterActionForAllButtons() {
+        InputMap im = (InputMap) UIManager.getDefaults().get("Button.focusInputMap");
+        Object pressedAction = im.get(KeyStroke.getKeyStroke("pressed SPACE"));
+        Object releasedAction = im.get(KeyStroke.getKeyStroke("released SPACE"));
+
+        im.put(KeyStroke.getKeyStroke("pressed ENTER"), pressedAction);
+        im.put(KeyStroke.getKeyStroke("released ENTER"), releasedAction);
+    }
 
 
 	/**
