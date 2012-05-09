@@ -2,6 +2,7 @@ package com.jbricx.swing.ui.tabs;
 
 import java.io.File;
 
+@SuppressWarnings("serial")
 public class FileNode extends File{
 
 	public FileNode(String pathname) {
@@ -14,6 +15,7 @@ public class FileNode extends File{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public String toString(){
 		String[] list = getPath().split("\\\\");
 		return list[list.length-1];

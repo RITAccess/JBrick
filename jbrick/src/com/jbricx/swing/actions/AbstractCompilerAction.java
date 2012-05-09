@@ -102,7 +102,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 			try {
 				
 				tabItem.saveAs(filename);
-				getManager().getTabFolder().refreshTabTitles();
+				getManager().getTabFolder().refreshTabItems();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(getManager().getShell(),
 					    "There was an error saving the current file"+

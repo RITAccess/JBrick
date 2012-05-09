@@ -1,11 +1,11 @@
-package com.jbricx.help;
-
-import java.awt.Image;
-import java.io.File;
-import java.util.Vector;
-
-public class CustomTree {
-
+//package com.jbricx.help;
+//
+//import java.awt.Image;
+//import java.io.File;
+//import java.util.Vector;
+//
+//public class CustomTree {
+//
 //  final Tree tree;
 //  private TreeViewer treeViewer;
 //  private MyLabelProvider labelProvider;
@@ -221,4 +221,4 @@ public class CustomTree {
 //  public Node getParent() {
 //    return parent;
 //  }
-}
+//}

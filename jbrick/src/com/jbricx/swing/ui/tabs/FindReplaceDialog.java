@@ -86,6 +86,7 @@ public class FindReplaceDialog extends javax.swing.JDialog
 
 		findTextField.addKeyListener(new java.awt.event.KeyAdapter()
 		{
+			@Override
 			public void keyReleased(java.awt.event.KeyEvent evt)
 			{
 				findTextFieldKeyReleased(evt);

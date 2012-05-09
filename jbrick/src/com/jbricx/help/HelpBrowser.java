@@ -1,16 +1,16 @@
-package com.jbricx.help;
-
-import java.awt.Composite;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-
-public class HelpBrowser {
-
+//package com.jbricx.help;
+//
+//import java.awt.Composite;
+//import java.awt.GridLayout;
+//import java.awt.Label;
+//import java.awt.event.WindowEvent;
+//import java.io.File;
+//import java.io.FilenameFilter;
+//import java.net.MalformedURLException;
+//import java.util.ArrayList;
+//
+//public class HelpBrowser extends ApplicationWindow {
+//
 //  private Browser browser;
 //  private ArrayList<String> urls = new ArrayList<String>();
 //  private int x = 0;
@@ -215,5 +215,5 @@ public class HelpBrowser {
 //    File file = new File(val);
 //    browser.setUrl(file.getAbsolutePath());
 //  }
-
-}
+//
+//}

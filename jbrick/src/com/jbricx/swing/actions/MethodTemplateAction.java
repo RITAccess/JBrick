@@ -1,25 +1,17 @@
-package com.jbricx.swing.actions;
-
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-
-
-/**
- * This class shows the Method Template dialog box
- * 
- * @author Priya Sankaran
- */
-public class MethodTemplateAction extends AbstractAction {
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	/**
-	 * AboutAction constructor
-	 */
+//package com.jbricx.swing.actions;
+//
+//import com.jbricx.ui.JBrickManager;
+//import com.jbricx.ui.methodTemplate.MethodTemplateUIWindow;
+//
+///**
+// * This class shows the Method Template dialog box
+// * 
+// * @author Priya Sankaran
+// */
+//public class MethodTemplateAction extends AbstractAction {
+//	/**
+//	 * AboutAction constructor
+//	 */
 //	public MethodTemplateAction(final JBrickManager manager) {
 //		super("&MethodTemplate@Ctrl+M", manager);
 //		setToolTipText("Method Template");
@@ -34,4 +26,4 @@ public class MethodTemplateAction extends AbstractAction {
 //		methodTemplate.setBlockOnOpen(true);
 //		methodTemplate.open();
 //	}
-}
+//}

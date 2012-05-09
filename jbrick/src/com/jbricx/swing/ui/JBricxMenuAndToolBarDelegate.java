@@ -13,8 +13,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
-
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CloseAction;
@@ -89,7 +87,6 @@ public class JBricxMenuAndToolBarDelegate {
 	private JMenu helpMenu;
 
 	public JBricxMenuAndToolBarDelegate(JBricxManager manager) {
-		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		this.manager = manager;
 
 		// TODO Alphabetize as you add more!!!

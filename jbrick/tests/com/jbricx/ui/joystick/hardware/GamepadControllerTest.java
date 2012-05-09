@@ -2,9 +2,6 @@ package com.jbricx.ui.joystick.hardware;
 
 import java.lang.reflect.Field;
 
-import com.jbricx.communications.NXTGadgetManager;
-import com.jbricx.communications.enums.Motor;
-
 public class GamepadControllerTest {
   private static final String DIRECTION_RIGHT_PROPERTY = "directionRight";
   private static final String DIRECTION_LEFT_PROPERTY = "directionLeft";

@@ -40,6 +40,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
 				PreferenceStore.FONT_DEFAULT)));
 		messagePane.setContentType("text/html");
+		messagePane.getCaret().setVisible(true);
 		this.addTab("Status", new JScrollPane(messagePane,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
@@ -54,8 +55,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 */
 	public void pushMessage(List<CompilerError> list) {
 		if (list != null) {
-			messagePane.getCaret().setVisible(true);
-			messagePane.getCaret().setDot(0);
 			errorList = list;
 			StringBuffer sb = new StringBuffer();
 			for (CompilerError ce : errorList) {

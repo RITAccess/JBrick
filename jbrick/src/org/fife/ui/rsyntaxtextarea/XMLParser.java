@@ -100,14 +100,17 @@ public class XMLParser extends AbstractParser {
 			}
 		}
 
+		@Override
 		public void error(SAXParseException e) throws SAXException {
 			doError(e);
 		}
 
+		@Override
 		public void fatalError(SAXParseException e) throws SAXException {
 			doError(e);
 		}
 
+		@Override
 		public void warning(SAXParseException e) throws SAXException {
 			doError(e);
 		}
