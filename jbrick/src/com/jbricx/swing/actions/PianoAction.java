@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.communications.NXTObserver;
-import com.jbricx.ui.piano.PianoUIWindow;
+
 
 import javax.swing.ImageIcon;
 
