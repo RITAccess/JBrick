@@ -46,7 +46,7 @@
       </classpath>
     </javac>
   </target>
-	
+        
 
   <!-- Compile the tests from the specified directory -->
   <target name="compile-test" depends="compile">
@@ -110,7 +110,7 @@
       <fileset dir="${workDir}" />
       <zipfileset src="jar-in-jar-loader.zip" />
       <zipfileset dir="${libsDir}" includes="jna.jar" />
-      <zipfileset dir="${libsDir}" includes="nbc.exe" />	
+      <zipfileset dir="${libsDir}" includes="nbc.exe" />        
     </jar>
 
     <!-- Delete the temporary directory -->
