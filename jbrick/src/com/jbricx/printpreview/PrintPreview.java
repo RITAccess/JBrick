@@ -146,8 +146,7 @@ public class PrintPreview {
             Dimension d = new Dimension();
 
             /** Return preview dimensions using the current scale factor.  */
-            @Override
-			public Dimension getPreferredSize() {
+            public Dimension getPreferredSize() {
                 int w = (int) (pageImage.getWidth(null) * previewScale);
                 int h = (int) (pageImage.getHeight(null) * previewScale);
                 if ((d.width != w) || (d.height != h)) {
@@ -161,20 +160,17 @@ public class PrintPreview {
             }
 
             /** Minimum preview size is the same as the preferred size.  */
-            @Override
-			public Dimension getMinimumSize() {
+            public Dimension getMinimumSize() {
                 return getPreferredSize();
             }
 
             /** Maximum preview size is the same as the preferred size.  */
-            @Override
-			public Dimension getMaximumSize() {
+            public Dimension getMaximumSize() {
                 return getPreferredSize();
             }
 
             /** Clear the drawing area and paint the scaled image.  */
-            @Override
-			public void paintComponent(Graphics g) {
+            public void paintComponent(Graphics g) {
                 g.setColor(previewPane.getBackground());
                 g.fillRect(0, 0, d.width + 2 * GAP, d.height + 2 * GAP);
                 g.setColor(Color.WHITE);
@@ -301,8 +297,7 @@ public class PrintPreview {
         menuBar.add(menu);
 
         previewHost = new JFrame("Print Preview") {
-            @Override
-			protected void processWindowEvent(WindowEvent e) {
+            protected void processWindowEvent(WindowEvent e) {
                 super.processWindowEvent(e);
                 if (e.getID() == WindowEvent.WINDOW_CLOSING) {
                     closePreview();

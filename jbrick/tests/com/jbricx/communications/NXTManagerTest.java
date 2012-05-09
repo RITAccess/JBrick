@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import com.jbricx.communications.enums.ConnectionType;
+
 /**
  * @author byktol
  */

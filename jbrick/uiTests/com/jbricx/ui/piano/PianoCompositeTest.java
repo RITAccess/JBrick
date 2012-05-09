@@ -82,7 +82,6 @@ public class PianoCompositeTest extends TestCase {
 		PianoController controller = null;
 		PianoComposite piano = null;
 
-		@Override
 		public void run() {
 
 			display = new Display();

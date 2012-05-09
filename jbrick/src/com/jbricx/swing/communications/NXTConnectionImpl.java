@@ -167,7 +167,7 @@ public class NXTConnectionImpl implements NXTConnection {
 				command.capacity(), response, response.length, status);
 
 		boolean result;
-		if (response[0] == 0) {
+		if ((int) response[0] == 0) {
 			result = false;
 		} else {
 			result = true;
@@ -202,7 +202,7 @@ public class NXTConnectionImpl implements NXTConnection {
 		ByteBuffer command = ByteBuffer.allocate(12);
 
 		command.put((byte) 0x04);// Motor Control, 4
-		command.put(motorName);// Motor Number 0,1,2, 2
+		command.put((byte) motorName);// Motor Number 0,1,2, 2
 		command.put((byte) speed);// Speed, 75
 		command.put((byte) 0x01);// Mode, 5 - Changed from 5 to 1 to de-reg
 		command.put((byte) 0x00);// Reg mode, 1 - Changed from 1 to 0
@@ -229,7 +229,7 @@ public class NXTConnectionImpl implements NXTConnection {
 		ByteBuffer command = ByteBuffer.allocate(12);
 
 		command.put((byte) 0x04);// LSREAD
-		command.put(motorName);// port
+		command.put((byte) motorName);// port
 		command.put((byte) 0x00);// power -100 - 100
 		command.put((byte) 0x00);// mode
 		command.put((byte) 0x01);// regulation
@@ -253,7 +253,7 @@ public class NXTConnectionImpl implements NXTConnection {
 		ByteBuffer command = ByteBuffer.allocate(2);
 
 		command.put((byte) 0x0A);// reset
-		command.put(motorName);// port
+		command.put((byte) motorName);// port
 
 		try {
 			fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, false,
@@ -281,10 +281,10 @@ public class NXTConnectionImpl implements NXTConnection {
 		ByteBuffer command = ByteBuffer.allocate(4);
 
 		command.put((byte) 0x05);// setinputmode //TODO what is this?
-		command.put(s.getPort());// port
-		command.put(s.getType());// sensortype LOWSPEED_9V - Changed to
+		command.put((byte) s.getPort());// port
+		command.put((byte) s.getType());// sensortype LOWSPEED_9V - Changed to
 										// switch
-		command.put(s.getMode());// sensormode - Changed
+		command.put((byte) s.getMode());// sensormode - Changed
 
 		byte[] response = new byte[2];
 
@@ -309,7 +309,7 @@ public class NXTConnectionImpl implements NXTConnection {
 			buf[1] = unsignedByteToInt(response[10]);
 			finalVal = buf[0] + (buf[1] << 8);
 		} else {
-			finalVal = getBoolVal(sensorName);
+			finalVal = (int) getBoolVal(sensorName);
 		}
 		return finalVal;
 	}
@@ -332,7 +332,7 @@ public class NXTConnectionImpl implements NXTConnection {
 
 		// command.put((byte)0x00);//setinputmode// TODO not needed??
 		command.put((byte) 0x07);// setinputmode// TODO Why 7?
-		command.put(s.getPort());// port
+		command.put((byte) s.getPort());// port
 
 		byte[] response = new byte[15];
 
@@ -358,7 +358,7 @@ public class NXTConnectionImpl implements NXTConnection {
 	}
 
 	public int unsignedByteToInt(byte b) {
-		return b & 0xFF;
+		return (int) b & 0xFF;
 	}
 
 	/*
