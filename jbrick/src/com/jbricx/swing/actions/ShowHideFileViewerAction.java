@@ -9,7 +9,7 @@ import com.jbricx.swing.ui.JBricxManager;
 
 public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	
-	boolean isOpen = true;
+	boolean isOpen = false;
 	
 	
 
@@ -24,11 +24,12 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 		
 		if(isOpen){
 			leftRightPane.setDividerSize(0);
-			leftRightPane.setDividerLocation(leftRightPane.getLocation().x);
+			leftRightPane.remove(getManager().getFilePane());
 			isOpen = false;
 		}
 		else{
-			leftRightPane.setDividerSize(5);
+			leftRightPane.setDividerSize(10);
+			leftRightPane.add(getManager().getFilePane(), 0);
 			leftRightPane.setDividerLocation(leftRightPane.getLocation().x+250);
 			isOpen = true;
 		}

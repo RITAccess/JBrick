@@ -88,15 +88,17 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		upDownSplit.setOneTouchExpandable(true);
 		upDownSplit.setResizeWeight(.7);
 		upDownSplit.setMinimumSize(new Dimension(0,0));
+		upDownSplit.setDividerSize(10);
 		
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
 		leftRightSplit.setOneTouchExpandable(true);
 		leftRightSplit.setResizeWeight(.5);
-		leftRightSplit.setDividerLocation(250);
-		
-		
+		leftRightSplit.setDividerLocation(250);		
 		this.add(leftRightSplit);
+		//Removes file pane.
+		leftRightSplit.remove(filePane);
+		leftRightSplit.setDividerSize(0);
 	}
 
 	/**
@@ -178,6 +180,10 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	
 	public JSplitPane getSplitPane(){
 		return leftRightSplit;
+	}
+	
+	public JBricxFilePane getFilePane(){
+		return filePane;
 	}
 	
 	@Override
