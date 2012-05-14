@@ -104,7 +104,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			
 			
 				JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
-				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 				newItem.setCodeFoldingEnabled(true);
 			    newItem.setAntiAliasingEnabled(true);
 				RTextScrollPane scroller = new RTextScrollPane(newItem);	
@@ -221,7 +221,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		newFileCount++;
 		
 		JBricxTabItem newTabItem = new JBricxTabItem(this,newFileCount);
-		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 		newTabItem.setCodeFoldingEnabled(true);
 	    newTabItem.setAntiAliasingEnabled(true);
 	    //newTabItem.setFont(new Font(null, Font.BOLD,50));

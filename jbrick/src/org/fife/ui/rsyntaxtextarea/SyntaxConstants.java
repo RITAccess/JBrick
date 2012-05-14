@@ -232,4 +232,7 @@ public interface SyntaxConstants {
 	public static final String SYNTAX_STYLE_XML			= "text/xml";
 
 
+	public static final String SYNTAX_STYLE_NXC 		= "text/nxc";
+
+
 }

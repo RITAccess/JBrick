@@ -57,7 +57,7 @@ import org.fife.ui.rsyntaxtextarea.*;
  *
  */
 
-public class NXCTokenMaker extends AbstractJFlexNXCTokenMaker {
+public class NXCTokenMaker2 extends AbstractJFlexNXCTokenMaker {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -7795,7 +7795,7 @@ public class NXCTokenMaker extends AbstractJFlexNXCTokenMaker {
 	 * Constructor.  This must be here because JFlex does not generate a
 	 * no-parameter constructor.
 	 */
-	public NXCTokenMaker() {
+	public NXCTokenMaker2() {
 		super();
 	}
 
@@ -7951,7 +7951,7 @@ public class NXCTokenMaker extends AbstractJFlexNXCTokenMaker {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public NXCTokenMaker(java.io.Reader in) {
+  public NXCTokenMaker2(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -7961,7 +7961,7 @@ public class NXCTokenMaker extends AbstractJFlexNXCTokenMaker {
    *
    * @param   in  the java.io.Inputstream to read input from.
    */
-  public NXCTokenMaker(java.io.InputStream in) {
+  public NXCTokenMaker2(java.io.InputStream in) {
     this(new java.io.InputStreamReader(in));
   }
 

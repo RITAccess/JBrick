@@ -42,7 +42,7 @@ public class NXTConnectionImpl implements NXTConnection {
 
 	static {
 		try {
-			fantom = (Fantom) Native.loadLibrary("Fantom", Fantom.class);
+			fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
 			isDriverLoaded = true;
 		} catch (final UnsatisfiedLinkError e) {
 			// TODO: notify the user that the fantom driver is missing or
@@ -75,7 +75,6 @@ public class NXTConnectionImpl implements NXTConnection {
 		command.put((byte) 0x00);
 		fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command,
 				command.capacity(), null, 0, status);
-		System.out.println(status.getStatus().toString());
 	}
 
 	public void stopProgram() {
