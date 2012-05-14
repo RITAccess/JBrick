@@ -42,7 +42,7 @@ public class NXTConnectionImpl implements NXTConnection {
 
 	static {
 		try {
-			fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
+			fantom = (Fantom) Native.loadLibrary("Fantom", Fantom.class);
 			isDriverLoaded = true;
 		} catch (final UnsatisfiedLinkError e) {
 			// TODO: notify the user that the fantom driver is missing or

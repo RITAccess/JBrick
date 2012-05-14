@@ -2,9 +2,12 @@ package com.jbricx.swing.ui;
 
 //import java.util.prefs.Preferences;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FocusTraversalPolicy;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -13,7 +16,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import com.jbricx.swing.communications.NXTManager;
+
 import com.jbricx.swing.actions.AboutAction;
 import com.jbricx.swing.actions.CloseAction;
 import com.jbricx.swing.actions.CompileAction;
@@ -41,6 +44,7 @@ import com.jbricx.swing.actions.SaveAsAction;
 import com.jbricx.swing.actions.SelectAllAction;
 import com.jbricx.swing.actions.ShowHideFileViewerAction;
 import com.jbricx.swing.actions.UndoAction;
+import com.jbricx.swing.communications.NXTManager;
 
 public class JBricxMenuAndToolBarDelegate {
 
@@ -75,7 +79,6 @@ public class JBricxMenuAndToolBarDelegate {
 	private ShowHideFileViewerAction showHideFileViewerAction;
 	private UndoAction undoAction;
 
-
 	// private JoyStickAction joystickAction;
 	// private MethodTemplateAction methodTemplateAction;
 
@@ -95,7 +98,7 @@ public class JBricxMenuAndToolBarDelegate {
 		copyAction = new CopyAction(manager);
 		cutAction = new CutAction(manager);
 		closeAction = new CloseAction(manager);
-		//directControlAction = new DirectControlAction(manager);
+		// directControlAction = new DirectControlAction(manager);
 		downloadAction = new DownloadAction(manager);
 		exitAction = new ExitAction(manager);
 		findAction = new FindAction(manager);
@@ -108,7 +111,7 @@ public class JBricxMenuAndToolBarDelegate {
 		newAction = new NewAction(manager);
 		openAction = new OpenAction(manager);
 		pasteAction = new PasteAction(manager);
-		//pianoAction = new PianoAction(manager);
+		// pianoAction = new PianoAction(manager);
 		prefsAction = new PreferencesAction(manager);
 		printAction = new PrintAction(manager);
 		printPreviewAction = new PrintPreviewAction(manager);
@@ -119,12 +122,12 @@ public class JBricxMenuAndToolBarDelegate {
 		selectAllAction = new SelectAllAction(manager);
 		showHideFileViewerAction = new ShowHideFileViewerAction(manager);
 		undoAction = new UndoAction(manager);
- 
+
 		// methodTemplateAction = new MethodTemplateAction(manager);
 		// joystickAction = new JoyStickAction(manager);
 		NXTManager nxtManager = NXTManager.getInstance();
 
-	    nxtManager.register(downloadAction);
+		nxtManager.register(downloadAction);
 	}
 
 	public JToolBar getToolBar() {
@@ -284,7 +287,27 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(preferencesButton);
 		mainToolBar.add(helpContentButton);
 		mainToolBar.add( new JToolBar.Separator());
-
+		
+		// Set the tab order
+		Vector<JButton> order = new Vector<JButton>();
+        order.add(newButton);
+        order.add(openButton);
+        order.add(saveButton);
+        order.add(saveAsButton);
+        order.add(undoButton);
+        order.add(redoButton);
+        order.add(cutButton);
+        order.add(copyButton);
+        order.add(pasteButton);
+        order.add(findButton);
+        order.add(gotoButton);
+        order.add(compileButton);
+        order.add(fbButton);
+        order.add(dlButton);
+        order.add(preferencesButton);
+        order.add(helpContentButton);
+        mainToolBar.setFocusTraversalPolicy(new ToolBarFocusTraversalPolicy(order));
+        
 		return mainToolBar;
 	}
 
@@ -307,7 +330,7 @@ public class JBricxMenuAndToolBarDelegate {
 		fileMenu = new JMenu("File");
 		fileMenu.getAccessibleContext().setAccessibleName("File");
 		fileMenu.getAccessibleContext().setAccessibleDescription("File");
-		
+
 		editMenu = new JMenu("Edit");
 		compileMenu = new JMenu("Compile");
 		toolsMenu = new JMenu("Tools");
@@ -316,49 +339,58 @@ public class JBricxMenuAndToolBarDelegate {
 	}
 
 	private void makeSubMenus() {
-		// File	
+		// File
 		JMenuItem newDoc = new JMenuItem(newAction);
 		newDoc.getAccessibleContext().setAccessibleName("New Document");
-		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
+		newDoc.getAccessibleContext().setAccessibleDescription(
+				"Open a new document");
 		newDoc.setText("New");
-		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(newDoc);
-		
+
 		JMenuItem open = new JMenuItem(openAction);
 		open.setText("Open");
-		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(open);
 
 		JMenuItem save = new JMenuItem(saveAction);
 		save.setText("Save");
-		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(save);
-		
+
 		JMenuItem saveAs = new JMenuItem(saveAsAction);
 		saveAs.setText("Save As");
 		fileMenu.add(saveAs);
-		
+
 		JMenuItem printPreview = new JMenuItem(printPreviewAction);
 		printPreview.setText("Print Preview");
 		fileMenu.add(printPreview);
-		
+
 		JMenuItem print = new JMenuItem(printAction);
 		print.setText("Print");
-		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(print);
-		
+
 		JMenuItem close = new JMenuItem(closeAction);
 		close.setText("Close");
 		close.getAccessibleContext().setAccessibleName("Close File");
-		close.getAccessibleContext().setAccessibleDescription("Close the current File");
-		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		close.getAccessibleContext().setAccessibleDescription(
+				"Close the current File");
+		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(close);
-		
+
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit");
-		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
-		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		exit.getAccessibleContext()
+				.setAccessibleDescription("Exit the program");
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(exit);
 
 		// Edit
@@ -370,7 +402,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem redo = new JMenuItem(redoAction);
 		redo.setText("Redo");
 		editMenu.add(redo);
-		
+
 		JMenuItem cut = new JMenuItem(cutAction);
 		cut.setText("Cut");
 		editMenu.add(cut);
@@ -378,7 +410,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem copy = new JMenuItem(copyAction);
 		copy.setText("Copy");
 		editMenu.add(copy);
-		
+
 		JMenuItem paste = new JMenuItem(pasteAction);
 		paste.setText("Paste");
 		editMenu.add(paste);
@@ -386,66 +418,71 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem selectAll = new JMenuItem(selectAllAction);
 		selectAll.setText("Select All");
 		editMenu.add(selectAll);
-				
+
 		JMenuItem find = new JMenuItem(findAction);
 		find.setText("Find and Replace");
-		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+				ActionEvent.CTRL_MASK));
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.setText("Preferences");
-		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-		editMenu.add(prefs);	
+		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+				ActionEvent.CTRL_MASK));
+		editMenu.add(prefs);
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
-		
-		compile.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5,0));
+
+		compile.setAccelerator(KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_F5, 0));
 		compile.setText("Compile");
 		compileMenu.add(compile);
-		
+
 		JMenuItem fb = new JMenuItem(findBrickAction);
 		fb.setText("Find Brick");
-		fb.setAccelerator(KeyStroke.getKeyStroke(
-			       KeyEvent.VK_F, KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+		fb.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+				KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
-		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,0));
+		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,
+				0));
 		dl.setText("Download");
 		compileMenu.add(dl);
 
 		// Tools
 		JMenuItem gt = new JMenuItem(gotoAction);
 		gt.setText("GoTo");
-		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
+		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
+				ActionEvent.CTRL_MASK));
 		toolsMenu.add(gt);
-		
-//		JMenuItem piano = new JMenuItem(pianoAction);
-//		piano.setText("Piano");
-//		toolsMenu.add(piano);
-//		
-//		JMenuItem directControl = new JMenuItem(directControlAction);
-//		directControl.setText("Direct Control");
-//		toolsMenu.add(directControl);
+
+		// JMenuItem piano = new JMenuItem(pianoAction);
+		// piano.setText("Piano");
+		// toolsMenu.add(piano);
+		//
+		// JMenuItem directControl = new JMenuItem(directControlAction);
+		// directControl.setText("Direct Control");
+		// toolsMenu.add(directControl);
 
 		// View
 		JMenuItem showHideViewer = new JMenuItem(showHideFileViewerAction);
 		showHideViewer.setText("Show/Hide File Viewer");
 		viewMenu.add(showHideViewer);
-		
+
 		JMenuItem maxViewer = new JMenuItem(maxViewerAction);
 		maxViewer.setText("Maximize File Viewer");
 		viewMenu.add(maxViewer);
-		
+
 		JMenuItem maxEditor = new JMenuItem(maxEditorAction);
 		maxEditor.setText("Maximize File Editor");
 		viewMenu.add(maxEditor);
-		
+
 		JMenuItem maxStatus = new JMenuItem(maxStatusAction);
 		maxStatus.setText("Maximize Status");
 		viewMenu.add(maxStatus);
-		
+
 		JMenuItem resetView = new JMenuItem(resetViewAction);
 		resetView.setText("Reset View");
 		viewMenu.add(resetView);
@@ -454,11 +491,47 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem about = new JMenuItem(aboutAction);
 		about.setText("About");
 		helpMenu.add(about);
-		
+
 		JMenuItem help = new JMenuItem(helpContentAction);
 		help.setText("Help Content");
-		help.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1,0));
+		help.setAccelerator(KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_F1, 0));
 		helpMenu.add(help);
 	}
 
+	public static class ToolBarFocusTraversalPolicy extends FocusTraversalPolicy {
+		Vector<JButton> order;
+
+		public ToolBarFocusTraversalPolicy(Vector<JButton> order) {
+			this.order = new Vector<JButton>(order.size());
+			this.order.addAll(order);
+		}
+
+		public Component getComponentAfter(Container focusCycleRoot,
+				Component aComponent) {
+			int idx = (order.indexOf(aComponent) + 1) % order.size();
+			return order.get(idx);
+		}
+
+		public Component getComponentBefore(Container focusCycleRoot,
+				Component aComponent) {
+			int idx = order.indexOf(aComponent) - 1;
+			if (idx < 0) {
+				idx = order.size() - 1;
+			}
+			return order.get(idx);
+		}
+
+		public Component getDefaultComponent(Container focusCycleRoot) {
+			return order.get(0);
+		}
+
+		public Component getLastComponent(Container focusCycleRoot) {
+			return order.lastElement();
+		}
+
+		public Component getFirstComponent(Container focusCycleRoot) {
+			return order.get(0);
+		}
+	}
 }

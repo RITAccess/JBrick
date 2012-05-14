@@ -29,6 +29,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  * Uses some swing black magic.
  *
  */
+@SuppressWarnings("serial")
 public class ButtonTabComponent extends JPanel {
 	private final JBricxEditorTabFolder pane;
 	
