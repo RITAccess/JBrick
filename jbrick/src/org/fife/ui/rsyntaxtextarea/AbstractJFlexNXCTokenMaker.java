@@ -21,6 +21,8 @@ import org.fife.ui.rtextarea.RTextArea;
 
 
 /**
+ * Extended just for NXC. No edits made. - DL
+ * 
  * Base class for JFlex-based token makers using C-style syntax.  This class
  * knows how to auto-indent after opening braces and parens.
  *
