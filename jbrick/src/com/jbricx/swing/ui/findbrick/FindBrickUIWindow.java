@@ -85,14 +85,13 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 		
 		add(buttons, BorderLayout.SOUTH);
 		
-		this.getAccessibleContext().setAccessibleName("Information: To connect to the brick, select the communication method "
-          + "and click Connect. You can save your preference by clicking "
-          + "the Save button so you do not need to come back to this screen "
-          + "in the future."
-          + "Connection satus:"
-          + connected.getText());
+//		this.getAccessibleContext().setAccessibleName("Information: To connect to the brick, select the communication method "
+//          + "and click Connect. You can save your preference by clicking "
+//          + "the Save button so you do not need to come back to this screen "
+//          + "in the future."
+//          + "Connection satus:"
+//          + connected.getText());
 		this.pack();
-		//this.setSize(200, 400);
 		this.setVisible(true);
 		
 	}
@@ -112,12 +111,16 @@ public class FindBrickUIWindow extends JDialog implements ActionListener {
 	        if (!isConnected) {
 	        	String status = "Connection attempted using " + ct + " but failed!";
 	        	connected.setText(status);
+	        	this.getAccessibleContext().setAccessibleName(connected.getText());
+	        	this.repaint();
 
 	        	Toolkit.getDefaultToolkit().beep();
 	        } 
 	        else {
 	        	connected.setText("Connected using "
 						+ NXTManager.getInstance());
+	        	this.getAccessibleContext().setAccessibleName(connected.getText());
+	        	this.repaint();
 	        }
 	        nxtManager.notifyAllObservers(isConnected);
 	     //}
