@@ -72,6 +72,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 					onFailure(run);
 				}
 			}
+			getManager().getTabFolder().refreshTabTitles();
 		}
 	}
 
