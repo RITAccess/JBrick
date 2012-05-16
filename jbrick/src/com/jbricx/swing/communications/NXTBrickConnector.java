@@ -99,7 +99,6 @@ public class NXTBrickConnector {
     }
 
     if (thread != null) {
-    	System.out.println("Interupting Thread");
       thread.interrupt();
     }
   }

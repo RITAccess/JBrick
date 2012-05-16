@@ -91,7 +91,6 @@ public class ButtonTabComponent extends JPanel {
 	 */
     public void actionPerformed(ActionEvent e) {
         int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-        System.out.println("New file:" + pane.getSelection().isNewFile()+". Is dirty: "+pane.getSelection().isDirty());
         	 if (i != -1 && pane.closeFile(i)) {
                  pane.remove(i);
              }
