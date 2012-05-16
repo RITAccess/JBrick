@@ -85,7 +85,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			}
 		}
 		for (String s : prefs.get(PreferenceStore.RECENTFILES, "").split(";")) {
-			System.out.println(s);
 			recentfiles.add(s);
 		}
 		return recentfiles;

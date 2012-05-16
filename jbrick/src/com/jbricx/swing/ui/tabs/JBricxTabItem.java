@@ -32,7 +32,6 @@ public class JBricxTabItem extends TextEditorPane {
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
 		
 		super(newFileNumber);
-		System.out.println("I'm opening a file. "+ newFileNumber);
 		isNewFile = true;
 		this.parent = parent;
 		setShortcuts();
@@ -45,7 +44,6 @@ public class JBricxTabItem extends TextEditorPane {
 	 */
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
-		System.out.println("I'm opening a file"+ fileName);
 		isNewFile = false;
 		this.parent = parent;
 		setShortcuts();
