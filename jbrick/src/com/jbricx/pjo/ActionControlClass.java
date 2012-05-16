@@ -40,6 +40,7 @@ public class ActionControlClass {
             SafeSaveDialog dlg = new SafeSaveDialog(manager);
             fileLocation = dlg.open();
             isNewFile = true;
+            manager.refreshExplorerContent();
         }
         try {
             /*

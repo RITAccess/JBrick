@@ -268,6 +268,9 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		return loc==null ? null : loc.getFileFullPath();
 	}
 
+	public void setFileFullPath(){
+		
+	}
 
 	/**
 	 * Returns the file name of this document.
@@ -539,6 +542,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @see #load(FileLocation, String)
 	 */
 	public void save() throws IOException {
+		System.out.println("We're saving the file "+ loc.getFileFullPath() +"... save()");
 		saveImpl(loc);
 		setDirty(false);
 		syncLastSaveOrLoadTimeToActualFile();
@@ -555,6 +559,9 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @see #load(FileLocation, String)
 	 */
 	public void saveAs(String strLoc) throws IOException {
+		System.out.println("We're saving the file "+ loc.getFileFullPath());
+		System.out.println("It's changing to "+strLoc);
+
 		this.loc = FileLocation.create(strLoc);
 		saveImpl(loc);
 		// No exception thrown - we can "rename" the file.
