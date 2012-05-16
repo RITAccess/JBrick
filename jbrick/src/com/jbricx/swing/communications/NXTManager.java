@@ -134,21 +134,26 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	 */
 	@Override
 	public ExitStatus downloadFile(final String filename) {
-		if (connections.containsKey(currentConnection) && isConnected()) {
-			
+		if (connections.containsKey(currentConnection) && isConnected() ||
+				System.getProperty("os.name").contains("OS X")) {
+			System.out.println("In downloadFile if statement.");
 			try{
 				NXTBrickConnector proc = connections.get(currentConnection);
-				// This is how it works: disconnect the brick, transfer file,
-				// re-connect.
-				disconnect();
-				ExitStatus status = compilerRunner.download(filename, proc
-						.getConnection().getConnectionType().toPort());
-				
-				connect(proc.getConnection().getConnectionType());
-	
+				ExitStatus status;
+				if (System.getProperty("os.name").contains("OS X")) {
+					status = compilerRunner.download(filename, "USB");
+				} else {
+					// This is how it works: disconnect the brick, transfer file,
+					// re-connect.
+					disconnect();
+					status = compilerRunner.download(filename, proc
+							.getConnection().getConnectionType().toPort());
+					
+					connect(proc.getConnection().getConnectionType());
+				}
 				return status;
 			}catch(Exception e){
-				
+				e.printStackTrace();
 			}
 		}
 

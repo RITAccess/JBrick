@@ -72,6 +72,7 @@ class DefaultTokenMakerFactory extends AbstractTokenMakerFactory
 		map.put(SYNTAX_STYLE_UNIX_SHELL,		pkg + "UnixShellTokenMaker");
 		map.put(SYNTAX_STYLE_WINDOWS_BATCH,		pkg + "WindowsBatchTokenMaker");
 		map.put(SYNTAX_STYLE_XML,				pkg + "XMLTokenMaker");
+		map.put(SYNTAX_STYLE_NXC, 				pkg + "NXCTokenMaker");
 
 		return map;
 

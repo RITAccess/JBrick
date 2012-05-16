@@ -38,7 +38,9 @@ public class PreferenceStore {
 	public static final int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
 	public static final int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
 	public static final int STRING_DEFAULT = Color.GREEN.getRGB();
-	public static final int KEYWORD_DEFAULT = Color.BLUE.getRGB();
+	public static final int KEYWORD_DEFAULT = Color.MAGENTA.darker().getRGB();
+	public static final int CONSTANT_DEFAULT = Color.BLUE.getRGB();
+	public static final int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
@@ -67,7 +69,9 @@ public class PreferenceStore {
 	    OPERATOR,
 	    STRING,
 	    LINENUMBERFG,
-	    LINENUMBERBG;
+	    LINENUMBERBG,
+	    CONSTANT,
+	    PREPROCESSOR;
 	}
 
 	/**
@@ -91,6 +95,8 @@ public class PreferenceStore {
 		prefs.putInt(ColorFor.STRING.toString(), STRING_DEFAULT);
 		prefs.putInt(ColorFor.LINENUMBERFG.toString(), LINENUMBERFG_DEFAULT);
 		prefs.putInt(ColorFor.LINENUMBERBG.toString(), LINENUMBERBG_DEFAULT);
+		prefs.putInt(ColorFor.CONSTANT.toString(), CONSTANT_DEFAULT);
+		prefs.putInt(ColorFor.PREPROCESSOR.toString(),PREPROCESSOR_DEFAULT);
 		
 		prefs.putBoolean(WRAP,WRAP_DEFAULT);
 		prefs.put(FONT, FONT_DEFAULT);

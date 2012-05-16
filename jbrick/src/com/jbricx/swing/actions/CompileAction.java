@@ -1,10 +1,15 @@
 package com.jbricx.swing.actions;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.accessibility.AccessibleContext;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.communications.ExitStatus;
@@ -31,10 +36,22 @@ public class CompileAction extends AbstractCompilerAction {
 
 	@Override
 	public void onFailure(ExitStatus run) {
-		run.getCompilerErrors().toString();
-		JOptionPane newMessage = new JOptionPane();
-		newMessage.getAccessibleContext().setAccessibleName("Hello there");
-		newMessage.showMessageDialog(null, "Errors found during compilation.");
+		JOptionPane pane=new JOptionPane("Errors Found during compilation.",JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog=pane.createDialog(null,"Compile");
+        Component[] comps=pane.getComponents();
+        for(int i=0;i<comps.length;i++){
+            if(comps[i] instanceof JPanel){
+            	if(i == 0){
+            		Component[] children=((JPanel)comps[i]).getComponents();
+            		String errorMessages = run.getCompilerErrors().toString();
+            		String[] messageArray = errorMessages.split("]");
+            		messageArray = messageArray[0].split("\\[");
+            		((JLabel)children[1]).getAccessibleContext().setAccessibleName(messageArray[1]);
+            	}
+            }
+        }        
+        dialog.setModal(true);
+        dialog.show();
 	}
 
 	@Override

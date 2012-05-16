@@ -75,7 +75,6 @@ public class NXTConnectionImpl implements NXTConnection {
 		command.put((byte) 0x00);
 		fantom.nFANTOM100_iNXT_sendDirectCommand(nxtPointer, true, command,
 				command.capacity(), null, 0, status);
-		System.out.println(status.getStatus().toString());
 	}
 
 	public void stopProgram() {

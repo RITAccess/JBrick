@@ -29,6 +29,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  * Uses some swing black magic.
  *
  */
+@SuppressWarnings("serial")
 public class ButtonTabComponent extends JPanel {
 	private final JBricxEditorTabFolder pane;
 	
@@ -90,10 +91,11 @@ public class ButtonTabComponent extends JPanel {
 	 */
     public void actionPerformed(ActionEvent e) {
         int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-        if (i != -1 && pane.closeFile(i)) {
-            pane.remove(i);
-           
-        }
+        System.out.println("New file:" + pane.getSelection().isNewFile()+". Is dirty: "+pane.getSelection().isDirty());
+        	 if (i != -1 && pane.closeFile(i)) {
+                 pane.remove(i);
+             }
+       
     }
 
     //we don't want to update UI for this button

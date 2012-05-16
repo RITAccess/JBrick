@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
+import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 
 //import com.jbricx.preferences.JBrickObserver;
@@ -26,6 +27,8 @@ public interface JBricxManager {
 	JBricxStatusPane getStatusPane();
 	
 	JSplitPane getSplitPane();
+	
+	JBricxFilePane getFilePane();
 
 	void refreshExplorerContent();
 	

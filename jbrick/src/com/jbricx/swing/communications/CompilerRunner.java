@@ -25,7 +25,8 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  * the "upper layers" to not know anything about the compiler and its
  * interaction with the application.
  * 
- * We check if there is nothing set in the preferences, which indicates a default running location for the Jar file. 
+ * We check if there is nothing set in the preferences, which indicates a
+ * default running location for the Jar file.
  * 
  * @author byktol
  * @see ExitStatus
@@ -39,40 +40,40 @@ public class CompilerRunner {
 	 */
 	private Preferences preferences;
 
-	public CompilerRunner(){
+	public CompilerRunner() {
 		this.preferences = PreferenceStore.getPrefs();
 	}
-	
+
 	public ExitStatus download(final String filename, final String port) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT);
-		if(nbcPath.equals("")){
+		String nbcPath = preferences.get(PreferenceStore.NBCTOOL,
+				PreferenceStore.NBCTOOL_DEFAULT);
+		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
-		
-		return run(nbcPath, port,"-d", filename);
+		System.out.println(filename);
+		System.out.println("download: " + nbcPath);
+		return run(nbcPath, port, "-d", filename);
 	}
 
 	public ExitStatus compile(final String filename) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT);
-		if(nbcPath.equals("")){
+		String nbcPath = preferences.get(PreferenceStore.NBCTOOL,
+				PreferenceStore.NBCTOOL_DEFAULT);
+		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
-		
-		return run(nbcPath,filename);
+		System.out.println("compile: " + nbcPath);
+		return run(nbcPath, filename);
 	}
 
 	private ExitStatus run(final String... command) {
-		int length = command.length;
 		final List<CompilerError> list = new ArrayList<CompilerError>();
 		Process proc;
 		ProcessBuilder pb = new ProcessBuilder(command);
-
 		try {
 			proc = pb.start();
 			final BufferedReader bufferedreader = new BufferedReader(
 					new InputStreamReader(new BufferedInputStream(
 							proc.getErrorStream())));
-			
 
 			/*
 			 * Listen up, boyo, every (most?) error message by NBC is composed
@@ -87,6 +88,7 @@ public class CompilerRunner {
 			while (!(line == null || line.contains("during compilation"))) {
 				CompilerError ce = new CompilerError();
 				ce.setMessageLine(line);
+				System.out.println(line);
 				ce.setFileLine(bufferedreader.readLine());
 				ce.setLine(bufferedreader.readLine());
 
@@ -94,37 +96,39 @@ public class CompilerRunner {
 				line = bufferedreader.readLine();
 				// Somehow, sometimes it comes empty so we read it again to be
 				// sure
-				if (line.isEmpty()) {
+				if (line != null && line.isEmpty()) {
 					line = bufferedreader.readLine();
 				}
-
 				list.add(ce);
 				line = bufferedreader.readLine();
 			}
 
 			bufferedreader.close();
-			return new ExitStatus(list.isEmpty()? ExitStatus.OK : ExitStatus.ERROR, list);
+			return new ExitStatus(list.isEmpty() ? ExitStatus.OK
+					: ExitStatus.ERROR, list);
 
-		}catch(IOException e){
-			JOptionPane.showMessageDialog(null, "The compiler could not be found.");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null,
+					"The compiler could not be found.");
 			return new ExitStatus(ExitStatus.ERROR, list);
-		}catch (final Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			return new ExitStatus(ExitStatus.ERROR, list);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Runs to find the location of the temp file for the jar files usage.
+	 * 
 	 * @return
 	 */
-	private String getCompilerPath(){
-		InputStream src=null;
-		FileOutputStream out=null;
-		File exeTempFile=null;
+	private String getCompilerPath() {
+		InputStream src = null;
+		FileOutputStream out = null;
+		File exeTempFile = null;
 		try {
 			src = getClass().getResource("/nbc.exe").openStream();
-		
+
 			exeTempFile = File.createTempFile("nbc", ".exe");
 			out = new FileOutputStream(exeTempFile);
 		} catch (IOException e) {
@@ -134,16 +138,16 @@ public class CompilerRunner {
 		byte[] temp = new byte[32768];
 		int rc;
 		try {
-			while ((rc = src.read(temp)) > 0){
+			while ((rc = src.read(temp)) > 0) {
 				out.write(temp, 0, rc);
 			}
-				src.close();
-				out.close();
+			src.close();
+			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		exeTempFile.deleteOnExit();
 		return exeTempFile.getAbsolutePath();
 	}
