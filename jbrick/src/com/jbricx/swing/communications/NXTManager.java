@@ -62,13 +62,11 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 		currentConnection = connectionType.toString();
 		if (!(connections.containsKey(currentConnection) && connections.get(
 				currentConnection).isRunning())) {
-			System.out.println("We are making a new connection..");
 			NXTBrickConnector c = new NXTBrickConnector();
 			boolean isConnected = c.connect(connectionType);
 
 			notifyAllObservers(isConnected);
 			if (isConnected) {
-				System.out.println("And putting connection..");
 				connections.put(currentConnection, c);
 			}
 		}
@@ -136,7 +134,6 @@ public class NXTManager implements NXTConnectionManager, NXTGadgetManager {
 	public ExitStatus downloadFile(final String filename) {
 		if (connections.containsKey(currentConnection) && isConnected() ||
 				System.getProperty("os.name").contains("OS X")) {
-			System.out.println("In downloadFile if statement.");
 			try{
 				NXTBrickConnector proc = connections.get(currentConnection);
 				ExitStatus status;

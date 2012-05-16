@@ -339,20 +339,20 @@ public class NXTConnectionImpl implements NXTConnection {
 				command.capacity(), response, response.length, status);
 
 		for (int i = 0; i < 15; i++) {
-			System.out.print(response[i]);
-			System.out.print("\t");
+			//System.out.print(response[i]);
+			//System.out.print("\t");
 		}
 		int buf[] = new int[2];
 		int finalVal;
 		buf[0] = unsignedByteToInt(response[9]);
 		buf[1] = unsignedByteToInt(response[10]);
 		finalVal = buf[0] + (buf[1] << 8);
-		System.out.println();
-		System.out.println(" buf0: " + buf[0] + "; buf1: " + buf[1]
-				+ "; Final Value: " + finalVal);
+		//System.out.println();
+		//System.out.println(" buf0: " + buf[0] + "; buf1: " + buf[1]
+	//			+ "; Final Value: " + finalVal);
 
-		System.out.println();
-		System.out.println(response[2] + " " + response[1]);
+	//	System.out.println();
+	//	System.out.println(response[2] + " " + response[1]);
 		return response; // number of bytes ready to read
 	}
 

@@ -50,8 +50,6 @@ public class CompilerRunner {
 		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
-		System.out.println(filename);
-		System.out.println("download: " + nbcPath);
 		return run(nbcPath, port, "-d", filename);
 	}
 
@@ -61,7 +59,6 @@ public class CompilerRunner {
 		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
-		System.out.println("compile: " + nbcPath);
 		return run(nbcPath, filename);
 	}
 
@@ -88,7 +85,6 @@ public class CompilerRunner {
 			while (!(line == null || line.contains("during compilation"))) {
 				CompilerError ce = new CompilerError();
 				ce.setMessageLine(line);
-				System.out.println(line);
 				ce.setFileLine(bufferedreader.readLine());
 				ce.setLine(bufferedreader.readLine());
 
