@@ -136,21 +136,21 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Cut Button
 		JButton cutButton = new JButton();
-		cutButton.getAccessibleContext().setAccessibleName("Cut");
+		cutButton.getAccessibleContext().setAccessibleName("Cut shortcut control + x");
 		cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
 		cutButton.setAction(cutAction);
 		cutButton.setToolTipText("Cut");
 
 		// Copy Button
 		JButton copyButton = new JButton();
-		copyButton.getAccessibleContext().setAccessibleName("Copy");
+		copyButton.getAccessibleContext().setAccessibleName("Copy shortcut control + c");
 		copyButton.getAccessibleContext().setAccessibleDescription("Copy text");
 		copyButton.setAction(copyAction);
 		copyButton.setToolTipText("Copy");
 
 		// find Button
 		JButton findButton = new JButton();
-		findButton.getAccessibleContext().setAccessibleName("Find");
+		findButton.getAccessibleContext().setAccessibleName("Find shortcut control + f");
 		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
 		findButton.setToolTipText("Find and Replace");
@@ -159,63 +159,63 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		/////////////////////////////////////////////////
 		JButton compileButton = new JButton();
-		compileButton.getAccessibleContext().setAccessibleName("Compile");
+		compileButton.getAccessibleContext().setAccessibleName("Compile shortcut F5");
 		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
 		compileButton.setToolTipText("Compile");
 		
 		// Find Brick Button
 		JButton fbButton = new JButton();
-		fbButton.getAccessibleContext().setAccessibleName("Find Brick");
+		fbButton.getAccessibleContext().setAccessibleName("Find Brick shortcut control + shift + f");
 		fbButton.getAccessibleContext().setAccessibleDescription("connect the brick to the system");
 		fbButton.setAction(findBrickAction);
 		fbButton.setToolTipText("Find Brick");
 
 		// Download Button
 		JButton dlButton = new JButton();
-		dlButton.getAccessibleContext().setAccessibleName("Download");
+		dlButton.getAccessibleContext().setAccessibleName("Download shortcut F6");
 		dlButton.getAccessibleContext().setAccessibleDescription("Download program on to brick");
 		dlButton.setAction(downloadAction);
 		dlButton.setToolTipText("Download");
 
 		// Preferences Button
 		JButton preferencesButton = new JButton();
-		preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
+		preferencesButton.getAccessibleContext().setAccessibleName("Preferences control + r");
 		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
 		JButton gotoButton = new JButton();
-		gotoButton.getAccessibleContext().setAccessibleName("Go to");
+		gotoButton.getAccessibleContext().setAccessibleName("Go to shortcut control + g");
 		gotoButton.getAccessibleContext().setAccessibleDescription("Go to a specific location");
 		gotoButton.setAction(gotoAction);
 		gotoButton.setToolTipText("GoTo");
 		
 		// Help Content Button
 		JButton helpContentButton = new JButton();
-		helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
+		helpContentButton.getAccessibleContext().setAccessibleName("Help Content shortcut f1");
 		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
 		JButton newButton = new JButton();
-		newButton.getAccessibleContext().setAccessibleName("New File");
+		newButton.getAccessibleContext().setAccessibleName("New File shortcut control + n");
 		newButton.getAccessibleContext().setAccessibleDescription("Opens a new file");
 		newButton.setAction(newAction);
 		newButton.setToolTipText("New");
 		
 		// Open Button
 		JButton openButton = new JButton();
-		openButton.getAccessibleContext().setAccessibleName("Open file");
+		openButton.getAccessibleContext().setAccessibleName("Open file shortcut control + o");
 		openButton.getAccessibleContext().setAccessibleDescription("Opens the chosen file");
 		openButton.setAction(openAction);
 		openButton.setToolTipText("Open");
 		
 		// Paste Button
 		JButton pasteButton = new JButton();
-		pasteButton.getAccessibleContext().setAccessibleName("Paste");
+		pasteButton.getAccessibleContext().setAccessibleName("Paste shortcut control + v");
 		pasteButton.getAccessibleContext().setAccessibleDescription("Paste text");
 		pasteButton.setAction(pasteAction);
 		pasteButton.setToolTipText("Paste");
@@ -229,7 +229,7 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		// Save Button
 		JButton saveButton = new JButton();
-		saveButton.getAccessibleContext().setAccessibleName("Save");
+		saveButton.getAccessibleContext().setAccessibleName("Save shortcut control + s");
 		saveButton.getAccessibleContext().setAccessibleDescription("Save");
 		saveButton.setAction(saveAction);
 		saveButton.setToolTipText("Save");
@@ -341,7 +341,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private void makeSubMenus() {
 		// File
 		JMenuItem newDoc = new JMenuItem(newAction);
-		newDoc.getAccessibleContext().setAccessibleName("New Document");
+		newDoc.getAccessibleContext().setAccessibleName("New Document shortcut control + n");
 		newDoc.getAccessibleContext().setAccessibleDescription(
 				"Open a new document");
 		newDoc.setText("New");
@@ -350,12 +350,14 @@ public class JBricxMenuAndToolBarDelegate {
 		fileMenu.add(newDoc);
 
 		JMenuItem open = new JMenuItem(openAction);
+		open.getAccessibleContext().setAccessibleName("Open shortcut control + o");
 		open.setText("Open");
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				ActionEvent.CTRL_MASK));
 		fileMenu.add(open);
 
 		JMenuItem save = new JMenuItem(saveAction);
+		save.getAccessibleContext().setAccessibleName("Save shortcut control + s");
 		save.setText("Save");
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.CTRL_MASK));
@@ -370,6 +372,7 @@ public class JBricxMenuAndToolBarDelegate {
 		fileMenu.add(printPreview);
 
 		JMenuItem print = new JMenuItem(printAction);
+		print.getAccessibleContext().setAccessibleName("Print shortcut control + p");
 		print.setText("Print");
 		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
 				ActionEvent.CTRL_MASK));
@@ -377,7 +380,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 		JMenuItem close = new JMenuItem(closeAction);
 		close.setText("Close");
-		close.getAccessibleContext().setAccessibleName("Close File");
+		close.getAccessibleContext().setAccessibleName("Close File shortcut control + w");
 		close.getAccessibleContext().setAccessibleDescription(
 				"Close the current File");
 		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
@@ -386,7 +389,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
-		exit.getAccessibleContext().setAccessibleName("Quit");
+		exit.getAccessibleContext().setAccessibleName("Quit shortcut control + q");
 		exit.getAccessibleContext()
 				.setAccessibleDescription("Exit the program");
 		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
@@ -404,14 +407,17 @@ public class JBricxMenuAndToolBarDelegate {
 		editMenu.add(redo);
 
 		JMenuItem cut = new JMenuItem(cutAction);
+		cut.getAccessibleContext().setAccessibleName("Cut shortcut control + x");
 		cut.setText("Cut");
 		editMenu.add(cut);
 
 		JMenuItem copy = new JMenuItem(copyAction);
+		copy.getAccessibleContext().setAccessibleName("Copy shortcut control + c");
 		copy.setText("Copy");
 		editMenu.add(copy);
 
 		JMenuItem paste = new JMenuItem(pasteAction);
+		paste.getAccessibleContext().setAccessibleName("Paste shortcut control + p");
 		paste.setText("Paste");
 		editMenu.add(paste);
 
@@ -420,12 +426,14 @@ public class JBricxMenuAndToolBarDelegate {
 		editMenu.add(selectAll);
 
 		JMenuItem find = new JMenuItem(findAction);
+		find.getAccessibleContext().setAccessibleName("Find and Replace shortcut control + f");
 		find.setText("Find and Replace");
 		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
 				ActionEvent.CTRL_MASK));
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
+		prefs.getAccessibleContext().setAccessibleName("Preferences shortcut control + r");
 		prefs.setText("Preferences");
 		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				ActionEvent.CTRL_MASK));
@@ -433,19 +441,21 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
-
+		compile.getAccessibleContext().setAccessibleName("Compile shortcut F5");
 		compile.setAccelerator(KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_F5, 0));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 
 		JMenuItem fb = new JMenuItem(findBrickAction);
+		fb.getAccessibleContext().setAccessibleName("Find Brick shortcut control + shift + f");
 		fb.setText("Find Brick");
 		fb.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
 				KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
+		dl.getAccessibleContext().setAccessibleName("Download shortcut F6");
 		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,
 				0));
 		dl.setText("Download");
@@ -453,6 +463,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 		// Tools
 		JMenuItem gt = new JMenuItem(gotoAction);
+		gt.getAccessibleContext().setAccessibleName("Go To shortcut control g");
 		gt.setText("GoTo");
 		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
 				ActionEvent.CTRL_MASK));
@@ -493,6 +504,7 @@ public class JBricxMenuAndToolBarDelegate {
 		helpMenu.add(about);
 
 		JMenuItem help = new JMenuItem(helpContentAction);
+		help.getAccessibleContext().setAccessibleName("Help Content shortcut F1");
 		help.setText("Help Content");
 		help.setAccelerator(KeyStroke.getKeyStroke(
 				java.awt.event.KeyEvent.VK_F1, 0));
