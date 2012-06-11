@@ -184,12 +184,12 @@ public class JBricxMenuAndToolBarDelegate {
 		// New Button
 		JButton newButton = new JButton();
 		newButton.setAction(newAction);
-		newButton.setToolTipText("New");
+		newButton.setToolTipText("New File");
 		
 		// Open Button
 		JButton openButton = new JButton();
 		openButton.setAction(openAction);
-		openButton.setToolTipText("Open");
+		openButton.setToolTipText("Open File");
 		
 		// Paste Button
 		JButton pasteButton = new JButton();
