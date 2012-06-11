@@ -133,25 +133,19 @@ public class JBricxMenuAndToolBarDelegate {
 	public JToolBar getToolBar() {
 		JToolBar mainToolBar = new JToolBar();
 		mainToolBar.setFloatable(false);
-
+		
 		// Cut Button
 		JButton cutButton = new JButton();
-		cutButton.getAccessibleContext().setAccessibleName("Cut shortcut control + x");
-		cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
 		cutButton.setAction(cutAction);
 		cutButton.setToolTipText("Cut");
 
 		// Copy Button
 		JButton copyButton = new JButton();
-		copyButton.getAccessibleContext().setAccessibleName("Copy shortcut control + c");
-		copyButton.getAccessibleContext().setAccessibleDescription("Copy text");
 		copyButton.setAction(copyAction);
 		copyButton.setToolTipText("Copy");
 
 		// find Button
 		JButton findButton = new JButton();
-		findButton.getAccessibleContext().setAccessibleName("Find shortcut control + f");
-		findButton.getAccessibleContext().setAccessibleDescription("Find text");
 		findButton.setAction(findAction);
 		findButton.setToolTipText("Find and Replace");
 
@@ -159,94 +153,138 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		/////////////////////////////////////////////////
 		JButton compileButton = new JButton();
-		compileButton.getAccessibleContext().setAccessibleName("Compile shortcut F5");
-		compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
 		compileButton.setAction(compileAction);
 		compileButton.setToolTipText("Compile");
 		
 		// Find Brick Button
 		JButton fbButton = new JButton();
-		fbButton.getAccessibleContext().setAccessibleName("Find Brick shortcut control + shift + f");
-		fbButton.getAccessibleContext().setAccessibleDescription("connect the brick to the system");
 		fbButton.setAction(findBrickAction);
 		fbButton.setToolTipText("Find Brick");
 
 		// Download Button
 		JButton dlButton = new JButton();
-		dlButton.getAccessibleContext().setAccessibleName("Download shortcut F6");
-		dlButton.getAccessibleContext().setAccessibleDescription("Download program on to brick");
 		dlButton.setAction(downloadAction);
 		dlButton.setToolTipText("Download");
 
 		// Preferences Button
 		JButton preferencesButton = new JButton();
-		preferencesButton.getAccessibleContext().setAccessibleName("Preferences control + r");
-		preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
 		preferencesButton.setAction(prefsAction);
 		preferencesButton.setToolTipText("Preferences");
 		
 		// GoTo Button
 		JButton gotoButton = new JButton();
-		gotoButton.getAccessibleContext().setAccessibleName("Go to shortcut control + g");
-		gotoButton.getAccessibleContext().setAccessibleDescription("Go to a specific location");
 		gotoButton.setAction(gotoAction);
 		gotoButton.setToolTipText("GoTo");
 		
 		// Help Content Button
 		JButton helpContentButton = new JButton();
-		helpContentButton.getAccessibleContext().setAccessibleName("Help Content shortcut f1");
-		helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
 		helpContentButton.setAction(helpContentAction);
 		helpContentButton.setToolTipText("Help Content");
 		
 		// New Button
 		JButton newButton = new JButton();
-		newButton.getAccessibleContext().setAccessibleName("New File shortcut control + n");
-		newButton.getAccessibleContext().setAccessibleDescription("Opens a new file");
 		newButton.setAction(newAction);
 		newButton.setToolTipText("New");
 		
 		// Open Button
 		JButton openButton = new JButton();
-		openButton.getAccessibleContext().setAccessibleName("Open file shortcut control + o");
-		openButton.getAccessibleContext().setAccessibleDescription("Opens the chosen file");
 		openButton.setAction(openAction);
 		openButton.setToolTipText("Open");
 		
 		// Paste Button
 		JButton pasteButton = new JButton();
-		pasteButton.getAccessibleContext().setAccessibleName("Paste shortcut control + v");
-		pasteButton.getAccessibleContext().setAccessibleDescription("Paste text");
 		pasteButton.setAction(pasteAction);
 		pasteButton.setToolTipText("Paste");
 		
 		// redo Button
 		JButton redoButton = new JButton();
-		redoButton.getAccessibleContext().setAccessibleName("Redo");
-		redoButton.getAccessibleContext().setAccessibleDescription("Redo");
 		redoButton.setAction(redoAction);
 		redoButton.setToolTipText("Redo");
 		
 		// Save Button
 		JButton saveButton = new JButton();
-		saveButton.getAccessibleContext().setAccessibleName("Save shortcut control + s");
-		saveButton.getAccessibleContext().setAccessibleDescription("Save");
 		saveButton.setAction(saveAction);
 		saveButton.setToolTipText("Save");
 		
 		// Save As Button
 		JButton saveAsButton = new JButton();
-		saveAsButton.getAccessibleContext().setAccessibleName("Save As");
-		saveAsButton.getAccessibleContext().setAccessibleDescription("Save As");
 		saveAsButton.setAction(saveAsAction);
 		saveAsButton.setToolTipText("Save As");
 		
 		// Undo Button
 		JButton undoButton = new JButton();
-		undoButton.getAccessibleContext().setAccessibleName("Undo");
-		undoButton.getAccessibleContext().setAccessibleDescription("Undo");
 		undoButton.setAction(undoAction);
 		undoButton.setToolTipText("Undo");
+		
+		// if mac add the accessible content
+		if(System.getProperty("os.name").contains("OS X")){
+
+			// Cut Button
+			cutButton.getAccessibleContext().setAccessibleName("Cut");
+			cutButton.getAccessibleContext().setAccessibleDescription("Cut text");
+
+			// Copy Button
+			copyButton.getAccessibleContext().setAccessibleName("Copy");
+			copyButton.getAccessibleContext().setAccessibleDescription("Copy text");
+
+			// find Button
+			findButton.getAccessibleContext().setAccessibleName("Find");
+			findButton.getAccessibleContext().setAccessibleDescription("Find text");
+
+			// Compile Button
+			
+			/////////////////////////////////////////////////
+			compileButton.getAccessibleContext().setAccessibleName("Compile");
+			compileButton.getAccessibleContext().setAccessibleDescription("Compile program");
+			
+			// Find Brick Button
+			fbButton.getAccessibleContext().setAccessibleName("Find Brick");
+			fbButton.getAccessibleContext().setAccessibleDescription("connect the brick to the system");
+
+			// Download Button
+			dlButton.getAccessibleContext().setAccessibleName("Download");
+			dlButton.getAccessibleContext().setAccessibleDescription("Download program on to brick");
+
+			// Preferences Button
+			preferencesButton.getAccessibleContext().setAccessibleName("Preferences");
+			preferencesButton.getAccessibleContext().setAccessibleDescription("Preferences window");
+			
+			// GoTo Button
+			gotoButton.getAccessibleContext().setAccessibleName("Go to");
+			gotoButton.getAccessibleContext().setAccessibleDescription("Go to a specific location");
+			
+			// Help Content Button
+			helpContentButton.getAccessibleContext().setAccessibleName("Help Content");
+			helpContentButton.getAccessibleContext().setAccessibleDescription("Opens help content");
+			
+			// New Button
+			newButton.getAccessibleContext().setAccessibleName("New File");
+			newButton.getAccessibleContext().setAccessibleDescription("Opens a new file");
+			
+			// Open Button
+			openButton.getAccessibleContext().setAccessibleName("Open file");
+			openButton.getAccessibleContext().setAccessibleDescription("Opens the chosen file");
+			
+			// Paste Button
+			pasteButton.getAccessibleContext().setAccessibleName("Paste");
+			pasteButton.getAccessibleContext().setAccessibleDescription("Paste text");
+			
+			// redo Button
+			redoButton.getAccessibleContext().setAccessibleName("Redo");
+			redoButton.getAccessibleContext().setAccessibleDescription("Redo");
+			
+			// Save Button
+			saveButton.getAccessibleContext().setAccessibleName("Save");
+			saveButton.getAccessibleContext().setAccessibleDescription("Save");
+			
+			// Save As Button
+			saveAsButton.getAccessibleContext().setAccessibleName("Save As");
+			saveAsButton.getAccessibleContext().setAccessibleDescription("Save As");
+			
+			// Undo Button
+			undoButton.getAccessibleContext().setAccessibleName("Undo");
+			undoButton.getAccessibleContext().setAccessibleDescription("Undo");
+		}
 
 		// Add all the buttons to the tool bar
 		mainToolBar.add( new JToolBar.Separator());

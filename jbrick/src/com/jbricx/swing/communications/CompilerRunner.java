@@ -66,6 +66,9 @@ public class CompilerRunner {
 		final List<CompilerError> list = new ArrayList<CompilerError>();
 		Process proc;
 		ProcessBuilder pb = new ProcessBuilder(command);
+		for(String eachCommand : command){
+			System.out.println(eachCommand);
+		}
 		try {
 			proc = pb.start();
 			final BufferedReader bufferedreader = new BufferedReader(
