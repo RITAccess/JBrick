@@ -13,7 +13,7 @@ public class CloseAction extends JBricxAbstractAction{
 	 * CutAction constructor
 	 */
 	public CloseAction(final JBricxManager manager) {
-		super("", null,/*new ImageIcon(CopyAction.class.getResource("/images/edit-cut.png")),*/ manager);
+		super("", new ImageIcon(CopyAction.class.getResource("/images/mail-mark-not-junk.png")), manager);
 	}
 	
 	@Override

@@ -10,7 +10,7 @@ import com.jbricx.swing.ui.JBricxManager;
 public class MaxViewerAction extends JBricxAbstractAction{
 
 	public MaxViewerAction(final JBricxManager manager) {
-		super("", new ImageIcon(""/*MaxViewerAction.class.getResource("/images/go-last.png")*/), manager);
+		super("", new ImageIcon(MaxViewerAction.class.getResource("/images/go-last.png")), manager);
 		
 	}
 
