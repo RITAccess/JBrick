@@ -9,8 +9,8 @@ import com.jbricx.swing.ui.JBricxManager;
 
 public class MaxEditorAction extends JBricxAbstractAction{
 
-	public MaxEditorAction(JBricxManager manager) {
-		super("", new ImageIcon(""), manager);
+	public MaxEditorAction(final JBricxManager manager) {
+		super("", new ImageIcon(MaxEditorAction.class.getResource("/images/go-bottom.png")), manager);
 	}
 
 	@Override
