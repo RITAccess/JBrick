@@ -77,6 +77,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 */
 	public RTextAreaBase() {
 		init();
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 
 
@@ -88,6 +90,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	public RTextAreaBase(AbstractDocument doc) {
 		super(doc);
 		init();
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 
 
@@ -99,6 +103,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	public RTextAreaBase(String text) {
 		super(text);
 		init();
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 
 

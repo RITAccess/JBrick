@@ -35,6 +35,8 @@ public class JBricxTabItem extends TextEditorPane {
 		isNewFile = true;
 		this.parent = parent;
 		setShortcuts();
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 	
 	/**
@@ -47,6 +49,8 @@ public class JBricxTabItem extends TextEditorPane {
 		isNewFile = false;
 		this.parent = parent;
 		setShortcuts();
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
 	}
 	
 	private void setShortcuts(){
