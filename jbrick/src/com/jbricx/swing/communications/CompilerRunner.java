@@ -66,6 +66,10 @@ public class CompilerRunner {
 		final List<CompilerError> list = new ArrayList<CompilerError>();
 		Process proc;
 		ProcessBuilder pb = new ProcessBuilder(command);
+		
+		// Merge the error stream with the input stream so that both can be flushed
+		// so that the buffer doesn't fill up and cause the process to halt.
+		pb.redirectErrorStream(true);
 		for(String eachCommand : command){
 			System.out.println(eachCommand);
 		}
@@ -73,7 +77,7 @@ public class CompilerRunner {
 			proc = pb.start();
 			final BufferedReader bufferedreader = new BufferedReader(
 					new InputStreamReader(new BufferedInputStream(
-							proc.getErrorStream())));
+							proc.getInputStream())));
 
 			/*
 			 * Listen up, boyo, every (most?) error message by NBC is composed
@@ -84,25 +88,30 @@ public class CompilerRunner {
 			 * error message that prints right after all the error messages,
 			 * e.g.: 3 errors during compilation
 			 */
+			
 			String line = bufferedreader.readLine();
 			while (!(line == null || line.contains("during compilation"))) {
-				CompilerError ce = new CompilerError();
-				ce.setMessageLine(line);
-				ce.setFileLine(bufferedreader.readLine());
-				ce.setLine(bufferedreader.readLine());
-
-				// Last line of error message is never used.
-				line = bufferedreader.readLine();
-				// Somehow, sometimes it comes empty so we read it again to be
-				// sure
-				if (line != null && line.isEmpty()) {
+				if(line.contains("Error: ")){
+					CompilerError ce = new CompilerError();
+					ce.setMessageLine(line);
+					ce.setFileLine(bufferedreader.readLine());
+					ce.setLine(bufferedreader.readLine());
+					
+					// Last line of error message is never used.
 					line = bufferedreader.readLine();
+					// Somehow, sometimes it comes empty so we read it again to be
+					// sure
+					if (line != null && line.isEmpty()) {
+						line = bufferedreader.readLine();
+					}
+					list.add(ce);
 				}
-				list.add(ce);
+
 				line = bufferedreader.readLine();
 			}
 
 			bufferedreader.close();
+			proc.destroy();
 			return new ExitStatus(list.isEmpty() ? ExitStatus.OK
 					: ExitStatus.ERROR, list);
 
