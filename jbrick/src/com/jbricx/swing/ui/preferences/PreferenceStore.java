@@ -23,7 +23,7 @@ public class PreferenceStore {
 	//Preference Defaults
 	
 	public static final boolean WRAP_DEFAULT = false;
-	public static final String FONT_DEFAULT  = "Seqoe UI-plain-9";
+	public static final String FONT_DEFAULT  = "Consolas-plain-20";
 	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
@@ -33,7 +33,7 @@ public class PreferenceStore {
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
 	public static final int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
-	public static final int OPERATOR_DEFAULT = Color.ORANGE.getRGB();
+	public static final int OPERATOR_DEFAULT = Color.MAGENTA.darker().getRGB();
 	public static final int COMMENT_DEFAULT = Color.GRAY.getRGB();
 	public static final int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
 	public static final int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
