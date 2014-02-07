@@ -11,7 +11,10 @@ package org.fife.ui.rtextarea;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -38,7 +41,26 @@ public class RTextScrollPane extends JScrollPane {
 
 	private RTextArea textArea;
 	private Gutter gutter;
+	private int scrollIncrease = 5;
 
+	
+	/**
+	 * Increase the size of the scrollbars
+	 */
+	private void increaseScrollBarSize()
+	{
+		// increase the width of the vertical scroll bar
+		JScrollBar vScrollBar = this.getVerticalScrollBar();
+        Dimension vScrollBarDim = new Dimension(vScrollBar.getPreferredSize().width+scrollIncrease,
+        		vScrollBar.getPreferredSize().height);
+        vScrollBar.setPreferredSize(vScrollBarDim);
+        
+        // increase the height of the horizontal scrollbar
+		JScrollBar hScrollBar = this.getVerticalScrollBar();
+        Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
+        		hScrollBar.getPreferredSize().height + scrollIncrease );
+        hScrollBar.setPreferredSize(hScrollBarDim);
+	}
 
 	/**
 	 * Constructor.  If you use this constructor, you must call
@@ -47,6 +69,7 @@ public class RTextScrollPane extends JScrollPane {
 	 */
 	public RTextScrollPane() {
 		this(null, true);
+		increaseScrollBarSize();
 	}
 
 
@@ -58,6 +81,7 @@ public class RTextScrollPane extends JScrollPane {
 	 */
 	public RTextScrollPane(RTextArea textArea) {
 		this(textArea, true);
+		increaseScrollBarSize();
 	}
 
 
@@ -73,6 +97,7 @@ public class RTextScrollPane extends JScrollPane {
 	 */
 	public RTextScrollPane(RTextArea textArea, boolean lineNumbers) {
 		this(textArea, lineNumbers, Color.GRAY);
+		increaseScrollBarSize();
 	}
 
 
@@ -106,7 +131,7 @@ public class RTextScrollPane extends JScrollPane {
 		// Set miscellaneous properties.
 		setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+		increaseScrollBarSize();
 	}
 
 
