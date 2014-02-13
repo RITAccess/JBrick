@@ -4,6 +4,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.jbricx.swing.ui.MainWindow;
+import com.sun.jna.Platform;
 
 public class JBricxLauncher {
 
@@ -13,7 +14,7 @@ public class JBricxLauncher {
 	public static void main(String[] args) {
 		// Look and feel code
 		try {
-			if (System.getProperty("os.name").contains("OS X")) {
+			if (Platform.isMac()) {
 				System.setProperty("apple.laf.useScreenMenuBar", "true");
 				System.setProperty(
 						"com.apple.mrj.application.apple.menu.about.name",
