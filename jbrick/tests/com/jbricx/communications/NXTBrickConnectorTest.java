@@ -5,6 +5,9 @@ package com.jbricx.communications;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import static org.junit.Assert.*;
+import org.junit.*; 
+import static org.mockito.Mockito.*;
 
 import com.jbricx.swing.communications.NXTBrickConnector;
 import com.jbricx.swing.communications.NXTConnection;

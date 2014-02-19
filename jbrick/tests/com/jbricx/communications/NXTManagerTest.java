@@ -7,6 +7,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import static org.junit.Assert.*;
+import org.junit.*; 
+import static org.mockito.Mockito.*;
+import com.jbricx.swing.communications.*;
+import com.jbricx.swing.communications.enums.*;
 
 /**
  * @author byktol
