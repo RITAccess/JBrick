@@ -1,10 +1,19 @@
-package com.jbricx.ui.piano;
+// 2-19, we believe that the piano code was removed at some point and that
+// these tests maybe should've been deleted when that happened.
+// We are commenting them out for now
+
+/*package com.jbricx.ui.piano;
 
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.InputEvent;
+
+import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.*; 
 
 public class PianoCompositeTest extends TestCase {
 	protected Display display = Display.getDefault();
@@ -116,3 +125,4 @@ public class PianoCompositeTest extends TestCase {
 			return pos;
 	}
 }
+*/
