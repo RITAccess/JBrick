@@ -380,17 +380,17 @@ public class JBricxMenuAndToolBarDelegate {
 	private void makeSubMenus() {
 		
 		// check if we're on a mac
-		String os = System.getProperty("os.name").toLowerCase();
-		boolean isMac = os.indexOf("mac") >= 0;
+		//String os = System.getProperty("os.name").toLowerCase();
+		//boolean isMac = os.indexOf("mac") >= 0;
 		
 		// the value to use for shortcuts
-		int ctrl_or_command_mask;
+		int ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		
 		// pick between ctrl or command key
-		if(isMac)
+		/*if(isMac)
 			ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(); // command key
 		else
-			ctrl_or_command_mask = ActionEvent.CTRL_MASK; // ctrl key
+			ctrl_or_command_mask = ActionEvent.CTRL_MASK; // ctrl key*/
 		
 		// File
 		JMenuItem newDoc = new JMenuItem(newAction);
