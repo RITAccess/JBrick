@@ -379,24 +379,13 @@ public class JBricxMenuAndToolBarDelegate {
 
 	private void makeSubMenus() {
 		
-		// check if we're on a mac
-		//String os = System.getProperty("os.name").toLowerCase();
-		//boolean isMac = os.indexOf("mac") >= 0;
-		
-		// the value to use for shortcuts
+		// the value to use for shortcuts, either ctrl or command depending on OS
 		int ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-		
-		// pick between ctrl or command key
-		/*if(isMac)
-			ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(); // command key
-		else
-			ctrl_or_command_mask = ActionEvent.CTRL_MASK; // ctrl key*/
 		
 		// File
 		JMenuItem newDoc = new JMenuItem(newAction);
 		newDoc.getAccessibleContext().setAccessibleName("New Document shortcut control + n");
-		newDoc.getAccessibleContext().setAccessibleDescription(
-				"Open a new document");
+		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
 		newDoc.setText("New");
 		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ctrl_or_command_mask));
 		fileMenu.add(newDoc);
@@ -439,13 +428,11 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit shortcut control + q");
-		exit.getAccessibleContext()
-				.setAccessibleDescription("Exit the program");
+		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
 		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ctrl_or_command_mask));
 		fileMenu.add(exit);
 
 		// Edit
-
 		JMenuItem undo = new JMenuItem(undoAction);
 		undo.setText("Undo");
 		editMenu.add(undo);
