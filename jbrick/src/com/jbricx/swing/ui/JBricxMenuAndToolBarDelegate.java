@@ -487,7 +487,7 @@ public class JBricxMenuAndToolBarDelegate {
 
 		JMenuItem dl = new JMenuItem(downloadAction);
 		dl.getAccessibleContext().setAccessibleName("Download shortcut F6");
-		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
 		dl.setText("Download");
 		compileMenu.add(dl);
 
