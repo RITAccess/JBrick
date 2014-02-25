@@ -3,6 +3,7 @@ package com.jbricx.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.prefs.PreferenceChangeEvent;
@@ -10,6 +11,7 @@ import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
@@ -89,6 +91,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		upDownSplit.setResizeWeight(.7);
 		upDownSplit.setMinimumSize(new Dimension(0,0));
 		upDownSplit.setDividerSize(10);
+		upDownSplit.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "none");
 		
 		//Contains the file viewer and the other JSplitpane which contains the editor and status panes
 		leftRightSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filePane,upDownSplit);
@@ -99,6 +102,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		//Removes file pane.
 		leftRightSplit.remove(filePane);
 		leftRightSplit.setDividerSize(0);
+		leftRightSplit.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "none");
 	}
 
 	/**
