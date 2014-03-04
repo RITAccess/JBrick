@@ -1,12 +1,8 @@
 package jbrick.tests;
 
 import jbrick.library.*;
-
-import javax.swing.*;
-
-import static org.junit.Assert.*;
-
 import com.jbricx.swing.ui.MainWindow;
+import org.junit.Assert.*;
 
 public class Tests {
 
@@ -20,46 +16,27 @@ public class Tests {
 	}
 	
 	public boolean newFile(){
-		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
-		AbstractButton newItem = (AbstractButton) TestUtils.getChildNamed(fileMenu, "New");
-		
-		if (newItem != null)
-			newItem.doClick();
+		TestUtils.getButton(mainWindow, "New");
 		return true;
 	}
 	
 	public boolean saveFile(){
-		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
-		AbstractButton item = (AbstractButton) TestUtils.getChildNamed(fileMenu, "Save");
-		
-		if (item != null)
-			item.doClick();		
+		TestUtils.getButton(mainWindow, "Save");
 		return true;
 	}
 	
 	public boolean openFile(){
-		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
-		AbstractButton openItem = (AbstractButton) TestUtils.getChildNamed(fileMenu, "Open");
-		
-		if (openItem != null)
-			openItem.doClick();
+		TestUtils.getButton(mainWindow, "Open");
 		return true;
 	}
 	
 	public boolean compile(){
-		AbstractButton compileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "Compile");
-		AbstractButton compile = (AbstractButton) TestUtils.getChildNamed(compileMenu, "Compile", compileMenu);
-		
-		if (compile != null)
-			compile.doClick();
+		TestUtils.getButton(TestUtils.getButton(mainWindow, "Compile"), "Compile");
 		return true;
 	}
 	
 	public boolean print(){
-		AbstractButton print = (AbstractButton) TestUtils.getChildNamed(mainWindow, "Print");
-		
-		if (print != null)
-			print.doClick();
+		TestUtils.getButton(mainWindow, "Print");
 		return true;
 	}
 	

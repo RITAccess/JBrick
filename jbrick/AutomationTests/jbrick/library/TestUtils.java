@@ -64,55 +64,18 @@ public class TestUtils {
 		return null;
 	}
 	
-	/*
-	public static Component getChildIndexed(
-			Component parent, String klass, int index) {
-		counter = 0;
-
-		// Step in only owned windows and ignore its components in JFrame
-		if (parent instanceof Window) {
-			Component[] children = ((Window)parent).getOwnedWindows();
-
-			for (int i = 0; i < children.length; ++i) {
-				// take only active windows
-				if (children[i] instanceof Window &&
-						!((Window)children[i]).isActive()) { continue; }
-
-				Component child = getChildIndexedInternal(
-						children[i], klass, index);
-				if (child != null) { return child; }
-			}
-		}
-
-		return null;
-	}
-
-	private static Component getChildIndexedInternal(
-			Component parent, String klass, int index) {
-
-		// Debug line
-		//System.out.println("Class: " + parent.getClass() +
-		//		" Name: " + parent.getName());
-
-		if (parent.getClass().toString().endsWith(klass)) {
-			if (counter == index) { return parent; }
-			++counter;
-		}
-
-		if (parent instanceof Container) {
-			Component[] children = (parent instanceof JMenu) ?
-					((JMenu)parent).getMenuComponents() :
-					((Container)parent).getComponents();
-
-			for (int i = 0; i < children.length; ++i) {
-				Component child = getChildIndexedInternal(
-						children[i], klass, index);
-				if (child != null) { return child; }
-			}
-		}
+	/**
+	 * AbstractButton - returns a button in the parent, that has the text (or is named) name
+	 * @param parent - component that the search starts from
+	 * @param name - the name of the button
+	 * @return - returns the button, unless the button cannot be found (which then it returns null)
+	 */
+	public static AbstractButton getButton(Component parent, String name){
+		AbstractButton item = (AbstractButton) TestUtils.getChildNamed(parent, "Save");
 		
+		if (item != null)
+			return item;
 		return null;
 	}
-	*/
 }
 
