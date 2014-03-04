@@ -1,30 +1,74 @@
 package jbrick.tests;
 
-import java.awt.Component;
-
 import jbrick.library.*;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTextField;
+import javax.swing.*;
+
+import static org.junit.Assert.*;
 
 import com.jbricx.swing.ui.MainWindow;
 
 public class Tests {
 
-	public static void main(String[] args) {
-		
-		MainWindow mainWindow = new MainWindow();
+	MainWindow mainWindow = new MainWindow();
+	
+
+	public Tests(){
 		mainWindow.setTitle("Automation Test - JBrick");
 		mainWindow.run();
+		//System.out.println("MAIN WINDOW: " + mainWindow);  // instantiated?
+	}
+	
+	public boolean newFile(){
+		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
+		AbstractButton newItem = (AbstractButton) TestUtils.getChildNamed(fileMenu, "New");
 		
-		System.out.println(mainWindow);  // instantiated?
+		if (newItem != null)
+			newItem.doClick();
+		return true;
+	}
+	
+	public boolean saveFile(){
+		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
+		AbstractButton item = (AbstractButton) TestUtils.getChildNamed(fileMenu, "Save");
+		
+		if (item != null)
+			item.doClick();		
+		return true;
+	}
+	
+	public boolean openFile(){
+		AbstractButton fileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "File");
+		AbstractButton openItem = (AbstractButton) TestUtils.getChildNamed(fileMenu, "Open");
+		
+		if (openItem != null)
+			openItem.doClick();
+		return true;
+	}
+	
+	public boolean compile(){
+		AbstractButton compileMenu = (AbstractButton) TestUtils.getChildNamed(mainWindow, "Compile");
+		AbstractButton compile = (AbstractButton) TestUtils.getChildNamed(compileMenu, "Compile", compileMenu);
+		
+		if (compile != null)
+			compile.doClick();
+		return true;
+	}
+	
+	public boolean print(){
+		AbstractButton print = (AbstractButton) TestUtils.getChildNamed(mainWindow, "Print");
+		
+		if (print != null)
+			print.doClick();
+		return true;
+	}
+	
+	public static void main(String[] args) {
+		
+		Tests test = new Tests();
 
-			
-		JMenuBar jmb = mainWindow.getJMenuBar();
-		System.out.println(jmb);
-		Component fileMenu = MenuFunctions.getMenuOption(jmb, "File");
-		System.out.println(fileMenu);
+		//assertEquals(true, test.saveFile());		
+		//assertEquals(true, test.compile());	
+		//assertEquals(true, test.print());
 	}
 }

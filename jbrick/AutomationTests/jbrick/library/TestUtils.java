@@ -6,6 +6,8 @@
 package jbrick.library;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class TestUtils {
@@ -14,10 +16,10 @@ public class TestUtils {
 
 	public static Component getChildNamed(Component parent, String name) {
 
-		// Debug line
-		//System.out.println("Class: " + parent.getClass() +
-		//		" Name: " + parent.getName());
-
+		if (parent instanceof AbstractButton) {
+			parent.setName(((AbstractButton) parent).getText());
+		}
+		
 		if (name.equals(parent.getName())) { return parent; }
 
 		if (parent instanceof Container) {
@@ -25,15 +27,44 @@ public class TestUtils {
 					((JMenu)parent).getMenuComponents() :
 					((Container)parent).getComponents();
 
-			for (int i = 0; i < children.length; ++i) {
+			for (int i = 0; i < children.length; i++) {
 				Component child = getChildNamed(children[i], name);
 				if (child != null) { return child; }
 			}
 		}
 		
 		return null;
-	}
+	}	
+	
+	public static Component getChildNamed(Component parent, String name, Component...ignoreComponents){
+		boolean ignore = false;
+		for (int i = 0; i < ignoreComponents.length; i++){
+			ignore = ignoreComponents[i].equals(parent) || ignore; 
+		}
+		
+		if (!ignore){
+			if (parent instanceof AbstractButton) {
+				parent.setName(((AbstractButton) parent).getText());
+			}
+			
+			if (name.equals(parent.getName())) { return parent; }
+		}
+	
+		if (parent instanceof Container) {
+			Component[] children = (parent instanceof JMenu) ?
+					((JMenu)parent).getMenuComponents() :
+					((Container)parent).getComponents();
 
+			for (int i = 0; i < children.length; i++) {
+				Component child = getChildNamed(children[i], name, ignoreComponents);
+				if (child != null) { return child; }
+			}
+		}
+		
+		return null;
+	}
+	
+	/*
 	public static Component getChildIndexed(
 			Component parent, String klass, int index) {
 		counter = 0;
@@ -82,5 +113,6 @@ public class TestUtils {
 		
 		return null;
 	}
+	*/
 }
 

@@ -17,13 +17,13 @@ import com.jbricx.swing.ui.MainWindow;
 public class MenuFunctions {
 	
 	/**
-	 * Function which selects one of the menu options, returns nothing.
+	 * Function which selects one of the menu options.
 	 * 
 	 * @param jmb - MainWindow instance
 	 * @param optionPath - path, separated by dashes (-), to the option
 	 * 					e.g. optionPath = "File-Save As"
 	 */
 	public static Component getMenuOption(JMenuBar jmb, String optionPath) {
-		return (Component) TestUtils.getChildNamed(jmb, "File");
+		return (Component) TestUtils.getChildNamed(jmb, optionPath);
 	}
 }
