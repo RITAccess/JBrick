@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		    	//JOptionPane.showMessageDialog(null, "Fantom driver missing!");
+		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
