@@ -4,12 +4,12 @@ import jbrick.library.*;
 import com.jbricx.swing.ui.MainWindow;
 import org.junit.Assert.*;
 
-public class Tests {
+public class Examples {
 
 	MainWindow mainWindow = new MainWindow();
 	
 
-	public Tests(){
+	public Examples(){
 		mainWindow.setTitle("Automation Test - JBrick");
 		mainWindow.run();
 		//System.out.println("MAIN WINDOW: " + mainWindow);  // instantiated?
@@ -42,7 +42,7 @@ public class Tests {
 	
 	public static void main(String[] args) {
 		
-		Tests test = new Tests();
+		Examples test = new Examples();
 
 		//assertEquals(true, test.saveFile());		
 		//assertEquals(true, test.compile());	
