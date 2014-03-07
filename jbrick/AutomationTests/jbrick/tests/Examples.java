@@ -1,8 +1,12 @@
 package jbrick.tests;
 
+import javax.swing.AbstractButton;
+
 import jbrick.library.*;
+
 import com.jbricx.swing.ui.MainWindow;
-import org.junit.Assert.*;
+
+import static org.junit.Assert.*;
 
 public class Examples {
 
@@ -16,7 +20,7 @@ public class Examples {
 	}
 	
 	public boolean newFile(){
-		TestUtils.getButton(mainWindow, "New");
+		TestUtils.getButton(mainWindow, "New").doClick();
 		return true;
 	}
 	
@@ -31,7 +35,7 @@ public class Examples {
 	}
 	
 	public boolean compile(){
-		TestUtils.getButton(TestUtils.getButton(mainWindow, "Compile"), "Compile");
+		TestUtils.getButton(mainWindow, "Compile", TestUtils.getButton(mainWindow, "Compile")).doClick();
 		return true;
 	}
 	
@@ -44,8 +48,8 @@ public class Examples {
 		
 		Examples test = new Examples();
 
-		//assertEquals(true, test.saveFile());		
-		//assertEquals(true, test.compile());	
+		test.newFile();	
+		test.compile();	
 		//assertEquals(true, test.print());
 	}
 }

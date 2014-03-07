@@ -10,72 +10,46 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import com.jbricx.swing.ui.MainWindow;
+
 public class TestUtils {
-
-	static int counter;
-
-	public static Component getChildNamed(Component parent, String name) {
-
-		if (parent instanceof AbstractButton) {
-			parent.setName(((AbstractButton) parent).getText());
-		}
-		
-		if (name.equals(parent.getName())) { return parent; }
-
-		if (parent instanceof Container) {
-			Component[] children = (parent instanceof JMenu) ?
-					((JMenu)parent).getMenuComponents() :
-					((Container)parent).getComponents();
-
-			for (int i = 0; i < children.length; i++) {
-				Component child = getChildNamed(children[i], name);
-				if (child != null) { return child; }
-			}
-		}
-		
-		return null;
-	}	
 	
-	public static Component getChildNamed(Component parent, String name, Component...ignoreComponents){
-		boolean ignore = false;
-		for (int i = 0; i < ignoreComponents.length; i++){
-			ignore = ignoreComponents[i].equals(parent) || ignore; 
-		}
-		
-		if (!ignore){
-			if (parent instanceof AbstractButton) {
-				parent.setName(((AbstractButton) parent).getText());
+	public static Component getChildNamed(Component parent, String text, Component...ignoreComponents){
+		if (parent instanceof AbstractButton){
+			if (((AbstractButton) parent).getText().equals(text)){
+				boolean ignore = false;
+				for (Component ignoreCom: ignoreComponents){
+					if (ignoreCom.equals(parent)){
+						ignore = true;
+					}
+				}
+				if (!ignore){
+					return parent;
+				}
 			}
-			
-			if (name.equals(parent.getName())) { return parent; }
 		}
-	
-		if (parent instanceof Container) {
+		if (parent instanceof Container){
 			Component[] children = (parent instanceof JMenu) ?
-					((JMenu)parent).getMenuComponents() :
-					((Container)parent).getComponents();
-
-			for (int i = 0; i < children.length; i++) {
-				Component child = getChildNamed(children[i], name, ignoreComponents);
-				if (child != null) { return child; }
+					((JMenu) parent).getMenuComponents():
+					((Container) parent).getComponents();
+			for (Component child: children){
+				Component childReturn = getChildNamed(child, text, ignoreComponents);
+				if (childReturn != null)
+					return childReturn;
 			}
 		}
-		
 		return null;
 	}
 	
 	/**
-	 * AbstractButton - returns a button in the parent, that has the text (or is named) name
+	 * getButton - returns a button in the parent, that has the text (or is named) name
 	 * @param parent - component that the search starts from
 	 * @param name - the name of the button
-	 * @return - returns the button, unless the button cannot be found (which then it returns null)
+	 * @return - returns AbstractButton, unless the button cannot be found (which then it returns null)
 	 */
-	public static AbstractButton getButton(Component parent, String name){
-		AbstractButton item = (AbstractButton) TestUtils.getChildNamed(parent, "Save");
+	public static AbstractButton getButton(Component parent, String name, Component...ignore){
+		AbstractButton item = (AbstractButton) getChildNamed(parent, name, ignore);
 		
-		if (item != null)
-			return item;
-		return null;
+		return item;
 	}
 }
-
