@@ -5,6 +5,7 @@ package com.jbricx.swing.ui;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -377,28 +378,28 @@ public class JBricxMenuAndToolBarDelegate {
 	}
 
 	private void makeSubMenus() {
+		
+		// the value to use for shortcuts, either ctrl or command depending on OS
+		int ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		
 		// File
 		JMenuItem newDoc = new JMenuItem(newAction);
 		newDoc.getAccessibleContext().setAccessibleName("New Document shortcut control + n");
-		newDoc.getAccessibleContext().setAccessibleDescription(
-				"Open a new document");
+		newDoc.getAccessibleContext().setAccessibleDescription("Open a new document");
 		newDoc.setText("New");
-		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
-				ActionEvent.CTRL_MASK));
+		newDoc.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ctrl_or_command_mask));
 		fileMenu.add(newDoc);
 
 		JMenuItem open = new JMenuItem(openAction);
 		open.getAccessibleContext().setAccessibleName("Open shortcut control + o");
 		open.setText("Open");
-		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-				ActionEvent.CTRL_MASK));
+		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ctrl_or_command_mask));
 		fileMenu.add(open);
 
 		JMenuItem save = new JMenuItem(saveAction);
 		save.getAccessibleContext().setAccessibleName("Save shortcut control + s");
 		save.setText("Save");
-		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				ActionEvent.CTRL_MASK));
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ctrl_or_command_mask));
 		fileMenu.add(save);
 
 		JMenuItem saveAs = new JMenuItem(saveAsAction);
@@ -412,8 +413,8 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem print = new JMenuItem(printAction);
 		print.getAccessibleContext().setAccessibleName("Print shortcut control + p");
 		print.setText("Print");
-		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				ActionEvent.CTRL_MASK));
+		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ctrl_or_command_mask));
+		
 		fileMenu.add(print);
 
 		JMenuItem close = new JMenuItem(closeAction);
@@ -421,21 +422,17 @@ public class JBricxMenuAndToolBarDelegate {
 		close.getAccessibleContext().setAccessibleName("Close File shortcut control + w");
 		close.getAccessibleContext().setAccessibleDescription(
 				"Close the current File");
-		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
-				ActionEvent.CTRL_MASK));
+		close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ctrl_or_command_mask));
 		fileMenu.add(close);
 
 		JMenuItem exit = new JMenuItem(exitAction);
 		exit.setText("Quit");
 		exit.getAccessibleContext().setAccessibleName("Quit shortcut control + q");
-		exit.getAccessibleContext()
-				.setAccessibleDescription("Exit the program");
-		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				ActionEvent.CTRL_MASK));
+		exit.getAccessibleContext().setAccessibleDescription("Exit the program");
+		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ctrl_or_command_mask));
 		fileMenu.add(exit);
 
 		// Edit
-
 		JMenuItem undo = new JMenuItem(undoAction);
 		undo.setText("Undo");
 		editMenu.add(undo);
@@ -466,36 +463,31 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem find = new JMenuItem(findAction);
 		find.getAccessibleContext().setAccessibleName("Find and Replace shortcut control + f");
 		find.setText("Find and Replace");
-		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
-				ActionEvent.CTRL_MASK));
+		find.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ctrl_or_command_mask));
 		editMenu.add(find);
 
 		JMenuItem prefs = new JMenuItem(prefsAction);
 		prefs.getAccessibleContext().setAccessibleName("Preferences shortcut control + r");
 		prefs.setText("Preferences");
-		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
-				ActionEvent.CTRL_MASK));
+		prefs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ctrl_or_command_mask));
 		editMenu.add(prefs);
 
 		// Compile
 		JMenuItem compile = new JMenuItem(compileAction);
 		compile.getAccessibleContext().setAccessibleName("Compile shortcut F5");
-		compile.setAccelerator(KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_F5, 0));
+		compile.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
 		compile.setText("Compile");
 		compileMenu.add(compile);
 
 		JMenuItem fb = new JMenuItem(findBrickAction);
 		fb.getAccessibleContext().setAccessibleName("Find Brick shortcut control + shift + f");
 		fb.setText("Find Brick");
-		fb.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
-				KeyEvent.CTRL_MASK + KeyEvent.SHIFT_MASK));
+		fb.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ctrl_or_command_mask + KeyEvent.SHIFT_MASK));
 		compileMenu.add(fb);
 
 		JMenuItem dl = new JMenuItem(downloadAction);
 		dl.getAccessibleContext().setAccessibleName("Download shortcut F6");
-		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6,
-				0));
+		dl.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
 		dl.setText("Download");
 		compileMenu.add(dl);
 
@@ -503,8 +495,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem gt = new JMenuItem(gotoAction);
 		gt.getAccessibleContext().setAccessibleName("Go To shortcut control g");
 		gt.setText("GoTo");
-		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
-				ActionEvent.CTRL_MASK));
+		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ctrl_or_command_mask));
 		toolsMenu.add(gt);
 
 		// JMenuItem piano = new JMenuItem(pianoAction);
@@ -544,8 +535,7 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem help = new JMenuItem(helpContentAction);
 		help.getAccessibleContext().setAccessibleName("Help Content shortcut F1");
 		help.setText("Help Content");
-		help.setAccelerator(KeyStroke.getKeyStroke(
-				java.awt.event.KeyEvent.VK_F1, 0));
+		help.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
 		helpMenu.add(help);
 	}
 
