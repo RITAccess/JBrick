@@ -19,11 +19,20 @@ public class MenuFunctions {
 	/**
 	 * Function which selects one of the menu options.
 	 * 
-	 * @param jmb - MainWindow instance
-	 * @param optionPath - path, separated by dashes (-), to the option
-	 * 					e.g. optionPath = "File-Save As"
+	 * @param mw - MainWindow instance
+	 * @param option - String of the option we want to get 
 	 */
-	public static Component getMenuOption(JMenuBar jmb, String optionPath) {
-		return (Component) TestUtils.getChildNamed(jmb, optionPath);
+	public static Component getMenuOption(MainWindow mw, String optionPath) {
+		return null;
+	}
+	
+	/**
+	 * Function which selects one of the toolbar icons.
+	 * 
+	 * @param mw - MainWindow instance
+	 * @param option - String of the option we want to get 
+	 */
+	public static Component getToolbarIcon(MainWindow mw, String optionPath) {
+		return null;
 	}
 }
