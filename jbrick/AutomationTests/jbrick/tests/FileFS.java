@@ -1,5 +1,7 @@
 package jbrick.tests;
 
+import jbrick.library.*;
+
 public class FileFS {
 
 	/**
@@ -11,7 +13,7 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO read the file name
 		//TODO return true if the file name == "New File 1"; else return false
 		return false;
@@ -26,7 +28,7 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User opens a file using the File>Open menu
@@ -52,7 +54,7 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 				
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User opens a file using the File>Open menu
@@ -70,7 +72,7 @@ public class FileFS {
 		// 4. User re-opens the JBrick application
 		// => The file that was loaded in step 2 is the focused file, "New File 1" is not in the list of opened files
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		return false;
@@ -84,7 +86,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User creates a new file using File>New menu option
@@ -104,7 +106,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -125,7 +127,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -154,7 +156,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
-		//TODO open the application
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -172,6 +174,43 @@ public class FileFS {
 		//TODO select the save-as prompt in the file menu
 		//TODO save to a new location
 		//TODO check that the text is different from the first file and the new file
+		
+		return false;
+	}
+	
+	/**
+	 * TC008 - Open a Deleted File
+	 */
+	public static boolean TC008() {
+		// 1. User opens the JBrick application
+		// => The Code Frame has only one tab opened, "New File 1"	
+		
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		//TODO check the file name
+		
+		// 2. User saves the file to the computer using the File>Save menu option
+		// => A prompt appears on the screen, the file is saved and visible on the computer hard-drive
+		// (For this test, it is not important where the file is saved, or what it is saved as.)
+		
+		//TODO select the save option from the file menu
+		//TODO check that the file is created
+		
+		// 3. User closes the JBrick application
+		// => The application closes
+		
+		//TODO quit the JBrick application
+		
+		// 4. User Deletes/Renames/Moves the saved file
+		// => The file is removed from the computer system
+		
+		//TODO delete the file on the computer
+		//TODO check that the file is deleted
+		
+		// 5. User Reopens JBrick
+		// => The default file, "New File 1" is opened
+		
+		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		//TODO check the file name
 		
 		return false;
 	}
