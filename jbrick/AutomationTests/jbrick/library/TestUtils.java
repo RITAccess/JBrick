@@ -6,7 +6,8 @@
 package jbrick.library;
 
 import java.awt.*;
-import java.util.ArrayList;
+
+import com.jbricx.swing.ui.tabs.JBricxFilePane;
 
 import javax.swing.*;
 
@@ -51,5 +52,37 @@ public class TestUtils {
 	public static AbstractButton getButton(Component parent, String name, Component...ignore){
 		AbstractButton item = (AbstractButton) getChildNamed(parent, name, ignore);
 		return item;
+	}
+	
+	/**
+	 * getComponent
+	 */
+	public static Component getComponent(Component parent, Class<?> compClass){
+		if (parent.getClass().equals(compClass))
+			return parent;
+		
+		if (parent instanceof Container){
+			Component[] children = (parent instanceof JMenu) ?
+					((JMenu) parent).getMenuComponents():
+					((Container) parent).getComponents();
+			for (Component child: children){
+				Component childReturn = getComponent(child, compClass);
+				if (childReturn != null)
+					return childReturn;
+			}
+		}
+		return null;
+	}
+	
+	// DEBUGGER
+	public static void main(String[] args) {
+	
+		MainWindow mainWindow = new MainWindow();
+		mainWindow.run();
+		Component comp = TestUtils.getComponent(mainWindow, JBricxFilePane.class);
+		if (comp instanceof JBricxFilePane){
+			System.out.println(((JBricxFilePane) comp).getName());
+		}
+		System.out.println(comp);
 	}
 }
