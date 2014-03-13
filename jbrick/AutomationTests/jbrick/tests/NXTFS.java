@@ -20,6 +20,7 @@ public class NXTFS {
 		//TODO click the compile icon
 		//TODO check that the code compiled and the status frame is error free
 		
+		return false;
 	}
 	
 	/**
