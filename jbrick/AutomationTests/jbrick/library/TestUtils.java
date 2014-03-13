@@ -19,9 +19,10 @@ public class TestUtils {
 			if (((AbstractButton) parent).getText().equals(text)){
 				boolean ignore = false;
 				for (Component ignoreCom: ignoreComponents){
-					if (ignoreCom.equals(parent)){
-						ignore = true;
-					}
+					if (ignoreCom != null)
+						if (ignoreCom.equals(parent)){
+							ignore = true;
+						}
 				}
 				if (!ignore){
 					return parent;
@@ -49,7 +50,6 @@ public class TestUtils {
 	 */
 	public static AbstractButton getButton(Component parent, String name, Component...ignore){
 		AbstractButton item = (AbstractButton) getChildNamed(parent, name, ignore);
-		
 		return item;
 	}
 }
