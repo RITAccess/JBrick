@@ -1,28 +1,32 @@
 package jbrick.tests;
 
+import com.jbricx.swing.ui.MainWindow;
+
 import jbrick.library.*;
+import static org.junit.Assert.*;
+import org.junit.*; 
 
 public class FileFS {
-
+	
 	/**
 	 * TC001 - Default File on Startup
 	 */
-	public static boolean TC001() {
+	@Test
+	public void TC001() {
 		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
-		//TODO read the file name
-		//TODO return true if the file name == "New File 1"; else return false
-		return false;
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC001");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 	}
 	
 	/**
 	 * TC002 - Open a File
 	 */
-	public static boolean TC002() {
+	public void TC002() {
 		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -42,13 +46,13 @@ public class FileFS {
 		
 		//TODO select the NXC file
 		//TODO read the file names, check that there is one opened, and it is the file name we chose
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC003 - Reopen File on Startup
 	 */
-	public static boolean TC003() {
+	public void TC003() {
 		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -75,13 +79,13 @@ public class FileFS {
 		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC004 - Generate a New File
 	 */
-	public static boolean TC004() {
+	public void TC004() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -95,13 +99,13 @@ public class FileFS {
 		//TODO select the new menu option button
 		//TODO check the file names
 		
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC005 - Save a file to computer
 	 */
-	public static boolean TC005() {
+	public void TC005() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
@@ -116,13 +120,13 @@ public class FileFS {
 		//TODO select the save option from the file menu
 		//TODO check that the file is created (File.exists?)
 		
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC006 - Save a file to computer
 	 */
-	public static boolean TC006() {
+	public void TC006() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
@@ -145,13 +149,13 @@ public class FileFS {
 		//TODO save the file again
 		//TODO check that the file is updated on the computer
 		
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC007 - Save as a different file to computer
 	 */
-	public static boolean TC007() {
+	public void TC007() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -175,13 +179,13 @@ public class FileFS {
 		//TODO save to a new location
 		//TODO check that the text is different from the first file and the new file
 		
-		return false;
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC008 - Open a Deleted File
 	 */
-	public static boolean TC008() {
+	public void TC008() {
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
@@ -212,6 +216,6 @@ public class FileFS {
 		StartupFunctions.newJBricksInstance("JBricks - TC001");
 		//TODO check the file name
 		
-		return false;
+		assertTrue(false);
 	}
 }

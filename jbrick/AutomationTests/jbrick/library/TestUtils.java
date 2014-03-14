@@ -8,6 +8,7 @@ package jbrick.library;
 import java.awt.*;
 
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 import javax.swing.*;
 
@@ -79,7 +80,7 @@ public class TestUtils {
 	
 		MainWindow mainWindow = new MainWindow();
 		mainWindow.run();
-		Component comp = TestUtils.getComponent(mainWindow, JBricxFilePane.class);
+		Component comp = TestUtils.getComponent(mainWindow, JBricxTabItem.class);
 		if (comp instanceof JBricxFilePane){
 			System.out.println(((JBricxFilePane) comp).getName());
 		}
