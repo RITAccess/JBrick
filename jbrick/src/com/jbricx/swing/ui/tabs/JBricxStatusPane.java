@@ -67,7 +67,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
         vScrollBar.setPreferredSize(vScrollBarDim);
         
         // increase the height of the horizontal scrollbar
-		JScrollBar hScrollBar = sp.getVerticalScrollBar();
+		JScrollBar hScrollBar = sp.getHorizontalScrollBar();
         Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
         		hScrollBar.getPreferredSize().height + scrollIncrease);
         hScrollBar.setPreferredSize(hScrollBarDim);
