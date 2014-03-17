@@ -54,15 +54,27 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		listOfFiles = new ArrayList<String>();
 		prefs = PreferenceStore.getPrefs();
 
-		if (prefs.getBoolean(PreferenceStore.BOOLRECENTFILES,
+		if (prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, 
 				PreferenceStore.BOOLRECENTFILES_DEFAULT)) {
+			
 			ArrayList<String> recentFiles = getRecentFiles();
+			
 			if (recentFiles.size() > 0 && recentFiles.get(0).length() > 1) {
+				boolean fileOpened = false;
+				
+				// try to open all the recent files
 				for (String file : recentFiles) {
 					if (new File(file).exists()) {
 						open(file);
+						fileOpened = true;
 					}
 				}
+				
+				// if NONE of the files exist any more, open a new file
+				if(!fileOpened){
+					this.openNewFile();
+				}
+				
 			} else {
 				this.openNewFile();
 			}
