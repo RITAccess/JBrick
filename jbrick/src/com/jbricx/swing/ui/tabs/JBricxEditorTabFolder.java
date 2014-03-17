@@ -1,16 +1,23 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -62,6 +69,39 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		} else {
 			this.openNewFile();
 		}
+		
+		setupTabTraversalKeys();
+	}
+	/*
+	 * Adapted from http://www.davidc.net/programming/java/how-make-ctrl-tab-switch-tabs-jtabbedpane
+	 * Sets up the JTabbedPane to allow a shortcut for tabbing between files
+	 */
+	private void setupTabTraversalKeys()
+	{
+	   /* KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
+	    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
+	    
+	    KeyStroke tabForward = KeyStroke.getKeyStroke("2");
+	    KeyStroke tabBack = KeyStroke.getKeyStroke("1");
+	 
+	    // Remove ctrl-tab from normal focus traversal
+	    Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+	    forwardKeys.remove(ctrlTab);
+	    setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+	 
+	    // Remove ctrl-shift-tab from normal focus traversal
+	    Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+	    backwardKeys.remove(ctrlShiftTab);
+	    setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+	 
+	    // Add keys to the tab's input map
+	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	    inputMap.put(ctrlTab, "navigateNext");
+	    inputMap.put(ctrlShiftTab, "navigatePrevious");*/
+	    
+	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	    inputMap.put(KeyStroke.getKeyStroke("ctrl 1"), "navigatePrevious");
+	    inputMap.put(KeyStroke.getKeyStroke("ctrl 2"), "navigateNext");
 	}
 
 	/**
