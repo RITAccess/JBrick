@@ -35,9 +35,6 @@ public class JBricxLauncher {
 			e.printStackTrace();
 		}
 		
-		
-
-
 		MainWindow mainWindow = new MainWindow();
 		mainWindow.setTitle("JBrick");
 		mainWindow.run();

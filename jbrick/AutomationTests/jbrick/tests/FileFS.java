@@ -18,8 +18,12 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC001");
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+		
+		MainWindow jbricks = StartupFunctions.newJBricksInstanceNoFantom("JBricks - TC001");
 		String fileName = FileFunctions.getFileName(jbricks);
+		System.out.println(fileName);
 		assertTrue(fileName.equals("New File 1"));
 	}
 	

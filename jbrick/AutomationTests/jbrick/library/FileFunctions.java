@@ -3,7 +3,7 @@ package jbrick.library;
 import java.awt.Component;
 
 import com.jbricx.swing.ui.MainWindow;
-import com.jbricx.swing.ui.tabs.JBricxFilePane;
+import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 /**
@@ -21,5 +21,21 @@ public class FileFunctions {
 		}
 		
 		return name;
+	}
+	
+	public static int getTabCount(MainWindow mainWindow) {
+		int count = 0;
+		Component comp = TestUtils.getComponent(mainWindow, JBricxEditorTabFolder.class);
+		if (comp instanceof JBricxEditorTabFolder){
+			count = ((JBricxEditorTabFolder) comp).getTabCount();
+		}
+		return count;
+	}
+	
+	public static void closeTab(MainWindow mainWindow, int tabIndex){
+		Component comp = TestUtils.getComponent(mainWindow, JBricxEditorTabFolder.class);
+		if (comp instanceof JBricxEditorTabFolder){
+			((JBricxEditorTabFolder) comp).closeFile(tabIndex);
+		}
 	}
 }
