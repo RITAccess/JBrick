@@ -4,10 +4,12 @@ import java.awt.Component;
 
 import jbrick.library.*;
 
+import javax.swing.AbstractButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.jbricx.swing.ui.MainWindow;
+import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 
 /**
  * Framework for interacting with the top level menu
@@ -16,23 +18,19 @@ import com.jbricx.swing.ui.MainWindow;
 
 public class MenuFunctions {
 	
-	/**
-	 * Function which selects one of the menu options.
-	 * 
-	 * @param mw - MainWindow instance
-	 * @param option - String of the option we want to get 
-	 */
-	public static Component getMenuOption(MainWindow mw, String optionPath) {
-		return null;
+	
+	public static void openFile(MainWindow mainWindow, String fileName) {
+		AbstractButton openButton = TestUtils.getButton(mainWindow, "Open");
+		openButton.doClick();
 	}
 	
-	/**
-	 * Function which selects one of the toolbar icons.
-	 * 
-	 * @param mw - MainWindow instance
-	 * @param option - String of the option we want to get 
-	 */
-	public static Component getToolbarIcon(MainWindow mw, String optionPath) {
-		return null;
+	public static void newFile(MainWindow mainWindow) {
+		AbstractButton newButton = TestUtils.getButton(mainWindow, "New");
+		newButton.doClick();
+	}
+	
+	public static void saveFile(MainWindow mainWindow) {
+		AbstractButton saveButton = TestUtils.getButton(mainWindow, "Save");
+		saveButton.doClick();
 	}
 }

@@ -14,36 +14,39 @@ public class FileFS {
 	@Test
 	public void TC001() {
 		
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		MainWindow jbricks = StartupFunctions.newJBricksInstanceNoFantom("JBricks - TC001");
 		String fileName = FileFunctions.getFileName(jbricks);
-		System.out.println(fileName);
 		assertTrue(fileName.equals("New File 1"));
 	}
 	
 	/**
 	 * TC002 - Open a File
 	 */
+	@Test
 	public void TC002() {
+		
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
 		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC002");
 		//TODO check the file name
 		
 		// 2. User opens a file using the File>Open menu
 		// => Open dialog appears
 		
-		//TODO select the open option in the file menu
-		//TODO check that the open dialog appears
+		// NB: We don't test the open dialog directly, only the action to open a file
+		FileFunctions.openFile(jbricks, "");
 		
 		// 3. User selects an NXC file
 		// => "New File 1" is removed, the opened file is the only tab opened.
@@ -62,7 +65,7 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 				
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC003");
 		//TODO check the file name
 		
 		// 2. User opens a file using the File>Open menu
@@ -89,21 +92,28 @@ public class FileFS {
 	/**
 	 * TC004 - Generate a New File
 	 */
+	@Test
 	public void TC004() {
+		
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
-		//TODO check the file name
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC004");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User creates a new file using File>New menu option
 		// => A new tab is generated in the code frame, labeled "New File 2"
 		
-		//TODO select the new menu option button
-		//TODO check the file names
+		MenuFunctions.newFile(jbricks);
+		int tabCount = FileFunctions.getTabCount(jbricks);
+		assertTrue(tabCount == 2);
 		
-		assertTrue(false);
+		fileName = FileFunctions.getCurrentFile(jbricks);
+		assertTrue(fileName.equals("New File 2"));
 	}
 	
 	/**
@@ -114,7 +124,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC005");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -135,7 +145,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC006");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -164,7 +174,7 @@ public class FileFS {
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC007");
 		//TODO check the file name
 		
 		// 2. User saves the file to the computer using the File>Save menu option
@@ -190,11 +200,16 @@ public class FileFS {
 	 * TC008 - Open a Deleted File
 	 */
 	public void TC008() {
+		
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
-		//TODO check the file name
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC008");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User saves the file to the computer using the File>Save menu option
 		// => A prompt appears on the screen, the file is saved and visible on the computer hard-drive
