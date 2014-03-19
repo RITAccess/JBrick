@@ -30,7 +30,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	// Using this as a hack because preferences update too many times(one update
 	// fired per preference changed.)
 	private int timesRefreshed = 0;
-	private int scrollIncrease = 5;
+	private int scrollIncrease = 10;
 	private List<CompilerError> errorList;
 
 	public JBricxStatusPane(MainWindow main) {
