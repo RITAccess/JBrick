@@ -153,7 +153,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 			prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
 			this.dispose();
 			NXTManager.getInstance().stopPolling();
-			System.exit(0);
 			return true;
 		}
 		

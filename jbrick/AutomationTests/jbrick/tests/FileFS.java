@@ -47,18 +47,24 @@ public class FileFS {
 		// => Open dialog appears
 		
 		// NB: We don't test the open dialog directly, only the action to open a file
+		
 		String filePath = "MyFirstNxcProgram.nxc";
 		FileFunctions.createFile(filePath);
 		FileFunctions.openFile(jbricks, filePath);
+		
 		// 3. User selects an NXC file
 		// => the selected file opens in a new tab (it is also the current tab)
 		
+		// NB: delete file
+		
+		FileFunctions.deleteFile(filePath);
 		assertTrue(FileFunctions.getCurrentFile(jbricks).equals(filePath));
 	}
 	
 	/**
 	 * TC003 - Reopen File on Startup
 	 */
+	@Test
 	public void TC003() {
 		
 		// PRECONDITIONS - no files are in the previous load of JBricks
@@ -74,22 +80,21 @@ public class FileFS {
 		// 2. User opens a file using the File>Open menu
 		// => Open dialog appears
 				
-		//TODO select the open option in the file menu
-		//TODO select a file from the opened prompt
+		String filePath = "MyFirstNxcProgram.nxc";
+		FileFunctions.createFile(filePath);
+		FileFunctions.openFile(jbricks, filePath);
 		
 		// 3. User quits the JBrick application
 		// => The application is closed with no errors
 		// (Use the Quit menu option under file. NOT Close)
 		
-		//TODO select the file menu quit option
+		TestUtils.getButton(jbricks, "Quit").doClick();
 		
 		// 4. User re-opens the JBrick application
 		// => The file that was loaded in step 2 is the focused file, "New File 1" is not in the list of opened files
 		
 		StartupFunctions.newJBricksInstance("JBricks - TC003 b");
-		//TODO check the file name
-		
-		assertTrue(false);
+		assertTrue(FileFunctions.getCurrentFile(jbricks).equals(filePath));
 	}
 	
 	/**
@@ -114,7 +119,6 @@ public class FileFS {
 		MenuFunctions.newFile(jbricks);
 		int tabCount = FileFunctions.getTabCount(jbricks);
 		assertTrue(tabCount == 2);
-		
 		fileName = FileFunctions.getCurrentFile(jbricks);
 		assertTrue(fileName.equals("New File 2"));
 	}

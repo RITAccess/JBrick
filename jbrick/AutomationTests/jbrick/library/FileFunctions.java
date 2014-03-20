@@ -77,4 +77,14 @@ public class FileFunctions {
 		}
 		return false;
 	}
+	
+	/**
+	 * deletes a file (if there is one) at a given filePath
+	 * @param filePath
+	 * @return if the file was deleted => true, else => false
+	 */
+	public static boolean deleteFile(String filePath){
+		File delFile = new File(filePath);
+		return delFile.delete();
+	}
 }
