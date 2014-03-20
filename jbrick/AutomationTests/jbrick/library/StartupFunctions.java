@@ -21,19 +21,19 @@ public class StartupFunctions {
 	}
 	
 	public static MainWindow newJBricksInstance(String title) {
-		return newJBricksInstance(title, true);
+		return newJBricksInstance(title, false);
 	}
 	
-	public static MainWindow newJBricksInstanceNoFantom(String title){
-		return newJBricksInstance(title, false);
+	public static MainWindow newJBricksInstanceWithFantom(String title){
+		return newJBricksInstance(title, true);
 	}
 	
 	public static MainWindow newJBricksInstance() {
 		return newJBricksInstance("Automated Bricks Test");
 	}
 	
-	public static MainWindow newJBricksInstanceNoFantom() {
-		return newJBricksInstanceNoFantom("Automated Bricks Test (No Fantom)");
+	public static MainWindow newJBricksInstanceWithFantom() {
+		return newJBricksInstanceWithFantom("Automated Bricks Test (With Fantom)");
 	}
 	
 	public static void clearTabs(){
