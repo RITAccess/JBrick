@@ -56,9 +56,9 @@ public class RTextScrollPane extends JScrollPane {
         vScrollBar.setPreferredSize(vScrollBarDim);
         
         // increase the height of the horizontal scrollbar
-		JScrollBar hScrollBar = this.getVerticalScrollBar();
+		JScrollBar hScrollBar = this.getHorizontalScrollBar();
         Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
-        		hScrollBar.getPreferredSize().height + scrollIncrease );
+        		hScrollBar.getPreferredSize().height + scrollIncrease);
         hScrollBar.setPreferredSize(hScrollBarDim);
 	}
 

@@ -1,11 +1,13 @@
 package com.jbricx.swing.ui.tabs;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
 import java.util.prefs.Preferences;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
@@ -28,6 +30,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	// Using this as a hack because preferences update too many times(one update
 	// fired per preference changed.)
 	private int timesRefreshed = 0;
+	private int scrollIncrease = 10;
 	private List<CompilerError> errorList;
 
 	public JBricxStatusPane(MainWindow main) {
@@ -41,9 +44,33 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 				PreferenceStore.FONT_DEFAULT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);
-		this.addTab("Status", new JScrollPane(messagePane,
+		
+		// set up the scrollpane
+		JScrollPane status = new JScrollPane(messagePane,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		
+		increaseScrollBarSize(status);
+		
+		this.addTab("Status", status);
+	}
+	
+	/**
+	 * Increase the size of the scrollbars on a scrollpane
+	 */
+	private void increaseScrollBarSize(JScrollPane sp)
+	{
+		// increase the width of the vertical scroll bar
+		JScrollBar vScrollBar = sp.getVerticalScrollBar();
+        Dimension vScrollBarDim = new Dimension(vScrollBar.getPreferredSize().width+scrollIncrease,
+        		vScrollBar.getPreferredSize().height);
+        vScrollBar.setPreferredSize(vScrollBarDim);
+        
+        // increase the height of the horizontal scrollbar
+		JScrollBar hScrollBar = sp.getHorizontalScrollBar();
+        Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
+        		hScrollBar.getPreferredSize().height + scrollIncrease);
+        hScrollBar.setPreferredSize(hScrollBarDim);
 	}
 
 	/**
