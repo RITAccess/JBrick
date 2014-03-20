@@ -94,6 +94,7 @@ public class FileFS {
 		// => The file that was loaded in step 2 is the focused file, "New File 1" is not in the list of opened files
 		
 		StartupFunctions.newJBricksInstance("JBricks - TC003 b");
+		FileFunctions.deleteFile(filePath);
 		assertTrue(FileFunctions.getCurrentFile(jbricks).equals(filePath));
 	}
 	
