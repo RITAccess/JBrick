@@ -61,12 +61,15 @@ public class FileFS {
 	 */
 	public void TC003() {
 		
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
-		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
-				
-		StartupFunctions.newJBricksInstance("JBricks - TC003");
-		//TODO check the file name
+		
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC003 a");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User opens a file using the File>Open menu
 		// => Open dialog appears
@@ -83,7 +86,7 @@ public class FileFS {
 		// 4. User re-opens the JBrick application
 		// => The file that was loaded in step 2 is the focused file, "New File 1" is not in the list of opened files
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC003 b");
 		//TODO check the file name
 		
 		assertTrue(false);
