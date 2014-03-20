@@ -2,6 +2,7 @@ package jbrick.library;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.IOException;
 
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.ui.MainWindow;
@@ -60,5 +61,20 @@ public class FileFunctions {
 		if(selectedFile.exists()){
 			mainWindow.getTabFolder().open(selectedFile.getAbsolutePath());
 		}
+	}
+	
+	/**
+	 * creates a file (if there is none) at a given filePath
+	 * @param filePath
+	 * @return if the filePath already exists return false, else return true
+	 */
+	public static boolean createFile(String filePath){
+		File newFile = new File(filePath);
+		try {
+			return newFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

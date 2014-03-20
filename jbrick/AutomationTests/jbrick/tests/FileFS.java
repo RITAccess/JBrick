@@ -21,7 +21,7 @@ public class FileFS {
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		MainWindow jbricks = StartupFunctions.newJBricksInstanceNoFantom("JBricks - TC001");
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC001");
 		String fileName = FileFunctions.getFileName(jbricks);
 		assertTrue(fileName.equals("New File 1"));
 	}
@@ -40,20 +40,20 @@ public class FileFS {
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
 		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC002");
-		//TODO check the file name
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User opens a file using the File>Open menu
 		// => Open dialog appears
 		
 		// NB: We don't test the open dialog directly, only the action to open a file
-		FileFunctions.openFile(jbricks, "");
-		
+		String filePath = "MyFirstNxcProgram.nxc";
+		FileFunctions.createFile(filePath);
+		FileFunctions.openFile(jbricks, filePath);
 		// 3. User selects an NXC file
-		// => "New File 1" is removed, the opened file is the only tab opened.
+		// => the selected file opens in a new tab (it is also the current tab)
 		
-		//TODO select the NXC file
-		//TODO read the file names, check that there is one opened, and it is the file name we chose
-		assertTrue(false);
+		assertTrue(FileFunctions.getCurrentFile(jbricks).equals(filePath));
 	}
 	
 	/**
