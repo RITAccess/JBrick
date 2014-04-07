@@ -142,6 +142,11 @@ public class CompilerRunner {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NullPointerException e)
+		{
+			// cannot find nbc tool by default using eclipse, need to point to it
+			// in the preferences window
+			System.out.println("You forgot to set NBC tool location in the preferences window.");
 		}
 		byte[] temp = new byte[32768];
 		int rc;
