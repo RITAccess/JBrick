@@ -5,3 +5,4 @@ jbrick/bin/*
 *.DS_Store
 *.properties
 *.class
+*.jar
