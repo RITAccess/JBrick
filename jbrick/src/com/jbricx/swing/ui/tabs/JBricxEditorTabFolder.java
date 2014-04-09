@@ -1,15 +1,13 @@
 package com.jbricx.swing.ui.tabs;
 
-import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.InputMap;
@@ -19,11 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
-import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -92,9 +87,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	{
 	   /* KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
 	    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-	    
-	    KeyStroke tabForward = KeyStroke.getKeyStroke("2");
-	    KeyStroke tabBack = KeyStroke.getKeyStroke("1");
 	 
 	    // Remove ctrl-tab from normal focus traversal
 	    Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -111,9 +103,15 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    inputMap.put(ctrlTab, "navigateNext");
 	    inputMap.put(ctrlShiftTab, "navigatePrevious");*/
 	    
-	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	   /* InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 	    inputMap.put(KeyStroke.getKeyStroke("ctrl 1"), "navigatePrevious");
-	    inputMap.put(KeyStroke.getKeyStroke("ctrl 2"), "navigateNext");
+	    inputMap.put(KeyStroke.getKeyStroke("ctrl 2"), "navigateNext");*/
+	    
+		int ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		
+	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, ctrl_or_command_mask), "navigatePrevious");
+	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, ctrl_or_command_mask), "navigateNext");
 	}
 
 	/**
