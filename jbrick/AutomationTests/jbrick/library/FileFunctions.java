@@ -1,7 +1,9 @@
 package jbrick.library;
 
 import java.awt.Component;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import com.jbricx.swing.actions.OpenAction;
@@ -86,5 +88,44 @@ public class FileFunctions {
 	public static boolean deleteFile(String filePath){
 		File delFile = new File(filePath);
 		return delFile.delete();
+	}
+	
+	/**
+	 * saves file at filePath, with content in current tab
+	 * @param mainWindow
+	 * @param filePath
+	 * @return false is something went wrong, true if everything was successful
+	 */
+	public static boolean saveFile(MainWindow mainWindow, String filePath){
+		try {
+			String content;
+			Component comp = TestUtils.getComponent(mainWindow, JBricxEditorTabFolder.class);
+			if (comp instanceof JBricxEditorTabFolder){
+				content = ((JBricxEditorTabFolder) comp).getSelection().getText();
+			} else {
+				return false;
+			}
+			File file = new File(filePath);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(content);
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * checks if file exists
+	 * @param filePath
+	 * @return false if file does not exist, true if filePath leads to an existing file
+	 */
+	public static boolean fileExists(String filePath){
+		return new File(filePath).exists();
 	}
 }

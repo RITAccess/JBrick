@@ -207,6 +207,7 @@ public class FileFS {
 	/**
 	 * TC008 - Open a Deleted File
 	 */
+	@Test
 	public void TC008() {
 		
 		// PRECONDITIONS - no files are in the previous load of JBricks
@@ -223,26 +224,27 @@ public class FileFS {
 		// => A prompt appears on the screen, the file is saved and visible on the computer hard-drive
 		// (For this test, it is not important where the file is saved, or what it is saved as.)
 		
-		//TODO select the save option from the file menu
-		//TODO check that the file is created
+		String newFileName = "Saved_File.nxc";
+		
+		FileFunctions.saveFile(jbricks, newFileName);
+		assertTrue(FileFunctions.fileExists(newFileName));
 		
 		// 3. User closes the JBrick application
 		// => The application closes
 		
-		//TODO quit the JBrick application
+		TestUtils.getButton(jbricks, "Quit").doClick();
 		
 		// 4. User Deletes/Renames/Moves the saved file
 		// => The file is removed from the computer system
 		
-		//TODO delete the file on the computer
-		//TODO check that the file is deleted
+		FileFunctions.deleteFile(newFileName);
+		assertTrue(!FileFunctions.fileExists(newFileName));
 		
 		// 5. User Reopens JBrick
 		// => The default file, "New File 1" is opened
 		
 		StartupFunctions.newJBricksInstance("JBricks - TC001");
-		//TODO check the file name
-		
-		assertTrue(false);
+		fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 	}
 }
