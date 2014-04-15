@@ -24,4 +24,12 @@ public class EditorFunctions {
 			insertText(mainWindow, insertText, cpos);
 		}
 	}
+	
+	public static boolean checkText(MainWindow mainWindow, String testString){
+		Component comp = TestUtils.getComponent(mainWindow, JBricxTabItem.class);
+		if (comp instanceof JBricxTabItem){
+			return testString.equals(((JBricxTabItem) comp).getText());
+		}
+		return false;
+	}
 }

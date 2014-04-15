@@ -13,7 +13,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC001() {
-		
 		// PRECONDITIONS - no files are in the previous load of JBricks
 		StartupFunctions.clearTabs();
 		
@@ -127,81 +126,83 @@ public class FileFS {
 	/**
 	 * TC005 - Save a file to computer
 	 */
+	@Test
 	public void TC005() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
-		
-		StartupFunctions.newJBricksInstance("JBricks - TC005");
-		//TODO check the file name
+
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC005");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User saves the file to the computer using the File>Save menu option
 		// => The file is saved and visible on the computer hard-drive
 		// (For this test, it is not important where the file is saved, or what it is saved as.)
 		
-		//TODO select the save option from the file menu
-		//TODO check that the file is created (File.exists?)
-		
-		assertTrue(false);
+		FileFunctions.saveFile(jbricks, fileName);
+		assertTrue(FileFunctions.fileExists(fileName));
 	}
 	
 	/**
 	 * TC006 - Save a file to computer
 	 */
+	@Test
 	public void TC006() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC006");
-		//TODO check the file name
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC006");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User saves the file to the computer using the File>Save menu option
 		// => A prompt appears on the screen, the file is saved and visible on the computer hard-drive
 		// (For this test, it is not important where the file is saved, or what it is saved as.)
 		
-		//TODO select the save option from the file menu
-		//TODO check that the file is created
+		FileFunctions.saveFile(jbricks, fileName);
+		assertTrue(FileFunctions.fileExists(fileName));
 		
 		// 3. User writes text in the code pane and saves
 		// => The files is updated on the computer with the new text
 		// (A prompt should NOT reappear for this save)
 		
-		//TODO write in the code frame
-		//TODO save the file again
-		//TODO check that the file is updated on the computer
-		
-		assertTrue(false);
+		String testText = "Some test text";
+		EditorFunctions.writeText(jbricks, testText);
+		FileFunctions.saveFile(jbricks, fileName);
+		assertTrue(FileFunctions.checkText(fileName, testText));
 	}
 	
 	/**
 	 * TC007 - Save as a different file to computer
 	 */
+	@Test
 	public void TC007() {
 		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC007");
-		//TODO check the file name
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC007");
+		String fileName = FileFunctions.getFileName(jbricks);
+		assertTrue(fileName.equals("New File 1"));
 		
 		// 2. User saves the file to the computer using the File>Save menu option
 		// => A prompt appears on the screen, the file is saved and visible on the computer hard-drive
 		// (For this test, it is not important where the file is saved, or what it is saved as.)
-		
-		//TODO select the save option from the file menu
-		//TODO check that the file is created
-		
+
+		FileFunctions.saveFile(jbricks, fileName);
+		FileFunctions.fileExists(fileName);
+
 		// 3. User writes text in the code pane and selects 'Save As' from the File menu
 		// => A prompt appears on the screen, the file is saved in the new location.
 		// (The new text is found ONLY in the second file.)
 		
-		//TODO write in the code frame
-		//TODO select the save-as prompt in the file menu
-		//TODO save to a new location
-		//TODO check that the text is different from the first file and the new file
-		
-		assertTrue(false);
+		String testText = "This is example text";
+		EditorFunctions.writeText(jbricks, testText);
+		String newFilePath = fileName + " (2)";
+		FileFunctions.saveFile(jbricks, newFilePath);
+		assertFalse(FileFunctions.checkText(fileName, testText));
 	}
 	
 	/**
@@ -243,8 +244,14 @@ public class FileFS {
 		// 5. User Reopens JBrick
 		// => The default file, "New File 1" is opened
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC001");
+		StartupFunctions.newJBricksInstance("JBricks - TC008a");
 		fileName = FileFunctions.getFileName(jbricks);
 		assertTrue(fileName.equals("New File 1"));
+	}
+	@After
+	public void test(){
+		for (int f = 0; f < FileFunctions.files.size();){
+			FileFunctions.deleteFile(FileFunctions.files.get(0));
+		}
 	}
 }
