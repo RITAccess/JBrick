@@ -217,7 +217,7 @@ public class FileFS {
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
-		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC008");
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC008a");
 		String fileName = FileFunctions.getFileName(jbricks);
 		assertTrue(fileName.equals("New File 1"));
 		
@@ -244,13 +244,14 @@ public class FileFS {
 		// 5. User Reopens JBrick
 		// => The default file, "New File 1" is opened
 		
-		StartupFunctions.newJBricksInstance("JBricks - TC008a");
+		StartupFunctions.newJBricksInstance("JBricks - TC008b");
 		fileName = FileFunctions.getFileName(jbricks);
 		assertTrue(fileName.equals("New File 1"));
 	}
+	
 	@After
 	public void test(){
-		for (int f = 0; f < FileFunctions.files.size();){
+		while (FileFunctions.files.size() > 0){
 			FileFunctions.deleteFile(FileFunctions.files.get(0));
 		}
 	}

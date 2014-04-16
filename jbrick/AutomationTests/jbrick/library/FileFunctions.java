@@ -19,7 +19,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 public class FileFunctions {
 	
-	public static final ArrayList<String> files = new ArrayList<String>();
+	public final static ArrayList<String> files = new ArrayList<String>();
 
 	public static String getFileName(MainWindow mainWindow) {
 		
@@ -93,7 +93,6 @@ public class FileFunctions {
 		File delFile = new File(filePath);
 		if (files.indexOf(filePath) != -1){
 			files.remove(filePath);
-			System.out.println(filePath);
 		}
 		return delFile.delete();
 	}
@@ -106,15 +105,9 @@ public class FileFunctions {
 	 * @param filePath
 	 * @return false is something went wrong, true if everything was successful
 	 */
-	public static boolean saveFile(MainWindow mainWindow, final String filePath){
+	public static boolean saveFile(MainWindow mainWindow, String filePath){
 		try {
-			String content;
-			Component comp = TestUtils.getComponent(mainWindow, JBricxEditorTabFolder.class);
-			if (comp instanceof JBricxEditorTabFolder){
-				content = ((JBricxEditorTabFolder) comp).getSelection().getText();
-			} else {
-				return false;
-			}
+			String content = EditorFunctions.getText(mainWindow);
 			File file = new File(filePath);
 			if (!file.exists()) {
 				file.createNewFile();
@@ -128,7 +121,6 @@ public class FileFunctions {
 			return false;
 		}
 		files.add(filePath);
-		System.out.println(filePath);
 		return true;
 	}
 	

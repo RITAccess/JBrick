@@ -25,11 +25,17 @@ public class EditorFunctions {
 		}
 	}
 	
-	public static boolean checkText(MainWindow mainWindow, String testString){
+	public static String getText(MainWindow mainWindow){
 		Component comp = TestUtils.getComponent(mainWindow, JBricxTabItem.class);
 		if (comp instanceof JBricxTabItem){
-			return testString.equals(((JBricxTabItem) comp).getText());
+			return ((JBricxTabItem) comp).getText();
 		}
-		return false;
+		return null;
 	}
+	
+	public static boolean checkText(MainWindow mainWindow, String testString){
+		String text = getText(mainWindow);
+		return testString.equals(text);
+	}
+	
 }
