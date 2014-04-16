@@ -6,6 +6,9 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.InputMap;
@@ -57,6 +60,19 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		addWindowListener(this);
 	}
 	
+	/**
+	 * Run the application. Called by initial class. 
+	 * Does not check for Fantom driver
+	 */
+	public void runNoFantom() {
+		PreferenceStore prefClass = new PreferenceStore();
+		prefs = PreferenceStore.getPrefs();
+		
+		initMainWindow();
+		
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(this);
+	}
 	
 	
 	/**
@@ -133,13 +149,12 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public boolean close() {
 		
 		if (getTabFolder().checkOverwrite()) {
-				StringBuilder recentFiles = getTabFolder().getFileList();
-		        prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
-		        this.dispose();
-		  		NXTManager.getInstance().stopPolling();
-		  		System.exit(0);
-		  		return true;
-		        }
+			StringBuilder recentFiles = getTabFolder().getFileList();
+			prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
+			this.dispose();
+			NXTManager.getInstance().stopPolling();
+			return true;
+		}
 		
 		return false;
 	}
@@ -232,10 +247,19 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		editorPane.refreshTabItems();
 		statusPane.refresh();
 	}
+	
+	/**
+	 * Clears which tabs have been open in recent history
+	 * Should only be used in debugging and testing
+	 */
+	public void resetTabPreferences(){
+		new PreferenceStore();
+		prefs = PreferenceStore.getPrefs();
+		prefs.put(PreferenceStore.RECENTFILES, "");
+	}
 
 	public void refreshExplorerContent() {
 		editorPane.refreshTabTitles();
-		
 	}
 
 
