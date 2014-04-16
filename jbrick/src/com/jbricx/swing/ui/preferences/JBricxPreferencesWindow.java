@@ -652,8 +652,13 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				|| arg0.getActionCommand().equals("keywordButton") || arg0.getActionCommand().equals("lineNumberFGButton")
 				|| arg0.getActionCommand().equals("lineNumberBGButton") || arg0.getActionCommand().equals("operatorButton")
 				|| arg0.getActionCommand().equals("constantButton") || arg0.getActionCommand().equals("preProcessorButton")){
+				
 				Color newColor = JColorChooser.showDialog(this, "Choose a color", ((JButton)arg0.getSource()).getBackground());
-				((JButton)arg0.getSource()).setBackground(newColor);
+				
+				if(newColor != null)
+				{
+					((JButton)arg0.getSource()).setBackground(newColor);
+				}
 		
 		// the font button was picked, bring up the font change dialog and change the font.
 		}else if(arg0.getActionCommand().equals("changeFont")){
