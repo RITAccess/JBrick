@@ -33,4 +33,29 @@ public class MenuFunctions {
 		AbstractButton saveButton = TestUtils.getButton(mainWindow, "Save");
 		saveButton.doClick();
 	}
+	
+	public static void toggleFilePane(MainWindow mainWindow) {
+		AbstractButton togButton = TestUtils.getButton(mainWindow, "Show/Hide File Viewer");
+		togButton.doClick();
+	}
+	
+	public static void maximizeEditorPane(MainWindow mainWindow) {
+		AbstractButton maxButton = TestUtils.getButton(mainWindow, "Maximize File Editor");
+		maxButton.doClick();
+	}
+	
+	public static void maximizeStatusPane(MainWindow mainWindow) {
+		AbstractButton maxButton = TestUtils.getButton(mainWindow, "Maximize File Status");
+		maxButton.doClick();
+	}
+	
+	public static void maximizeFilePane(MainWindow mainWindow) {
+		AbstractButton maxButton = TestUtils.getButton(mainWindow, "Maximize File Viewer");
+		maxButton.doClick();
+	}
+	
+	public static void resetView(MainWindow mainWindow) {
+		AbstractButton resetButton = TestUtils.getButton(mainWindow, "Reset View");
+		resetButton.doClick();
+	}
 }

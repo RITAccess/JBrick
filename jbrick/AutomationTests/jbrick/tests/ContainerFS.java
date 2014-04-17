@@ -1,54 +1,94 @@
 package jbrick.tests;
 
+import java.awt.Component;
+
+import com.jbricx.swing.ui.MainWindow;
+
+import jbrick.library.*;
+import static org.junit.Assert.*;
+
+import org.junit.*;
+
 public class ContainerFS {
 
 	/**
 	 * TC101 - Default Panes on Startup
 	 */
-	public static boolean TC101() {
+	@Test
+	public void TC101() {
 		
 		// 1. User opens the JBrick application
 		// => The Code Frame has one file open in the code frame (center) and a status pane (bottom)
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
-		//TODO check the frame positions
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC101");
+		Component editorPane = ContainerFunctions.getEditorPane(jbricks);
+		Component statusPane = ContainerFunctions.getStatusPane(jbricks);
 		
-		return false;
+		assertTrue(editorPane.getLocationOnScreen().getY() < statusPane.getLocationOnScreen().getY());
+		
 	}
 	
 	/**
 	 * TC102 - Reset Main Window View
 	 */
-	public static boolean TC102() {
+	public void TC102() {
 		
 		// 1. User opens the JBrick application 
 		// => The Code Frame has one file open in the code frame (center) and a status pane (bottom)
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
-		//TODO check the frame position 
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC102");
+		Component editorPane = ContainerFunctions.getEditorPane(jbricks);
+		Component statusPane = ContainerFunctions.getStatusPane(jbricks);
+		
+		assertTrue(editorPane.getLocationOnScreen().getY() < statusPane.getLocationOnScreen().getY()); 
 		
 		// 2. User rearranges frame sizes
 		// => The size of the code frame and status frame are different than their defaults
 		// (These may be changed with the 'maximize *' options in the view menu)
 		
-		//TODO hit the "maximize" button in the view menu options
-		//TODO check that the frames changed position
+		int defaultHeight = editorPane.getHeight();
+		
+		MenuFunctions.maximizeEditorPane(jbricks);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		editorPane = ContainerFunctions.getEditorPane(jbricks);
+		
+		int newHeight = editorPane.getHeight();
+		
+		System.out.println(defaultHeight);
+		System.out.println(newHeight);
+		assertTrue(defaultHeight < newHeight);
 		
 		// 3. User selects "Reset View" in view menu
 		// => The size of the frames return to their default size.
 		
-		//TODO select the "reset-view" option in the view menu
-		//TODO check the size and position of frames
+		MenuFunctions.resetView(jbricks);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		editorPane = ContainerFunctions.getEditorPane(jbricks);
 		
-		return false;
+		newHeight = editorPane.getHeight();
+		
+		System.out.println(defaultHeight);
+		System.out.println(newHeight);
+		assertTrue(defaultHeight == newHeight);
+		
 	}
 	
 	/**
 	 * TC103 - Open the Expander View
 	 */
-	public static boolean TC103() {
+	public void TC103() {
 		
 		// 1. User opens the JBrick application 
 		// => The Code Frame has one file open in the code frame (center) and a status pane (bottom)
@@ -63,7 +103,6 @@ public class ContainerFS {
 		//TODO select the file viewer menu option
 		//TODO check that the frame is opened and has a width value
 		
-		return false;
 	}
 	
 }
