@@ -80,7 +80,7 @@ public class TestUtils {
 	/**
 	 * Loop for given number of milliseconds
 	 */
-	public static void waitUntil(final int milli, Callable c) {
+	public static void waitUntil(final int milli, Callable<Object> c) {
 		
 		Thread timer = new Thread() {
 			public void run() {

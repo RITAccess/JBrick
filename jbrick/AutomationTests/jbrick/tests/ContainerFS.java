@@ -53,7 +53,7 @@ public class ContainerFS {
 		final int defaultHeight = editorPane.getHeight();
 		
 		MenuFunctions.maximizeEditorPane(jbricks);
-		TestUtils.waitUntil(5000, new Callable() {
+		TestUtils.waitUntil(5000, new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
 				return (editorPane.getHeight() != defaultHeight);
@@ -67,7 +67,7 @@ public class ContainerFS {
 		// => The size of the frames return to their default size.
 		
 		MenuFunctions.resetView(jbricks);
-		TestUtils.waitUntil(5000, new Callable() {
+		TestUtils.waitUntil(5000, new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
 				return (editorPane.getHeight() != newHeight);
@@ -101,7 +101,7 @@ public class ContainerFS {
 		// => The file viewer is opened on the left of the code and status frame. The viewer shows the files and folders in the workspace directory set in the preferences.
 		
 		MenuFunctions.toggleFilePane(jbricks);
-		TestUtils.waitUntil(5000, new Callable() {
+		TestUtils.waitUntil(5000, new Callable<Object>() {
 			@Override
 			public Object call() throws Exception {
 				return (ContainerFunctions.getFilePane(jbricks) != null);

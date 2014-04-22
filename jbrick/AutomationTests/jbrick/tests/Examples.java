@@ -1,14 +1,9 @@
 package jbrick.tests;
 
 import java.util.HashMap;
-
 import javax.swing.AbstractButton;
-
 import jbrick.library.*;
-
 import com.jbricx.swing.ui.MainWindow;
-
-import static org.junit.Assert.*;
 
 public class Examples {
 

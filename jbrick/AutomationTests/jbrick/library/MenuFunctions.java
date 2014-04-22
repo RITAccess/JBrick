@@ -1,15 +1,8 @@
 package jbrick.library;
 
-import java.awt.Component;
-
-import jbrick.library.*;
 
 import javax.swing.AbstractButton;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import com.jbricx.swing.ui.MainWindow;
-import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 
 /**
  * Framework for interacting with the top level menu
