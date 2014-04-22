@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;

@@ -1,37 +1,49 @@
 package jbrick.tests;
 
+import jbrick.library.*;
+import static org.junit.Assert.*;
+
+import org.junit.*; 
+
+import com.jbricx.swing.ui.MainWindow;
+
 public class MenuFS {
 
 	/**
 	 * TC401 - New File Toolbar Icon
 	 */
-	public static boolean TC401() {
+	@Test
+	public void TC401() {
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
 		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC401");
+		assertTrue(FileFunctions.getFileName(jbricks).equals("New File 1"));
 		
 		// 2. User clicks on the "New File" toolbar icon
 		// => A new tab in the code frame is generated, labeled "New File 2"
-		
-		//TODO click on the "New File" icon.
-		//TODO check that a new file was opened labelled "New File 2"
-		
-		return false;
+		TestUtils.getButton(jbricks, "New").doClick();
+		assertTrue(FileFunctions.getCurrentFile(jbricks).equals("New File 2"));
 	}
 	
 	/**
 	 * TC402 - Open File Toolbar Icon
 	 */
-	public static boolean TC402() {
+	public void TC402() {
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
 		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
+
+		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC402");
+		assertTrue(FileFunctions.getFileName(jbricks).equals("New File 1"));
 		
 		// 2. User clicks on the "Open File" toolbar icon
 		// => A file explorer show available options for the new tab
@@ -44,14 +56,14 @@ public class MenuFS {
 		
 		//TODO click on one of the files in the explorer and select "open"
 		//TODO check that the file was opened in the code frame
-		
-		return false;
+
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC403 - Save File Toolbar Icon
 	 */
-	public static boolean TC403() {
+	public void TC403() {
 		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
@@ -65,14 +77,14 @@ public class MenuFS {
 		
 		//TODO click on the save icon
 		//TODO check that the file was saved
-		
-		return false;
+
+		assertTrue(false);
 	}
 	
 	/**
 	 * TC404 - Save As File Toolbar Icon
 	 */
-	public static boolean TC404() {
+	public void TC404() {
 		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
@@ -95,7 +107,7 @@ public class MenuFS {
 		//TODO save the file in a different location
 		//TODO check that the new file was saved
 		//TODO check that the original file was not altered
-		
-		return false;
+
+		assertTrue(false);
 	}
 }
