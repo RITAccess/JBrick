@@ -6,6 +6,7 @@
 package jbrick.library;
 
 import java.awt.*;
+import java.util.concurrent.Callable;
 
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
@@ -73,6 +74,39 @@ public class TestUtils {
 			}
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * Loop for given number of milliseconds
+	 */
+	public static void waitUntil(final int milli, Callable c) {
+		
+		Thread timer = new Thread() {
+			public void run() {
+				try {
+					Thread.sleep(milli);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+		timer.start();
+		
+		try {
+			while ((!(Boolean) c.call()) && (timer.isAlive())) {
+			}
+			if  ((!(Boolean) c.call()) && (!timer.isAlive())) {
+				System.out.println("waitUntil ended from Timer");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 	
 	// DEBUGGER

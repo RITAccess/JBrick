@@ -1,6 +1,7 @@
 package jbrick.tests;
 
 import java.awt.Component;
+import java.util.concurrent.Callable;
 
 import com.jbricx.swing.ui.MainWindow;
 
@@ -32,15 +33,16 @@ public class ContainerFS {
 	/**
 	 * TC102 - Reset Main Window View
 	 */
+	@Test
 	public void TC102() {
 		
 		// 1. User opens the JBrick application 
 		// => The Code Frame has one file open in the code frame (center) and a status pane (bottom)
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC102");
-		Component editorPane = ContainerFunctions.getEditorPane(jbricks);
-		Component statusPane = ContainerFunctions.getStatusPane(jbricks);
+		final MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC102");
+		final Component editorPane = ContainerFunctions.getEditorPane(jbricks);
+		final Component statusPane = ContainerFunctions.getStatusPane(jbricks);
 		
 		assertTrue(editorPane.getLocationOnScreen().getY() < statusPane.getLocationOnScreen().getY()); 
 		
@@ -48,60 +50,71 @@ public class ContainerFS {
 		// => The size of the code frame and status frame are different than their defaults
 		// (These may be changed with the 'maximize *' options in the view menu)
 		
-		int defaultHeight = editorPane.getHeight();
+		final int defaultHeight = editorPane.getHeight();
 		
 		MenuFunctions.maximizeEditorPane(jbricks);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		editorPane = ContainerFunctions.getEditorPane(jbricks);
+		TestUtils.waitUntil(5000, new Callable() {
+			@Override
+			public Object call() throws Exception {
+				return (editorPane.getHeight() != defaultHeight);
+			}
+		});
+		final int newHeight = editorPane.getHeight();
 		
-		int newHeight = editorPane.getHeight();
-		
-		System.out.println(defaultHeight);
-		System.out.println(newHeight);
 		assertTrue(defaultHeight < newHeight);
 		
 		// 3. User selects "Reset View" in view menu
 		// => The size of the frames return to their default size.
 		
 		MenuFunctions.resetView(jbricks);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		editorPane = ContainerFunctions.getEditorPane(jbricks);
+		TestUtils.waitUntil(5000, new Callable() {
+			@Override
+			public Object call() throws Exception {
+				return (editorPane.getHeight() != newHeight);
+			}
+		});
+		int resetHeight = editorPane.getHeight();
 		
-		newHeight = editorPane.getHeight();
 		
-		System.out.println(defaultHeight);
-		System.out.println(newHeight);
-		assertTrue(defaultHeight == newHeight);
+		// The default Height may differ slightly from the resetHeight
+		assertTrue(Math.abs(defaultHeight - resetHeight) < 10);
 		
 	}
 	
 	/**
 	 * TC103 - Open the Expander View
 	 */
+	@Test
 	public void TC103() {
 		
 		// 1. User opens the JBrick application 
 		// => The Code Frame has one file open in the code frame (center) and a status pane (bottom)
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
 		
-		//TODO open the application
-		//TODO check the frame positions
+		final MainWindow jbricks = StartupFunctions.newJBricksInstance("JBricks - TC102");
+		final Component editorPane = ContainerFunctions.getEditorPane(jbricks);
+		final Component statusPane = ContainerFunctions.getStatusPane(jbricks);
+		
+		assertTrue(editorPane.getLocationOnScreen().getY() < statusPane.getLocationOnScreen().getY()); 
 		
 		// 2. User selects the "Show/Hide File Viewer"
 		// => The file viewer is opened on the left of the code and status frame. The viewer shows the files and folders in the workspace directory set in the preferences.
 		
-		//TODO select the file viewer menu option
-		//TODO check that the frame is opened and has a width value
+		MenuFunctions.toggleFilePane(jbricks);
+		TestUtils.waitUntil(5000, new Callable() {
+			@Override
+			public Object call() throws Exception {
+				return (ContainerFunctions.getFilePane(jbricks) != null);
+			}
+		});
+		final Component filePane = ContainerFunctions.getFilePane(jbricks);
+
+		double filePaneX = filePane.getLocationOnScreen().getX();
+		double editorPaneX = editorPane.getLocationOnScreen().getX();
+		assertTrue(filePaneX < editorPaneX);
+		
+		// Any further testing, including what documents are listed in the file Pane, requires more decoupling
+				
 		
 	}
 	
