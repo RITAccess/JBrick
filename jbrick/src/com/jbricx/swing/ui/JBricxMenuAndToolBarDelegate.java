@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
 
@@ -504,15 +506,49 @@ public class JBricxMenuAndToolBarDelegate {
 		// JMenuItem directControl = new JMenuItem(directControlAction);
 		// directControl.setText("Direct Control");
 		// toolsMenu.add(directControl);
+		
+		class ShowHideMenuActionListener implements ActionListener 
+		{
+			ShowHideFileViewerAction action;
+			JMenuItem showHideMenuItem;
+			JMenuItem maxMenuItem;
+			
+			public ShowHideMenuActionListener(ShowHideFileViewerAction action, JMenuItem showHideViewer, JMenuItem maxViewer)
+			{
+				this.action = action;
+				showHideMenuItem = showHideViewer;
+				maxMenuItem = maxViewer;
+			}
+			
+			public void actionPerformed(ActionEvent e) 
+			{
+				// about to be closed
+				if(action.isOpen())
+				{
+					maxMenuItem.setEnabled(false);
+					showHideMenuItem.setText("Show File Viewer");
+				}
+				// about to be opened
+				else
+				{
+					maxMenuItem.setEnabled(true);
+					showHideMenuItem.setText("Hide File Viewer");
+				}
+			}
+		}
 
 		// View
 		JMenuItem showHideViewer = new JMenuItem(showHideFileViewerAction);
-		showHideViewer.setText("Show/Hide File Viewer");
+		showHideViewer.setText("Show File Viewer");
 		viewMenu.add(showHideViewer);
 
 		JMenuItem maxViewer = new JMenuItem(maxViewerAction);
 		maxViewer.setText("Maximize File Viewer");
+		maxViewer.setEnabled(false);
 		viewMenu.add(maxViewer);
+		
+		// add an action listener for the dynamic menu items
+		showHideViewer.addActionListener(new ShowHideMenuActionListener(showHideFileViewerAction, showHideViewer, maxViewer));
 
 		JMenuItem maxEditor = new JMenuItem(maxEditorAction);
 		maxEditor.setText("Maximize File Editor");

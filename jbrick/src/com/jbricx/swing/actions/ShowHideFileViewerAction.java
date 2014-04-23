@@ -11,6 +11,10 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	
 	boolean isOpen = false;
 	
+	public boolean isOpen()
+	{
+		return isOpen;
+	}
 	
 
 	public ShowHideFileViewerAction(final JBricxManager manager){
