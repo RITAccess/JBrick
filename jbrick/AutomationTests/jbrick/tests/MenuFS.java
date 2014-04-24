@@ -9,14 +9,24 @@ import com.jbricx.swing.ui.MainWindow;
 
 public class MenuFS {
 
+	@Before
+	public void cleanStart(){
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+	}
+	
+	@After
+	public void cleanEnd(){
+		while (FileFunctions.files.size() > 0){
+			FileFunctions.deleteFile(FileFunctions.files.get(0));
+		}
+	}
+	
 	/**
 	 * TC401 - New File Toolbar Icon
 	 */
 	@Test
 	public void TC401() {
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
@@ -26,7 +36,7 @@ public class MenuFS {
 		
 		// 2. User clicks on the "New File" toolbar icon
 		// => A new tab in the code frame is generated, labeled "New File 2"
-		TestUtils.getButton(jbricks, "New").doClick();
+		MenuFunctions.newFile(jbricks);
 		assertTrue(FileFunctions.getCurrentFile(jbricks).equals("New File 2"));
 	}
 	
@@ -34,9 +44,6 @@ public class MenuFS {
 	 * TC402 - Open File Toolbar Icon
 	 */
 	public void TC402() {
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
@@ -64,7 +71,6 @@ public class MenuFS {
 	 * TC403 - Save File Toolbar Icon
 	 */
 	public void TC403() {
-		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
@@ -85,7 +91,6 @@ public class MenuFS {
 	 * TC404 - Save As File Toolbar Icon
 	 */
 	public void TC404() {
-		
 		// 1. User starts up JBrick
 		// => JBrick opens with default configuration, there is one file opened "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)

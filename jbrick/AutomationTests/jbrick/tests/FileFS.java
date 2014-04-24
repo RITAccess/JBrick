@@ -4,18 +4,29 @@ import com.jbricx.swing.ui.MainWindow;
 
 import jbrick.library.*;
 import static org.junit.Assert.*;
+
 import org.junit.*; 
 
 public class FileFS {
+	
+	@Before
+	public void cleanStart(){
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+	}
+	
+	@After
+	public void cleanEnd(){
+		while (FileFunctions.files.size() > 0){
+			FileFunctions.deleteFile(FileFunctions.files.get(0));
+		}
+	}
 	
 	/**
 	 * TC001 - Default File on Startup
 	 */
 	@Test
 	public void TC001() {
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
@@ -30,10 +41,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC002() {
-		
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		// (No file has been opened before hand, this is the equivalent to opening the application for the first time.)
@@ -65,10 +72,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC003() {
-		
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
@@ -102,10 +105,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC004() {
-		
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
@@ -128,7 +127,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC005() {
-		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 
@@ -149,7 +147,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC006() {
-		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
@@ -179,7 +176,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC007() {
-		
 		// 1. User Opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"
 		
@@ -210,10 +206,6 @@ public class FileFS {
 	 */
 	@Test
 	public void TC008() {
-		
-		// PRECONDITIONS - no files are in the previous load of JBricks
-		StartupFunctions.clearTabs();
-		
 		// 1. User opens the JBrick application
 		// => The Code Frame has only one tab opened, "New File 1"	
 		
@@ -247,12 +239,5 @@ public class FileFS {
 		StartupFunctions.newJBricksInstance("JBricks - TC008b");
 		fileName = FileFunctions.getFileName(jbricks);
 		assertTrue(fileName.equals("New File 1"));
-	}
-	
-	@After
-	public void test(){
-		while (FileFunctions.files.size() > 0){
-			FileFunctions.deleteFile(FileFunctions.files.get(0));
-		}
 	}
 }

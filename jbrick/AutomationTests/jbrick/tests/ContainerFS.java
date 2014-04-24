@@ -12,6 +12,19 @@ import org.junit.*;
 
 public class ContainerFS {
 
+	@Before
+	public void cleanStart(){
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+	}
+	
+	@After
+	public void cleanEnd(){
+		while (FileFunctions.files.size() > 0){
+			FileFunctions.deleteFile(FileFunctions.files.get(0));
+		}
+	}
+	
 	/**
 	 * TC101 - Default Panes on Startup
 	 */

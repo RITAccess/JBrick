@@ -1,7 +1,26 @@
 package jbrick.tests;
 
+import jbrick.library.FileFunctions;
+import jbrick.library.StartupFunctions;
+
+import org.junit.After;
+import org.junit.Before;
+
 public class NotificationFS {
 
+	@Before
+	public void cleanStart(){
+		// PRECONDITIONS - no files are in the previous load of JBricks
+		StartupFunctions.clearTabs();
+	}
+	
+	@After
+	public void cleanEnd(){
+		while (FileFunctions.files.size() > 0){
+			FileFunctions.deleteFile(FileFunctions.files.get(0));
+		}
+	}
+	
 	/**
 	 * TC501 - Code Error Notification
 	 */
