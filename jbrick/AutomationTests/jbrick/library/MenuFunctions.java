@@ -27,8 +27,13 @@ public class MenuFunctions {
 		saveButton.doClick();
 	}
 	
-	public static void toggleFilePane(MainWindow mainWindow) {
-		AbstractButton togButton = TestUtils.getButton(mainWindow, "Show/Hide File Viewer");
+	public static void showFilePane(MainWindow mainWindow) {
+		AbstractButton togButton = TestUtils.getButton(mainWindow, "Show File Viewer");
+		togButton.doClick();
+	}
+	
+	public static void hideFilePane(MainWindow mainWindow) {
+		AbstractButton togButton = TestUtils.getButton(mainWindow, "Hide File Viewer");
 		togButton.doClick();
 	}
 	
