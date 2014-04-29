@@ -55,7 +55,8 @@ public class MenuFS {
 		// 2. User clicks on the "Open File" toolbar icon
 		// => A file explorer show available options for the new tab
 		
-		//TODO click the "open file" icon
+		String fileName = "";
+		FileFunctions.openFile(jbricks, fileName);
 		//TODO check that the open file explorer opens
 		
 		// 3. User navigates to desired file and opens it

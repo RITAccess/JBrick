@@ -24,7 +24,7 @@ public class NotificationFS {
 	/**
 	 * TC501 - Code Error Notification
 	 */
-	public static boolean TC501() {
+	public void TC501() {
 		
 		// 1. User starts up JBrick
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -46,14 +46,13 @@ public class NotificationFS {
 		// TODO hover over the hyperlink
 		// TODO verify that the code frame jumps to the line number
 		
-		return false;
 	}
 	
 	/**
 	 * TC502 - Audible Compile Notification
 	 * Note, this test should not work yet since this feature is incomplete.
 	 */
-	public static boolean TC502() {
+	public void TC502() {
 		
 		// 1. User starts up JBrick
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -75,7 +74,6 @@ public class NotificationFS {
 		//TODO select the compile icon
 		//TODO check that the compile failure sound plays
 		
-		return false;
 	}
 	
 }

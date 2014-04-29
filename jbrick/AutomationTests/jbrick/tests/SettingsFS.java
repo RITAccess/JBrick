@@ -24,7 +24,7 @@ public class SettingsFS {
 	/**
 	 * TC201 - Reset Default Font
 	 */
-	public static boolean TC201() {
+	public void TC201() {
 		
 		// 1. User opens the JBrick application 
 		// => The Code Frame has one file open in the code frame (center), a status pane (bottom), and a picture menu frame (top)
@@ -48,6 +48,5 @@ public class SettingsFS {
 		//TODO select "apply" button and then "ok" button
 		//TODO check that the font is the default font
 		
-		return false;
 	}
 }

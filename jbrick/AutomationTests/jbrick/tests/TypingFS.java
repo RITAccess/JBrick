@@ -24,7 +24,7 @@ public class TypingFS {
 	/**
 	 * TC301 - Line Number Generation
 	 */
-	public static boolean TC301() {
+	public void TC301() {
 		
 		// 1. User opens JBrick
 		// => JBrick opens with the default configuration, "New File 1" is visible in the code frame, there is a single line number on the left marking the beginning of the file.
@@ -50,13 +50,12 @@ public class TypingFS {
 		//TODO delete characters in the code frame
 		//TODO check that there are no trailing empty line-numbers
 		
-		return false;
 	}
 	
 	/**
 	 * TC302 - Code Completion Test
 	 */
-	public static boolean TC302() {
+	public void TC302() {
 		
 		// 1. User opens JBrick
 		// => JBrick opens with the default configuration, "New File 1" is visible in the code frame, there is a single line number on the left marking the beginning of the file.
@@ -94,6 +93,5 @@ public class TypingFS {
 		//TODO press the enter key
 		//TODO check that the selected word is now in the code-frame
 		
-		return false;
 	}
 }

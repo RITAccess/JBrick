@@ -9,7 +9,7 @@ import com.jbricx.swing.ui.MainWindow;
 
 public class MenuFunctions {
 	
-	public static void openFile(MainWindow mainWindow, String fileName) {
+	public static void openFile(MainWindow mainWindow) {
 		TestUtils.getButton(mainWindow, "Open").doClick();
 	}
 	

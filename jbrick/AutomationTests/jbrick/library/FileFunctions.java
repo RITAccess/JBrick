@@ -62,6 +62,7 @@ public class FileFunctions {
 	 * @param mainWindow
 	 */
 	public static void openFile(MainWindow mainWindow, String filePath) {
+		System.err.printf("opening file: %s\n", filePath );
 		File selectedFile = new File(filePath);
 		if(selectedFile.exists()){
 			mainWindow.getTabFolder().open(selectedFile.getAbsolutePath());
@@ -74,6 +75,7 @@ public class FileFunctions {
 	 * @return if the filePath already exists return false, else return true
 	 */
 	public static boolean createFile(String filePath){
+		System.err.printf("creating file: %s\n", filePath );
 		File newFile = new File(filePath);
 		try {
 			return newFile.createNewFile();
@@ -89,6 +91,7 @@ public class FileFunctions {
 	 * @return if the file was deleted => true, else => false
 	 */
 	public static boolean deleteFile(String filePath){
+		System.err.printf("deleting file: %s\n", filePath );
 		File delFile = new File(filePath);
 		if (files.indexOf(filePath) != -1){
 			files.remove(filePath);
@@ -105,6 +108,7 @@ public class FileFunctions {
 	 * @return false is something went wrong, true if everything was successful
 	 */
 	public static boolean saveFile(MainWindow mainWindow, String filePath){
+		System.err.printf("saving file: %s\n", filePath );
 		try {
 			String content = EditorFunctions.getText(mainWindow);
 			File file = new File(filePath);

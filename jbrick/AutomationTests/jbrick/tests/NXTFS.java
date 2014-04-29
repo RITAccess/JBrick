@@ -24,7 +24,7 @@ public class NXTFS {
 	/**
 	 * TC601 - Compile
 	 */
-	public static boolean TC601() {
+	public void TC601() {
 		
 		// 1. User starts up JBrick
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -39,13 +39,12 @@ public class NXTFS {
 		//TODO click the compile icon
 		//TODO check that the code compiled and the status frame is error free
 		
-		return false;
 	}
 	
 	/**
 	 * TC602 - Download
 	 */
-	public static boolean TC602() {
+	public void TC602() {
 		
 		// 1. User starts up JBrick
 		// => The Code Frame has only one tab opened, "New File 1"
@@ -66,6 +65,5 @@ public class NXTFS {
 		//TODO click the download icon
 		//TODO check that no error message appears
 		
-		return false;
 	}
 }
