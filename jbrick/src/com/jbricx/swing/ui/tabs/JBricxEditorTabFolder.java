@@ -431,6 +431,18 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				tab.setFont(font);
 			}
 			// Colors for main code
+			Preferences prefs = PreferenceStore.getPrefs();
+			
+			Color foreground = new Color(prefs
+					.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(),
+							PreferenceStore.FOREGROUND_DEFAULT));
+			
+			Color background = new Color(prefs
+					.getInt(PreferenceStore.ColorFor.BACKGROUND.toString(),
+							PreferenceStore.BACKGROUND_DEFAULT));
+			
+			tab.setBackground(background);
+			tab.setForeground(foreground);
 			tab.setSyntaxScheme(tab.getDefaultSyntaxScheme());
 		}
 	}

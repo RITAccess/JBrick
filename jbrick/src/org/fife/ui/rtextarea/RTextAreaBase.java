@@ -79,6 +79,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 		init();
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
@@ -92,6 +94,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 		init();
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
@@ -105,6 +109,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 		init();
 		this.setLineWrap(true);
 		this.setWrapStyleWord(true);
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
@@ -119,6 +125,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	public RTextAreaBase(int rows, int cols) {
 		super(rows, cols);
 		init();
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
@@ -134,6 +142,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	public RTextAreaBase(String text, int rows, int cols) {
 		super(text, rows, cols);
 		init();
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
@@ -151,6 +161,8 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 							int cols) {
 		super(doc, text, rows, cols);
 		init();
+		this.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		this.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
 	}
 
 
