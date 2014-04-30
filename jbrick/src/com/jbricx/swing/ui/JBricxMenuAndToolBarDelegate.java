@@ -30,6 +30,7 @@ import com.jbricx.swing.actions.FindAction;
 import com.jbricx.swing.actions.FindBrickAction;
 import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.actions.KeyboardShortcutReferencesAction;
 import com.jbricx.swing.actions.MaxEditorAction;
 import com.jbricx.swing.actions.MaxStatusAction;
 import com.jbricx.swing.actions.MaxViewerAction;
@@ -64,6 +65,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private FindBrickAction findBrickAction;
 	private GotoAction gotoAction;
 	private HelpContentAction helpContentAction;
+	private KeyboardShortcutReferencesAction referencesAction;
 	private MaxEditorAction maxEditorAction;
 	private MaxStatusAction maxStatusAction;
 	private MaxViewerAction maxViewerAction;
@@ -107,6 +109,7 @@ public class JBricxMenuAndToolBarDelegate {
 		findBrickAction = new FindBrickAction(manager);
 		gotoAction = new GotoAction(manager);
 		helpContentAction = new HelpContentAction(manager);
+		referencesAction = new KeyboardShortcutReferencesAction(manager);
 		maxEditorAction = new MaxEditorAction(manager);
 		maxStatusAction = new MaxStatusAction(manager);
 		maxViewerAction = new MaxViewerAction(manager);
@@ -566,6 +569,10 @@ public class JBricxMenuAndToolBarDelegate {
 		JMenuItem about = new JMenuItem(aboutAction);
 		about.setText("About");
 		helpMenu.add(about);
+		
+		JMenuItem keyboardShortcuts = new JMenuItem(referencesAction);
+		keyboardShortcuts.setText("Keyboard Shortcut Reference");
+		helpMenu.add(keyboardShortcuts);
 
 		JMenuItem help = new JMenuItem(helpContentAction);
 		help.getAccessibleContext().setAccessibleName("Help Content shortcut F1");
