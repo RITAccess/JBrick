@@ -84,29 +84,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * Sets up the JTabbedPane to allow a shortcut for tabbing between files
 	 */
 	private void setupTabTraversalKeys()
-	{
-	   /* KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-	    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-	 
-	    // Remove ctrl-tab from normal focus traversal
-	    Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-	    forwardKeys.remove(ctrlTab);
-	    setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-	 
-	    // Remove ctrl-shift-tab from normal focus traversal
-	    Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-	    backwardKeys.remove(ctrlShiftTab);
-	    setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
-	 
-	    // Add keys to the tab's input map
-	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	    inputMap.put(ctrlTab, "navigateNext");
-	    inputMap.put(ctrlShiftTab, "navigatePrevious");*/
-	    
-	   /* InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	    inputMap.put(KeyStroke.getKeyStroke("ctrl 1"), "navigatePrevious");
-	    inputMap.put(KeyStroke.getKeyStroke("ctrl 2"), "navigateNext");*/
-	    
+	{   
 		int ctrl_or_command_mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		
 	    InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -158,6 +136,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 			newItem.setCodeFoldingEnabled(true);
 			newItem.setAntiAliasingEnabled(true);
+			newItem.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+			newItem.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
+			newItem.setLineWrap(PreferenceStore.getPrefs().getBoolean(PreferenceStore.WRAP, false));
 			RTextScrollPane scroller = new RTextScrollPane(newItem);
 			scroller.setFoldIndicatorEnabled(true);
 			String fileName = newItem.getFileName();
@@ -303,6 +284,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 		newTabItem.setCodeFoldingEnabled(true);
 		newTabItem.setAntiAliasingEnabled(true);
+		newTabItem.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		newTabItem.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
+		newTabItem.setLineWrap(PreferenceStore.getPrefs().getBoolean(PreferenceStore.WRAP, false));
 		// newTabItem.setFont(new Font(null, Font.BOLD,50));
 
 		RTextScrollPane scroller = new RTextScrollPane(newTabItem);
@@ -444,6 +428,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			tab.setBackground(background);
 			tab.setForeground(foreground);
 			tab.setSyntaxScheme(tab.getDefaultSyntaxScheme());
+			
+			// Word wrap
+			tab.setLineWrap(prefs.getBoolean(PreferenceStore.WRAP, false));
 		}
 	}
 
