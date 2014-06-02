@@ -43,7 +43,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	 * Runs the application. Called by initial class
 	 */
 	public void run() {
-		PreferenceStore prefClass = new PreferenceStore();
+		new PreferenceStore();
 		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
@@ -65,7 +65,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	 * Does not check for Fantom driver
 	 */
 	public void runNoFantom() {
-		PreferenceStore prefClass = new PreferenceStore();
+		new PreferenceStore();
 		prefs = PreferenceStore.getPrefs();
 		
 		initMainWindow();

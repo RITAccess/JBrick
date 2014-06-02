@@ -37,5 +37,4 @@ public class EditorFunctions {
 		String text = getText(mainWindow);
 		return testString.equals(text);
 	}
-	
 }
