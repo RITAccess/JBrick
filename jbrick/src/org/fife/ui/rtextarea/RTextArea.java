@@ -1530,6 +1530,13 @@ public class RTextArea extends RTextAreaBase
 			cre.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Clears all edits from the tab.
+	 */
+	public void clearUndo() {
+		this.undoManager.discardAllEdits();
+	}
 
 	/**
 	 * Serializes this text area.
