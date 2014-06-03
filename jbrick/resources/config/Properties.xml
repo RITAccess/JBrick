@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<properties>
+
+	<color>
+		<foreground type="int">78</foreground>
+		<background type="int">67</background>
+		<comment type="int">90</comment>
+		<string type="int">55</string>
+		<keyword type="int">89</keyword>
+		<operator type="int">49</operator>
+		<line-fg type="int">22</line-fg>
+		<line-bg type="int">67</line-bg>
+	</color>
+
+	<font>
+		<name type="string">Consolas</name>
+		<size type="int">20</size>
+		<style type="string">plain</style>
+	</font>
+
+	<icon>
+		<size type="int">44</size>
+	</icon>
+
+	<misc>
+		<word-wrap type="bool">false</word-wrap>
+		<auto-compile type="bool">true</auto-compile>
+		<load-recent type="bool">false</load-recent>
+		<nbc-loc type="bool">false</nbc-loc>
+		<workspace type="bool">true</workspace>
+		<line-num type="bool">true</line-num>
+	</misc>
+
+</properties>
