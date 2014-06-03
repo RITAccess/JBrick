@@ -53,7 +53,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				PreferenceStore.BOOLRECENTFILES_DEFAULT)) {
 			
 			ArrayList<String> recentFiles = getRecentFiles();
-			
 			if (recentFiles.size() > 0 && recentFiles.get(0).length() > 1) {
 				boolean fileOpened = false;
 				
@@ -69,7 +68,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				if(!fileOpened){
 					this.openNewFile();
 				}
-				
 			} else {
 				this.openNewFile();
 			}
@@ -133,6 +131,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		if (tabIndex == -1) {
 
 			JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
+			newItem.clearUndo();
 			newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 			newItem.setCodeFoldingEnabled(true);
 			newItem.setAntiAliasingEnabled(true);
