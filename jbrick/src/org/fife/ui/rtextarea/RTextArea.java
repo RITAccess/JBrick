@@ -1535,7 +1535,8 @@ public class RTextArea extends RTextAreaBase
 	 * Clears all edits from the tab.
 	 */
 	public void clearUndo() {
-		this.undoManager.discardAllEdits();
+		this.undoManager.createSigEdit(); //treats this method as a significant edit (used for loading).
+		this.undoManager.discardAllEdits(); //clears all edits so that user cannot undo last edit.
 	}
 
 	/**
