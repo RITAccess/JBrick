@@ -13,9 +13,9 @@
 	</color>
 
 	<font>
-		<name type="string">Helvetica</name>
-		<size type="string">thirteen</size>
-		<style type="string">italic</style>
+		<name type="string">Consolas</name>
+		<size type="int">20</size>
+		<style type="string">plain</style>
 	</font>
 
 	<icon>
