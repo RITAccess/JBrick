@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<properties>
+
+	<color>
+		<foreground type = "int">78</foreground>
+		<background>67</background>
+		<comment>90</comment>
+		<string>55</string>
+		<keyword>89</keyword>
+		<operator>49</operator>
+		<line-fg>22</line-fg>
+		<line-bg>67</line-bg>
+	</color>
+
+	<font>
+		<name>Helvetica</name>
+		<size>thirteen</size>
+		<style>italic</style>
+	</font>
+
+	<icon>
+		<size>44</size>
+	</icon>
+
+	<misc>
+		<word-wrap>false</word-wrap>
+		<auto-compile>true</auto-compile>
+		<load-recent>false</load-recent>
+		<nbc-loc>false</nbc-loc>
+		<workspace>true</workspace>
+		<line-num>true</line-num>
+	</misc>
+
+</properties>
