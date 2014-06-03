@@ -2,33 +2,33 @@
 <properties>
 
 	<color>
-		<foreground type = "int">78</foreground>
-		<background>67</background>
-		<comment>90</comment>
-		<string>55</string>
-		<keyword>89</keyword>
-		<operator>49</operator>
-		<line-fg>22</line-fg>
-		<line-bg>67</line-bg>
+		<foreground type="int">78</foreground>
+		<background type="int">67</background>
+		<comment type="int">90</comment>
+		<string type="int">55</string>
+		<keyword type="int">89</keyword>
+		<operator type="int">49</operator>
+		<line-fg type="int">22</line-fg>
+		<line-bg type="int">67</line-bg>
 	</color>
 
 	<font>
-		<name>Helvetica</name>
-		<size>thirteen</size>
-		<style>italic</style>
+		<name type="string">Consolas</name>
+		<size type="int">20</size>
+		<style type="string">plain</style>
 	</font>
 
 	<icon>
-		<size>44</size>
+		<size type="int">44</size>
 	</icon>
 
 	<misc>
-		<word-wrap>false</word-wrap>
-		<auto-compile>true</auto-compile>
-		<load-recent>false</load-recent>
-		<nbc-loc>false</nbc-loc>
-		<workspace>true</workspace>
-		<line-num>true</line-num>
+		<word-wrap type="bool">false</word-wrap>
+		<auto-compile type="bool">true</auto-compile>
+		<load-recent type="bool">false</load-recent>
+		<nbc-loc type="bool">false</nbc-loc>
+		<workspace type="bool">true</workspace>
+		<line-num type="bool">true</line-num>
 	</misc>
 
 </properties>
