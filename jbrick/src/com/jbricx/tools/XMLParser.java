@@ -32,8 +32,8 @@ public class XMLParser {
 		// Print if XML couldn't be parsed
 		catch (Exception e){
 			doc = null;
-			System.err.println("Document could't be created");
-			e.printStackTrace();
+			//System.err.println("Document could't be created");
+			//e.printStackTrace();
 		}
 		
 		return doc;   
