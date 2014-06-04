@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -61,20 +62,25 @@ public class XMLParser {
 			node = listDoc.item(count);
 			Element eDoc = (Element)node;
 			node = eDoc.getElementsByTagName(tag).item(item);
-			
 		}
 		
 		return node;
 	}
 	
-	public static void overwrite(Document doc, Node newNode) {
-		// root elements
-		Element rootElement = doc.createElement("properties");
-		doc.appendChild(rootElement);
-				
-		Element elementNode = doc.createElement(newNode.getNodeName());
-		elementNode.appendChild(doc.createTextNode(newNode.getTextContent()));
-		rootElement.appendChild(elementNode);
+	/**
+	 * Overwrites a Node from doc with the newNode. 
+	 * 
+	 * @param doc - Document that will be inserted
+	 * @param newNode - newNode to replace old node
+	 * @return - new Document with revision.
+	 */
+	public static Document overwrite(Document doc, Node newNode) {
+		
+		while (!newNode.getParentNode().getNodeName().equals(doc.getNodeName())){
+			newNode = newNode.getParentNode();
+		}
+		doc.getDocumentElement().appendChild(newNode.getFirstChild());
+		return doc;
 	}
 	
 	public static void writeToFile(Document doc, String filepath){
@@ -83,11 +89,13 @@ public class XMLParser {
 		try {
 			transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			//StreamResult result = new StreamResult(new File(filepath));
-	 
-			// Output to console for testing
-			StreamResult result = new StreamResult(System.out);
-	 
+			Result result;
+			if (filepath == ""){
+				// Output to console for testing
+				result = new StreamResult(System.out);			
+			} else {
+				result = new StreamResult(new File(filepath));
+			}
 			transformer.transform(source, result);
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
@@ -109,7 +117,9 @@ public class XMLParser {
 		Document newDoc2 = XMLParser.xmlParse("resources/config/Autocomplete.xml");
 		Node value2 = XMLParser.retrieve(newDoc2,"keyWords","word",14);
 		System.out.println("List: "+ value2.getTextContent());	
-		XMLParser.overwrite(newDoc, value);
+		
+		value.setTextContent("DERP");
+		newDoc = XMLParser.overwrite(newDoc, value);
 		XMLParser.writeToFile(newDoc, "");
 	}
 }
