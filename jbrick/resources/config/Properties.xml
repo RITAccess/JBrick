@@ -26,8 +26,8 @@
 		<word-wrap type="bool">false</word-wrap>
 		<auto-compile type="bool">true</auto-compile>
 		<load-recent type="bool">false</load-recent>
-		<nbc-loc type="bool">false</nbc-loc>
-		<workspace type="bool">true</workspace>
+		<nbc-loc type="string"> </nbc-loc>
+		<workspace type="string"> </workspace>
 		<line-num type="bool">true</line-num>
 	</misc>
 
