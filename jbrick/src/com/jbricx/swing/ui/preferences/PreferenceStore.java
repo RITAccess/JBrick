@@ -29,7 +29,7 @@ public class PreferenceStore {
 					: "\\Documents\\");
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
 	public static final String NBCTOOL_DEFAULT = "";
- 
+	public static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
 	public static final int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
@@ -51,6 +51,7 @@ public class PreferenceStore {
 	public static final String BRICKTOOL = "brickTool";
 	public static final String NEXTTOOL = "nextTool";
 	public static final String NBCTOOL = "nbcTool";
+	public static final String THEMEXML = "themeXML";
 
 	// Configuration files
 	//public static final String PREFERENCES_FILE = "JBrickEditor.properties";
@@ -58,6 +59,8 @@ public class PreferenceStore {
 	public static final String OPERATORS_FILE = "config/Operators.xml";
 	public static final String CONSTANTS_FILE = "config/Constants.xml";
 	public static final String AUTOCOMPLETE_FILE = "config/Autocomplete.xml";
+
+
 	
 	//Colors and defaults
 	

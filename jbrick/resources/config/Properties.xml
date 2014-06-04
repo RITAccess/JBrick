@@ -10,6 +10,8 @@
 		<operator type="int">49</operator>
 		<line-fg type="int">22</line-fg>
 		<line-bg type="int">67</line-bg>
+		<pre-processor type="int"> 67 </pre-processor>
+		<constant type="int"> 67 </constant>
 	</color>
 
 	<font>

@@ -84,10 +84,15 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JCheckBox wordWrapBox;
 	private JCheckBox autoCompileBox;
 	private JCheckBox loadRecentlyBox;
+	
 	private JLabel toolLocationLabel;
 	private JTextField toolLocationTextArea;
 	private JButton toolLocationBrowseButton;
-
+	
+	private JLabel themeLocationLabel;
+	private JTextField themeLocationTextArea;
+	private JButton themeLocationBrowseButton;
+	
 	private JButton resetToDefaultButton;
 	private JButton cancelButton;
 	private JButton okButton;
@@ -163,6 +168,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		makeDirectoryBoxes();
 		makeCheckBoxes();
 		makeToolDirectory();
+		makeThemeLocation();
 		makeBottomButtons();
 		
 		buildLayout();
@@ -273,15 +279,18 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				.addComponent(loadRecentlyBox)
 				.addComponent(toolLocationLabel)
 				.addComponent(workspaceLabel)
+				.addComponent(themeLocationLabel)
 		);
 
 		hGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup()
 				.addComponent(toolLocationTextArea)
 				.addComponent(directoryTextArea)
+				.addComponent(themeLocationTextArea)
 		);
 		hGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup()
 				.addComponent(toolLocationBrowseButton)
 				.addComponent(workspaceChangeButton)
+				.addComponent(themeLocationBrowseButton)
 		);
 		otherOptionsGroupLayout.setHorizontalGroup(hGroup2);
 		
@@ -300,6 +309,11 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			.addComponent(workspaceLabel)
 			.addComponent(directoryTextArea)
 			.addComponent(workspaceChangeButton)
+		);
+		vGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+			.addComponent(themeLocationLabel)
+			.addComponent(themeLocationTextArea)
+			.addComponent(themeLocationBrowseButton)
 		);
 		otherOptionsGroupLayout.setVerticalGroup(vGroup2);
 	}
@@ -518,6 +532,23 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	}
 	
 	/**
+	 * Theme Location
+	 */
+	private void makeThemeLocation() {
+		themeLocationLabel = new JLabel("Theme");
+		
+		themeLocationTextArea = new JTextField();
+		themeLocationTextArea.setText(prefs.get(PreferenceStore.THEMEXML, PreferenceStore.THEMEXML_DEFAULT));
+		themeLocationTextArea.getAccessibleContext().setAccessibleName("Theme Location");
+		
+		themeLocationBrowseButton = new JButton("Browse...");
+		
+		themeLocationBrowseButton.setActionCommand("themeLocationbutton");
+		themeLocationBrowseButton.addActionListener(this);
+		themeLocationBrowseButton.getAccessibleContext().setAccessibleName("Change Theme Location Button. Press Enter to change");
+	}
+	
+	/**
 	 * Makes the bottom "Reset to Default", "Cancel", "Apply" and "OK"
 	 */
 	private void makeBottomButtons() {
@@ -581,6 +612,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		
 		prefs.put(PreferenceStore.NBCTOOL,toolLocationTextArea.getText());
 		prefs.put(PreferenceStore.WRKSPC, directoryTextArea.getText());
+		prefs.put(PreferenceStore.THEMEXML,themeLocationTextArea.getText());
 	}
 	
 	/**
@@ -638,6 +670,9 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		prefs.put(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT);
 		directoryTextArea.setText(PreferenceStore.WRKSPC_DEFAULT);
 		
+		prefs.put(PreferenceStore.THEMEXML, PreferenceStore.THEMEXML_DEFAULT);
+		themeLocationTextArea.setText(PreferenceStore.THEMEXML_DEFAULT);
+		
 		this.pack();
 	}
 
@@ -685,6 +720,17 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		// the browse button was chosen for tool location. open file dialog to change directory.	
 		}else if(arg0.getActionCommand().equals("toolLocationbutton")){
 			final JFileChooser fc = new JFileChooser();
+			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int returnVal = fc.showOpenDialog(this);
+			//They picked a file
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				File selectedDir = fc.getSelectedFile();
+				toolLocationTextArea.setText(selectedDir.getAbsolutePath());	
+			}
+			
+		// the browse button was chosen for theme location. open file dialog to change director 
+		}else if(arg0.getActionCommand().equals("themeLocationbutton")){
+			final JFileChooser fc = new JFileChooser("resources/config");
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int returnVal = fc.showOpenDialog(this);
 			//They picked a file
