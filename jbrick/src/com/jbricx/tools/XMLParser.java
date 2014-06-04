@@ -39,28 +39,12 @@ public class XMLParser {
 		return doc;   
 	}
 	
-	// Retrieve specific information from the document based on query
-	// For xml files 3 levels deep 
-	public static Node retrieveLevel3(Document doc,String query, String tag){
-		
-		Node node = null;
-		NodeList listDoc = doc.getElementsByTagName(query);
-		
-		for (int count = 0; count < listDoc.getLength(); count++){
-			 Node docNode = listDoc.item(count);
-			
-			if (docNode.getNodeType() == Node.ELEMENT_NODE){
-				
-				Element eDoc = (Element) docNode;
-			    node = (eDoc.getElementsByTagName(tag).item(0));	
-			}
-		}
-		
-		return node;	
+	public static Node retrieve(Document doc, String query, String tag) {
+		return retrieve(doc, query, tag, 0);
 	}
 	
-	// Retrieve information from an xml 2 levels deep 
-	public static Node retrieveLevel2(Document doc, String query, String tag, int item) {
+	// Retrieve information from an xml 
+	public static Node retrieve(Document doc, String query, String tag, int item) {
 		
 		Node node = null;
 		NodeList listDoc = doc.getElementsByTagName(query);
@@ -78,12 +62,14 @@ public class XMLParser {
 	public static void main(String argv[]){
 		
 		Document newDoc = XMLParser.xmlParse("resources/config/Properties.xml");
-		String query = "font";
-		Node value = XMLParser.retrieveLevel3(newDoc,query,"name");
+		String query = "icon";
+		Node value = XMLParser.retrieve(newDoc,query,"size",0);
+		System.out.println(query + ": " + value.getTextContent());
+		value = XMLParser.retrieve(newDoc,query,"size");
 		System.out.println(query + ": " + value.getTextContent());
 		
 		Document newDoc2 = XMLParser.xmlParse("resources/config/Autocomplete.xml");
-		Node value2 = XMLParser.retrieveLevel2(newDoc2,"keyWords","word",15);
+		Node value2 = XMLParser.retrieve(newDoc2,"keyWords","word",14);
 		System.out.println("List: "+ value2.getTextContent());	
 	}
 }
