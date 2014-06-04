@@ -1,19 +1,16 @@
-package com.jbricx.swing.ui.preferences;
+package com.jbricx.tools;
 
 import java.io.File;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/* Parser for XML documents 
- * Version 2.0
- */
-
+// Parser for XML documents 
+// Version 2.0
+ 
 public class XMLParser {
 
 	// Return document of parsed XML file
@@ -30,7 +27,6 @@ public class XMLParser {
 			doc = docBuilder.parse(xmlFile);
 			
 			doc.getDocumentElement().normalize();
-			
 		}
 		
 		// Print if XML couldn't be parsed
@@ -39,15 +35,15 @@ public class XMLParser {
 			System.err.println("Document could't be created");
 			e.printStackTrace();
 		}
-		return doc;
-	    
+		
+		return doc;   
 	}
 	
 	// Retrieve specific information from the document based on query
-	public static Node retrieve(Document doc,String query, String tag){
+	// For xml files 3 levels deep 
+	public static Node retrieveLevel3(Document doc,String query, String tag){
 		
 		Node node = null;
-		
 		NodeList listDoc = doc.getElementsByTagName(query);
 		
 		for (int count = 0; count < listDoc.getLength(); count++){
@@ -56,23 +52,38 @@ public class XMLParser {
 			if (docNode.getNodeType() == Node.ELEMENT_NODE){
 				
 				Element eDoc = (Element) docNode;
-			    node = (eDoc.getElementsByTagName(tag).item(0));
-				
+			    node = (eDoc.getElementsByTagName(tag).item(0));	
 			}
+		}
+		
+		return node;	
+	}
+	
+	// Retrieve information from an xml 2 levels deep 
+	public static Node retrieveLevel2(Document doc, String query, String tag, int item) {
+		
+		Node node = null;
+		NodeList listDoc = doc.getElementsByTagName(query);
+		
+		for (int count = 0; count < listDoc.getLength(); count++){
+			node = listDoc.item(count);
+			Element eDoc = (Element)node;
+			node = eDoc.getElementsByTagName(tag).item(item);
 			
 		}
 		
 		return node;
-		
-		
 	}
 	
 	public static void main(String argv[]){
 		
 		Document newDoc = XMLParser.xmlParse("resources/config/Properties.xml");
 		String query = "font";
-		Node value = XMLParser.retrieve(newDoc,query,"name");
+		Node value = XMLParser.retrieveLevel3(newDoc,query,"name");
 		System.out.println(query + ": " + value.getTextContent());
 		
+		Document newDoc2 = XMLParser.xmlParse("resources/config/Autocomplete.xml");
+		Node value2 = XMLParser.retrieveLevel2(newDoc2,"keyWords","word",15);
+		System.out.println("List: "+ value2.getTextContent());	
 	}
 }

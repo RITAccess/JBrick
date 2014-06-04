@@ -73,6 +73,19 @@ public class RUndoManager extends UndoManager {
 		}
 	}
 
+	/**
+	 * Creates a blank significant edit.
+	 */
+	public void createSigEdit()
+	{
+		if(compoundEdit!=null)
+			compoundEdit.end();
+		compoundEdit = new RCompoundEdit();
+		addEdit(compoundEdit);
+		compoundEdit.end();
+		compoundEdit = null;
+		updateActions();
+	}
 
 	/**
 	 * Ends an "atomic" edit.
