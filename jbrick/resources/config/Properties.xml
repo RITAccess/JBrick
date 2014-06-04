@@ -2,21 +2,22 @@
 <properties>
 
 	<color>
-		<foreground type="int">78</foreground>
-		<background type="int">67</background>
-		<comment type="int">90</comment>
-		<string type="int">55</string>
-		<keyword type="int">89</keyword>
-		<operator type="int">49</operator>
-		<line-fg type="int">22</line-fg>
-		<line-bg type="int">67</line-bg>
-		<pre-processor type="int"> 67 </pre-processor>
-		<constant type="int"> 67 </constant>
+		<foreground type="int">-16777216</foreground>
+		<background type="int">-1</background>
+		<comment type="int">-8355712</comment>
+		<string type="int">-16711936</string>
+		<keyword type="int">-5111630</keyword>
+		<operator type="int">-5111630</operator>
+		<line-fg type="int">-65536</line-fg>
+		<line-bg type="int">-1</line-bg>
+		<constant type="int">-16776961</constant>
+		<preprocessor type="int">-5075968</preprocessor>
+		<containers type="int">-5075968</containers>
 	</color>
 
 	<font>
-		<name type="string">Consolas</name>
-		<size type="int">20</size>
+		<name type="string">Monospaced</name>
+		<size type="int">24</size>
 		<style type="string">plain</style>
 	</font>
 
@@ -26,10 +27,9 @@
 
 	<misc>
 		<word-wrap type="bool">false</word-wrap>
-		<auto-compile type="bool">true</auto-compile>
+		<auto-compile type="bool">false</auto-compile>
 		<load-recent type="bool">false</load-recent>
 		<nbc-loc type="string"> </nbc-loc>
-		<workspace type="string"> </workspace>
 		<line-num type="bool">true</line-num>
 	</misc>
 

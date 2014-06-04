@@ -2,6 +2,9 @@ package com.jbricx.swing.ui.preferences;
 
 import java.awt.Color;
 import java.util.prefs.Preferences;
+import com.jbricx.tools.XMLParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 public class PreferenceStore {
 
@@ -19,6 +22,8 @@ public class PreferenceStore {
 	public static final String FONT = "font";
 	public static final String WRKSPC = "workspace"; 
 	public static final String AUTOCOMPILE = "autocompile";
+	public static final String LINENUM = "linenumber";
+	public static final String ICONSIZE = "iconsize";
 	
 	//Preference Defaults
 	
@@ -28,8 +33,11 @@ public class PreferenceStore {
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
 	public static final boolean AUTOCOMPILE_DEFAULT = false;
+	public static final boolean LINENUM_DEFAULT = true;
 	public static final String NBCTOOL_DEFAULT = "";
 	public static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
+	
+	public static final int ICONSIZE_DEFAULT = 44;
 	
 	public static final int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
 	public static final int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
@@ -41,6 +49,7 @@ public class PreferenceStore {
 	public static final int KEYWORD_DEFAULT = Color.MAGENTA.darker().getRGB();
 	public static final int CONSTANT_DEFAULT = Color.BLUE.getRGB();
 	public static final int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
+	public static final int CONTAINERS_DEFAULT = Color.RED.darker().getRGB();
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
@@ -60,7 +69,10 @@ public class PreferenceStore {
 	public static final String CONSTANTS_FILE = "config/Constants.xml";
 	public static final String AUTOCOMPLETE_FILE = "config/Autocomplete.xml";
 
-
+	public static final String DEFAULT_FILE = "resources/config/Properties.xml";
+	
+	//Parser to parse the preference files
+	public static Document currentDoc;
 	
 	//Colors and defaults
 	
@@ -74,7 +86,8 @@ public class PreferenceStore {
 	    LINENUMBERFG,
 	    LINENUMBERBG,
 	    CONSTANT,
-	    PREPROCESSOR;
+	    PREPROCESSOR,
+	    CONTAINERS;
 	}
 
 	/**
@@ -88,25 +101,96 @@ public class PreferenceStore {
 		}
 	}
 	
+	/**
+	 * Sets preferences to defaults
+	 */
 	static void setPreferencesAndDefaults() {
+
+		currentDoc = XMLParser.xmlParse(DEFAULT_FILE);
 		
-		prefs.putInt(ColorFor.FOREGROUND.toString(), FOREGROUND_DEFAULT);
-		prefs.putInt(ColorFor.BACKGROUND.toString(), BACKGROUND_DEFAULT);
-		prefs.putInt(ColorFor.OPERATOR.toString(), OPERATOR_DEFAULT);
-		prefs.putInt(ColorFor.COMMENT.toString(), COMMENT_DEFAULT);
-		prefs.putInt(ColorFor.KEYWORD.toString(), KEYWORD_DEFAULT);
-		prefs.putInt(ColorFor.STRING.toString(), STRING_DEFAULT);
-		prefs.putInt(ColorFor.LINENUMBERFG.toString(), LINENUMBERFG_DEFAULT);
-		prefs.putInt(ColorFor.LINENUMBERBG.toString(), LINENUMBERBG_DEFAULT);
-		prefs.putInt(ColorFor.CONSTANT.toString(), CONSTANT_DEFAULT);
-		prefs.putInt(ColorFor.PREPROCESSOR.toString(),PREPROCESSOR_DEFAULT);
+		if(!currentDoc.equals(null)){
+			setValuesFromFile(currentDoc);
+		}
+		//if there is no preferences XML document one will be created.
+		else{
+			//TODO: Create default method
+		}
+	}
+	
+	/**
+	 * Writes preferences to the java preferences file from a XML document.
+	 * 
+	 * @param XML document to read from.
+	 */
+	static void setValuesFromFile(Document doc) {
 		
-		prefs.putBoolean(WRAP,WRAP_DEFAULT);
-		prefs.put(FONT, FONT_DEFAULT);
-		prefs.putBoolean(AUTOCOMPILE, AUTOCOMPILE_DEFAULT);
+		Node tempNode;
+		
+		//set color settings
+		tempNode = XMLParser.retrieve(doc, "color", "foreground");
+		prefs.putInt(ColorFor.FOREGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "background");
+		prefs.putInt(ColorFor.BACKGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "operator");
+		prefs.putInt(ColorFor.OPERATOR.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "comment");
+		prefs.putInt(ColorFor.COMMENT.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "keyword");
+		prefs.putInt(ColorFor.KEYWORD.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "string");
+		prefs.putInt(ColorFor.STRING.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "line-fg");
+		prefs.putInt(ColorFor.LINENUMBERFG.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "line-bg");
+		prefs.putInt(ColorFor.LINENUMBERBG.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "constant");
+		prefs.putInt(ColorFor.CONSTANT.toString(), Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "preprocessor");
+		prefs.putInt(ColorFor.PREPROCESSOR.toString(),Integer.parseInt(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "color", "containers");
+		prefs.putInt(ColorFor.CONTAINERS.toString(),Integer.parseInt(tempNode.getTextContent()));
+		
+		
+		//set font settings
+		String fontTemp ="";
+		tempNode = XMLParser.retrieve(doc, "font", "name");
+		fontTemp += tempNode.getTextContent() + "-";
+		tempNode = XMLParser.retrieve(doc, "font", "style");
+		fontTemp += tempNode.getTextContent() + "-";
+		tempNode = XMLParser.retrieve(doc, "font", "size");
+		fontTemp += tempNode.getTextContent();
+		prefs.put(FONT, fontTemp);
+		
+		//icon size setting
+		tempNode = XMLParser.retrieve(doc, "icon", "size");
+		prefs.putBoolean(ICONSIZE, Boolean.parseBoolean(tempNode.getTextContent()));
+		
+		//set misc settings
+		tempNode = XMLParser.retrieve(doc, "misc", "word-wrap");
+		prefs.putBoolean(WRAP, Boolean.parseBoolean(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "misc", "auto-compile");
+		prefs.putBoolean(AUTOCOMPILE, Boolean.parseBoolean(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "misc", "line-num");
+		prefs.putBoolean(LINENUM, Boolean.parseBoolean(tempNode.getTextContent()));
+		tempNode = XMLParser.retrieve(doc, "misc", "nbc-loc");
+		prefs.put(NBCTOOL,tempNode.getTextContent());
 		prefs.put(WRKSPC,WRKSPC_DEFAULT);
-		prefs.put(NBCTOOL,"");
+
 		prefs.putBoolean("ranPreviously",true);	
+	}
+	
+	/**
+	 * Loads a theme from a file
+	 * @param Theme file location
+	 */
+	public static void LoadTheme(String fileLoc){
+		currentDoc = XMLParser.xmlParse(fileLoc);
+		if(!currentDoc.equals(null)){
+			setValuesFromFile(currentDoc);
+		}
+		else{
+			System.err.println("Could not find file.");
+		}
 	}
 	
 	public static Preferences getPrefs(){
