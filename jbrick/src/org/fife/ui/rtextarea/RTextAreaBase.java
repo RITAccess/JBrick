@@ -75,8 +75,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	
 	
 	private static Color backgroundColor = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.Preference.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT));
-	private static float bright = Color.RGBtoHSB(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue(), null)[2];
-	private static Color lineHighlightColor = bright > 0.5 ? backgroundColor.darker() : backgroundColor.brighter();
+	private static Color lineHighlightColor = new Color(0,0,0);
 	
 	/**
 	 * Constructor.
@@ -837,6 +836,7 @@ try {
 			backgroundPainter = new ColorBackgroundPainterStrategy(bg);
 		}
 		setOpaque(true);
+		setCurrentLineHighlightColor(bg);
 		firePropertyChange("background", oldBG, bg);
 		repaint();
 	}
@@ -934,7 +934,15 @@ try {
 			throw new NullPointerException();
 		if (!color.equals(lineHighlightColor)) {
 			Color old = lineHighlightColor;
-			lineHighlightColor = color;
+
+			//bright = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null)[2];
+			//lineHighlightColor = bright > 0.5 ? color.darker().darker() : color.brighter().brighter();
+			
+			lineHighlightColor = color = new Color(
+					(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND).getRed() + color.getRed()*3)/4,
+					(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND).getGreen() + color.getGreen()*3)/4,
+					(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND).getBlue() + color.getBlue()*3)/4);
+			
 			firePropertyChange(CURRENT_LINE_HIGHLIGHT_COLOR_PROPERTY,
 							old, color);
 		}

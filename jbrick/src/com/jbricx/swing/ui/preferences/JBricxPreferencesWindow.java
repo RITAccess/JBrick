@@ -821,8 +821,9 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				    "Preferences",
 				    JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION){	
-				PreferenceStore.setPreferencesAndDefaults();
-				setJPanelsFromPreferences();
+					//PreferenceStore.setPreferencesAndDefaults();
+					//setJPanelsFromPreferences();
+					resetDefaults();
 			}
 		//User wishes to apply settings but stay in window.
 		}else if(arg0.getActionCommand().equals("apply")){
