@@ -78,18 +78,41 @@ public class PreferenceStore {
 	
 	//Colors and defaults
 	
-	public static enum ColorFor {
-		FOREGROUND,
-	    BACKGROUND,
-	    COMMENT,
-	    KEYWORD,
-	    OPERATOR,
-	    STRING,
-	    LINENUMBERFG,
-	    LINENUMBERBG,
-	    CONSTANT,
-	    PREPROCESSOR,
-	    CONTAINERS;
+	public static enum Preference {
+		FOREGROUND (PreferenceStore.FOREGROUND_DEFAULT),
+	    BACKGROUND (PreferenceStore.BACKGROUND_DEFAULT),
+	    COMMENT (PreferenceStore.COMMENT_DEFAULT),
+	    KEYWORD (PreferenceStore.KEYWORD_DEFAULT),
+	    OPERATOR (PreferenceStore.OPERATOR_DEFAULT),
+	    STRING (PreferenceStore.STRING_DEFAULT),
+	    LINENUMBERFG (PreferenceStore.LINENUMBERFG_DEFAULT),
+	    LINENUMBERBG (PreferenceStore.LINENUMBERBG_DEFAULT),
+	    CONSTANT (PreferenceStore.CONSTANT_DEFAULT),
+	    PREPROCESSOR (PreferenceStore.PREPROCESSOR_DEFAULT),
+	    CONTAINERS (PreferenceStore.CONTAINERS_DEFAULT),
+	    WRAP (PreferenceStore.WRAP_DEFAULT),
+	    FONT (PreferenceStore.FONT_DEFAULT),
+	    AUTOCOMPILE (PreferenceStore.AUTOCOMPILE_DEFAULT),
+	    BOOLRECENTFILES (PreferenceStore.BOOLRECENTFILES_DEFAULT),
+		NBCTOOL (PreferenceStore.NBCTOOL_DEFAULT),
+		WORKSPACE (PreferenceStore.WRKSPC_DEFAULT),
+		THEMEXML (PreferenceStore.THEMEXML_DEFAULT);
+		
+		public int defaultColor;
+		public boolean defaultBool;
+		public String defaultString;
+		
+		Preference(int defaultColor){
+			this.defaultColor = defaultColor;
+		}
+		
+		Preference(boolean defaultBool){
+			this.defaultBool = defaultBool;
+		}
+		
+		Preference(String defaultString){
+			this.defaultString = defaultString;
+		}
 	}
 
 	/**
@@ -188,27 +211,27 @@ public class PreferenceStore {
 		
 		//set color settings
 		tempNode = XMLParser.retrieve(doc, "color", "foreground");
-		prefs.putInt(ColorFor.FOREGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.FOREGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "background");
-		prefs.putInt(ColorFor.BACKGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.BACKGROUND.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "operator");
-		prefs.putInt(ColorFor.OPERATOR.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.OPERATOR.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "comment");
-		prefs.putInt(ColorFor.COMMENT.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.COMMENT.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "keyword");
-		prefs.putInt(ColorFor.KEYWORD.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.KEYWORD.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "string");
-		prefs.putInt(ColorFor.STRING.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.STRING.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "line-fg");
-		prefs.putInt(ColorFor.LINENUMBERFG.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.LINENUMBERFG.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "line-bg");
-		prefs.putInt(ColorFor.LINENUMBERBG.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.LINENUMBERBG.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "constant");
-		prefs.putInt(ColorFor.CONSTANT.toString(), Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.CONSTANT.toString(), Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "preprocessor");
-		prefs.putInt(ColorFor.PREPROCESSOR.toString(),Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.PREPROCESSOR.toString(),Integer.parseInt(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "color", "containers");
-		prefs.putInt(ColorFor.CONTAINERS.toString(),Integer.parseInt(tempNode.getTextContent()));
+		prefs.putInt(Preference.CONTAINERS.toString(),Integer.parseInt(tempNode.getTextContent()));
 		
 		
 		//set font settings
@@ -255,5 +278,32 @@ public class PreferenceStore {
 	
 	public static Preferences getPrefs(){
 		return prefs;
+	}
+	
+	/**
+	 * get Preference Color
+	 * @param color
+	 * @return
+	 */
+	public static Color getColor(Preference key){
+		return new Color(prefs.getInt(key.toString(), key.defaultColor));
+	}
+	
+	/**
+	 * get Preference boolean
+	 * @param key
+	 * @return
+	 */
+	public static Boolean getBool(Preference key){
+		return prefs.getBoolean(key.toString(), key.defaultBool);
+	}
+	
+	/**
+	 * get Preference String
+	 * @param key
+	 * @return
+	 */
+	public static String getString(Preference key){
+		return prefs.get(key.toString(), key.defaultString);
 	}
 }

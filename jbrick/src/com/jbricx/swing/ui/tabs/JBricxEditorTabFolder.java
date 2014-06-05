@@ -135,9 +135,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 			newItem.setCodeFoldingEnabled(true);
 			newItem.setAntiAliasingEnabled(true);
-			newItem.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
-			newItem.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
-			newItem.setLineWrap(PreferenceStore.getPrefs().getBoolean(PreferenceStore.WRAP, false));
+			newItem.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
+			newItem.setForeground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
+			newItem.setLineWrap(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
 			RTextScrollPane scroller = new RTextScrollPane(newItem);
 			scroller.setFoldIndicatorEnabled(true);
 			String fileName = newItem.getFileName();
@@ -283,9 +283,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		newTabItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
 		newTabItem.setCodeFoldingEnabled(true);
 		newTabItem.setAntiAliasingEnabled(true);
-		newTabItem.setBackground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
-		newTabItem.setForeground(new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
-		newTabItem.setLineWrap(PreferenceStore.getPrefs().getBoolean(PreferenceStore.WRAP, false));
+		newTabItem.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
+		newTabItem.setForeground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
+		newTabItem.setLineWrap(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
 		// newTabItem.setFont(new Font(null, Font.BOLD,50));
 
 		RTextScrollPane scroller = new RTextScrollPane(newTabItem);
@@ -388,12 +388,8 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			// Color for Lines
 			RTextScrollPane scroller = (RTextScrollPane) getComponentAt(i);
 			Gutter theGutter = scroller.getGutter();
-			theGutter.setBackground(new Color(PreferenceStore.getPrefs()
-					.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),
-							PreferenceStore.LINENUMBERBG_DEFAULT)));
-			theGutter.setLineNumberColor(new Color(PreferenceStore.getPrefs()
-					.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(),
-							PreferenceStore.LINENUMBERFG_DEFAULT)));
+			theGutter.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
+			theGutter.setLineNumberColor(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
 			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs()
 					.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
 
@@ -416,13 +412,8 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			// Colors for main code
 			Preferences prefs = PreferenceStore.getPrefs();
 			
-			Color foreground = new Color(prefs
-					.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(),
-							PreferenceStore.FOREGROUND_DEFAULT));
-			
-			Color background = new Color(prefs
-					.getInt(PreferenceStore.ColorFor.BACKGROUND.toString(),
-							PreferenceStore.BACKGROUND_DEFAULT));
+			Color foreground = PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND);
+			Color background = PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND);
 			
 			tab.setBackground(background);
 			tab.setForeground(foreground);

@@ -444,7 +444,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 * @return The default foreground color.
 	 */
 	public static final Color getDefaultForeground() {
-		return new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT));
+		return new Color(PreferenceStore.Preference.FOREGROUND.defaultColor);
 	}
 
 

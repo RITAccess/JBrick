@@ -364,18 +364,18 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public void restoreDefaults(Font baseFont, boolean fontStyles) {
 		
 		// Colors used by tokens.
-		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
-		Color function			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
-		Color preprocessor		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT));
-		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));
-		Color variable			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));
-		Color literalNumber		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT));
-		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
-		Color error				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.CONSTANT.toString(),PreferenceStore.CONSTANT_DEFAULT));
-		Color constant 			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.CONSTANT.toString(),PreferenceStore.CONSTANT_DEFAULT));
-		Color containers		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.CONTAINERS.toString(), PreferenceStore.CONTAINERS_DEFAULT));
+		Color comment			= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color docComment		= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color keyword			= PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD);
+		Color function			= PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD);
+		Color preprocessor		= PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR);
+		Color regex				= PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR);
+		Color variable			= PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR);
+		Color literalNumber		= PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND);
+		Color literalString		= PreferenceStore.getColor(PreferenceStore.Preference.STRING);
+		Color error				= PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT);
+		Color constant 			= PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT);
+		Color containers		= PreferenceStore.getColor(PreferenceStore.Preference.CONTAINERS);
 		
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {

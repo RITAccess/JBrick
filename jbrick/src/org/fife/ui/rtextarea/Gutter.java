@@ -120,7 +120,7 @@ public class Gutter extends JPanel {
 
 		setBorder(new GutterBorder(0, 0, 0, 1)); // Assume ltr
 
-		Color bg = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT));
+		Color bg = PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG);
 		setBackground(bg);
 
 	}
