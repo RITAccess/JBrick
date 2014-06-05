@@ -837,11 +837,20 @@ try {
 		}
 		setOpaque(true);
 		setCurrentLineHighlightColor(bg);
+		adjustCaretColor(bg);
 		firePropertyChange("background", oldBG, bg);
 		repaint();
 	}
-
-
+	
+	/**
+	 *  Changes the caret color so it is visible on the background
+	 * @param background color
+	 */
+	public void adjustCaretColor(Color bg) {	
+		float brightness = Color.RGBtoHSB(bg.getRed(), bg.getGreen(), bg.getBlue(), null)[2];
+		this.setCaretColor(brightness > 0.5 ? new Color(0,0,0) : new Color(255,255,255));
+	}
+	
 	/**
 	 * Sets this image as the background image.  This method fires a
 	 * property change event of type {@link #BACKGROUND_IMAGE_PROPERTY}.<p>
