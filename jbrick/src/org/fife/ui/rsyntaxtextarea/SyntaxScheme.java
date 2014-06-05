@@ -364,17 +364,17 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	public void restoreDefaults(Font baseFont, boolean fontStyles) {
 
 		// Colors used by tokens.
-		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
+		Color comment			= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color docComment		= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color keyword			= PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD);
 		Color function			= new Color(0,0,0);
-		Color preprocessor		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT));
-		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));
+		Color preprocessor		= PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR);
+		Color regex				= PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR);
 		Color variable			= new Color(0,0,0);
 		Color literalNumber		= new Color(0,0,0);
-		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
+		Color literalString		= PreferenceStore.getColor(PreferenceStore.Preference.STRING);
 		Color error				= new Color(0,0,0);
-		Color constant 			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.CONSTANT.toString(),PreferenceStore.CONSTANT_DEFAULT));
+		Color constant 			= PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT);
 		
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {
