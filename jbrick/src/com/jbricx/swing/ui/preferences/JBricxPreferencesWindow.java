@@ -699,10 +699,11 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		}else if(arg0.getActionCommand().equals("changeFont")){
 			JFontChooser fontChooser = new JFontChooser();
 			int result = fontChooser.showDialog(this);
-			if (result == JFontChooser.OK_OPTION) {
+			if (result == JFontChooser.OK_OPTION) {  
 				Font currentFont = fontChooser.getSelectedFont();
 				currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
-				currentFontText.setFont(currentFont);		
+				currentFontText.setFont(currentFont);
+				fontChooser.setDefaultSelectedFont(currentFont);
 				this.pack();
 			}
 		
