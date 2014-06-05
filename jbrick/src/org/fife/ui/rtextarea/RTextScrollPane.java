@@ -124,7 +124,7 @@ public class RTextScrollPane extends JScrollPane {
 		gutter = new Gutter(textArea);
 		gutter.setLineNumberFont(defaultFont);
 		
-		gutter.setLineNumberColor( new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		gutter.setLineNumberColor(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
 		
 		setLineNumbersEnabled(lineNumbers);
 

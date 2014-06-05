@@ -38,6 +38,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	
 	private JPanel otherOptionArea;
 	private JPanel textOptionArea;
+	private JPanel buttonOptionArea;
 
 	private JPanel textOptionsArea;
 	private JPanel otherOptionCenterArea;
@@ -93,6 +94,9 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JTextField themeLocationTextArea;
 	private JButton themeLocationBrowseButton;
 	
+	private JButton applyThemeButton;
+	private JButton saveThemeButton;
+	
 	private JButton resetToDefaultButton;
 	private JButton cancelButton;
 	private JButton okButton;
@@ -132,14 +136,15 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeComponents(){
 		textOptionArea = new JPanel(new BorderLayout());
 		otherOptionArea = new JPanel(new BorderLayout());
+		buttonOptionArea = new JPanel(new BorderLayout());
 		
 		JLabel textOptionsLabel = new JLabel("<html>&nbsp &nbsp<u>   Text Options</u></html>");
 		JLabel toolOptionsLabel = new JLabel("<html>&nbsp &nbsp<u>   Other Options</u></html>");
 		
-
 		textOptionArea.add(textOptionsLabel, BorderLayout.NORTH);
 
 		otherOptionArea.add(toolOptionsLabel,BorderLayout.NORTH);
+		
 		//otherOptionArea.add(new JSeparator(SwingConstants.HORIZONTAL),BorderLayout.SOUTH);
 		
 		textOptionsArea = new JPanel();
@@ -159,9 +164,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		otherOptionArea.add(otherOptionCenterArea,BorderLayout.CENTER);
 
 		
-		//Two main areas inside the box layout
+		//Three main areas inside the box layout
 		mainArea.add(textOptionArea);
 		mainArea.add(otherOptionArea);
+		mainArea.add(buttonOptionArea);
 		
 		makeColorBoxes();
 		makeFontBoxes();
@@ -169,6 +175,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		makeCheckBoxes();
 		makeToolDirectory();
 		makeThemeLocation();
+		makeThemeButtons();
 		makeBottomButtons();
 		
 		buildLayout();
@@ -210,7 +217,6 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				.addComponent(preProcessorButton)
 				.addComponent(constantButton)
 				.addComponent(currentFontText)
-				
 		);
 		hGroup.addGroup(textAreaGroupLayout.createParallelGroup()
 				.addComponent(changeFontButton)
@@ -267,10 +273,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		vGroup.addGroup(textAreaGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				.addComponent(wordWrapBox)	
 		);
-		
 		textAreaGroupLayout.setVerticalGroup(vGroup);
-		
-		
 		
 		//Horizontal group for other area
 		GroupLayout.SequentialGroup hGroup2 = otherOptionsGroupLayout.createSequentialGroup();
@@ -281,7 +284,6 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				.addComponent(workspaceLabel)
 				.addComponent(themeLocationLabel)
 		);
-
 		hGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup()
 				.addComponent(toolLocationTextArea)
 				.addComponent(directoryTextArea)
@@ -316,6 +318,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			.addComponent(themeLocationBrowseButton)
 		);
 		otherOptionsGroupLayout.setVerticalGroup(vGroup2);
+		
 	}
 
 
@@ -333,7 +336,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		foregroundButton.setPreferredSize(new Dimension(75,25));
 		foregroundButton.setMinimumSize(new Dimension(75,25));
 		foregroundButton.setActionCommand("foregroundButton");
-		foregroundButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT)));
+		foregroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
 		foregroundButton.setContentAreaFilled(false);
 		foregroundButton.setOpaque(true);
 		foregroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -346,7 +349,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		backgroundButton.setMaximumSize(new Dimension(75,25));
 		backgroundButton.setPreferredSize(new Dimension(75,25));
 		backgroundButton.setActionCommand("backgroundButton");
-		backgroundButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.BACKGROUND_DEFAULT)));
+		backgroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
 		backgroundButton.setContentAreaFilled(false);
 		backgroundButton.setOpaque(true);
 		backgroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -359,7 +362,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		commentButton.setMaximumSize(new Dimension(75,25));
 		commentButton.setPreferredSize(new Dimension(75,25));
 		commentButton.setActionCommand("commentButton");
-		commentButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT)));
+		commentButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.COMMENT));
 		commentButton.setContentAreaFilled(false);
 		commentButton.setOpaque(true);
 		commentButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -373,7 +376,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		keywordButton.setMaximumSize(new Dimension(75,25));
 		keywordButton.setPreferredSize(new Dimension(75,25));
 		keywordButton.setActionCommand("keywordButton");
-		keywordButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT)));
+		keywordButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD));
 		keywordButton.setContentAreaFilled(false);
 		keywordButton.setOpaque(true);
 		keywordButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -386,7 +389,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		operatorButton.setMaximumSize(new Dimension(75,25));
 		operatorButton.setPreferredSize(new Dimension(75,25));
 		operatorButton.setActionCommand("operatorButton");
-		operatorButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT)));
+		operatorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR));
 		operatorButton.setContentAreaFilled(false);
 		operatorButton.setOpaque(true);
 		operatorButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -399,7 +402,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		stringButton.setMaximumSize(new Dimension(75,25));
 		stringButton.setPreferredSize(new Dimension(75,25));
 		stringButton.setActionCommand("stringButton");
-		stringButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT)));
+		stringButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.STRING));
 		stringButton.setContentAreaFilled(false);
 		stringButton.setOpaque(true);
 		stringButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -413,7 +416,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberFGButton.setMaximumSize(new Dimension(75,25));
 		lineNumberFGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberFGButton.setActionCommand("lineNumberFGButton");
-		lineNumberFGButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(), PreferenceStore.LINENUMBERFG_DEFAULT)));
+		lineNumberFGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
 		lineNumberFGButton.setContentAreaFilled(false);
 		lineNumberFGButton.setOpaque(true);
 		lineNumberFGButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -426,7 +429,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberBGButton.setMaximumSize(new Dimension(75,25));
 		lineNumberBGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberBGButton.setActionCommand("lineNumberBGButton");
-		lineNumberBGButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(), PreferenceStore.LINENUMBERBG_DEFAULT)));
+		lineNumberBGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
 		lineNumberBGButton.setContentAreaFilled(false);
 		lineNumberBGButton.setOpaque(true);
 		lineNumberBGButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -438,7 +441,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		preProcessorButton.setMaximumSize(new Dimension(75,25));
 		preProcessorButton.setPreferredSize(new Dimension(75,25));
 		preProcessorButton.setActionCommand("preProcessorButton");
-		preProcessorButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(), PreferenceStore.PREPROCESSOR_DEFAULT)));
+		preProcessorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR));
 		preProcessorButton.setContentAreaFilled(false);
 		preProcessorButton.setOpaque(true);
 		preProcessorButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -450,7 +453,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		constantButton.setMaximumSize(new Dimension(75,25));
 		constantButton.setPreferredSize(new Dimension(75,25));
 		constantButton.setActionCommand("constantButton");
-		constantButton.setBackground(new Color(prefs.getInt(PreferenceStore.ColorFor.CONSTANT.toString(), PreferenceStore.CONSTANT_DEFAULT)));
+		constantButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT));
 		constantButton.setContentAreaFilled(false);
 		constantButton.setOpaque(true);
 		constantButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -549,6 +552,35 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	}
 	
 	/**
+	 * Makes Theme related buttons: "Apply Theme", "Save Theme"
+	 */
+	public void makeThemeButtons() {
+		JPanel themePane = new JPanel();
+		themePane.setLayout(new BoxLayout(themePane, BoxLayout.LINE_AXIS));
+		
+		applyThemeButton = new JButton("Apply Theme");
+		applyThemeButton.setActionCommand("applytheme");
+		applyThemeButton.addActionListener(this);
+		applyThemeButton.getAccessibleContext().setAccessibleName("Apply Theme Button. Apply Theme to current Preferences");
+		
+		saveThemeButton = new JButton("Save Theme");
+		saveThemeButton.setActionCommand("savetheme");
+		saveThemeButton.addActionListener(this);
+		saveThemeButton.getAccessibleContext().setAccessibleName("Save Theme Button. Save Theme to a file");
+		
+		themePane.add(Box.createRigidArea(new Dimension(10,0)));
+		themePane.add(Box.createHorizontalGlue());
+		themePane.add(applyThemeButton);
+		themePane.add(Box.createHorizontalGlue());
+		themePane.add(saveThemeButton);
+		themePane.add(Box.createHorizontalGlue());
+		themePane.add(Box.createRigidArea(new Dimension(10,0)));
+		themePane.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
+
+		buttonOptionArea.add(themePane,BorderLayout.NORTH);
+	}
+	
+	/**
 	 * Makes the bottom "Reset to Default", "Cancel", "Apply" and "OK"
 	 */
 	private void makeBottomButtons() {
@@ -585,7 +617,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		bottomPane.add(Box.createRigidArea(new Dimension(10,0)));
 		bottomPane.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
 			
-		add(bottomPane,BorderLayout.SOUTH);
+		buttonOptionArea.add(bottomPane,BorderLayout.SOUTH);
 		
 	}
 	
@@ -593,16 +625,16 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	 * Goes through all the values and sets what is there to the new preference value.
 	 */
 	private void saveValues(){
-		prefs.putInt(PreferenceStore.ColorFor.FOREGROUND.toString(), foregroundButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.BACKGROUND.toString(),backgroundButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.COMMENT.toString(),commentButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.KEYWORD.toString(),keywordButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.OPERATOR.toString(),operatorButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.STRING.toString(),stringButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(),lineNumberFGButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),lineNumberBGButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(),preProcessorButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.ColorFor.CONSTANT.toString(),constantButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.FOREGROUND.toString(), foregroundButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.BACKGROUND.toString(),backgroundButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.COMMENT.toString(),commentButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.KEYWORD.toString(),keywordButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.OPERATOR.toString(),operatorButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.STRING.toString(),stringButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.LINENUMBERFG.toString(),lineNumberFGButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.LINENUMBERBG.toString(),lineNumberBGButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.PREPROCESSOR.toString(),preProcessorButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.CONSTANT.toString(),constantButton.getBackground().getRGB());
 		
 		prefs.put(PreferenceStore.FONT.toString(),currentFontText.getText());
 		
@@ -619,35 +651,34 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	 * Resets all of the pref values to the defaults listed in the preferencestore class. Also changes the objects in the preference window to reflect that.
 	 */
 	private void resetDefaults(){
-		prefs.putInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT);
 		foregroundButton.setBackground(new Color(PreferenceStore.FOREGROUND_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.BACKGROUND.toString(),PreferenceStore.BACKGROUND_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.BACKGROUND.toString(),PreferenceStore.BACKGROUND_DEFAULT);
 		backgroundButton.setBackground(new Color(PreferenceStore.BACKGROUND_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.COMMENT.toString(),PreferenceStore.COMMENT_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.COMMENT.toString(),PreferenceStore.COMMENT_DEFAULT);
 		commentButton.setBackground(new Color(PreferenceStore.COMMENT_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.KEYWORD.toString(),PreferenceStore.KEYWORD_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.KEYWORD.toString(),PreferenceStore.KEYWORD_DEFAULT);
 		keywordButton.setBackground(new Color(PreferenceStore.KEYWORD_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.OPERATOR.toString(),PreferenceStore.OPERATOR_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.OPERATOR.toString(),PreferenceStore.OPERATOR_DEFAULT);
 		operatorButton.setBackground(new Color(PreferenceStore.OPERATOR_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.STRING.toString(),PreferenceStore.STRING_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.STRING.toString(),PreferenceStore.STRING_DEFAULT);
 		stringButton.setBackground(new Color(PreferenceStore.STRING_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.LINENUMBERFG.toString(),PreferenceStore.LINENUMBERFG_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.LINENUMBERFG.toString(),PreferenceStore.LINENUMBERFG_DEFAULT);
 		lineNumberFGButton.setBackground(new Color(PreferenceStore.LINENUMBERFG_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT);
 		lineNumberBGButton.setBackground(new Color(PreferenceStore.LINENUMBERBG_DEFAULT));
-		
 
-		prefs.putInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT);
+		prefs.putInt(PreferenceStore.Preference.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT);
 		preProcessorButton.setBackground(new Color(PreferenceStore.PREPROCESSOR_DEFAULT));
 		
-		prefs.putInt(PreferenceStore.ColorFor.CONSTANT.toString(),constantButton.getBackground().getRGB());
+		prefs.putInt(PreferenceStore.Preference.CONSTANT.toString(),constantButton.getBackground().getRGB());
 		constantButton.setBackground(new Color(PreferenceStore.CONSTANT_DEFAULT));
 
 		
@@ -675,6 +706,32 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		
 		this.pack();
 	}
+	
+	/**
+	 * sets all preference jpanel, jtextarea, and background items to how they are in preferences
+	 */
+	private void setJPanelsFromPreferences(){
+		foregroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
+		backgroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
+		commentButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.COMMENT));
+		keywordButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD));
+		operatorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR));
+		stringButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.STRING));
+		lineNumberFGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
+		lineNumberBGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
+		preProcessorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR));
+		constantButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT));
+		currentFontText.setText(PreferenceStore.getString(PreferenceStore.Preference.FONT));
+		currentFontText.setFont(Font.decode(PreferenceStore.Preference.FONT.defaultString));
+		wordWrapBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
+		autoCompileBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE));
+		loadRecentlyBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.BOOLRECENTFILES));
+		toolLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.NBCTOOL));
+		directoryTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
+		themeLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.THEMEXML));		
+		this.pack();
+	}
+	
 
 	
 	/**
@@ -699,10 +756,11 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		}else if(arg0.getActionCommand().equals("changeFont")){
 			JFontChooser fontChooser = new JFontChooser();
 			int result = fontChooser.showDialog(this);
-			if (result == JFontChooser.OK_OPTION) {
+			if (result == JFontChooser.OK_OPTION) {  
 				Font currentFont = fontChooser.getSelectedFont();
 				currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
-				currentFontText.setFont(currentFont);		
+				currentFontText.setFont(currentFont);
+				fontChooser.setDefaultSelectedFont(currentFont);
 				this.pack();
 			}
 		
@@ -763,10 +821,16 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				    "Preferences",
 				    JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION){	
-				resetDefaults();
+				PreferenceStore.setPreferencesAndDefaults();
+				setJPanelsFromPreferences();
 			}
 		//User wishes to apply settings but stay in window.
 		}else if(arg0.getActionCommand().equals("apply")){
+			saveValues();
+			manager.updatePreferences();
+		}else if(arg0.getActionCommand().equals("applytheme")){
+			PreferenceStore.LoadTheme(themeLocationTextArea.getText());
+			setJPanelsFromPreferences();
 			saveValues();
 			manager.updatePreferences();
 		}

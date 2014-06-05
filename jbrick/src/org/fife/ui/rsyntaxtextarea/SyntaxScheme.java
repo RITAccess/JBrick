@@ -362,19 +362,20 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 	 *        (vs. all tokens using a plain font).
 	 */
 	public void restoreDefaults(Font baseFont, boolean fontStyles) {
-
+		
 		// Colors used by tokens.
-		Color comment			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color docComment		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.COMMENT.toString(), PreferenceStore.COMMENT_DEFAULT));
-		Color keyword			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.KEYWORD.toString(), PreferenceStore.KEYWORD_DEFAULT));
-		Color function			= new Color(0,0,0);
-		Color preprocessor		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT));
-		Color regex				= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.OPERATOR.toString(), PreferenceStore.OPERATOR_DEFAULT));
-		Color variable			= new Color(0,0,0);
-		Color literalNumber		= new Color(0,0,0);
-		Color literalString		= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.STRING.toString(), PreferenceStore.STRING_DEFAULT));
-		Color error				= new Color(0,0,0);
-		Color constant 			= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.CONSTANT.toString(),PreferenceStore.CONSTANT_DEFAULT));
+		Color comment			= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color docComment		= PreferenceStore.getColor(PreferenceStore.Preference.COMMENT);
+		Color keyword			= PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD);
+		Color function			= PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD);
+		Color preprocessor		= PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR);
+		Color regex				= PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR);
+		Color variable			= PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR);
+		Color literalNumber		= PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND);
+		Color literalString		= PreferenceStore.getColor(PreferenceStore.Preference.STRING);
+		Color error				= PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT);
+		Color constant 			= PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT);
+		Color containers		= PreferenceStore.getColor(PreferenceStore.Preference.CONTAINERS);
 		
 		// (Possible) special font styles for keywords and comments.
 		if (baseFont==null) {
@@ -414,7 +415,7 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 		styles[ANNOTATION]				= new Style(Color.gray);
 		styles[IDENTIFIER]				= new Style(null);
 		styles[WHITESPACE]				= new Style(Color.gray);
-		styles[SEPARATOR]				= new Style(Color.RED);
+		styles[SEPARATOR]				= new Style(containers); //brackets
 		styles[OPERATOR]					= new Style(regex);
 		styles[PREPROCESSOR]				= new Style(preprocessor);
 		styles[MARKUP_TAG_DELIMITER]		= new Style(Color.RED);
@@ -427,7 +428,6 @@ public class SyntaxScheme implements Cloneable, TokenTypes {
 		styles[ERROR_NUMBER_FORMAT]		= new Style(error);
 		styles[ERROR_STRING_DOUBLE]		= new Style(error);
 		styles[ERROR_CHAR]				= new Style(error);
-
 	}
 
 

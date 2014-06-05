@@ -74,7 +74,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	
 	
 	
-	private static Color backgroundColor = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT));
+	private static Color backgroundColor = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.Preference.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT));
 	private static float bright = Color.RGBtoHSB(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue(), null)[2];
 	private static Color lineHighlightColor = bright > 0.5 ? backgroundColor.darker() : backgroundColor.brighter();
 	
@@ -472,7 +472,7 @@ public RTextAreaBase(Color backgroundColor){
 	 * @return The default foreground color.
 	 */
 	public static final Color getDefaultForeground() {
-		return new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT));
+		return new Color(PreferenceStore.Preference.FOREGROUND.defaultColor);
 	}
 
 
