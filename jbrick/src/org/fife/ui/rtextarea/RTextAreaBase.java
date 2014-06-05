@@ -51,7 +51,7 @@ abstract class RTextAreaBase extends JTextArea {
 	private boolean tabsEmulatedWithSpaces;		// If true, tabs will be expanded to spaces.
 
 	private boolean highlightCurrentLine;		// If true, the current line is highlighted.
-	private Color currentLineColor;			// The color used to highlight the current line.
+	// private Color currentLineColor;			// The color used to highlight the current line.
 	private boolean marginLineEnabled;			// If true, paint a "margin line."
 	private Color marginLineColor;			// The color used to paint the margin line.
 	private int marginLineX;				// The x-location of the margin line.
@@ -66,12 +66,18 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	private RTAMouseListener mouseListener;
 
 	private static final Color DEFAULT_CARET_COLOR				= new ColorUIResource(255,51,51);
-	private static final Color DEFAULT_CURRENT_LINE_HIGHLIGHT_COLOR	= new Color(255,255,170);
+	// private static final Color DEFAULT_CURRENT_LINE_HIGHLIGHT_COLOR	= new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT)).darker();
 	private static final Color DEFAULT_MARGIN_LINE_COLOR			= new Color(255,224,224);
 	private static final int DEFAULT_TAB_SIZE					= 4;
 	private static final int DEFAULT_MARGIN_LINE_POSITION			= 80;
 
-
+	
+	
+	
+	private static Color backgroundColor = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.ColorFor.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT));
+	private static float bright = Color.RGBtoHSB(backgroundColor.getRed(), backgroundColor.getGreen(), backgroundColor.getBlue(), null)[2];
+	private static Color lineHighlightColor = bright > 0.5 ? backgroundColor.darker() : backgroundColor.brighter();
+	
 	/**
 	 * Constructor.
 	 */
@@ -105,6 +111,18 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 		this.setWrapStyleWord(true);
 	}
 
+	/**
+	 * Constructor 
+	 * 
+	 * @param backgroundColor
+	 */
+public RTextAreaBase(Color backgroundColor){
+		
+		RTextAreaBase.setBackgroundColor(backgroundColor);
+		init();
+		//float[] hsb = new float[3];
+		
+	}
 
 	/**
 	 * Constructor.
@@ -339,6 +357,16 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 					getColor();
 	}
 
+	/**
+	 * Gets the background color 
+	 * 
+	 * @return 
+	 */
+	public static Color getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	
 
 	/**
 	 * Gets the line number that the caret is on.
@@ -382,7 +410,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 * @see #setCurrentLineHighlightColor
 	 */
 	public Color getCurrentLineHighlightColor() {
-		return currentLineColor;
+		return lineHighlightColor;
 	}
 
 
@@ -404,7 +432,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	 * @return The default color for highlighting the current line.
 	 */
 	public static final Color getDefaultCurrentLineHighlightColor() {
-		return DEFAULT_CURRENT_LINE_HIGHLIGHT_COLOR;
+		return lineHighlightColor;
 	}
 
 
@@ -622,6 +650,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 		enableEvents(AWTEvent.COMPONENT_EVENT_MASK|AWTEvent.KEY_EVENT_MASK);
 
 		// Defaults for various properties.
+		setBackgroundColor(getBackgroundColor());
 		setHighlightCurrentLine(true);
 		setCurrentLineHighlightColor(getDefaultCurrentLineHighlightColor());
 		setMarginLineEnabled(false);
@@ -867,8 +896,15 @@ try {
 		}
 
 	}
-
-
+/**
+ * Makes the background color what is set above 
+ * 
+ * @param backgroundColor
+ */
+	public static void setBackgroundColor(Color backgroundColor) {
+		RTextAreaBase.backgroundColor = backgroundColor;
+	}
+	
 	/*
 	 * TODO: Figure out why RTextArea doesn't work with RTL (e.g. Arabic)
 	 * and fix it!
@@ -896,9 +932,9 @@ try {
 	public void setCurrentLineHighlightColor(Color color) {
 		if (color==null)
 			throw new NullPointerException();
-		if (!color.equals(currentLineColor)) {
-			Color old = currentLineColor;
-			currentLineColor = color;
+		if (!color.equals(lineHighlightColor)) {
+			Color old = lineHighlightColor;
+			lineHighlightColor = color;
 			firePropertyChange(CURRENT_LINE_HIGHLIGHT_COLOR_PROPERTY,
 							old, color);
 		}

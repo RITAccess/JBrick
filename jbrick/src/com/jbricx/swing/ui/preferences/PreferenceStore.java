@@ -50,6 +50,7 @@ public class PreferenceStore {
 	public static final int CONSTANT_DEFAULT = Color.BLUE.getRGB();
 	public static final int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
 	public static final int CONTAINERS_DEFAULT = Color.RED.darker().getRGB();
+	
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
@@ -88,6 +89,7 @@ public class PreferenceStore {
 	    CONSTANT,
 	    PREPROCESSOR,
 	    CONTAINERS;
+		
 	}
 
 	/**
