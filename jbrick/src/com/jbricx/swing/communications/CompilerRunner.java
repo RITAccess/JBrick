@@ -12,12 +12,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
 import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 /**
  * Runs the compiler tool in its own process. The compiler tool is external to
@@ -34,19 +34,8 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
  */
 public class CompilerRunner {
 
-	/**
-	 * The preference store on where to find the compiler. I haven't found a way
-	 * to eliminate this dependency and make the
-	 */
-	private Preferences preferences;
-
-	public CompilerRunner() {
-		this.preferences = PreferenceStore.getPrefs();
-	}
-
 	public ExitStatus download(final String filename, final String port) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL,
-				PreferenceStore.NBCTOOL_DEFAULT);
+		String nbcPath = PreferenceStore.getString(Preference.NBCTOOL);
 		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
@@ -54,8 +43,7 @@ public class CompilerRunner {
 	}
 
 	public ExitStatus compile(final String filename) {
-		String nbcPath = preferences.get(PreferenceStore.NBCTOOL,
-				PreferenceStore.NBCTOOL_DEFAULT);
+		String nbcPath = PreferenceStore.getString(Preference.NBCTOOL);
 		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}

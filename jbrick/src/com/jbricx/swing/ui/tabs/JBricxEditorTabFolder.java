@@ -25,6 +25,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private JBricxManager manager;
@@ -101,8 +102,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	private ArrayList<String> getRecentFiles() {
 		ArrayList<String> recentfiles = new ArrayList<String>();
 
-		File dir = new File(prefs.get(PreferenceStore.WRKSPC,
-				PreferenceStore.WRKSPC_DEFAULT));
+		File dir = new File(PreferenceStore.getString(Preference.WORKSPACE));
 		String[] fileNames = dir.list();
 
 		for (int i = 0; fileNames != null && i < fileNames.length; i++) {
@@ -390,14 +390,12 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			Gutter theGutter = scroller.getGutter();
 			theGutter.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
 			theGutter.setLineNumberColor(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
-			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getPrefs()
-					.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT)));
+			theGutter.setLineNumberFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 
 			// Fonts
 			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport()
 					.getView());
-			Font font = Font.decode(PreferenceStore.getPrefs().get(
-					PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+			Font font = Font.decode(PreferenceStore.getString(Preference.FONT));
 			if (font != null) {
 				SyntaxScheme ss = tab.getSyntaxScheme();
 				ss = (SyntaxScheme) ss.clone();
@@ -420,7 +418,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			tab.setSyntaxScheme(tab.getDefaultSyntaxScheme());
 			
 			// Word wrap
-			tab.setLineWrap(prefs.getBoolean(PreferenceStore.WRAP, false));
+			tab.setLineWrap(PreferenceStore.getBool(Preference.WRAP));
 		}
 	}
 

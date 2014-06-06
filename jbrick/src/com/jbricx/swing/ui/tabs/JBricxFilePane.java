@@ -23,7 +23,7 @@ public class JBricxFilePane extends JScrollPane implements MouseListener{
 		super( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		tree = new JTree();
 		this.manager = manager;
-		root = new FileNode(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT));
+		root = new FileNode(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
 		FileTreeModel model = new FileTreeModel(root);
 		tree.setModel(model);
 		tree.addMouseListener(this);

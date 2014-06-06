@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import com.jbricx.swing.communications.ExitStatus;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
@@ -92,7 +93,7 @@ public abstract class AbstractCompilerAction extends JBricxAbstractAction {
 		JBricxTabItem tabItem = getCurrentTab();
 		String filename="";
 		if (tabItem.isNewFile()&&(!tabItem.getFileAbsolutePath().endsWith(".bak.nxc"))) {
-			filename = PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT)
+			filename = PreferenceStore.getString(Preference.WORKSPACE)
 			+ (System.getProperty("os.name").contains("OS X") ? "" : System.getProperty("file.separator"))
 			+ getCurrentTab().getFileName() + ".bak.nxc";
 		}else{

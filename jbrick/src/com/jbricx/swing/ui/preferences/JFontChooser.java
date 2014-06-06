@@ -49,6 +49,8 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Position;
 
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
+
 /**
 * The <code>JFontChooser</code> class is a swing component 
 * for font selection.
@@ -82,7 +84,7 @@ public class JFontChooser extends JComponent
     * @see #showDialog
     **/
    public static final int ERROR_OPTION = -1;
-   private static Font DEFAULT_SELECTED_FONT = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+   private static Font DEFAULT_SELECTED_FONT = Font.decode(PreferenceStore.getString(Preference.FONT));
    private static final Font DEFAULT_FONT = new Font("Dialog", Font.PLAIN, 10);
    private static final int[] FONT_STYLE_CODES =
    {

@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileFilter;
 
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 
 /**
@@ -50,7 +51,7 @@ public class SafeSaveDialog {
 	public String open() {
         // We store the selected file name in fileName
         String fileName = null;
-        final JFileChooser fileChooser = new JFileChooser(PreferenceStore.getPrefs().get(PreferenceStore.WRKSPC,PreferenceStore.WRKSPC_DEFAULT));
+        final JFileChooser fileChooser = new JFileChooser(PreferenceStore.getString(Preference.WORKSPACE));
         fileChooser.setFileFilter(filter);
         
         /* The user has finished when one of the following happens:

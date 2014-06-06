@@ -21,6 +21,7 @@ import javax.swing.text.Document;
 import com.jbricx.swing.communications.CompilerError;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
@@ -40,8 +41,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setBackground(Color.WHITE);
 		messagePane.setDisabledTextColor(Color.BLACK);
 		prefs = PreferenceStore.getPrefs();
-		messagePane.setFont(Font.decode(prefs.get(PreferenceStore.FONT,
-				PreferenceStore.FONT_DEFAULT)));
+		messagePane.setFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);
 		
@@ -97,8 +97,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 				sb.append(m);
 			}
 			messagePane.addHyperlinkListener(this);
-			Font newFont = Font.decode(prefs.get(PreferenceStore.FONT,
-					PreferenceStore.FONT_DEFAULT));
+			Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 			messagePane.setText("<p style=\"font-size:" + newFont.getSize()
 					+ "px\">" + sb.toString() + "</p>");
 		}

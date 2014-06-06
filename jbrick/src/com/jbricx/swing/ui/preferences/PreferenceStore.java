@@ -23,45 +23,36 @@ public class PreferenceStore {
 	// TODO: add all file names
 	// Filter extensions for file dialogs
 	public static final String FILTER_EXTENSION = ".nxc";
-	// TODO: add all file extensions
-	
-	// Preference names
-	public static final String WRAP = "wrap";
-	public static final String FONT = "font";
-	public static final String WRKSPC = "workspace"; 
-	public static final String AUTOCOMPILE = "autocompile";
-	public static final String LINENUM = "linenumber";
-	public static final String ICONSIZE = "iconsize";
+	// TODO: add all file extension
 	
 	//Preference Defaults
 	
-	public static boolean WRAP_DEFAULT = false;
-	public static String FONT_DEFAULT  = "Consolas-plain-20";
-	public static String FONTNAME_DEFAULT = "Consolas";
-	public static String FONTSIZE_DEFAULT = "20";
-	public static String FONTSTYLE_DEFAULT = "plain";
-	public static final String WRKSPC_DEFAULT = System.getProperty("user.home")
+	private static boolean WRAP_DEFAULT = false;
+	private static String FONT_DEFAULT  = "Consolas-plain-20";
+	private static String FONTNAME_DEFAULT = "Consolas";
+	private static String FONTSIZE_DEFAULT = "20";
+	private static String FONTSTYLE_DEFAULT = "plain";
+	private static final String WRKSPC_DEFAULT = System.getProperty("user.home")
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
-	public static boolean AUTOCOMPILE_DEFAULT = false;
-	public static boolean LINENUM_DEFAULT = true;
-	public static String NBCTOOL_DEFAULT = "";
-	public static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
+	private static boolean AUTOCOMPILE_DEFAULT = false;
+	private static boolean LINENUM_DEFAULT = true;
+	private static String NBCTOOL_DEFAULT = "";
+	private static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
 	
+	private static int ICONSIZE_DEFAULT = 44;
 
-	public static int ICONSIZE_DEFAULT = 44;
-
-	public static int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
-	public static int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
-	public static int OPERATOR_DEFAULT = Color.MAGENTA.darker().getRGB();
-	public static int COMMENT_DEFAULT = Color.GRAY.getRGB();
-	public static int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
-	public static int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
-	public static int STRING_DEFAULT = Color.GREEN.getRGB();
-	public static int KEYWORD_DEFAULT = Color.MAGENTA.darker().getRGB();
-	public static int CONSTANT_DEFAULT = Color.BLUE.getRGB();
-	public static int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
-	public static int CONTAINERS_DEFAULT = Color.RED.darker().getRGB();
+	private static int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
+	private static int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
+	private static int OPERATOR_DEFAULT = Color.MAGENTA.darker().getRGB();
+	private static int COMMENT_DEFAULT = Color.GRAY.getRGB();
+	private static int LINENUMBERFG_DEFAULT = Color.RED.getRGB();
+	private static int LINENUMBERBG_DEFAULT = Color.WHITE.getRGB();
+	private static int STRING_DEFAULT = Color.GREEN.getRGB();
+	private static int KEYWORD_DEFAULT = Color.MAGENTA.darker().getRGB();
+	private static int CONSTANT_DEFAULT = Color.BLUE.getRGB();
+	private static int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
+	private static int CONTAINERS_DEFAULT = Color.RED.darker().getRGB();
 
 
 	// Recent files to be loaded when app runs
@@ -104,7 +95,7 @@ public class PreferenceStore {
 			    CONSTANT (COLOR, PreferenceStore.CONSTANT_DEFAULT),
 			    PREPROCESSOR (COLOR, PreferenceStore.PREPROCESSOR_DEFAULT),
 			    CONTAINERS (COLOR, PreferenceStore.CONTAINERS_DEFAULT),
-			FONT(PROPERTIES),
+			FONT(PROPERTIES, PreferenceStore.FONT_DEFAULT),
 				FONTNAME (FONT, PreferenceStore.FONTNAME_DEFAULT),
 				FONTSIZE (FONT, PreferenceStore.FONTSIZE_DEFAULT),
 				FONTSTYLE (FONT, PreferenceStore.FONTSTYLE_DEFAULT),
@@ -163,8 +154,9 @@ public class PreferenceStore {
 		}
 		
 		public String getPref() {
-			return this.defaultString != "" ? prefs.get(this.toString().toLowerCase(), this.defaultString) : "";
-			
+			System.out.print(this.toString() + "\t:" + this.defaultString + "\t:");
+			System.out.println(this.defaultString != "" ? prefs.get(this.toString(), this.defaultString) : "");
+			return this.defaultString != "" ? prefs.get(this.toString(), this.defaultString) : "";
 		}
 
 	}
@@ -228,14 +220,10 @@ public class PreferenceStore {
 		
 		
 		//set font settings
-		String fontTemp ="";
-		tempNode = XMLParser.retrieve(doc, "font", "fontname");
-		fontTemp += tempNode.getTextContent() + "-";
-		tempNode = XMLParser.retrieve(doc, "font", "fontstyle");
-		fontTemp += tempNode.getTextContent() + "-";
-		tempNode = XMLParser.retrieve(doc, "font", "fontsize");
-		fontTemp += tempNode.getTextContent();
-		FONT_DEFAULT = fontTemp;
+		FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).toString();
+		FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).toString();
+		FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).toString();
+		FONT_DEFAULT = FONTNAME_DEFAULT + "-" + FONTSTYLE_DEFAULT + "-" + FONTSIZE_DEFAULT;
 		
 		//icon size setting
 		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");
@@ -289,29 +277,28 @@ public class PreferenceStore {
 		
 		
 		//set font settings
-		String fontTemp ="";
-		tempNode = XMLParser.retrieve(doc, "font", "fontname");
-		fontTemp += tempNode.getTextContent() + "-";
-		tempNode = XMLParser.retrieve(doc, "font", "fontstyle");
-		fontTemp += tempNode.getTextContent() + "-";
-		tempNode = XMLParser.retrieve(doc, "font", "fontsize");
-		fontTemp += tempNode.getTextContent();
-		prefs.put(FONT, fontTemp);
+		String fontName = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).getTextContent();
+		prefs.put(Preference.FONTNAME.toString(), tempNode.getTextContent());
+		String fontStyle = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).getTextContent();
+		prefs.put(Preference.FONTSTYLE.toString(), tempNode.getTextContent());
+		String fontSize = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
+		prefs.put(Preference.FONTSIZE.toString(), tempNode.getTextContent());
+		prefs.put(Preference.FONT.toString(), fontName + fontStyle + fontSize);
 		
 		//icon size setting
 		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");
-		prefs.putBoolean(ICONSIZE, Boolean.parseBoolean(tempNode.getTextContent()));
+		prefs.put(Preference.ICONSIZE.toString(), tempNode.getTextContent());
 		
 		//set misc settings
 		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
-		prefs.putBoolean(WRAP, Boolean.parseBoolean(tempNode.getTextContent()));
+		prefs.putBoolean(Preference.WRAP.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "misc", "autocompile");
-		prefs.putBoolean(AUTOCOMPILE, Boolean.parseBoolean(tempNode.getTextContent()));
+		prefs.putBoolean(Preference.AUTOCOMPILE.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "misc", "linenum");
-		prefs.putBoolean(LINENUM, Boolean.parseBoolean(tempNode.getTextContent()));
+		prefs.putBoolean(Preference.LINENUM.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");
-		prefs.put(NBCTOOL,tempNode.getTextContent());
-		prefs.put(WRKSPC,WRKSPC_DEFAULT);
+		prefs.put(Preference.NBCTOOL.toString(),tempNode.getTextContent());
+		prefs.put(Preference.WORKSPACE.toString(),WRKSPC_DEFAULT);
 
 		prefs.putBoolean("ranPreviously",true);	
 	}
@@ -370,6 +357,16 @@ public class PreferenceStore {
 		return prefs.get(key.toString(), key.defaultString);
 	}
 	
+	public static void set(Preference key, Object value){
+		if (value instanceof String){ prefs.put(key.toString(), (String) value); }  
+		else if (value instanceof Integer){ prefs.putInt(key.toString(), (Integer) value); }  
+		else if (value instanceof Boolean){ prefs.putBoolean(key.toString(), (Boolean) value); }
+	}
+	
+	/**
+	 * build preferences document
+	 * @return doc - document that holds all preference information
+	 */
 	public static Document buildPreferencesDocument(){
 		 
 		Document doc = null;

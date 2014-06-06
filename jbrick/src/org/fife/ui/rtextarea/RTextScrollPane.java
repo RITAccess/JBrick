@@ -18,6 +18,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 
 /**
@@ -120,7 +121,7 @@ public class RTextScrollPane extends JScrollPane {
 		textArea = area;
 
 		// Create the gutter for this document.
-		Font defaultFont = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+		Font defaultFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 		gutter = new Gutter(textArea);
 		gutter.setLineNumberFont(defaultFont);
 		

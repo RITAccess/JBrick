@@ -20,6 +20,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
 import javax.swing.plaf.ColorUIResource;
@@ -28,6 +29,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 
 /**
@@ -74,7 +76,7 @@ int currentCaretY;							// Used to know when to rehighlight current line.
 	
 	
 	
-	private static Color backgroundColor = new Color(PreferenceStore.getPrefs().getInt(PreferenceStore.Preference.BACKGROUND.toString(), PreferenceStore.COMMENT_DEFAULT));
+	private static Color backgroundColor = new Color(PreferenceStore.getInt(Preference.BACKGROUND));
 	private static Color lineHighlightColor = new Color(0,0,0);
 	
 	/**
@@ -442,24 +444,7 @@ public RTextAreaBase(Color backgroundColor){
 	 */
 	public static final Font getDefaultFont() {
 
-		Font font = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
-
-//		if (isOSX()) {
-//			// Snow Leopard (1.6) uses Menlo as default monospaced font,
-//			// pre-Snow Leopard used Monaco.
-//			font = new Font("Menlo", Font.PLAIN, 12);
-//			if (!"Menlo".equals(font.getFamily())) {
-//				font = new Font("Monaco", Font.PLAIN, 12);
-//				if (!"Monaco".equals(font.getFamily())) { // Shouldn't happen
-//					font = new Font("Monospaced", Font.PLAIN, 13);
-//				}
-//			}
-//		}
-//		else {
-//			font = new Font("Monospaced", Font.PLAIN, 13);
-//		}
-
-		//System.out.println(font.getFamily() + ", " + font.getName());
+		Font font = Font.decode(PreferenceStore.getString(Preference.FONT));
 		return font;
 
 	}

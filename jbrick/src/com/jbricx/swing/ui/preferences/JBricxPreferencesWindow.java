@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 import org.w3c.dom.Document;
 
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.tools.XMLParser;
 
 /**
@@ -339,7 +340,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		foregroundButton.setPreferredSize(new Dimension(75,25));
 		foregroundButton.setMinimumSize(new Dimension(75,25));
 		foregroundButton.setActionCommand("foregroundButton");
-		foregroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
+		foregroundButton.setBackground(PreferenceStore.getColor(Preference.FOREGROUND));
 		foregroundButton.setContentAreaFilled(false);
 		foregroundButton.setOpaque(true);
 		foregroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -352,7 +353,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		backgroundButton.setMaximumSize(new Dimension(75,25));
 		backgroundButton.setPreferredSize(new Dimension(75,25));
 		backgroundButton.setActionCommand("backgroundButton");
-		backgroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
+		backgroundButton.setBackground(PreferenceStore.getColor(Preference.BACKGROUND));
 		backgroundButton.setContentAreaFilled(false);
 		backgroundButton.setOpaque(true);
 		backgroundButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -365,7 +366,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		commentButton.setMaximumSize(new Dimension(75,25));
 		commentButton.setPreferredSize(new Dimension(75,25));
 		commentButton.setActionCommand("commentButton");
-		commentButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.COMMENT));
+		commentButton.setBackground(PreferenceStore.getColor(Preference.COMMENT));
 		commentButton.setContentAreaFilled(false);
 		commentButton.setOpaque(true);
 		commentButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -379,7 +380,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		keywordButton.setMaximumSize(new Dimension(75,25));
 		keywordButton.setPreferredSize(new Dimension(75,25));
 		keywordButton.setActionCommand("keywordButton");
-		keywordButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD));
+		keywordButton.setBackground(PreferenceStore.getColor(Preference.KEYWORD));
 		keywordButton.setContentAreaFilled(false);
 		keywordButton.setOpaque(true);
 		keywordButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -392,7 +393,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		operatorButton.setMaximumSize(new Dimension(75,25));
 		operatorButton.setPreferredSize(new Dimension(75,25));
 		operatorButton.setActionCommand("operatorButton");
-		operatorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR));
+		operatorButton.setBackground(PreferenceStore.getColor(Preference.OPERATOR));
 		operatorButton.setContentAreaFilled(false);
 		operatorButton.setOpaque(true);
 		operatorButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -405,7 +406,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		stringButton.setMaximumSize(new Dimension(75,25));
 		stringButton.setPreferredSize(new Dimension(75,25));
 		stringButton.setActionCommand("stringButton");
-		stringButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.STRING));
+		stringButton.setBackground(PreferenceStore.getColor(Preference.STRING));
 		stringButton.setContentAreaFilled(false);
 		stringButton.setOpaque(true);
 		stringButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -419,7 +420,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberFGButton.setMaximumSize(new Dimension(75,25));
 		lineNumberFGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberFGButton.setActionCommand("lineNumberFGButton");
-		lineNumberFGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
+		lineNumberFGButton.setBackground(PreferenceStore.getColor(Preference.LINENUMBERFG));
 		lineNumberFGButton.setContentAreaFilled(false);
 		lineNumberFGButton.setOpaque(true);
 		lineNumberFGButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -432,7 +433,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberBGButton.setMaximumSize(new Dimension(75,25));
 		lineNumberBGButton.setPreferredSize(new Dimension(75,25));
 		lineNumberBGButton.setActionCommand("lineNumberBGButton");
-		lineNumberBGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
+		lineNumberBGButton.setBackground(PreferenceStore.getColor(Preference.LINENUMBERBG));
 		lineNumberBGButton.setContentAreaFilled(false);
 		lineNumberBGButton.setOpaque(true);
 		lineNumberBGButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -444,7 +445,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		preProcessorButton.setMaximumSize(new Dimension(75,25));
 		preProcessorButton.setPreferredSize(new Dimension(75,25));
 		preProcessorButton.setActionCommand("preProcessorButton");
-		preProcessorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR));
+		preProcessorButton.setBackground(PreferenceStore.getColor(Preference.PREPROCESSOR));
 		preProcessorButton.setContentAreaFilled(false);
 		preProcessorButton.setOpaque(true);
 		preProcessorButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -456,7 +457,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		constantButton.setMaximumSize(new Dimension(75,25));
 		constantButton.setPreferredSize(new Dimension(75,25));
 		constantButton.setActionCommand("constantButton");
-		constantButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT));
+		constantButton.setBackground(PreferenceStore.getColor(Preference.CONSTANT));
 		constantButton.setContentAreaFilled(false);
 		constantButton.setOpaque(true);
 		constantButton.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -471,7 +472,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		fontLabel = new JLabel("Font");
 		currentFontText = new JTextArea();
 		currentFontText.setEditable(false);
-		Font currentFont = Font.decode(prefs.get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
+		Font currentFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 		
 		//Shows current font. Stuff in the middle delimits to get the style string which isnt easily attainable(is actually an int)
 		currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
@@ -490,7 +491,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		workspaceLabel = new JLabel("Workspace directory");
 		
 		directoryTextArea = new JTextField();
-		directoryTextArea.setText(prefs.get(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT));
+		directoryTextArea.setText(PreferenceStore.getString(Preference.WORKSPACE));
 		directoryTextArea.getAccessibleContext().setAccessibleName("Workspace Directory text area");
 		
 		workspaceChangeButton = new JButton("Browse...");
@@ -506,12 +507,12 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeCheckBoxes() {
 		wordWrapBox = new JCheckBox();
 		wordWrapBox.setText("Word Wrap");
-		wordWrapBox.setSelected(prefs.getBoolean(PreferenceStore.WRAP, PreferenceStore.WRAP_DEFAULT));
+		wordWrapBox.setSelected(PreferenceStore.getBool(Preference.WRAP));
 		wordWrapBox.getAccessibleContext().setAccessibleName("Word Wrap Check Box. Press Space to Toggle");
 		
 		autoCompileBox = new JCheckBox();
 		autoCompileBox.setText("Auto Compile");
-		autoCompileBox.setSelected(prefs.getBoolean(PreferenceStore.AUTOCOMPILE,PreferenceStore.AUTOCOMPILE_DEFAULT));
+		autoCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOCOMPILE));
 		autoCompileBox.getAccessibleContext().setAccessibleName("Auto Compile Box. Press Space to Toggle");
 		
 		loadRecentlyBox = new JCheckBox();
@@ -527,7 +528,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		toolLocationLabel = new JLabel("NBC Tool Location");
 		
 		toolLocationTextArea = new JTextField();
-		toolLocationTextArea.setText(prefs.get(PreferenceStore.NBCTOOL, PreferenceStore.NBCTOOL_DEFAULT));
+		toolLocationTextArea.setText(PreferenceStore.getString(Preference.NBCTOOL));
 		toolLocationTextArea.getAccessibleContext().setAccessibleName("NBC Tool Location field");
 		
 		toolLocationBrowseButton = new JButton("Browse...");
@@ -544,7 +545,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		themeLocationLabel = new JLabel("Theme");
 		
 		themeLocationTextArea = new JTextField();
-		themeLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.THEMEXML));
+		themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML));
 		themeLocationTextArea.getAccessibleContext().setAccessibleName("Theme Location");
 		
 		themeLocationBrowseButton = new JButton("Browse...");
@@ -628,112 +629,58 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	 * Goes through all the values and sets what is there to the new preference value.
 	 */
 	private void saveValues(){
-		prefs.putInt(PreferenceStore.Preference.FOREGROUND.toString(), foregroundButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.BACKGROUND.toString(),backgroundButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.COMMENT.toString(),commentButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.KEYWORD.toString(),keywordButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.OPERATOR.toString(),operatorButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.STRING.toString(),stringButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.LINENUMBERFG.toString(),lineNumberFGButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.LINENUMBERBG.toString(),lineNumberBGButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.PREPROCESSOR.toString(),preProcessorButton.getBackground().getRGB());
-		prefs.putInt(PreferenceStore.Preference.CONSTANT.toString(),constantButton.getBackground().getRGB());
-		
-		prefs.put(PreferenceStore.FONT.toString(),currentFontText.getText());
-		
-		prefs.putBoolean(PreferenceStore.WRAP,wordWrapBox.isSelected());
-		prefs.putBoolean(PreferenceStore.AUTOCOMPILE, autoCompileBox.isSelected());
-		prefs.putBoolean(PreferenceStore.RECENTFILES, loadRecentlyBox.isSelected());
-		
-		prefs.put(PreferenceStore.NBCTOOL,toolLocationTextArea.getText());
-		prefs.put(PreferenceStore.WRKSPC, directoryTextArea.getText());
-		prefs.put(PreferenceStore.THEMEXML,themeLocationTextArea.getText());
+		PreferenceStore.set(Preference.FOREGROUND, foregroundButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.BACKGROUND, backgroundButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.COMMENT, commentButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.KEYWORD, keywordButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.OPERATOR, operatorButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.STRING, stringButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.LINENUMBERFG, lineNumberFGButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.LINENUMBERBG, lineNumberBGButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.PREPROCESSOR, preProcessorButton.getBackground().getRGB());
+		PreferenceStore.set(Preference.CONSTANT, constantButton.getBackground().getRGB());
+
+		PreferenceStore.set(Preference.FONT, currentFontText.getText());
+
+		PreferenceStore.set(Preference.WRAP, wordWrapBox.isSelected());
+		PreferenceStore.set(Preference.AUTOCOMPILE, autoCompileBox.isSelected());
+		PreferenceStore.set(Preference.BOOLRECENTFILES, loadRecentlyBox.isSelected());
+
+		PreferenceStore.set(Preference.NBCTOOL, toolLocationTextArea.getText());
+		PreferenceStore.set(Preference.WORKSPACE, directoryTextArea.getText());
+		PreferenceStore.set(Preference.THEMEXML, themeLocationTextArea.getText());
 	}
 	
 	/**
 	 * Resets all of the pref values to the defaults listed in the preferencestore class. Also changes the objects in the preference window to reflect that.
 	 */
 	private void resetDefaults(){
-		prefs.putInt(PreferenceStore.Preference.FOREGROUND.toString(), PreferenceStore.FOREGROUND_DEFAULT);
-		foregroundButton.setBackground(new Color(PreferenceStore.FOREGROUND_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.BACKGROUND.toString(),PreferenceStore.BACKGROUND_DEFAULT);
-		backgroundButton.setBackground(new Color(PreferenceStore.BACKGROUND_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.COMMENT.toString(),PreferenceStore.COMMENT_DEFAULT);
-		commentButton.setBackground(new Color(PreferenceStore.COMMENT_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.KEYWORD.toString(),PreferenceStore.KEYWORD_DEFAULT);
-		keywordButton.setBackground(new Color(PreferenceStore.KEYWORD_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.OPERATOR.toString(),PreferenceStore.OPERATOR_DEFAULT);
-		operatorButton.setBackground(new Color(PreferenceStore.OPERATOR_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.STRING.toString(),PreferenceStore.STRING_DEFAULT);
-		stringButton.setBackground(new Color(PreferenceStore.STRING_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.LINENUMBERFG.toString(),PreferenceStore.LINENUMBERFG_DEFAULT);
-		lineNumberFGButton.setBackground(new Color(PreferenceStore.LINENUMBERFG_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.LINENUMBERBG.toString(),PreferenceStore.LINENUMBERBG_DEFAULT);
-		lineNumberBGButton.setBackground(new Color(PreferenceStore.LINENUMBERBG_DEFAULT));
-
-		prefs.putInt(PreferenceStore.Preference.PREPROCESSOR.toString(),PreferenceStore.PREPROCESSOR_DEFAULT);
-		preProcessorButton.setBackground(new Color(PreferenceStore.PREPROCESSOR_DEFAULT));
-		
-		prefs.putInt(PreferenceStore.Preference.CONSTANT.toString(),constantButton.getBackground().getRGB());
-		constantButton.setBackground(new Color(PreferenceStore.CONSTANT_DEFAULT));
-
-		
-		prefs.put(PreferenceStore.FONT.toString(),PreferenceStore.FONT_DEFAULT);
-		currentFontText.setText(PreferenceStore.FONT_DEFAULT);
-		currentFontText.setFont(Font.decode(PreferenceStore.FONT_DEFAULT));
-		
-		prefs.putBoolean(PreferenceStore.WRAP,PreferenceStore.WRAP_DEFAULT);
-		wordWrapBox.setSelected(PreferenceStore.WRAP_DEFAULT);
-		
-		prefs.putBoolean(PreferenceStore.AUTOCOMPILE,PreferenceStore.AUTOCOMPILE_DEFAULT);
-		autoCompileBox.setSelected(PreferenceStore.AUTOCOMPILE_DEFAULT);
-		
-		prefs.putBoolean(PreferenceStore.RECENTFILES,PreferenceStore.BOOLRECENTFILES_DEFAULT);
-		loadRecentlyBox.setSelected(PreferenceStore.BOOLRECENTFILES_DEFAULT);
-		
-		prefs.put(PreferenceStore.NBCTOOL,PreferenceStore.NBCTOOL_DEFAULT);
-		toolLocationTextArea.setText(PreferenceStore.NBCTOOL_DEFAULT);
-		
-		prefs.put(PreferenceStore.WRKSPC, PreferenceStore.WRKSPC_DEFAULT);
-		directoryTextArea.setText(PreferenceStore.WRKSPC_DEFAULT);
-		
-		prefs.put(PreferenceStore.THEMEXML, PreferenceStore.THEMEXML_DEFAULT);
-		themeLocationTextArea.setText(PreferenceStore.THEMEXML_DEFAULT);
-		
-		this.pack();
+		PreferenceStore.setPreferencesAndDefaults();
+		this.setJPanelsFromPreferences();
 	}
 	
 	/**
 	 * sets all preference jpanel, jtextarea, and background items to how they are in preferences
 	 */
 	private void setJPanelsFromPreferences(){
-		foregroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
-		backgroundButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
-		commentButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.COMMENT));
-		keywordButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.KEYWORD));
-		operatorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.OPERATOR));
-		stringButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.STRING));
-		lineNumberFGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG));
-		lineNumberBGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
-		preProcessorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR));
-		constantButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT));
-		currentFontText.setText(PreferenceStore.getString(PreferenceStore.Preference.FONTNAME)
-				+ "-" + PreferenceStore.getString(PreferenceStore.Preference.FONTSTYLE) + "-" +
-				PreferenceStore.getString(PreferenceStore.Preference.FONTSIZE));
+		foregroundButton.setBackground(PreferenceStore.getColor(Preference.FOREGROUND));
+		backgroundButton.setBackground(PreferenceStore.getColor(Preference.BACKGROUND));
+		commentButton.setBackground(PreferenceStore.getColor(Preference.COMMENT));
+		keywordButton.setBackground(PreferenceStore.getColor(Preference.KEYWORD));
+		operatorButton.setBackground(PreferenceStore.getColor(Preference.OPERATOR));
+		stringButton.setBackground(PreferenceStore.getColor(Preference.STRING));
+		lineNumberFGButton.setBackground(PreferenceStore.getColor(Preference.LINENUMBERFG));
+		lineNumberBGButton.setBackground(PreferenceStore.getColor(Preference.LINENUMBERBG));
+		preProcessorButton.setBackground(PreferenceStore.getColor(Preference.PREPROCESSOR));
+		constantButton.setBackground(PreferenceStore.getColor(Preference.CONSTANT));
+		currentFontText.setText(PreferenceStore.getString(Preference.FONT));
 		currentFontText.setFont(Font.decode(currentFontText.getText()));
-		wordWrapBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
-		autoCompileBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE));
-		loadRecentlyBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.BOOLRECENTFILES));
-		toolLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.NBCTOOL));
-		directoryTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
-		themeLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.THEMEXML));		
+		wordWrapBox.setSelected(PreferenceStore.getBool(Preference.WRAP));
+		autoCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOCOMPILE));
+		loadRecentlyBox.setSelected(PreferenceStore.getBool(Preference.BOOLRECENTFILES));
+		toolLocationTextArea.setText(PreferenceStore.getString(Preference.NBCTOOL));
+		directoryTextArea.setText(PreferenceStore.getString(Preference.WORKSPACE));
+		themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML));		
 		this.pack();
 	}
 	

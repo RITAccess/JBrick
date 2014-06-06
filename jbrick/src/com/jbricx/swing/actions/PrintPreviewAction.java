@@ -9,6 +9,8 @@ import javax.swing.WindowConstants;
 
 import com.jbricx.printpreview.PrintPreview;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
@@ -37,8 +39,7 @@ public class PrintPreviewAction extends JBricxAbstractAction {
     ep.setEditable(false);
     ep.setText(getManager().getTabFolder().getSelection().getText());
 
-    String fontProp = PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT);
-    Font.decode(fontProp);
+    Font.decode(PreferenceStore.getString(Preference.FONT));
     f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     f.setSize(800, 600);
     f.add(new JScrollPane(ep));
