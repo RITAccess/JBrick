@@ -48,6 +48,7 @@ public class PreferenceStore {
 	public static String NBCTOOL_DEFAULT = "";
 	public static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
 	
+
 	public static int ICONSIZE_DEFAULT = 44;
 
 	public static int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
@@ -61,6 +62,7 @@ public class PreferenceStore {
 	public static int CONSTANT_DEFAULT = Color.BLUE.getRGB();
 	public static int PREPROCESSOR_DEFAULT = Color.ORANGE.darker().getRGB();
 	public static int CONTAINERS_DEFAULT = Color.RED.darker().getRGB();
+
 
 	// Recent files to be loaded when app runs
 	public static final String BOOLRECENTFILES = "boolrecentfiles";
@@ -87,6 +89,7 @@ public class PreferenceStore {
 	
 	//Colors and defaults
 	
+
 	public static enum Preference {
 		PROPERTIES(null),
 			COLOR(PROPERTIES),
@@ -163,10 +166,11 @@ public class PreferenceStore {
 			return this.defaultString != "" ? prefs.get(this.toString().toLowerCase(), this.defaultString) : "";
 			
 		}
+
 	}
 
 	/**
-	 * Constructor for preference store. If the program has never been run on this machine before, will load defaults.
+	 * Constructor for preference store.
 	 */
 	public PreferenceStore(){
 		final String NAME = "allPreferences";
@@ -175,7 +179,7 @@ public class PreferenceStore {
 	}
 	
 	/**
-	 * Sets preferences to defaults
+	 * First time setup for setting default values and preferences. If the program has never been run on this machine before, will load defaults.
 	 */
 	public static void setPreferencesAndDefaults() {
 
@@ -190,7 +194,10 @@ public class PreferenceStore {
 	}
 	
 	
-
+	/**
+	 * 	Sets the default values that are used when resetting to defaults.
+	 * @param Document to read values from.
+	 */
 	private static void setDefaultsFromFile(Document doc) {
 		
 		Node tempNode;

@@ -175,6 +175,10 @@ public class RTextArea extends RTextAreaBase
 		init(INSERT_MODE);
 	}
 
+	public RTextArea(Color backgroundColor){
+		super(backgroundColor);
+		init(INSERT_MODE);
+	}
 
 	/**
 	 * Constructor.

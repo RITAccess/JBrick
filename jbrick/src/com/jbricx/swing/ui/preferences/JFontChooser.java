@@ -82,7 +82,7 @@ public class JFontChooser extends JComponent
     * @see #showDialog
     **/
    public static final int ERROR_OPTION = -1;
-   private static final Font DEFAULT_SELECTED_FONT = new Font("Serif", Font.PLAIN, 12);
+   private static Font DEFAULT_SELECTED_FONT = Font.decode(PreferenceStore.getPrefs().get(PreferenceStore.FONT, PreferenceStore.FONT_DEFAULT));
    private static final Font DEFAULT_FONT = new Font("Dialog", Font.PLAIN, 10);
    private static final int[] FONT_STYLE_CODES =
    {
@@ -393,6 +393,15 @@ public class JFontChooser extends JComponent
        setSelectedFontFamily(font.getFamily());
        setSelectedFontStyle(font.getStyle());
        setSelectedFontSize(font.getSize());
+   }
+   
+   /**
+    * 	Sets the default selected font.
+    * @param font to be set to.
+    */
+   public void setDefaultSelectedFont(Font font)
+   {
+       DEFAULT_SELECTED_FONT = font;
    }
 
    public String getVersionString()
