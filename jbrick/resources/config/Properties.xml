@@ -1,36 +1,33 @@
-<?xml version="1.0"?>
-<properties>
-
-	<color>
-		<foreground type="int">-16777216</foreground>
-		<background type="int">-1</background>
-		<comment type="int">-8355712</comment>
-		<string type="int">-16711936</string>
-		<keyword type="int">-5111630</keyword>
-		<operator type="int">-5111630</operator>
-		<line-fg type="int">-65536</line-fg>
-		<line-bg type="int">-1</line-bg>
-		<constant type="int">-16776961</constant>
-		<preprocessor type="int">-5075968</preprocessor>
-		<containers type="int">-5075968</containers>
-	</color>
-
-	<font>
-		<name type="string">Monospaced</name>
-		<size type="int">24</size>
-		<style type="string">plain</style>
-	</font>
-
-	<icon>
-		<size type="int">44</size>
-	</icon>
-
-	<misc>
-		<word-wrap type="bool">false</word-wrap>
-		<auto-compile type="bool">false</auto-compile>
-		<load-recent type="bool">false</load-recent>
-		<nbc-loc type="string"> </nbc-loc>
-		<line-num type="bool">true</line-num>
-	</misc>
-
-</properties>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<properties>
+		<color>
+			<foreground>-16777216</foreground>
+			<background>-1</background>
+			<comment>-8355712</comment>
+			<keyword>-5111630</keyword>
+			<operator>-5111630</operator>
+			<string>-16711936</string>
+			<linenumberfg>-65536</linenumberfg>
+			<linenumberbg>-1</linenumberbg>
+			<constant>-16776961</constant>
+			<preprocessor>-5075968</preprocessor>
+			<containers>-5075968</containers>
+		</color>
+		<font>
+			<fontname>Consolas</fontname>
+			<fontsize>20</fontsize>
+			<fontstyle>plain</fontstyle>
+		</font>
+		<icon>
+			<iconsize>44</iconsize>
+		</icon>
+		<misc>
+			<wrap>true</wrap>
+			<linenum>true</linenum>
+			<autocompile>false</autocompile>
+			<boolrecentfiles>true</boolrecentfiles>
+			<nbctool> </nbctool>
+			<workspace>/Users/Student/Documents/</workspace>
+			<themexml>resources/config/Properties.xml</themexml>
+		</misc>
+	</properties>

@@ -25,7 +25,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.w3c.dom.Document;
+
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.tools.XMLParser;
 
 /**
  * Main class for the preference window. Also used as an Action Listener for preference window events.
@@ -541,7 +544,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		themeLocationLabel = new JLabel("Theme");
 		
 		themeLocationTextArea = new JTextField();
-		themeLocationTextArea.setText(prefs.get(PreferenceStore.THEMEXML, PreferenceStore.THEMEXML_DEFAULT));
+		themeLocationTextArea.setText(PreferenceStore.getString(PreferenceStore.Preference.THEMEXML));
 		themeLocationTextArea.getAccessibleContext().setAccessibleName("Theme Location");
 		
 		themeLocationBrowseButton = new JButton("Browse...");
@@ -721,8 +724,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		lineNumberBGButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERBG));
 		preProcessorButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.PREPROCESSOR));
 		constantButton.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.CONSTANT));
-		currentFontText.setText(PreferenceStore.getString(PreferenceStore.Preference.FONT));
-		currentFontText.setFont(Font.decode(PreferenceStore.Preference.FONT.defaultString));
+		currentFontText.setText(PreferenceStore.getString(PreferenceStore.Preference.FONTNAME)
+				+ "-" + PreferenceStore.getString(PreferenceStore.Preference.FONTSTYLE) + "-" +
+				PreferenceStore.getString(PreferenceStore.Preference.FONTSIZE));
+		currentFontText.setFont(Font.decode(currentFontText.getText()));
 		wordWrapBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
 		autoCompileBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE));
 		loadRecentlyBox.setSelected(PreferenceStore.getBool(PreferenceStore.Preference.BOOLRECENTFILES));
@@ -793,9 +798,8 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			//They picked a file
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File selectedDir = fc.getSelectedFile();
-				toolLocationTextArea.setText(selectedDir.getAbsolutePath());	
+				themeLocationTextArea.setText(selectedDir.getAbsolutePath());
 			}
-			
 		//User wishes to cancel any changes and close window
 		}else if(arg0.getActionCommand().equals("cancel")){
 			int n = JOptionPane.showConfirmDialog(
@@ -832,6 +836,18 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			setJPanelsFromPreferences();
 			saveValues();
 			manager.updatePreferences();
+		}else if(arg0.getActionCommand().equals("savetheme")){
+			final JFileChooser fc = new JFileChooser("resources/config");
+			fc.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
+			int returnVal = fc.showSaveDialog(this);
+			//They picked a file
+			String filepath = ""; 
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				filepath = fc.getSelectedFile().getAbsolutePath();	
+				themeLocationTextArea.setText(filepath);
+				Document doc = PreferenceStore.buildPreferencesDocument();
+				XMLParser.writeToFile(doc, filepath);
+			}
 		}
 	}
 
