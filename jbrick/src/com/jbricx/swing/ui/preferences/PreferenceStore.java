@@ -220,9 +220,9 @@ public class PreferenceStore {
 		
 		
 		//set font settings
-		FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).toString();
-		FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).toString();
-		FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).toString();
+		FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).getTextContent();
+		FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).getTextContent();
+		FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
 		FONT_DEFAULT = FONTNAME_DEFAULT + "-" + FONTSTYLE_DEFAULT + "-" + FONTSIZE_DEFAULT;
 		
 		//icon size setting
@@ -283,7 +283,7 @@ public class PreferenceStore {
 		prefs.put(Preference.FONTSTYLE.toString(), tempNode.getTextContent());
 		String fontSize = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
 		prefs.put(Preference.FONTSIZE.toString(), tempNode.getTextContent());
-		prefs.put(Preference.FONT.toString(), fontName + fontStyle + fontSize);
+		prefs.put(Preference.FONT.toString(), fontName + "-" + fontStyle + "-" + fontSize);
 		
 		//icon size setting
 		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");

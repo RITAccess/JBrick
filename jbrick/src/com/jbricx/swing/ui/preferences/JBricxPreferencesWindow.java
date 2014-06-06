@@ -473,7 +473,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		currentFontText = new JTextArea();
 		currentFontText.setEditable(false);
 		Font currentFont = Font.decode(PreferenceStore.getString(Preference.FONT));
-		
+
 		//Shows current font. Stuff in the middle delimits to get the style string which isnt easily attainable(is actually an int)
 		currentFontText.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
 		currentFontText.setFont(currentFont);
