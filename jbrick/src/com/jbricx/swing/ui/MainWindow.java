@@ -23,8 +23,6 @@ import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
-import com.apple.eawt.*;
-import com.apple.eawt.AppEvent.QuitEvent;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
@@ -52,33 +50,36 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
+		    	if(!System.getProperty("os.arch").equalsIgnoreCase("x86"))
+		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!\n Try running with a 32-bit version of Java");
+		    	else
+		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
 		
-		// Set on close operation for mac client (command + q / Jbricks -> quit)
-		Application macApp = Application.getApplication();
-		macApp.setQuitHandler(new QuitHandler(){
-			
-			MainWindow mw;
-			
-			/**
-			 * set main window - allows main window to be defined
-			 * @param mw
-			 * @return quit handler with main window defined
-			 */
-			public QuitHandler setMainWindow(MainWindow mw){
-				this.mw = mw;
-				return this;
-			}
-
-			@Override
-			public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
-				mw.beforeCloseActions();
-				qr.performQuit();
-			}}.setMainWindow(this));
+//		// Set on close operation for mac client (command + q / Jbricks -> quit)
+//		Application macApp = Application.getApplication();
+//		macApp.setQuitHandler(new QuitHandler(){
+//			
+//			MainWindow mw;
+//			
+//			/**
+//			 * set main window - allows main window to be defined
+//			 * @param mw
+//			 * @return quit handler with main window defined
+//			 */
+//			public QuitHandler setMainWindow(MainWindow mw){
+//				this.mw = mw;
+//				return this;
+//			}
+//
+//			@Override
+//			public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+//				mw.beforeCloseActions();
+//				qr.performQuit();
+//			}}.setMainWindow(this));
 	}
 	
 	/**
