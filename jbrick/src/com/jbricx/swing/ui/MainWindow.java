@@ -50,8 +50,10 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		    	if(!System.getProperty("os.arch").equalsIgnoreCase("x86"))
+		    	if(!System.getProperty("os.arch").equalsIgnoreCase("i386") && !System.getProperty("os.arch").equalsIgnoreCase("x86"))
+		    	{
 		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!\n Try running with a 32-bit version of Java");
+		    	}
 		    	else
 		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
