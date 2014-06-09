@@ -17,12 +17,17 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import com.apple.eawt.AppEvent.QuitEvent;
+import com.apple.eawt.Application;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
+import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
@@ -59,27 +64,30 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
 		
-//		// Set on close operation for mac client (command + q / Jbricks -> quit)
-//		Application macApp = Application.getApplication();
-//		macApp.setQuitHandler(new QuitHandler(){
-//			
-//			MainWindow mw;
-//			
-//			/**
-//			 * set main window - allows main window to be defined
-//			 * @param mw
-//			 * @return quit handler with main window defined
-//			 */
-//			public QuitHandler setMainWindow(MainWindow mw){
-//				this.mw = mw;
-//				return this;
-//			}
-//
-//			@Override
-//			public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
-//				mw.beforeCloseActions();
-//				qr.performQuit();
-//			}}.setMainWindow(this));
+		// Set on close operation for mac client (command + q / Jbricks -> quit)
+		if (Platform.isMac()){
+			Application macApp = Application.getApplication();
+			macApp.setQuitHandler(new QuitHandler(){
+				
+				MainWindow mw;
+				
+				/**
+				 * set main window - allows main window to be defined
+				 * @param mw
+				 * @return quit handler with main window defined
+				 */
+				public QuitHandler setMainWindow(MainWindow mw){
+					this.mw = mw;
+					return this;
+				}
+
+				@Override
+				public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+					mw.beforeCloseActions();
+					qr.performQuit();
+				}
+			}.setMainWindow(this));
+		}
 	}
 	
 	/**

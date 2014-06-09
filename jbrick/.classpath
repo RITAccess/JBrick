@@ -12,6 +12,7 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
