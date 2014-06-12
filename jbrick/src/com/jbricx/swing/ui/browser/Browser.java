@@ -1,4 +1,4 @@
-package com.jbrickx.swing.ui.browser;
+package com.jbricx.swing.ui.browser;
 
 import java.io.File;
 import java.io.FileInputStream;
