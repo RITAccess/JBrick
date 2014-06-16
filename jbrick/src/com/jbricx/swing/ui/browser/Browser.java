@@ -35,7 +35,12 @@ public class Browser extends JDialog implements ActionListener
 	
 	//Buttons
 	JButton homeButton;
-	JButton page1Button;
+	JButton basicsButton;
+	JButton tutorialButton;
+	JButton joystickButton;
+	JButton pianoButton;
+	JButton legalButton;
+	JButton shortcutsButton;
 	
 	HTMLEditorKit kit;
 	Font font;
@@ -59,6 +64,7 @@ public class Browser extends JDialog implements ActionListener
       jWindow.setSize(new Dimension(800,600));
 
       makeComponents();
+      loadPage("Home");
       loadPage("Home");
       
       // pack it, if you prefer
@@ -89,7 +95,7 @@ public class Browser extends JDialog implements ActionListener
       StyleSheet sheet = kit.getStyleSheet();
       try
       {
-          sheet.addStyleSheet(getCSSFromFile("help/html/" + pageName + ".css"));
+          sheet.addStyleSheet(getCSSFromFile("help/css/" + pageName + ".css"));
       }
       catch(Exception e)
       {
@@ -133,18 +139,6 @@ public class Browser extends JDialog implements ActionListener
   }
   
   /**
-   * Sets up buttons.
-   */
-  private void makeButtons()
-  {
-	  homeButton = new JButton("Home");
-	  createButton(homeButton, homeButton.getText());
-	  
-      page1Button = new JButton("Help");
-      createButton(page1Button, page1Button.getText());
-  }
-  
-  /**
    * Sets a button to a set of default values.
    * @param button
    * @param name of button
@@ -183,6 +177,33 @@ public class Browser extends JDialog implements ActionListener
 	}
 	return null;
   }
+
+  /**
+   * Sets up buttons.
+   */
+  private void makeButtons()
+  {
+	  homeButton = new JButton("Home");
+	  createButton(homeButton, homeButton.getText());
+
+      basicsButton = new JButton("Basics");
+      createButton(basicsButton, basicsButton.getText());
+
+      tutorialButton = new JButton("Tutorial");
+      createButton(tutorialButton, tutorialButton.getText());
+
+      joystickButton = new JButton("Joystick");
+      createButton(joystickButton, joystickButton.getText());
+
+      pianoButton = new JButton("Piano");
+      createButton(pianoButton, pianoButton.getText());
+
+      shortcutsButton = new JButton("Shortcuts");
+      createButton(shortcutsButton, shortcutsButton.getText());
+      
+      legalButton = new JButton("Legal");
+      createButton(legalButton, legalButton.getText());
+  }
   
   /**
    * Loads a HTML file into a document.
@@ -197,7 +218,6 @@ public class Browser extends JDialog implements ActionListener
 		doc.putProperty("IgnoreCharsetDirective", new Boolean(true));
 		try
 		{
-			System.out.println("File Path: " + filePath);
 			Reader reader = new InputStreamReader(new FileInputStream(file));
 			kit.read(reader, doc, 0);
 			return doc;
@@ -214,12 +234,30 @@ public class Browser extends JDialog implements ActionListener
 		if(arg0.getActionCommand().equals("Home"))
 		{
 			loadPage("Home");
-			System.out.println("Home");
 		}
-		else if(arg0.getActionCommand().equals("Help"))
+		else if(arg0.getActionCommand().equals("Basics"))
 		{
-			loadPage("Help");
-			System.out.println("Help");
+			loadPage("Basics");
+		}
+		else if(arg0.getActionCommand().equals("Tutorial"))
+		{
+			loadPage("Tutorial");
+		}
+		else if(arg0.getActionCommand().equals("Joystick"))
+		{
+			loadPage("Joystick");
+		}
+		else if(arg0.getActionCommand().equals("Piano"))
+		{
+			loadPage("Piano");
+		}
+		else if(arg0.getActionCommand().equals("Shortcuts"))
+		{
+			loadPage("Shortcuts");
+		}
+		else if(arg0.getActionCommand().equals("Legal"))
+		{
+			loadPage("Legal");
 		}
 	}
 }

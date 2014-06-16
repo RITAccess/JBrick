@@ -37,6 +37,7 @@ import com.jbricx.swing.actions.MaxViewerAction;
 import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PasteAction;
+import com.jbricx.swing.actions.PianoAction;
 import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
@@ -73,6 +74,7 @@ public class JBricxMenuAndToolBarDelegate {
 	private OpenAction openAction;
 	private PasteAction pasteAction;
 	private PreferencesAction prefsAction;
+	private PianoAction pianoAction;
 	private PrintAction printAction;
 	private PrintPreviewAction printPreviewAction;
 	private RedoAction redoAction;
@@ -116,7 +118,7 @@ public class JBricxMenuAndToolBarDelegate {
 		newAction = new NewAction(manager);
 		openAction = new OpenAction(manager);
 		pasteAction = new PasteAction(manager);
-		// pianoAction = new PianoAction(manager);
+		pianoAction = new PianoAction(manager);
 		prefsAction = new PreferencesAction(manager);
 		printAction = new PrintAction(manager);
 		printPreviewAction = new PrintPreviewAction(manager);
@@ -502,13 +504,13 @@ public class JBricxMenuAndToolBarDelegate {
 		gt.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ctrl_or_command_mask));
 		toolsMenu.add(gt);
 
-		// JMenuItem piano = new JMenuItem(pianoAction);
-		// piano.setText("Piano");
-		// toolsMenu.add(piano);
-		//
-		// JMenuItem directControl = new JMenuItem(directControlAction);
-		// directControl.setText("Direct Control");
-		// toolsMenu.add(directControl);
+		JMenuItem piano = new JMenuItem(pianoAction);
+		piano.setText("Piano");
+		toolsMenu.add(piano);
+	
+		//JMenuItem directControl = new JMenuItem(directControlAction);
+		//directControl.setText("Direct Control");
+		//toolsMenu.add(directControl);
 		
 		class ShowHideMenuActionListener implements ActionListener 
 		{
