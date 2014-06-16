@@ -76,7 +76,7 @@ public class JBricxMenuAndToolBarDelegate {
 		CLOSE(CloseAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_W, modifier), fileMenu),
 		EXIT(ExitAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifier), fileMenu),
 		
-		UNDO(UndoAction.class, editMenu),
+		UNDO(UndoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier), editMenu),
 		REDO(RedoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier + KeyEvent.SHIFT_MASK), editMenu),
 		CUT(CutAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_X, modifier), editMenu),
 		COPY(CopyAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_C, modifier), editMenu),
