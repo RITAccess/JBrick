@@ -23,6 +23,8 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
+import com.jbricx.swing.ui.JBricxManager;
+
 @SuppressWarnings("serial")
 public class Browser extends JDialog implements ActionListener
 {
@@ -47,28 +49,24 @@ public class Browser extends JDialog implements ActionListener
 	
   public static void main(String[] args)
   {
-    new Browser();
+    //new Browser();
   }
   /**
    * A browser for the help documents.
    */
-  public Browser()
-  {
+  public Browser(JBricxManager manager){
+		super(manager.getShell(),"Preferences",true);
+		
 	  font = Font.decode("Consolas-plain-20");
 	  
       // now add it all to a frame
       jWindow = new JFrame("HtmlEditorKit Test");
-      // make it easy to close the application
-      jWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       // display the frame
       jWindow.setSize(new Dimension(800,600));
 
       makeComponents();
       loadPage("Home");
       loadPage("Home");
-      
-      // pack it, if you prefer
-      //j.pack();
       
       // center the jframe, then make it visible
       jWindow.setLocationRelativeTo(null);
