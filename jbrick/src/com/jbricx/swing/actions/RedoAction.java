@@ -12,6 +12,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action redoes the last action
  */
+@SuppressWarnings(value = { "serial" }) 
 public class RedoAction extends JBricxAbstractAction {
 
   /**

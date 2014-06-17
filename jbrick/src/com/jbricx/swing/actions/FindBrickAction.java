@@ -3,6 +3,7 @@ package com.jbricx.swing.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
+
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
@@ -10,7 +11,7 @@ import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
 /**
  * This class shows an About box
  */
-@SuppressWarnings("serial")
+@SuppressWarnings(value = { "serial" }) 
 public class FindBrickAction extends JBricxAbstractAction {
 
 	/**
