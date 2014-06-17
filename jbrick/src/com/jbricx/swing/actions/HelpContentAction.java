@@ -10,6 +10,8 @@ import com.jbricx.swing.ui.browser.Browser;
 @SuppressWarnings("serial")
 public class HelpContentAction extends JBricxAbstractAction {
 
+	Browser browser;
+	
   public HelpContentAction(final JBricxManager manager) {
     super("", new ImageIcon(HelpContentAction.class.getResource("/images/help-browser.png")), manager);
   }
@@ -18,6 +20,10 @@ public class HelpContentAction extends JBricxAbstractAction {
    * Shows an about box
    */
   public void actionPerformed(ActionEvent e){
-	new Browser(getManager());
+	  if(browser == null)
+		  browser = new Browser(getManager());
+	  else{
+		  browser.reOpen();
+	  }
   }
 }
