@@ -182,6 +182,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		beforeCloseActions();
 		this.dispose();
 		NXTManager.getInstance().stopPolling();
+		System.exit(0);
 	}
 	
 	/**

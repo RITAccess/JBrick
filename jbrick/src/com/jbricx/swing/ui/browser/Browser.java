@@ -44,13 +44,10 @@ public class Browser extends JDialog implements ActionListener
 	JButton legalButton;
 	JButton shortcutsButton;
 	
+	//HTML stuff
 	HTMLEditorKit kit;
 	Font font;
 	
-  public static void main(String[] args)
-  {
-    //new Browser();
-  }
   /**
    * A browser for the help documents.
    */
