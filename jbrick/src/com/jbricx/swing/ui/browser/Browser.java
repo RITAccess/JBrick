@@ -65,6 +65,8 @@ public class Browser extends JDialog implements ActionListener
       loadPage("Home");
       loadPage("Home");
       
+      jWindow.setDefaultCloseOperation(HIDE_ON_CLOSE);;
+      
       // center the jframe, then make it visible
       jWindow.setLocationRelativeTo(null);
       jWindow.setVisible(true);
@@ -254,5 +256,14 @@ public class Browser extends JDialog implements ActionListener
 		{
 			loadPage("Legal");
 		}
+	}
+	
+	public void reOpen(){
+		jWindow.toFront();
+		jWindow.setFocusable(true);
+		jWindow.setFocusableWindowState(true);
+	    jWindow.setVisible(true);
+		jWindow.requestFocus();
+		jWindow.repaint();
 	}
 }

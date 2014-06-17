@@ -5,7 +5,12 @@
     padding:0in 0in 4.0pt 0in;
 }
 
-#Title h3
+#Title h1
 {
     text-align:center;
+    font-size: 36pt;
+}
+p
+{
+    font-size: 24pt;
 }
