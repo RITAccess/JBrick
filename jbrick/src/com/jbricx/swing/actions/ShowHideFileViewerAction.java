@@ -7,7 +7,7 @@ import javax.swing.JSplitPane;
 
 import com.jbricx.swing.ui.JBricxManager;
 
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial")
 public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	
 	boolean isOpen = false;

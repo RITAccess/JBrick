@@ -16,7 +16,7 @@ import com.jbricx.swing.ui.JBricxManager;
 /**
  * Compiles the current file.
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial") 
 public class CompileAction extends AbstractCompilerAction {
 
 	/**
@@ -49,7 +49,7 @@ public class CompileAction extends AbstractCompilerAction {
             }
         }        
         dialog.setModal(true);
-        dialog.show();
+        dialog.setVisible(true);;
 	}
 
 	@Override

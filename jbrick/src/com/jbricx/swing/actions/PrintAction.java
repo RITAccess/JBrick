@@ -9,7 +9,7 @@ import com.jbricx.swing.ui.JBricxManager;
 /**
  * This action class prints the document
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial") 
 public class PrintAction extends JBricxAbstractAction {
 
 	/**

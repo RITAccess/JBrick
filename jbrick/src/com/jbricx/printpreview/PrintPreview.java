@@ -63,21 +63,25 @@ public class PrintPreview {
 
     // A set of user interface actions related to the print preview.
 
-    private final Action printComponent = new AbstractAction("Print...") {
+    @SuppressWarnings("serial")
+	private final Action printComponent = new AbstractAction("Print...") {
         public void actionPerformed(ActionEvent e) {
             printComponent();
         }
     };
+    @SuppressWarnings("serial")
     private final Action zoomIn = new AbstractAction("Zoom In") {
         public void actionPerformed(ActionEvent e) {
             setScale(previewScale * 1.1);
         }
     };
+    @SuppressWarnings("serial")
     private final Action zoomOut = new AbstractAction("Zoom Out") {
         public void actionPerformed(ActionEvent e) {
             setScale(previewScale / 1.1);
         }
     };
+    @SuppressWarnings("serial")
     private final Action closePreview = new AbstractAction("Close") {
         public void actionPerformed(ActionEvent e) {
             closePreview();
@@ -141,7 +145,8 @@ public class PrintPreview {
     private void addPage(final Image pageImage) {
 
         // Create a component representing the scaled page preview image.
-        JPanel p = new JPanel() {
+        @SuppressWarnings("serial")
+		JPanel p = new JPanel() {
             Image scaled = null;
             Dimension d = new Dimension();
 
@@ -285,7 +290,8 @@ public class PrintPreview {
     /**
      * Create and initialize the print preview components.
      */
-    public PrintPreview() {
+    @SuppressWarnings("serial")
+	public PrintPreview() {
         previewPane = new JPanel();
         previewPane.setLayout(new BoxLayout(previewPane, BoxLayout.Y_AXIS));
         previewPane.registerKeyboardAction(closePreview, ESCAPE_KEY,

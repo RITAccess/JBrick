@@ -16,7 +16,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action class responds to requests open a file
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial") 
 public class OpenAction extends JBricxAbstractAction {
 
   /**

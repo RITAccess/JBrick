@@ -12,7 +12,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action undoes the last action
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial")
 public class UndoAction extends JBricxAbstractAction {
 
   /**

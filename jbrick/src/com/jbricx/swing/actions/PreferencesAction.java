@@ -12,7 +12,7 @@ import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
 /**
  * This action displays the preferences dialog
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial")
 public class PreferencesAction extends JBricxAbstractAction {
 
 	/**

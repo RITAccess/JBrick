@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 //import com.jbricx.ui.piano.PianoUIWindow;
 
 
+
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
@@ -13,7 +14,7 @@ import com.jbricx.swing.ui.JBricxManager;
  * @author Priya Sankaran
  * @author Abhishek Shrestha
  */
-@SuppressWarnings(value = { "serial" }) 
+@SuppressWarnings("serial") 
 public class PianoAction extends JBricxAbstractAction /*implements NXTObserver*/ {
 
   /**

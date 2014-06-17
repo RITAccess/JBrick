@@ -343,10 +343,10 @@ public class NXTConnectionImpl implements NXTConnection {
 			//System.out.print("\t");
 		}
 		int buf[] = new int[2];
-		int finalVal;
+		//int finalVal;
 		buf[0] = unsignedByteToInt(response[9]);
 		buf[1] = unsignedByteToInt(response[10]);
-		finalVal = buf[0] + (buf[1] << 8);
+		//finalVal = buf[0] + (buf[1] << 8);
 		//System.out.println();
 		//System.out.println(" buf0: " + buf[0] + "; buf1: " + buf[1]
 	//			+ "; Final Value: " + finalVal);
