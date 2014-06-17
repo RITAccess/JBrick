@@ -20,17 +20,4 @@ public class HelpContentAction extends JBricxAbstractAction {
   public void actionPerformed(ActionEvent e){
 	new Browser(getManager());
   }
-  
-  /*public void runPianoLink() {
-    HelpBrowser hb = HelpBrowser.getInstance();
-    hb.open();
-    hb.getPianoHelpLink();
-  }
-  
-  public void runJoistickLink() {
-    HelpBrowser hb = HelpBrowser.getInstance();
-    hb.open();
-    hb.runJoistickLink();
-  }
-  */
 }
