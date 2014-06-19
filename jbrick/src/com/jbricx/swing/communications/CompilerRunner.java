@@ -59,8 +59,9 @@ public class CompilerRunner {
 		// so that the buffer doesn't fill up and cause the process to halt.
 		pb.redirectErrorStream(true);
 		for(String eachCommand : command){
-			System.out.println(eachCommand);
+			System.out.print(eachCommand + " ");
 		}
+		System.out.println();
 		try {
 			proc = pb.start();
 			final BufferedReader bufferedreader = new BufferedReader(

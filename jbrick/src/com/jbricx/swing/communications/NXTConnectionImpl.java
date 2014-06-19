@@ -2,6 +2,8 @@ package com.jbricx.swing.communications;
 
 import java.nio.ByteBuffer;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import com.jbricx.swing.communications.enums.ConnectionType;
 import com.jbricx.swing.communications.enums.Sensor;
 import com.jbricx.swing.communications.enums.SensorMode;
@@ -45,15 +47,19 @@ public class NXTConnectionImpl implements NXTConnection {
 			fantom = (Fantom) Native.loadLibrary("fantom", Fantom.class);
 			isDriverLoaded = true;
 		} catch (final UnsatisfiedLinkError e) {
+			// Use OUR USBConnection
+			fantom = new USBConnection();
+			isDriverLoaded = true;
+			
 			// TODO: notify the user that the fantom driver is missing or
 			// something
-			isDriverLoaded = false;
+			//isDriverLoaded = false;
 		}
 	}
 
 	public NXTConnectionImpl(String name) throws NXTNotFoundException,
 			UnableToCreateNXTException {
-		if (isFantomDriverLoaded()) {
+		if (isFantomDriverLoaded() && !(fantom.getClass().equals(USBConnection.class))) {
 			this.nxtPointer = connect(name);
 		}
 	}
@@ -329,9 +335,9 @@ public class NXTConnectionImpl implements NXTConnection {
 		Status status = new Status();
 		ByteBuffer command = ByteBuffer.allocate(2);
 
-		// command.put((byte)0x00);//setinputmode// TODO not needed??
-		command.put((byte) 0x07);// setinputmode// TODO Why 7?
-		command.put(s.getPort());// port
+		// command.put((byte)0x00); //setinputmode // TODO not needed??
+		command.put((byte) 0x07); // setinputmode // TODO Why 7?
+		command.put(s.getPort()); // port
 
 		byte[] response = new byte[15];
 
