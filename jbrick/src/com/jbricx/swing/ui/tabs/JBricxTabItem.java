@@ -2,12 +2,15 @@ package com.jbricx.swing.ui.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Utilities;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
@@ -33,10 +36,7 @@ public class JBricxTabItem extends TextEditorPane {
 		
 		super(newFileNumber);
 		isNewFile = true;
-		this.parent = parent;
-		setShortcuts();
-		this.setLineWrap(true);
-		this.setWrapStyleWord(true);
+		setTabItem();
 	}
 	
 	/**
@@ -47,37 +47,48 @@ public class JBricxTabItem extends TextEditorPane {
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
 		isNewFile = false;
-		this.parent = parent;
-		setShortcuts();
-		this.setLineWrap(true);
-		this.setWrapStyleWord(true);
+		setTabItem();
 	}
 	
-	private void setShortcuts(){
-		//Logic for JAWS CTRL-L line read
+	// Tab settings that are the same whether it is a new tab or old one. 
+	
+	private void setTabItem() {
+		
+		this.setLineWrap(true);
+		this.setWrapStyleWord(true);
+		InputMap im = this.getInputMap();
+		im.put(KeyStroke.getKeyStroke((char) KeyEvent.VK_ENTER), "Enter");
+//		this.getActionMap().put("Enter", setShortcuts());
+//		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP,0), "Up");
+//		this.getActionMap().put("Up",setShortcuts());
+//		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,0), "Down");
+//		this.getActionMap().put("Down",setShortcuts());
+	}
+	private Action setShortcuts(){
+		
 		Action SetLine = new AbstractAction() {
 		    public void actionPerformed(ActionEvent e) {
-		       int dot = JBricxTabItem.this.getCaret().getDot();
-		       int rn = (dot==0) ? 1 : 0;
+		    	
+		       int dot = JBricxTabItem.this.getCaretPosition();
+		       int rn = 0;
 		        try {
 		            int offs=dot;
-		            while( offs>0) {
-		                offs=Utilities.getRowStart(JBricxTabItem.this, offs)-1;
-		                rn++;
-		            }
+		            rn = JBricxTabItem.this.getLineOfOffset(offs);
+		            rn += 1;
+		            
 		        } catch (BadLocationException e1) {
 		            e1.printStackTrace();
 		        }
-		        JBricxTabItem.this.getAccessibleContext().setAccessibleName(" ");
-		        JBricxTabItem.this.getAccessibleContext().setAccessibleName("Line Number " + Integer.toString(rn));
+		        JBricxTabItem.this.getAccessibleContext().setAccessibleName("Line Number " + rn);
+		        System.out.println(rn);
 		        JBricxTabItem.this.getCaret().moveDot(dot-1);
 		        JBricxTabItem.this.getCaret().moveDot(dot);
 		        JBricxTabItem.this.repaint();
+		        
+		       
 		    }
 		};
-		
-		this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK), "SetLine");
-		this.getActionMap().put("SetLine",SetLine);
+		return SetLine;
 	}
 
 	/**
