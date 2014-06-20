@@ -5,16 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
-<<<<<<< HEAD
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-=======
-import javax.swing.JButton;
-import javax.swing.JPanel;
->>>>>>> 888ad9eb85aa7a407b6b4657ca7cf2f4306d1ee3
 
 /**
  * Class for creating the buttons in the piano frame and giving them functionality
@@ -34,10 +29,7 @@ public class ButtonActions {
 	private JButton help;
 	
 	private JPanel buttonPanel;
-<<<<<<< HEAD
 	private Border buttonBorder;
-=======
->>>>>>> 888ad9eb85aa7a407b6b4657ca7cf2f4306d1ee3
 	
 	/**
 	 * Constructor of the buttons used
@@ -46,11 +38,7 @@ public class ButtonActions {
 	public ButtonActions() {
 		
 		buttonPanel = new JPanel(new GridBagLayout());
-<<<<<<< HEAD
 		buttonBorder = new EtchedBorder();
-=======
-		
->>>>>>> 888ad9eb85aa7a407b6b4657ca7cf2f4306d1ee3
 
 		rest = new JButton("Rest");
 		play = new JButton("Play");
@@ -111,10 +99,7 @@ public class ButtonActions {
 		bPanel(help,1,1);
 		bPanel(clear,0,2);
 		
-<<<<<<< HEAD
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
-=======
->>>>>>> 888ad9eb85aa7a407b6b4657ca7cf2f4306d1ee3
 		return buttonPanel;
 		
 	}
