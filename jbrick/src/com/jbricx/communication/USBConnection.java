@@ -155,11 +155,13 @@ public class USBConnection
      */
     public static void main(String[] args)
     {
-    	System.out.println(USBConnection.isConnected());
-    	
-    	ByteBuffer buffer = ByteBuffer.allocateDirect(6);
-        buffer.put(new byte[]{(byte) 0x80, (byte) 0x03, (byte) 0xf0, (byte) 0x01, (byte) 0xf4, (byte) 0x01});
-    	USBConnection.Connect(USBConnection.MindStormDevice.NXT, buffer);
+    	if (USBConnection.isConnected()){
+	    	
+	    	ByteBuffer buffer = ByteBuffer.allocateDirect(6);
+	        buffer.put(new byte[]{(byte) 0x80, (byte) 0x03, (byte) 0xf0, (byte) 0x01, (byte) 0xf4, (byte) 0x01});
+	    	USBConnection.Connect(USBConnection.MindStormDevice.NXT, buffer);
+	    	
+    	}
     	
     }
 }

@@ -20,11 +20,12 @@ public class NXTAccess {
 	private static int runNBC(String filepath, boolean download){
 		String nbc = PreferenceStore.getString(Preference.NBCTOOL);
 		int success = 0;
+		System.out.println(filepath);
 		ProcessBuilder pb = new ProcessBuilder(
-				nbc,
-				download ? "-d" : "",
+				nbc + (download ? " -d" : ""),
 				filepath
 		);
+		System.out.println(pb.command());
 		try {
 			Process process = pb.start();
 			BufferedReader buffReader = new BufferedReader(
