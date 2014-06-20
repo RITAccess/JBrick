@@ -39,7 +39,7 @@ public class CompilerRunner {
 		if (nbcPath.equals("")) {
 			nbcPath = getCompilerPath();
 		}
-		return run(nbcPath, port, "-d", filename);
+		return run(nbcPath, "-d", "-S=" + port, filename);
 	}
 
 	public ExitStatus compile(final String filename) {

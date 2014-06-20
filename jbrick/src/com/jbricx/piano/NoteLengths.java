@@ -16,7 +16,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 public class NoteLengths {
-	
+
 	private JLabel noteTime;
 	private JTextField noteField;
 	private JLabel waitTime;
@@ -31,6 +31,7 @@ public class NoteLengths {
 	private JPanel radioPanel;
 	private JPanel customLengthPanel;
 	private Border radioBorder;
+
 	
 	/**
 	 * Constructor for the radio buttons and the custom text fields
@@ -59,6 +60,7 @@ public class NoteLengths {
 		sixteenths =new JRadioButton("1/16");
 		noteLength.add(sixteenths);
 		
+
 		radioBorder = new EtchedBorder();
 		
 	}
@@ -93,7 +95,7 @@ public class NoteLengths {
 		setUpCustom(noteField,1,0);
 		setUpCustom(waitTime,2,0);
 		setUpCustom(waitField,3,0);
-	
+
 		return customLengthPanel;
 	}
 	
@@ -110,9 +112,10 @@ public class NoteLengths {
 		radioPanel.add(fourths);
 		radioPanel.add(eighths);
 		radioPanel.add(sixteenths);
+
 		radioPanel.add(customLengthPanel);
-		
 		radioPanel.setBorder(BorderFactory.createTitledBorder(radioBorder,"Length"));
+
 		return radioPanel;
 	}
 }

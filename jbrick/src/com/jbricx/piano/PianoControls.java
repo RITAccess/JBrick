@@ -70,7 +70,6 @@ public class PianoControls {
 		gbCon.gridx = 1;
 		gbCon.anchor = GridBagConstraints.WEST;
 		centerPanel.add(noteRadioPanel.noteLengthPanel(),gbCon);
-	
 		centerPanel.add(rest,restSetUp());
 		return centerPanel;
 	}
@@ -83,10 +82,9 @@ public class PianoControls {
 	public JPanel setUpControls(){
 		
 		controlPanel.add(transPanel.setUpTransposer(),BorderLayout.NORTH);
+
 		controlPanel.add(setUpMidControls(),BorderLayout.CENTER);
 		noteRadioPanel.customPanel().setAlignmentY(noteRadioPanel.noteLengthPanel().getAlignmentY());
-
-		
 		return controlPanel;
 	}
 }

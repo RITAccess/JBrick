@@ -41,6 +41,7 @@ public class OctaveChange{
 		transposer.setLabelTable(transLabels);
 		transposer.setPaintLabels(true);
 		transposer.setSnapToTicks(true);
+
 		
 	}
 	/**
