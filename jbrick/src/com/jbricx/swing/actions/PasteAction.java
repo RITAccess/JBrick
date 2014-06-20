@@ -12,6 +12,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action paste the contents of the clipboard into the document
  */
+@SuppressWarnings("serial")
 public class PasteAction extends JBricxAbstractAction {
   /**
    * PasteAction constructor

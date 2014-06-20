@@ -38,7 +38,7 @@ public class PreferenceStore {
 	private static boolean AUTOCOMPILE_DEFAULT = false;
 	private static boolean LINENUM_DEFAULT = true;
 	private static String NBCTOOL_DEFAULT = "";
-	private static final String THEMEXML_DEFAULT = "resources/config/Properties.xml";
+	private static final String THEMEXML_DEFAULT = "resources/preferences/Default.xml";
 	
 	private static int ICONSIZE_DEFAULT = 44;
 
@@ -73,7 +73,7 @@ public class PreferenceStore {
 	public static final String CONSTANTS_FILE = "config/Constants.xml";
 	public static final String AUTOCOMPLETE_FILE = "config/Autocomplete.xml";
 
-	public static final String DEFAULT_FILE = "resources/config/Properties.xml";
+	public static final String DEFAULT_FILE = "resources/preferences/Default.xml";
 	
 	//Parser to parse the preference files
 	public static Document currentDoc;
@@ -179,10 +179,16 @@ public class PreferenceStore {
 
 		if(!currentDoc.equals(null)){
 			if(!prefs.getBoolean("ranPreviously", false)){
-				setPrefsFromFile(currentDoc);
+				resetToDefaults();
 			}
 			setDefaultsFromFile(currentDoc);
 		}
+	}
+	
+	public static void resetToDefaults(){
+		currentDoc = XMLParser.xmlParse(DEFAULT_FILE);
+		if(!currentDoc.equals(null))
+			setPrefsFromFile(currentDoc);
 	}
 	
 	

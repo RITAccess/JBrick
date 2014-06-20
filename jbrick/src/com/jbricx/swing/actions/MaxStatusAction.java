@@ -7,6 +7,7 @@ import javax.swing.JSplitPane;
 
 import com.jbricx.swing.ui.JBricxManager;
 
+@SuppressWarnings(value = { "serial" }) 
 public class MaxStatusAction extends JBricxAbstractAction{
 
 	public MaxStatusAction(final JBricxManager manager) {

@@ -16,7 +16,7 @@ public interface JBricxManager {
 	
 	JFrame getShell();
 	
-	boolean close();
+	void close();
 	
 //	void registerObserver(JBrickObserver o);
 		

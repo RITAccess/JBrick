@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import com.jbricx.pjo.ActionControlClass;
+
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
@@ -12,6 +13,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action class responds to requests to save a file as . . .
  */
+@SuppressWarnings("serial")
 public class SaveAsAction extends JBricxAbstractAction {
 
 	/**

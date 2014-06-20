@@ -9,6 +9,7 @@ import com.jbricx.swing.ui.JBricxManager;
 /**
  * This action class responds to requests for a new file
  */
+@SuppressWarnings("serial")
 public class NewAction extends JBricxAbstractAction {
 
   /**

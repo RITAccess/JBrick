@@ -17,12 +17,17 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import com.apple.eawt.AppEvent.QuitEvent;
+import com.apple.eawt.Application;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
+import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
@@ -50,16 +55,48 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
 		    } else {
 		      // TODO: make the notification accessible!
-		    	JOptionPane.showMessageDialog(null, "Fantom driver missing!");
+		    	if(!System.getProperty("os.arch").equalsIgnoreCase("i386") && !System.getProperty("os.arch").equalsIgnoreCase("x86"))
+		    	{
+		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!\n Try running with a 32-bit version of Java");
+		    	}
+		    	else
+		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!");
 		    }
 		
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
+		
+		// Set on close operation for mac client (command + q / Jbricks -> quit)
+		if (Platform.isMac()){
+			Application macApp = Application.getApplication();
+			macApp.setQuitHandler(new QuitHandler(){
+				
+				MainWindow mw;
+				
+				/**
+				 * set main window - allows main window to be defined
+				 * @param mw
+				 * @return quit handler with main window defined
+				 */
+				public QuitHandler setMainWindow(MainWindow mw){
+					this.mw = mw;
+					return this;
+				}
+
+				@Override
+				public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+					mw.beforeCloseActions();
+					qr.performQuit();
+				}
+			}.setMainWindow(this));
+		}
 	}
 	
 	/**
 	 * Run the application. Called by initial class. 
 	 * Does not check for Fantom driver
+	 * 
+	 * for testing only
 	 */
 	public void runNoFantom() {
 		new PreferenceStore();
@@ -83,8 +120,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
-
 	}
 	  
 	/**
@@ -143,17 +178,24 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	/**
 	 * Closing logic
 	 */
-	public boolean close() {
-		
+	public void close() {
+		beforeCloseActions();
+		this.dispose();
+		NXTManager.getInstance().stopPolling();
+		System.exit(0);
+	}
+	
+	/**
+	 * operations to be called before closed event
+	 * 
+	 * operation to be run on exit or close of application
+	 */
+	public void beforeCloseActions() {
+		// Save recent files
 		if (getTabFolder().checkOverwrite()) {
 			StringBuilder recentFiles = getTabFolder().getFileList();
 			prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
-			this.dispose();
-			NXTManager.getInstance().stopPolling();
-			return true;
 		}
-		
-		return false;
 	}
 
 	@Override
@@ -258,6 +300,5 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public void refreshExplorerContent() {
 		editorPane.refreshTabTitles();
 	}
-
 
 }

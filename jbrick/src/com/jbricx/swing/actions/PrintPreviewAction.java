@@ -20,6 +20,7 @@ import com.jbricx.swing.ui.JBricxManager;
 /**
  * This class shows an About box
  */
+@SuppressWarnings("serial")
 public class PrintPreviewAction extends JBricxAbstractAction {
 
   /**

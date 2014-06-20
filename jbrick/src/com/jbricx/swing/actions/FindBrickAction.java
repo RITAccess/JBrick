@@ -3,6 +3,7 @@ package com.jbricx.swing.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
+
 import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
@@ -10,7 +11,7 @@ import com.jbricx.swing.ui.findbrick.FindBrickUIWindow;
 /**
  * This class shows an About box
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class FindBrickAction extends JBricxAbstractAction {
 
 	/**
@@ -30,22 +31,8 @@ public class FindBrickAction extends JBricxAbstractAction {
 	/**
 	 * Shows an about box
 	 */
-	@Override
-//	public void run() {
-//		FindBrickUIWindow findBrick = new FindBrickUIWindow(getManager()
-//				.getShell());
-//		findBrick.setBlockOnOpen(true);
-//		findBrick.open();
-//
-//	}
-
-//	public void update(boolean isDriverAvailable) {
-//		setEnabled(isDriverAvailable);
-//	}
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		FindBrickUIWindow fbPane = new FindBrickUIWindow(getManager());
-		
-
+		new FindBrickUIWindow(getManager());
 	}
 }

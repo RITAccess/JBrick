@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 
+@SuppressWarnings("serial") 
 public class CloseAction extends JBricxAbstractAction{
 
 	/**

@@ -7,6 +7,7 @@ import javax.swing.JSplitPane;
 
 import com.jbricx.swing.ui.JBricxManager;
 
+@SuppressWarnings("serial")
 public class MaxViewerAction extends JBricxAbstractAction{
 
 	public MaxViewerAction(final JBricxManager manager) {

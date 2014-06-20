@@ -2,7 +2,6 @@ package com.jbricx.swing.main;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import com.jbricx.swing.ui.MainWindow;
 import com.sun.jna.Platform;
 

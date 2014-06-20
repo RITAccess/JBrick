@@ -41,7 +41,7 @@ public class NXTBrickConnector {
             Thread.sleep(sleepTime);
             running = connection.isConnected();
 
-            if (!running) {
+            if (!running && (connection.getConnectionType() != null)) {
               NXTManager.getInstance().disconnect(connection.getConnectionType().toString());
             }
 

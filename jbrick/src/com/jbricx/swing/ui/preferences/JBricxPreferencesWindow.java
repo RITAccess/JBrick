@@ -107,6 +107,8 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JButton applyButton;
 
 	private JBricxManager manager;
+	
+	private String fullTheme;
 
 	/**
 	 * Gets the preferences to use throughout the class. Also sets the size of the window. Calls the make components class that creates the rest of the objects.
@@ -117,6 +119,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		super(manager.getShell(),"Preferences",true);
 		this.manager = manager;
 		prefs = PreferenceStore.getPrefs();
+		fullTheme = "";
 		
 		setLayout(new BorderLayout());
 		mainArea = new JPanel();
@@ -545,7 +548,8 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		themeLocationLabel = new JLabel("Theme");
 		
 		themeLocationTextArea = new JTextField();
-		themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML));
+		fullTheme = PreferenceStore.getString(Preference.THEMEXML);
+		themeLocationTextArea.setText(fullTheme.split("/")[fullTheme.split("/").length-1]);
 		themeLocationTextArea.getAccessibleContext().setAccessibleName("Theme Location");
 		
 		themeLocationBrowseButton = new JButton("Browse...");
@@ -648,14 +652,14 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 
 		PreferenceStore.set(Preference.NBCTOOL, toolLocationTextArea.getText());
 		PreferenceStore.set(Preference.WORKSPACE, directoryTextArea.getText());
-		PreferenceStore.set(Preference.THEMEXML, themeLocationTextArea.getText());
+		PreferenceStore.set(Preference.THEMEXML, fullTheme);
 	}
 	
 	/**
 	 * Resets all of the pref values to the defaults listed in the preferencestore class. Also changes the objects in the preference window to reflect that.
 	 */
 	private void resetDefaults(){
-		PreferenceStore.setPreferencesAndDefaults();
+		PreferenceStore.resetToDefaults();
 		this.setJPanelsFromPreferences();
 	}
 	
@@ -680,7 +684,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		loadRecentlyBox.setSelected(PreferenceStore.getBool(Preference.BOOLRECENTFILES));
 		toolLocationTextArea.setText(PreferenceStore.getString(Preference.NBCTOOL));
 		directoryTextArea.setText(PreferenceStore.getString(Preference.WORKSPACE));
-		themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML));		
+		themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML).split("/")[PreferenceStore.getString(Preference.THEMEXML).split("/").length-1]);		
 		this.pack();
 	}
 	
@@ -740,13 +744,14 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			
 		// the browse button was chosen for theme location. open file dialog to change director 
 		}else if(arg0.getActionCommand().equals("themeLocationbutton")){
-			final JFileChooser fc = new JFileChooser("resources/config");
+			final JFileChooser fc = new JFileChooser("resources/preferences");
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int returnVal = fc.showOpenDialog(this);
 			//They picked a file
 			if(returnVal == JFileChooser.APPROVE_OPTION){
 				File selectedDir = fc.getSelectedFile();
-				themeLocationTextArea.setText(selectedDir.getAbsolutePath());
+				fullTheme = selectedDir.getAbsolutePath();
+				themeLocationTextArea.setText(fullTheme.split("/")[fullTheme.split("/").length-1]);
 			}
 		//User wishes to cancel any changes and close window
 		}else if(arg0.getActionCommand().equals("cancel")){
@@ -781,21 +786,23 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			saveValues();
 			manager.updatePreferences();
 		}else if(arg0.getActionCommand().equals("applytheme")){
-			PreferenceStore.LoadTheme(themeLocationTextArea.getText());
+			if(fullTheme.equalsIgnoreCase(""))
+				fullTheme = PreferenceStore.getString(Preference.THEMEXML);
+			PreferenceStore.LoadTheme(fullTheme);
+			PreferenceStore.set(PreferenceStore.Preference.THEMEXML, fullTheme);
 			setJPanelsFromPreferences();
 			saveValues();
 			manager.updatePreferences();
 		}else if(arg0.getActionCommand().equals("savetheme")){
-			final JFileChooser fc = new JFileChooser("resources/config");
+			final JFileChooser fc = new JFileChooser("resources/preferences");
 			fc.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
 			int returnVal = fc.showSaveDialog(this);
 			//They picked a file
-			String filepath = ""; 
 			if(returnVal == JFileChooser.APPROVE_OPTION){
-				filepath = fc.getSelectedFile().getAbsolutePath();	
-				themeLocationTextArea.setText(filepath);
+				fullTheme = fc.getSelectedFile().getAbsolutePath();	
+				themeLocationTextArea.setText(fullTheme.split("/")[fullTheme.split("/").length-1]);
 				Document doc = PreferenceStore.buildPreferencesDocument();
-				XMLParser.writeToFile(doc, filepath);
+				XMLParser.writeToFile(doc, fullTheme);
 			}
 		}
 	}

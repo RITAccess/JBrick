@@ -3,9 +3,7 @@ package com.jbricx.swing.actions;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.accessibility.AccessibleContext;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,7 +16,7 @@ import com.jbricx.swing.ui.JBricxManager;
 /**
  * Compiles the current file.
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class CompileAction extends AbstractCompilerAction {
 
 	/**
@@ -51,7 +49,7 @@ public class CompileAction extends AbstractCompilerAction {
             }
         }        
         dialog.setModal(true);
-        dialog.show();
+        dialog.setVisible(true);;
 	}
 
 	@Override

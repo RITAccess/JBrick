@@ -28,6 +28,6 @@
 			<boolrecentfiles>true</boolrecentfiles>
 			<nbctool> </nbctool>
 			<workspace>/Users/Student/Documents/</workspace>
-			<themexml>resources/config/Properties.xml</themexml>
+			<themexml>resources/preferences/Default.xml</themexml>
 		</misc>
 	</properties>

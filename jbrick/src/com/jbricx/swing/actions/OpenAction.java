@@ -2,7 +2,6 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -17,7 +16,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action class responds to requests open a file
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class OpenAction extends JBricxAbstractAction {
 
   /**
@@ -29,7 +28,6 @@ public class OpenAction extends JBricxAbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		Preferences prefs = PreferenceStore.getPrefs();
 		
 		class MyCustomFilter extends FileFilter {
 	        @Override

@@ -11,6 +11,7 @@ import com.jbricx.swing.ui.tabs.JBricxTabItem;
 /**
  * This action copies the current selection to the clipboard
  */
+@SuppressWarnings("serial")
 public class SelectAllAction extends JBricxAbstractAction {
   /**
    * CopyAction constructor
