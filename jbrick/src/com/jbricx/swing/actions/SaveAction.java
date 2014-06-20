@@ -23,9 +23,6 @@ public class SaveAction extends JBricxAbstractAction {
    */
   public SaveAction(final JBricxManager manager) {
 	  super("", new ImageIcon(SaveAction.class.getResource("/images/document-save.png")), manager);
-
-    // setToolTipText("Save");
-    // setAccelerator(SWT.CTRL + 's');
   }
 
   /**

@@ -1,7 +1,5 @@
 package com.jbricx.swing.ui;
 
-//import java.util.prefs.Preferences;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
@@ -27,7 +25,6 @@ import com.jbricx.swing.actions.CutAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
-import com.jbricx.swing.actions.FindBrickAction;
 import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
 import com.jbricx.swing.actions.JBricxAbstractAction;
@@ -48,8 +45,6 @@ import com.jbricx.swing.actions.SaveAsAction;
 import com.jbricx.swing.actions.SelectAllAction;
 import com.jbricx.swing.actions.ShowHideFileViewerAction;
 import com.jbricx.swing.actions.UndoAction;
-import com.jbricx.swing.communications.NXTManager;
-import com.jbricx.swing.communications.NXTObserver;
 import com.sun.jna.Platform;
 
 public class JBricxMenuAndToolBarDelegate {
@@ -66,6 +61,11 @@ public class JBricxMenuAndToolBarDelegate {
 	private static JMenu viewMenu;
 	private static JMenu helpMenu;
 	
+	/**
+	 * Enum structured to hold all the actions, tip text, event keys, etc. for the various actions for jbrick
+	 * @author Ethan Jurman (ehj2229@rit.edu)
+	 *
+	 */
 	enum ActionSet{
 		NEW(NewAction.class, "New File", KeyStroke.getKeyStroke(KeyEvent.VK_N, modifier), fileMenu),
 		OPEN(OpenAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_O, modifier), fileMenu),
@@ -87,7 +87,6 @@ public class JBricxMenuAndToolBarDelegate {
 		GOTO(GotoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), toolsMenu),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), compileMenu),
-		FINDBRICK(FindBrickAction.class, "Find Brick", KeyStroke.getKeyStroke(KeyEvent.VK_F, modifier + KeyEvent.SHIFT_MASK), compileMenu),
 		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), compileMenu),
 		
 		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", viewMenu),
@@ -151,8 +150,6 @@ public class JBricxMenuAndToolBarDelegate {
 	public JBricxMenuAndToolBarDelegate(final JBricxManager manager) {
 		JBricxMenuAndToolBarDelegate.manager = manager;
 		this.makeMainMenus();
-		NXTManager nxtManager = NXTManager.getInstance();
-		nxtManager.register((NXTObserver) ActionSet.DOWNLOAD.action); 
 	}
 
 	public JToolBar getToolBar() {
@@ -189,7 +186,6 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add(Box.createHorizontalGlue());
 		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(ActionSet.COMPILE.button);
-		mainToolBar.add(ActionSet.FINDBRICK.button);
 		mainToolBar.add(ActionSet.DOWNLOAD.button);
 		mainToolBar.add( new JToolBar.Separator());
 		//mainToolBar.add(Box.createHorizontalStrut(45));
@@ -216,6 +212,9 @@ public class JBricxMenuAndToolBarDelegate {
 		}
 	}
 	
+	/**
+	 * sets the order for all the tool bars and menu bars
+	 */
 	private void setOrder(){
 		setOrder(
 			ActionSet.NEW.button,
@@ -235,7 +234,6 @@ public class JBricxMenuAndToolBarDelegate {
 	        ActionSet.FIND.button,
 	        ActionSet.GOTO.button,
 	        ActionSet.COMPILE.button,
-	        ActionSet.FINDBRICK.button,
 	        ActionSet.DOWNLOAD.button,
 	        ActionSet.SHOWHIDEFILEVIEWER.button,
 	        ActionSet.MAXVIEWER.button,
@@ -246,6 +244,10 @@ public class JBricxMenuAndToolBarDelegate {
 		);
 	}
 
+	/**
+	 * builds the menu bar and returns the completed filled menu bar
+	 * @return - main menu bar
+	 */
 	public JMenuBar getMenuBar() {
 		JMenuBar mainMenuBar = new JMenuBar();
 		mainMenuBar.requestFocusInWindow();

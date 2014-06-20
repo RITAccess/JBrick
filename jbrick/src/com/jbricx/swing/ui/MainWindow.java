@@ -11,7 +11,6 @@ import java.util.prefs.Preferences;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -21,12 +20,10 @@ import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
 import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
-import com.jbricx.swing.communications.NXTManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
-import com.jbricx.swing.ui.findbrick.FindBrickFileIO;
 import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
@@ -49,19 +46,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
-		
-		
-		if (NXTManager.isFantomDriverLoaded()) {
-		      NXTManager.getInstance().connect(FindBrickFileIO.getCT());
-		    } else {
-		      // TODO: make the notification accessible!
-		    	if(!System.getProperty("os.arch").equalsIgnoreCase("i386") && !System.getProperty("os.arch").equalsIgnoreCase("x86"))
-		    	{
-		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!\n Try running with a 32-bit version of Java");
-		    	}
-		    	else
-		    		JOptionPane.showMessageDialog(null, "Fantom driver missing!");
-		    }
 		
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
@@ -181,7 +165,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public void close() {
 		beforeCloseActions();
 		this.dispose();
-		NXTManager.getInstance().stopPolling();
 		System.exit(0);
 	}
 	

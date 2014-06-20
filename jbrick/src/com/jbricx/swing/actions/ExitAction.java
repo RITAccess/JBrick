@@ -10,7 +10,7 @@ import com.jbricx.swing.ui.JBricxManager;
  * This action class exits the application
  */
 @SuppressWarnings("serial")
-public class ExitAction extends  JBricxAbstractAction {
+public class ExitAction extends JBricxAbstractAction {
 	
 	/**
 	 * ExitAction constructor
