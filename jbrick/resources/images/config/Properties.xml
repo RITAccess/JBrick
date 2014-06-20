@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<properties>
+		<color>
+			<foreground>-16777216</foreground>
+			<background>-1</background>
+			<comment>-8355712</comment>
+			<keyword>-5111630</keyword>
+			<operator>-5111630</operator>
+			<string>-16711936</string>
+			<linenumberfg>-65536</linenumberfg>
+			<linenumberbg>-1</linenumberbg>
+			<constant>-16776961</constant>
+			<preprocessor>-5075968</preprocessor>
+			<containers>-5075968</containers>
+		</color>
+		<font>
+			<fontname>Consolas</fontname>
+			<fontsize>20</fontsize>
+			<fontstyle>plain</fontstyle>
+		</font>
+		<icon>
+			<iconsize>44</iconsize>
+		</icon>
+		<misc>
+			<wrap>true</wrap>
+			<linenum>true</linenum>
+			<autocompile>false</autocompile>
+			<boolrecentfiles>true</boolrecentfiles>
+			<nbctool> </nbctool>
+			<workspace>/Users/Student/Documents/</workspace>
+			<themexml>resources/config/Properties.xml</themexml>
+		</misc>
+	</properties>
