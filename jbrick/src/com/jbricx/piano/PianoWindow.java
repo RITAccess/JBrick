@@ -6,8 +6,6 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
-
-//TODO: Start dividing the components up into separate classes 
 public class PianoWindow extends JFrame {
 
 	private static NotesView textView = new NotesView();

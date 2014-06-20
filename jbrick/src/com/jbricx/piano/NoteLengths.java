@@ -12,10 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 public class NoteLengths {
 	
-	private JLabel length;
 	private JLabel noteTime;
 	private JTextField noteField;
 	private JLabel waitTime;
@@ -29,6 +30,7 @@ public class NoteLengths {
 	private ButtonGroup noteLength;
 	private JPanel radioPanel;
 	private JPanel customLengthPanel;
+	private Border radioBorder;
 	
 	/**
 	 * Constructor for the radio buttons and the custom text fields
@@ -43,7 +45,6 @@ public class NoteLengths {
 		waitTime = new JLabel("Wait Time: ");
 		waitField = new JTextField(3);
 		
-		length = new JLabel("Length");
 		noteLength = new ButtonGroup();
 		firsts = new JRadioButton("1/1");
 		noteLength.add(firsts);
@@ -58,6 +59,8 @@ public class NoteLengths {
 		sixteenths =new JRadioButton("1/16");
 		noteLength.add(sixteenths);
 		
+		radioBorder = new EtchedBorder();
+		
 	}
 	
 	/**
@@ -71,9 +74,11 @@ public class NoteLengths {
 		
 		GridBagConstraints gbCon = new GridBagConstraints();
 		
-		gbCon.insets = new Insets(0,10,30,10);
+		gbCon.insets = new Insets(0,0,30,5);
+		gbCon.weighty = 0.25;
 		gbCon.gridx = xPlace;
 		gbCon.gridy = yPlace;
+		gbCon.anchor = GridBagConstraints.WEST;
 		customLengthPanel.add(noteCustoms,gbCon);
 	}
 	
@@ -88,6 +93,7 @@ public class NoteLengths {
 		setUpCustom(noteField,1,0);
 		setUpCustom(waitTime,2,0);
 		setUpCustom(waitField,3,0);
+	
 		return customLengthPanel;
 	}
 	
@@ -98,15 +104,15 @@ public class NoteLengths {
 	 */
 	public JPanel noteLengthPanel(){
 		
-		radioPanel.add(length);
 		radioPanel.add(firsts);
 		radioPanel.add(seconds);
 		radioPanel.add(thirds);
 		radioPanel.add(fourths);
 		radioPanel.add(eighths);
 		radioPanel.add(sixteenths);
+		radioPanel.add(customLengthPanel);
 		
-		radioPanel.setBorder(BorderFactory.createEtchedBorder());
+		radioPanel.setBorder(BorderFactory.createTitledBorder(radioBorder,"Length"));
 		return radioPanel;
 	}
 }

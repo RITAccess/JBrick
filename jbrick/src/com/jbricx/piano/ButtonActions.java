@@ -5,8 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 
 /**
  * Class for creating the buttons in the piano frame and giving them functionality
@@ -26,6 +29,7 @@ public class ButtonActions {
 	private JButton help;
 	
 	private JPanel buttonPanel;
+	private Border buttonBorder;
 	
 	/**
 	 * Constructor of the buttons used
@@ -34,7 +38,7 @@ public class ButtonActions {
 	public ButtonActions() {
 		
 		buttonPanel = new JPanel(new GridBagLayout());
-		
+		buttonBorder = new EtchedBorder();
 
 		rest = new JButton("Rest");
 		play = new JButton("Play");
@@ -95,6 +99,7 @@ public class ButtonActions {
 		bPanel(help,1,1);
 		bPanel(clear,0,2);
 		
+		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
 		
 	}

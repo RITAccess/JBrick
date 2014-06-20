@@ -65,14 +65,12 @@ public class PianoControls {
 		gbCon.anchor = GridBagConstraints.CENTER;
 		centerPanel.add(buttonPanel.setUpBPanel(),gbCon);
 		
-		gbCon.insets = new Insets(100,50,100,50);
 		gbCon.weightx = 0.5;
 		gbCon.weighty = 0.5;
-		gbCon.ipady = 200;
 		gbCon.gridx = 1;
 		gbCon.anchor = GridBagConstraints.WEST;
 		centerPanel.add(noteRadioPanel.noteLengthPanel(),gbCon);
-		
+	
 		centerPanel.add(rest,restSetUp());
 		return centerPanel;
 	}
@@ -85,8 +83,10 @@ public class PianoControls {
 	public JPanel setUpControls(){
 		
 		controlPanel.add(transPanel.setUpTransposer(),BorderLayout.NORTH);
-		controlPanel.add(setUpMidControls());
-		controlPanel.add(noteRadioPanel.customPanel(),BorderLayout.SOUTH);
+		controlPanel.add(setUpMidControls(),BorderLayout.CENTER);
+		noteRadioPanel.customPanel().setAlignmentY(noteRadioPanel.noteLengthPanel().getAlignmentY());
+
+		
 		return controlPanel;
 	}
 }
