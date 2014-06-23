@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,20 +25,19 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	JEditorPane messagePane;
-	private Preferences prefs;
 	private JBricxEditorTabFolder tab;
 	// Using this as a hack because preferences update too many times(one update
 	// fired per preference changed.)
-	private int timesRefreshed = 0;
 	private int scrollIncrease = 10;
+	private MainWindow main;
 
 	public JBricxStatusPane(MainWindow main) {
+		this.main = main;
 		tab = main.getTabFolder();
 		messagePane = new JEditorPane();
 		messagePane.setEditable(false);
 		messagePane.setBackground(Color.WHITE);
 		messagePane.setDisabledTextColor(Color.BLACK);
-		prefs = PreferenceStore.getPrefs();
 		messagePane.setFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);
@@ -84,7 +81,11 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		messagePane.setText("");
 		StringBuffer sb = new StringBuffer();
 		for (String file : map.keySet()){
-			sb.append(file + "<br>");
+			System.out.println(file);
+			sb.append(String.format(
+					"<a href=\"%s\">%s</a><br>", 
+					file.substring(0, file.length()-1), file.substring(file.lastIndexOf('/') + 1, file.length()-1) // file path, file name
+			));
 			for (String error : map.get(file)){
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
@@ -122,23 +123,29 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	}
 
 	@Override
-	public void hyperlinkUpdate(HyperlinkEvent lineNumberLink) {
-		int ln = Integer.parseInt(lineNumberLink.getDescription());
+	public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
+		HyperlinkEvent.EventType type = hyperlinkEvent.getEventType();
+		if (type == HyperlinkEvent.EventType.ACTIVATED){
+			// if the hyperlink / text is an int
+			if (hyperlinkEvent.getDescription().matches("\\d+")){
+				int ln = Integer.parseInt(hyperlinkEvent.getDescription());
 
-		JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
-				.getSelectedComponent()).getViewport().getView();
-		try {
-			ln -= 1;
-			if (ln >= 0 && ln < tab.getLineCount()) {
-				tab.scrollRectToVisible(tab.modelToView(tab
-						.getLineStartOffset(ln)));
-				tab.setCaretPosition(tab.getLineStartOffset(ln));
-
-				// TODO this will not jump to the right file if it isn't
-				// currently open
-				this.tab.getSelection().requestFocusInWindow();
+				JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
+						.getSelectedComponent()).getViewport().getView();
+				try {
+					ln -= 1;
+					if (ln >= 0 && ln < tab.getLineCount()) {
+						tab.scrollRectToVisible(tab.modelToView(tab
+								.getLineStartOffset(ln)));
+						tab.setCaretPosition(tab.getLineStartOffset(ln));
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			// else the hyperlink / text is a filepath
+			} else {
+				this.main.openTab(hyperlinkEvent.getDescription());
 			}
-		} catch (Exception e1) {
 		}
 	}
 }
