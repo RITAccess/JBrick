@@ -3,6 +3,8 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
@@ -78,13 +80,13 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 * @param strings
 	 *            Message to **append** to the current text.
 	 */
-	public void pushMessage(String[] strings) {
+	public void pushMessage(HashMap<String, ArrayList<String>> map) {
 		messagePane.setText("");
 		StringBuffer sb = new StringBuffer();
-		if (strings.length > 0) {
-			for (String m : strings) {
-				System.out.println(m);
-				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(m);
+		for (String file : map.keySet()){
+			sb.append(file + "<br>");
+			for (String error : map.get(file)){
+				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
 							"<a href=\"%s\">%s</a> %s <br>", 
@@ -92,7 +94,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 					));
 				}
 			}
-		} else {
+		}
+		if (map.keySet().size() == 0){
 			sb.append("Compile Successful");
 		}
 		messagePane.addHyperlinkListener(this);

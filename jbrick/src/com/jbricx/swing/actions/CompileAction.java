@@ -1,6 +1,8 @@
 package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
@@ -21,7 +23,7 @@ public class CompileAction extends JBricxAbstractAction {
 				"/images/compile.png")), manager);
 	}
 	
-	public String[] run(){
+	public HashMap<String, ArrayList<String>> run(){
 		return NXTAccess.compile(
 				this.getManager().getTabFolder().getSelection().getFileFullPath()
 		);
