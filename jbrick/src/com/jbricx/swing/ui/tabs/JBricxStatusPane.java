@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollBar;
@@ -16,7 +18,6 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import com.jbricx.communication.CompilerError;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
@@ -30,7 +31,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	// fired per preference changed.)
 	private int timesRefreshed = 0;
 	private int scrollIncrease = 10;
-	private List<CompilerError> errorList;
 
 	public JBricxStatusPane(MainWindow main) {
 		tab = main.getTabFolder();
@@ -75,30 +75,30 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 * Proposed function for pushing a message to the console. Not tested yet
 	 * how to put links from compiler errors to jump to line.
 	 * 
-	 * @param list
+	 * @param strings
 	 *            Message to **append** to the current text.
 	 */
-	public void pushMessage(List<CompilerError> list) {
-		if (list != null) {
-			errorList = list;
-			StringBuffer sb = new StringBuffer();
-			for (CompilerError ce : errorList) {
-				String m = ce.toString();
-				String[] mess = m.split(":");
-				m = "<a href=\"" + mess[0] + "\">" + mess[0] + "</a>:";
-				for (int i = 1; i < mess.length; ++i) {
-					m += mess[i];
-					if (i == 1)
-						m += ":";
+	public void pushMessage(String[] strings) {
+		messagePane.setText("");
+		StringBuffer sb = new StringBuffer();
+		if (strings.length > 0) {
+			for (String m : strings) {
+				System.out.println(m);
+				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(m);
+				if (match.matches()) {
+					sb.append(String.format(
+							"<a href=\"%s\">%s</a> %s <br>", 
+							match.group(2), match.group(1), match.group(3)
+					));
 				}
-				m += "<br>";
-				sb.append(m);
 			}
-			messagePane.addHyperlinkListener(this);
-			Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
-			messagePane.setText("<p style=\"font-size:" + newFont.getSize()
-					+ "px\">" + sb.toString() + "</p>");
+		} else {
+			sb.append("Compile Successful");
 		}
+		messagePane.addHyperlinkListener(this);
+		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
+		messagePane.setText("<p style=\"font-size:" + newFont.getSize()
+				+ "px\">" + sb.toString() + "</p>");
 	}
 
 	public void clearOldMessages() {
@@ -116,13 +116,11 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 */
 	public void refresh() {
 		clearOldMessages();
-		pushMessage(errorList);
 	}
 
 	@Override
-	public void hyperlinkUpdate(HyperlinkEvent arg0) {
-		int ln = Integer.parseInt(arg0.getDescription().split(" ")[3]
-				.split(":")[0]);
+	public void hyperlinkUpdate(HyperlinkEvent lineNumberLink) {
+		int ln = Integer.parseInt(lineNumberLink.getDescription());
 
 		JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
 				.getSelectedComponent()).getViewport().getView();

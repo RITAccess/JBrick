@@ -21,15 +21,15 @@ public class CompileAction extends JBricxAbstractAction {
 				"/images/compile.png")), manager);
 	}
 	
-	public void run(){
-		NXTAccess.compile(
+	public String[] run(){
+		return NXTAccess.compile(
 				this.getManager().getTabFolder().getSelection().getFileFullPath()
 		);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.run();
+		this.getManager().getStatusPane().pushMessage(this.run());
 	}
 
 }
