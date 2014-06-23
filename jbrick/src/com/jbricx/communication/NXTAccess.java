@@ -21,10 +21,12 @@ public class NXTAccess {
 	
 	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download){
 		String nbc = PreferenceStore.getString(Preference.NBCTOOL);
-		ProcessBuilder pb = new ProcessBuilder(
-				nbc + (download ? " -d" : ""),
-				filepath
-		);
+		ProcessBuilder pb;
+		if (download){
+			pb = new ProcessBuilder(nbc, "-d", filepath);
+		} else {
+			pb = new ProcessBuilder(nbc, filepath);
+		}
 		HashMap<String, ArrayList<String>> errorMap = null;
 		try {
 			Process process = pb.start();
