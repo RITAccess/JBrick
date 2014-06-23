@@ -3,6 +3,7 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -82,10 +83,14 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		StringBuffer sb = new StringBuffer();
 		for (String file : map.keySet()){
 			System.out.println(file);
-			sb.append(String.format(
-					"<a href=\"%s\">%s</a><br>", 
-					file.substring(0, file.length()-1), file.substring(file.lastIndexOf('/') + 1, file.length()-1) // file path, file name
-			));
+			if (new File(file).exists()){
+				sb.append(String.format(
+						"<a href=\"%s\">%s</a><br>", 
+						file.substring(0), file.substring(file.lastIndexOf('/') + 1) // file path, file name
+				));
+			} else {
+				sb.append(file + "\n"); // not a file, some other message or error
+			}
 			for (String error : map.get(file)){
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {

@@ -2,6 +2,7 @@ package com.jbricx.communication;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,17 +11,49 @@ import java.util.HashMap;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
+/**
+ * NXTAccess provides all the necessary functions to get the programs to download on a NXT brick
+ * and to compile.
+ * 
+ * @author Ethan Jurman (ehj2229)
+ */
 public class NXTAccess {
+	/**
+	 * Compiles the filepath program, returns any errors that might exist. 
+	 * @param filepath - the filepath of the nxc program
+	 * @return a HashMap containing filepaths, and errors for individual files
+	 */
 	public static HashMap<String, ArrayList<String>> compile(String filepath){
 		return NXTAccess.runNBC(filepath, false);
 	}
 	
+	/**
+	 * Downloads the program onto the brick. Does all the commands of the compiler as well.
+	 * @param filepath
+	 * @return a HashMap containing filepaths, and errors for individual files
+	 */
 	public static HashMap<String, ArrayList<String>> downloadToBrick(String filepath){
 		return NXTAccess.runNBC(filepath, true);
 	}
 	
+	/**
+	 * Builds and runs a process (requires the NBC compiler) that downloads / compiles the application
+	 * onto the NXT brick.
+	 * 
+	 * @param filepath - filepath of the program
+	 * @param download - whether or not the program needs to be downloaded to the nxt brick
+	 * @return a HashMap containing filepaths, and errors for individual files
+	 */
 	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download){
 		String nbc = PreferenceStore.getString(Preference.NBCTOOL);
+		File nbcFile = new File(nbc);
+		
+		if (!nbcFile.exists()){
+			HashMap<String, ArrayList<String>> noNBC = new HashMap<String, ArrayList<String>>();
+			noNBC.put("No NBC Tool Compiler", new ArrayList<String>());
+			return noNBC; // requires nbc program
+		}
+		
 		ProcessBuilder pb;
 		if (download){
 			pb = new ProcessBuilder(nbc, "-d", filepath);
@@ -48,7 +81,7 @@ public class NXTAccess {
 					do {
 						line = buffReader.readLine(); // Looking for Line number / File name in error printout
 					} while (!line.contains("line "));
-					String file = line.subSequence(6, line.indexOf(" ; ")).toString();
+					String file = line.subSequence(6, line.indexOf(" ; ")-1).toString();
 					ArrayList<String> errorList = errorMap.get(file);
 					if (errorList == null){
 						errorList = new ArrayList<String>();
