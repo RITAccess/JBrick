@@ -6,6 +6,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
@@ -138,6 +140,15 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			newItem.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
 			newItem.setForeground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
 			newItem.setLineWrap(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
+			
+			//Property listenter to know when they file becomes either clean or dirty
+			newItem.addPropertyChangeListener(newItem.DIRTY_PROPERTY, new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					refreshTabTitles();	
+				}
+			});
+			
 			RTextScrollPane scroller = new RTextScrollPane(newItem);
 			scroller.setFoldIndicatorEnabled(true);
 			String fileName = newItem.getFileName();
@@ -432,7 +443,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			JBricxTabItem tab = (JBricxTabItem) (scroller.getViewport()
 					.getView());
 			if (tab.getFileName() != null) {
-				this.setTitleAt(i, tab.getFileName());
+				if(tab.isDirty())
+					this.setTitleAt(i, tab.getFileName() + "*");
+				else
+					this.setTitleAt(i, tab.getFileName());
 				this.setTabComponentAt(i, new ButtonTabComponent(this));
 			}
 		}
@@ -475,5 +489,4 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		}
 		return recentFiles;
 	}
-
 }
