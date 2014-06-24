@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -12,6 +13,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.jbricx.communication.NXTAccess;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
+
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
  * Compiles the current file.
@@ -38,7 +41,7 @@ public class CompileAction extends JBricxAbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		compile("saved", "compile", "Save");
+		compile("saved", "compile", "save", "Save");
 	}
 	
 	/**
@@ -48,14 +51,14 @@ public class CompileAction extends JBricxAbstractAction {
 	 * @param buttonText
 	 * @return
 	 */
-	public Boolean compile(String actionText, String resultText, String buttonText)
+	public Boolean compile(String actionText, String resultText, String finalActionText, String buttonText)
 	{
 	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
 	    Boolean saved = true;
 	    //If the file hasnt been saved then prompt the user to save.
 	    if(tab.isDirty())
 	    {
-	    	if(saveDialog(tab, actionText, resultText, buttonText))
+	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText))
 	    	{
 		    	SaveAction action = new SaveAction(jBManager);
 		    	saved = action.saveFile();
@@ -77,22 +80,30 @@ public class CompileAction extends JBricxAbstractAction {
 	 * @param buttonText
 	 * @return
 	 */
-	public Boolean saveDialog(JBricxTabItem tab, String actionText, String resultText, String buttonText)
-	{ 
-		Object[] options = { buttonText, "Cancel" };
+	public Boolean saveDialog(JBricxTabItem tab, String actionText, String resultText, String finalActionText, String buttonText)
+	{ 	
+		JCheckBox checkbox = new JCheckBox("Always compile and save");
+		checkbox.getAccessibleContext().setAccessibleName("Auto Compile Box. Press Space to Toggle");
+		Object[] options = { buttonText, "Cancel", checkbox };
 		int overwrite = JOptionPane
 				.showOptionDialog(
 						tab,
 						"File must be " + actionText + " before it can " + resultText + "."
-								+ " \nWould you like to " + actionText + " \""
+								+ " \nWould you like to " + finalActionText + " \""
 								+ tab.getFileName()
 								+ "\"?",
 						"Unsaved Changes",
-						JOptionPane.YES_NO_OPTION,
+						JOptionPane.OK_CANCEL_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options,
 						options[0]);
+		
 		// User wishes to save the file before closing.
-		if (overwrite == JOptionPane.YES_OPTION) {
+		if (overwrite == JOptionPane.OK_OPTION) {
+			//Checks if the user wants to always preform this acton
+			if(checkbox.isSelected()){
+				PreferenceStore.set(PreferenceStore.Preference.AUTOCOMPILE, true);
+			}
+			
 			return true;
 		}
 		return false;

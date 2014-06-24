@@ -28,7 +28,7 @@ public class DownloadAction extends JBricxAbstractAction{
 	public void actionPerformed(ActionEvent e) {
 
     	CompileAction action = new CompileAction(jBManager);
-    	Boolean saved = action.compile("compiled", "be downloaded", "Save & Compile");
+    	Boolean saved = action.compile("compiled", "be downloaded", "compile", "Save & Compile");
     	if(saved)
 		NXTAccess.downloadToBrick(
 				this.getManager().getTabFolder().getSelection().getFileFullPath()
