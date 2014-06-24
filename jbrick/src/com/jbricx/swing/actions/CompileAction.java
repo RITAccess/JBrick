@@ -38,12 +38,24 @@ public class CompileAction extends JBricxAbstractAction {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		compile("saved", "compile", "Save");
+	}
+	
+	/**
+	 * Preforms checks to make sure the file was saved before it compiles
+	 * @param actionText
+	 * @param resultText
+	 * @param buttonText
+	 * @return
+	 */
+	public Boolean compile(String actionText, String resultText, String buttonText)
+	{
 	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
 	    Boolean saved = true;
 	    //If the file hasnt been saved then prompt the user to save.
 	    if(tab.isDirty())
 	    {
-	    	if(saveDialog(tab))
+	    	if(saveDialog(tab, actionText, resultText, buttonText))
 	    	{
 		    	SaveAction action = new SaveAction(jBManager);
 		    	saved = action.saveFile();
@@ -53,21 +65,26 @@ public class CompileAction extends JBricxAbstractAction {
 	    }
 	    if(saved)
 	    	this.getManager().getStatusPane().pushMessage(this.run());
+	    
+	    return saved;
 	}
 	
 	/**
-	 * Dialog box that asks the user if they want to save.
+	 * Creates dialog box for the save prompt
 	 * @param tab
-	 * @return Did they save?
+	 * @param actionText
+	 * @param resultText
+	 * @param buttonText
+	 * @return
 	 */
-	public Boolean saveDialog(JBricxTabItem tab)
+	public Boolean saveDialog(JBricxTabItem tab, String actionText, String resultText, String buttonText)
 	{ 
-		Object[] options = { "Save", "Cancel" };
+		Object[] options = { buttonText, "Cancel" };
 		int overwrite = JOptionPane
 				.showOptionDialog(
 						tab,
-						"File must be saved before it can compile."
-								+ " \nWould you like to save  \""
+						"File must be " + actionText + " before it can " + resultText + "."
+								+ " \nWould you like to " + actionText + " \""
 								+ tab.getFileName()
 								+ "\"?",
 						"Unsaved Changes",
