@@ -149,8 +149,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		if (beforeCloseActions()){
 			this.dispose();
 			System.exit(0);
-		} else {
-			System.out.println("shouldn't do nothing");
 		}
 	}
 	
