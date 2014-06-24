@@ -805,7 +805,5 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 				XMLParser.writeToFile(doc, fullTheme);
 			}
 		}
-	}
-
-	
+	}	
 }
