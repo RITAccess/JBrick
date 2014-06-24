@@ -25,6 +25,11 @@ public class SaveAction extends JBricxAbstractAction {
 	  super("", new ImageIcon(SaveAction.class.getResource("/images/document-save.png")), manager);
   }
 
+  @Override
+  public void actionPerformed(ActionEvent e) {
+	  saveFile();
+  }
+
   /**
    * Saves the file.
    * Checks if it was saved during compile (.bak)
@@ -34,34 +39,36 @@ public class SaveAction extends JBricxAbstractAction {
    * 
    * When it is done, refreshes the tab items' title.
    */
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    JBricxTabItem currItem = getManager().getTabFolder().getSelection();
-    // Check and see if it was previously saved as a backup
-    if (!currItem.isNewFile()
-        && currItem.getFileName().endsWith(".bak.nxc")) {
-      
-    	String fname = currItem.getFileAbsolutePath();
-      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
-          true, getManager());
-      //File was saved, check again if it has .bak
-      if (currItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
-        // File was successfully saved, cleanup the temporary file
-        File f = new File(fname);
-        f.delete();
-      }
-    } else {
-      ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
-          false, getManager());
-    }
+  public Boolean saveFile()
+  {
+  		Boolean saved = false;
+	    JBricxTabItem currItem = getManager().getTabFolder().getSelection();
+	    // Check and see if it was previously saved as a backup
+	    if (!currItem.isNewFile()
+	        && currItem.getFileName().endsWith(".bak.nxc")) {
+	      
+	    	String fname = currItem.getFileAbsolutePath();
+	    	saved = ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
+	    			true, getManager());
+	      //File was saved, check again if it has .bak
+	      if (currItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
+	        // File was successfully saved, cleanup the temporary file
+	        File f = new File(fname);
+	        f.delete();
+	      }
+	    } else {
+	    	saved = ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
+	    			false, getManager());
+	    	System.out.println(saved);
+	    }
 
-    if (getManager().isAutoCompile()) {
-      CompileAction compileAction = new CompileAction(getManager());
-      compileAction.run();
-    }
-    
-    //Refresh file names
-    getManager().getTabFolder().refreshTabItems();
-    
+	    if (getManager().isAutoCompile()) {
+	      CompileAction compileAction = new CompileAction(getManager());
+	      compileAction.run();
+	    }
+	    
+	    //Refresh file names
+	    getManager().getTabFolder().refreshTabItems();
+	    return saved;
   }
 }

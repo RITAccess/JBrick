@@ -746,15 +746,15 @@ public RTextAreaBase(Color backgroundColor){
 //				if (alloc!=null)
 //					currentCaretY = alloc.y + caretLine*lineHeight;
 //			}
-// Modified for code folding requirements
-try {
-	Rectangle temp = modelToView(dot);
-	if (temp!=null) {
-		currentCaretY = temp.y;
-	}
-} catch (BadLocationException ble) {
-	ble.printStackTrace(); // Should never happen.
-}
+			// Modified for code folding requirements
+			try {
+				Rectangle temp = modelToView(dot);
+				if (temp!=null) {
+					currentCaretY = temp.y;
+				}
+			} catch (BadLocationException ble) {
+				ble.printStackTrace(); // Should never happen.
+			}
 		}
 
 		// Repaint current line (to fill in entire highlight), and old line
