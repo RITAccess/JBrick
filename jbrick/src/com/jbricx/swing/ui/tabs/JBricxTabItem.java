@@ -1,10 +1,7 @@
 package com.jbricx.swing.ui.tabs;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
