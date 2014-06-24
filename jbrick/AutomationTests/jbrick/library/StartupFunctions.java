@@ -15,7 +15,7 @@ public class StartupFunctions {
 		if (fantomCheck)
 			mainWindow.run();
 		else
-			mainWindow.runNoFantom();
+			mainWindow.run();
 		
 		return mainWindow;	
 	}

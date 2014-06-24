@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
-<eclipse-userlibraries version="2">
-    <library name="jlib" systemlibrary="false">
-        <archive path="/Fantom JNA/lib/jinput.jar"/>
-        <archive path="/Fantom JNA/lib/jinput-test.jar"/>
-    </library>
-</eclipse-userlibraries>
