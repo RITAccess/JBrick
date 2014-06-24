@@ -47,7 +47,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		
 		initMainWindow();
 		
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
 		
 		// Set on close operation for mac client (command + q / Jbricks -> quit)
@@ -69,29 +68,13 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 
 				@Override
 				public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
-					mw.beforeCloseActions();
-					qr.performQuit();
+					if (mw.beforeCloseActions()){
+						qr.performQuit();
+					}
 				}
 			}.setMainWindow(this));
 		}
 	}
-	
-	/**
-	 * Run the application. Called by initial class. 
-	 * Does not check for Fantom driver
-	 * 
-	 * for testing only
-	 */
-	public void runNoFantom() {
-		new PreferenceStore();
-		prefs = PreferenceStore.getPrefs();
-		
-		initMainWindow();
-		
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(this);
-	}
-	
 	
 	/**
 	 * Configures settings of the main window and builds components.
@@ -103,7 +86,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
 		this.setVisible(true);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 	  
 	/**
@@ -163,9 +146,12 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	 * Closing logic
 	 */
 	public void close() {
-		beforeCloseActions();
-		this.dispose();
-		System.exit(0);
+		if (beforeCloseActions()){
+			this.dispose();
+			System.exit(0);
+		} else {
+			System.out.println("shouldn't do nothing");
+		}
 	}
 	
 	/**
@@ -173,12 +159,14 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	 * 
 	 * operation to be run on exit or close of application
 	 */
-	public void beforeCloseActions() {
+	public boolean beforeCloseActions() {
 		// Save recent files
-		if (getTabFolder().checkOverwrite()) {
+		boolean cleanup = getTabFolder().checkOverwrite();
+		if (cleanup) {
 			StringBuilder recentFiles = getTabFolder().getFileList();
 			prefs.put(PreferenceStore.RECENTFILES, recentFiles.toString());
 		}
+		return cleanup;
 	}
 
 	@Override
