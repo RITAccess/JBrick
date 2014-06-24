@@ -71,6 +71,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 					if (mw.beforeCloseActions()){
 						qr.performQuit();
 					}
+					qr.cancelQuit();
 				}
 			}.setMainWindow(this));
 		}
