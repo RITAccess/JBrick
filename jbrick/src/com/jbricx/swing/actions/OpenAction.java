@@ -2,6 +2,7 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -26,6 +27,7 @@ public class OpenAction extends JBricxAbstractAction {
 	    super("", new ImageIcon(OpenAction.class.getResource("/images/document-open.png")), manager);
 	  }
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
@@ -44,6 +46,7 @@ public class OpenAction extends JBricxAbstractAction {
 		
 		final JFileChooser fileOpener = new JFileChooser();
 		fileOpener.setFileFilter(filter);
+		fileOpener.setCurrentDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
 		
 		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
 		int returnVal = fileOpener.showOpenDialog(getManager().getShell());
