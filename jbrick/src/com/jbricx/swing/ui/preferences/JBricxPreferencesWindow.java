@@ -493,7 +493,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeDirectoryBoxes() {
 		workspaceLabel = new JLabel("Workspace directory");
 		
-		directoryTextArea = new JTextField();
+		directoryTextArea = new JTextField(15);
 		directoryTextArea.setText(PreferenceStore.getString(Preference.WORKSPACE));
 		directoryTextArea.getAccessibleContext().setAccessibleName("Workspace Directory text area");
 		
@@ -530,7 +530,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeToolDirectory(){
 		toolLocationLabel = new JLabel("NBC Tool Location");
 		
-		toolLocationTextArea = new JTextField();
+		toolLocationTextArea = new JTextField(15);
 		toolLocationTextArea.setText(PreferenceStore.getString(Preference.NBCTOOL));
 		toolLocationTextArea.getAccessibleContext().setAccessibleName("NBC Tool Location field");
 		
@@ -547,7 +547,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private void makeThemeLocation() {
 		themeLocationLabel = new JLabel("Theme");
 		
-		themeLocationTextArea = new JTextField();
+		themeLocationTextArea = new JTextField(15);
 		fullTheme = PreferenceStore.getString(Preference.THEMEXML);
 		themeLocationTextArea.setText(fullTheme.split("/")[fullTheme.split("/").length-1]);
 		themeLocationTextArea.getAccessibleContext().setAccessibleName("Theme Location");

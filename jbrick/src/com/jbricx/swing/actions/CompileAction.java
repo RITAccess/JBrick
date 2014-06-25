@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.communication.NXTAccess;
+import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
-
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
@@ -34,9 +34,30 @@ public class CompileAction extends JBricxAbstractAction {
 	}
 	
 	public HashMap<String, ArrayList<String>> run(){
-		return NXTAccess.compile(
-				this.getManager().getTabFolder().getSelection().getFileFullPath()
-		);
+		HashMap<String, ArrayList<String>> value =
+				NXTAccess.compile(
+						this.getManager().getTabFolder().getSelection().getFileFullPath()
+						);
+		
+		if(value.containsKey("No NBC Tool Compiler")){
+		    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
+			Object[] options = { "Yes", "No" };
+			int response = JOptionPane
+					.showOptionDialog(
+							tab,
+							"The compiler was not found. Would you like to specify one now?",
+							"Compiler Not Found",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, options,
+							options[0]);
+			if(response == JOptionPane.YES_OPTION){
+				CompilerNotFoundWindow window = new CompilerNotFoundWindow(jBManager);
+				window.setVisible(true);
+				return run();
+			}
+		}
+		
+		return value;
 	}
 	
 	@Override

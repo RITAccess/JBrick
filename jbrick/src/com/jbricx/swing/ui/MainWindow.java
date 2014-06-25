@@ -82,7 +82,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		}
 		if(!prefs.getBoolean("ranPreviously", false))
 		{
-			System.out.println("Didnt run previously");
 			FirstTimeSettingsWindow firstTimeWindow = new FirstTimeSettingsWindow(this);
 			firstTimeWindow.setVisible(true);
 			prefs.putBoolean("ranPreviously",true);
