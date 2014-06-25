@@ -1,6 +1,7 @@
 package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +16,7 @@ import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 /**
  * Compiles the current file.
@@ -39,7 +41,9 @@ public class CompileAction extends JBricxAbstractAction {
 						this.getManager().getTabFolder().getSelection().getFileFullPath()
 						);
 		
-		if(value.containsKey("No NBC Tool Compiler")){
+		Boolean exists = new File(PreferenceStore.getString(Preference.NBCTOOL)).exists();
+		
+		if(!exists){
 		    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
 			Object[] options = { "Yes", "No" };
 			int response = JOptionPane
