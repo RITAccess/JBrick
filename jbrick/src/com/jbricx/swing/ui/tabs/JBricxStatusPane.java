@@ -96,8 +96,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
-							"<a href=\"%s\">%s</a> %s <br>", 
-							match.group(2), match.group(1), match.group(3)
+							"<a href=\"%s,%s\">%s</a> %s <br>", 
+							programFile, match.group(2), match.group(1), match.group(3)
 					));
 				}
 			}
@@ -133,8 +133,13 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		HyperlinkEvent.EventType type = hyperlinkEvent.getEventType();
 		if (type == HyperlinkEvent.EventType.ACTIVATED){
 			// if the hyperlink / text is an int
-			if (hyperlinkEvent.getDescription().matches("\\d+")){
-				int ln = Integer.parseInt(hyperlinkEvent.getDescription());
+			String desc = hyperlinkEvent.getDescription();
+			int split = desc.indexOf(",");
+			// open file. (if a file is all that is given, the split int will be -1)
+			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));	
+			// go to line in file
+			if (desc.matches(".*,\\d+")){
+				int ln = Integer.parseInt(desc.substring(split + 1));
 
 				JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
 						.getSelectedComponent()).getViewport().getView();
@@ -148,9 +153,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
-			// else the hyperlink / text is a filepath
-			} else {
-				this.main.openTab(hyperlinkEvent.getDescription());
 			}
 		}
 	}
