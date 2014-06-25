@@ -47,11 +47,11 @@ public class SaveAction extends JBricxAbstractAction {
 	    if (!currItem.isNewFile()
 	        && currItem.getFileName().endsWith(".bak.nxc")) {
 	      
-	    	String fname = currItem.getFileAbsolutePath();
+	    	String fname = currItem.getFileFullPath();
 	    	saved = ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
 	    			true, getManager());
 	      //File was saved, check again if it has .bak
-	      if (currItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
+	      if (currItem.getFileFullPath().endsWith(".bak.nxc")) {
 	        // File was successfully saved, cleanup the temporary file
 	        File f = new File(fname);
 	        f.delete();

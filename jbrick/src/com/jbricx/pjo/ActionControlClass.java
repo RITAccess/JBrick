@@ -31,7 +31,7 @@ public class ActionControlClass {
 	 */
     public static boolean saveFile(JBricxTabItem tabItem, boolean isSaveAs, final JBricxManager manager) {
         
-    	String fileLocation = tabItem.getFileAbsolutePath();
+    	String fileLocation = tabItem.getFileFullPath();
 
         boolean isNewFile = false;
 

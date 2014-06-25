@@ -83,10 +83,11 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		StringBuffer sb = new StringBuffer();
 		for (String file : map.keySet()){
 			System.out.println(file);
-			if (new File(file).exists()){
+			File programFile = new File(file);
+			if (programFile.exists()){
 				sb.append(String.format(
 						"<a href=\"%s\">%s</a><br>", 
-						file.substring(0), file.substring(file.lastIndexOf('/') + 1) // file path, file name
+						programFile.getAbsolutePath(), programFile.getName() // file path, file name
 				));
 			} else {
 				sb.append(file + "\n"); // not a file, some other message or error

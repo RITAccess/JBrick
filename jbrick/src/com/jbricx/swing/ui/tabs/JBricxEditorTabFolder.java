@@ -182,13 +182,13 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		// This first if statement is logic
 		// for deciding when to close a file if there is only one left.
 		if ((!getSelection().isNewFile()
-				|| getSelection().getFileAbsolutePath().endsWith(".bak.nxc") || getSelection()
+				|| getSelection().getFileFullPath().endsWith(".bak.nxc") || getSelection()
 				.isDirty())
 				|| closingTime || getComponentCount() - 1 > 1) {
 
 			JBricxTabItem tabItem = (JBricxTabItem) ((JScrollPane) getComponentAt(n))
 					.getViewport().getView();
-			String fileName = tabItem.getFileAbsolutePath();
+			String fileName = tabItem.getFileFullPath();
 			// User needs to be prompted to save file before closing
 			if (tabItem.isDirty()
 					|| (tabItem.isNewFile() && fileName.endsWith(".bak.nxc"))) {
@@ -208,14 +208,14 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				if (overwrite == JOptionPane.YES_OPTION) {
 					boolean saveSuccess;
 
-					if (tabItem.getFileAbsolutePath() != null
-							&& tabItem.getFileAbsolutePath().endsWith(
+					if (tabItem.getFileFullPath() != null
+							&& tabItem.getFileFullPath().endsWith(
 									".bak.nxc")) {
 
-						String fpathname = tabItem.getFileAbsolutePath();
+						String fpathname = tabItem.getFileFullPath();
 						saveSuccess = ActionControlClass.saveFile(tabItem,
 								true, manager);
-						if (!tabItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
+						if (!tabItem.getFileFullPath().endsWith(".bak.nxc")) {
 							// File was successfully saved, cleanup the
 							// temporary file
 							File f = new File(fpathname);
@@ -228,7 +228,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 					if (saveSuccess) {
 						if (closingTime) {
-							listOfFiles.add(tabItem.getFileAbsolutePath());
+							listOfFiles.add(tabItem.getFileFullPath());
 						} else {
 							keepAFileOpen();
 						}
@@ -240,13 +240,13 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 					// User said they do not wish to save (close without saving)
 				} else if (overwrite == JOptionPane.NO_OPTION) {
 					// User chose not to save .bak.nxc file. Delete it.
-					if (tabItem.getFileAbsolutePath().endsWith(".bak.nxc")) {
-						String fpathname = tabItem.getFileAbsolutePath();
+					if (tabItem.getFileFullPath().endsWith(".bak.nxc")) {
+						String fpathname = tabItem.getFileFullPath();
 						File f = new File(fpathname);
 						f.delete();
 					} else {
 						if (closingTime && !tabItem.isNewFile()) {
-							listOfFiles.add(tabItem.getFileAbsolutePath());
+							listOfFiles.add(tabItem.getFileFullPath());
 						}
 					}
 					keepAFileOpen();
@@ -259,7 +259,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			} else {
 				if (closingTime) {
 					if (!tabItem.isNewFile()) {
-						listOfFiles.add(tabItem.getFileAbsolutePath());
+						listOfFiles.add(tabItem.getFileFullPath());
 					}
 				}
 				keepAFileOpen();
@@ -464,7 +464,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		int count = getComponentCount();
 		for (int i = 0; i < count - 1; i++) {
 			try {
-				if (getSelection(i).getFileAbsolutePath().equals(filePath)) {
+				if (getSelection(i).getFileFullPath().equals(filePath)) {
 					index = i;
 					break;
 				}

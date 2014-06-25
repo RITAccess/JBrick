@@ -66,9 +66,9 @@ public class CompileAction extends JBricxAbstractAction {
 	    	else
 	    		saved = false;
 	    }
-	    if(saved)
+	    if(saved){
 	    	this.getManager().getStatusPane().pushMessage(this.run());
-	    
+	    }
 	    return saved;
 	}
 	
