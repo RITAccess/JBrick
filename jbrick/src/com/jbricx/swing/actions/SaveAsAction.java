@@ -44,10 +44,6 @@ public class SaveAsAction extends JBricxAbstractAction {
 		} else
 			ActionControlClass.saveFile(currItem, true, getManager());
 
-		if (getManager().isAutoCompile()) {
-			CompileAction compileAction = new CompileAction(getManager());
-			compileAction.run();
-		}
 		//Refresh file names
 	    getManager().getTabFolder().refreshTabItems();
 	}
