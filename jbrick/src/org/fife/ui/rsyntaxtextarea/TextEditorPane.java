@@ -89,11 +89,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * The value returned by {@link #getLastSaveOrLoadTime()} for remote files.
 	 */
 	public static final long LAST_MODIFIED_UNKNOWN		= 0;
-	
-	/**
-	 * The default name given to files if none is specified in a constructor.
-	 */
-	private static final String DEFAULT_FILE_NAME = "Untitled.txt";
 
 	/**
 	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 

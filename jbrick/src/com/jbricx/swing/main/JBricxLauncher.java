@@ -1,7 +1,12 @@
 package com.jbricx.swing.main;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import com.apple.eawt.Application;
 import com.jbricx.swing.ui.MainWindow;
 import com.sun.jna.Platform;
 
@@ -35,6 +40,16 @@ public class JBricxLauncher {
 		}
 		
 		MainWindow mainWindow = new MainWindow();
+		try {
+		     Image img = Toolkit.getDefaultToolkit().getImage("images/icon-small.png");
+		     mainWindow.setIconImage(img);
+		     if(Platform.isMac()){
+			     Application app = Application.getApplication();
+			     app.setDockIconImage(img); 
+		     }
+		  } catch (Exception e) {
+			  System.err.println("Image not loaded");
+		  }
 		mainWindow.setTitle("JBrick");
 		mainWindow.run();
 	}

@@ -21,7 +21,7 @@ public class PianoAction extends JBricxAbstractAction /*implements NXTObserver*/
    * PreferencesAction constructor
    */
   public PianoAction(JBricxManager manager) {
-	  super("", new ImageIcon("./resources/images/piano_icon.png"), manager);
+	  super("", new ImageIcon("images/piano_icon.png"), manager);
   }
 
   /**

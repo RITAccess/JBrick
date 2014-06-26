@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="i18n"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="src" path="uiTests"/>
 	<classpathentry kind="src" path="AutomationTests"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
 		<accessrules>
@@ -12,7 +11,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
-	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/usb4java-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/libusb4java-1.2.0-osx-x86.jar"/>
 	<classpathentry kind="lib" path="lib/libusb4java-1.2.0-windows-x86.jar"/>

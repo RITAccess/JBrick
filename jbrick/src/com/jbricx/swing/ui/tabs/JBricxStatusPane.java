@@ -3,8 +3,9 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.List;
-import java.util.prefs.Preferences;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,20 +26,19 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	JEditorPane messagePane;
-	private Preferences prefs;
 	private JBricxEditorTabFolder tab;
 	// Using this as a hack because preferences update too many times(one update
 	// fired per preference changed.)
-	private int timesRefreshed = 0;
 	private int scrollIncrease = 10;
+	private MainWindow main;
 
 	public JBricxStatusPane(MainWindow main) {
+		this.main = main;
 		tab = main.getTabFolder();
 		messagePane = new JEditorPane();
 		messagePane.setEditable(false);
 		messagePane.setBackground(Color.WHITE);
 		messagePane.setDisabledTextColor(Color.BLACK);
-		prefs = PreferenceStore.getPrefs();
 		messagePane.setFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);
@@ -78,22 +78,31 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 * @param strings
 	 *            Message to **append** to the current text.
 	 */
-	public void pushMessage(String[] strings) {
+	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.setText("");
 		StringBuffer sb = new StringBuffer();
-		if (strings.length > 0) {
-			for (String m : strings) {
-				System.out.println(m);
-				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(m);
+		for (String file : map.keySet()){
+			File programFile = new File(file);
+			if (programFile.exists()){
+				sb.append(String.format(
+						"<a href=\"%s\">%s</a><br>", 
+						programFile.getAbsolutePath(), programFile.getName() // file path, file name
+				));
+			} else {
+				sb.append(file + "\n"); // not a file, some other message or error
+			}
+			for (String error : map.get(file)){
+				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
-							"<a href=\"%s\">%s</a> %s <br>", 
-							match.group(2), match.group(1), match.group(3)
+							"<a href=\"%s,%s\">%s</a> %s <br>", 
+							programFile, match.group(2), match.group(1), match.group(3)
 					));
 				}
 			}
-		} else {
-			sb.append("Compile Successful");
+		}
+		if (map.keySet().size() == 0){
+			sb.append((download ? "Download" : "Compile") + " Successful");
 		}
 		messagePane.addHyperlinkListener(this);
 		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
@@ -119,23 +128,31 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	}
 
 	@Override
-	public void hyperlinkUpdate(HyperlinkEvent lineNumberLink) {
-		int ln = Integer.parseInt(lineNumberLink.getDescription());
+	public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
+		HyperlinkEvent.EventType type = hyperlinkEvent.getEventType();
+		if (type == HyperlinkEvent.EventType.ACTIVATED){
+			// if the hyperlink / text is an int
+			String desc = hyperlinkEvent.getDescription();
+			int split = desc.indexOf(",");
+			// open file. (if a file is all that is given, the split int will be -1)
+			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));	
+			// go to line in file
+			if (desc.matches(".*,\\d+")){
+				int ln = Integer.parseInt(desc.substring(split + 1));
 
-		JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
-				.getSelectedComponent()).getViewport().getView();
-		try {
-			ln -= 1;
-			if (ln >= 0 && ln < tab.getLineCount()) {
-				tab.scrollRectToVisible(tab.modelToView(tab
-						.getLineStartOffset(ln)));
-				tab.setCaretPosition(tab.getLineStartOffset(ln));
-
-				// TODO this will not jump to the right file if it isn't
-				// currently open
-				this.tab.getSelection().requestFocusInWindow();
+				JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
+						.getSelectedComponent()).getViewport().getView();
+				try {
+					ln -= 1;
+					if (ln >= 0 && ln < tab.getLineCount()) {
+						tab.scrollRectToVisible(tab.modelToView(tab
+								.getLineStartOffset(ln)));
+						tab.setCaretPosition(tab.getLineStartOffset(ln));
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e1) {
 		}
 	}
 }

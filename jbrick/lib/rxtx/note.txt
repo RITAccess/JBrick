@@ -1,8 +1,0 @@
-I'm currently using the win32 dll on a win64 machine... havent tested anything but the win32 dll
-if you are using a 32bit JVM with a 32 bit version of eclipse, use the win32 dll or you'll get an error loading the dll
-
-
-To get this to work you might need to right click the rxtx jar and point it to the folder containing the correct rxtx dll.
-- the dll does not need to be on the build path
-
--mike g

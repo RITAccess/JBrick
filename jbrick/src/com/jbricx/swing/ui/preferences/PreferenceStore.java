@@ -245,7 +245,7 @@ public class PreferenceStore {
 		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");
 		NBCTOOL_DEFAULT = tempNode.getTextContent();
 
-		prefs.putBoolean("ranPreviously",true);	
+		//prefs.putBoolean("ranPreviously",true);	
 	}
 	
 	/**
@@ -295,6 +295,7 @@ public class PreferenceStore {
 		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");
 		prefs.put(Preference.ICONSIZE.toString(), tempNode.getTextContent());
 		
+		/*
 		//set misc settings
 		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
 		prefs.putBoolean(Preference.WRAP.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
@@ -302,11 +303,11 @@ public class PreferenceStore {
 		prefs.putBoolean(Preference.AUTOCOMPILE.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
 		tempNode = XMLParser.retrieve(doc, "misc", "linenum");
 		prefs.putBoolean(Preference.LINENUM.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
-		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");
-		prefs.put(Preference.NBCTOOL.toString(),tempNode.getTextContent());
+		prefs.put(Preference.NBCTOOL.toString(),NBCTOOL_DEFAULT);
 		prefs.put(Preference.WORKSPACE.toString(),WRKSPC_DEFAULT);
+		*/
 
-		prefs.putBoolean("ranPreviously",true);	
+		//prefs.putBoolean("ranPreviously",true);	
 	}
 	
 	/**

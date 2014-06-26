@@ -44,6 +44,7 @@ public class OpenAction extends JBricxAbstractAction {
 		
 		final JFileChooser fileOpener = new JFileChooser();
 		fileOpener.setFileFilter(filter);
+		fileOpener.setCurrentDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
 		
 		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
 		int returnVal = fileOpener.showOpenDialog(getManager().getShell());

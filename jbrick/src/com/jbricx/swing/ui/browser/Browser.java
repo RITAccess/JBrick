@@ -170,7 +170,7 @@ public class Browser extends JDialog implements ActionListener
 	} 
 	catch (Exception e) 
 	{
-		System.out.println(e.getLocalizedMessage());
+		System.err.println(e.getLocalizedMessage());
 	}
 	return null;
   }
@@ -221,7 +221,7 @@ public class Browser extends JDialog implements ActionListener
 		}
 		catch(Exception e)
 		{
-			System.out.println(e.getLocalizedMessage());
+			System.err.println(e.getLocalizedMessage());
 		}
 		return null;
   }

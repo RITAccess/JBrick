@@ -2287,7 +2287,6 @@ private boolean fractionalFontMetricsEnabled;
 			firePropertyChange(SYNTAX_STYLE_PROPERTY, oldStyle, styleKey);
 			setActiveLineRange(-1, -1);
 		}
-
 	}
 
 
@@ -2367,7 +2366,6 @@ private boolean fractionalFontMetricsEnabled;
 		}
 		return false;
 	}
-
 
 	/**
 	 * Enables or disables templates.<p>
@@ -2610,8 +2608,5 @@ private boolean fractionalFontMetricsEnabled;
 				}
 			}
 		}
-
 	}
-
-
 }

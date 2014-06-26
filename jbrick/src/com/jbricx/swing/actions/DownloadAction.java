@@ -14,18 +14,25 @@ import com.jbricx.swing.ui.JBricxManager;
 @SuppressWarnings("serial")
 public class DownloadAction extends JBricxAbstractAction{
 
+	JBricxManager jBManager;
+	
 	/**
 	 * Constructor
 	 */
 	public DownloadAction(final JBricxManager manager) {
 		super("", new ImageIcon(DownloadAction.class.getResource("/images/download.png")), manager);
+		this.jBManager = manager;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		NXTAccess.downloadToBrick(
-				this.getManager().getTabFolder().getSelection().getFileFullPath()
-		);
+    	CompileAction action = new CompileAction(jBManager);
+    	Boolean saved = action.compile("compiled", "be downloaded", "compile", "Save & Compile", true);
+    	if(saved){
+    	    this.getManager().getStatusPane().pushMessage(
+    				NXTAccess.downloadToBrick(jBManager.getTabFolder().getSelection().getFileFullPath()),
+    				true
+    	    );
+    	}
 	}
 }
