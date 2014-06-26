@@ -41,12 +41,14 @@ public class JBricxLauncher {
 		
 		MainWindow mainWindow = new MainWindow();
 		try {
-		     Image img = Toolkit.getDefaultToolkit().getImage("resources/images/icon-small.png");
-		     Application app = Application.getApplication();
-		     app.setDockIconImage(img);
+		     Image img = Toolkit.getDefaultToolkit().getImage("images/icon-small.png");
 		     mainWindow.setIconImage(img);
+		     if(Platform.isMac()){
+			     Application app = Application.getApplication();
+			     app.setDockIconImage(img); 
+		     }
 		  } catch (Exception e) {
-		     System.err.println("Could not load program icon.");
+			  System.err.println("Image not loaded");
 		  }
 		mainWindow.setTitle("JBrick");
 		mainWindow.run();
