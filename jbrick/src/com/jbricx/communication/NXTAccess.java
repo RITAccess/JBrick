@@ -54,6 +54,12 @@ public class NXTAccess {
 			return noNBC; // requires nbc program
 		}
 		
+		if(download && !USBConnection.isConnected()){
+			HashMap<String, ArrayList<String>> noNXT = new HashMap<String, ArrayList<String>>();
+			noNXT.put("No NXT Brick connected. Please plug in and turn on your NXT Brick through a USB Cable.", new ArrayList<String>());
+			return noNXT; // requires nbc program
+		}
+		
 		ProcessBuilder pb;
 		if (download){
 			pb = new ProcessBuilder(nbc, "-d", filepath);

@@ -36,16 +36,45 @@ public class CompileAction extends JBricxAbstractAction {
 	}
 	
 	public HashMap<String, ArrayList<String>> run(){
+
+		
+		// runs the nbc compiler
 		HashMap<String, ArrayList<String>> value =
 				NXTAccess.compile(
 						this.getManager().getTabFolder().getSelection().getFileFullPath()
 						);
-		
+		return value;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		compile("saved", "compile", "save", "Save", false);
+	}
+	
+	/**
+	 * Preforms checks to make sure the file was saved before it compiles
+	 * @param actionText
+	 * @param resultText
+	 * @param buttonText
+	 * @return
+	 */
+	public Boolean compile(String actionText, String resultText, String finalActionText, String buttonText, boolean download)
+	{
+	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
+	    
+	    Boolean saved = !tab.isDirty();
+	    //If the file hasn't been saved then prompt the user to save.
+	    if(!saved){
+	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText)){
+		    	SaveAction action = new SaveAction(jBManager);
+		    	saved = action.saveFile();
+	    	}
+	    }
+	    
+		// Checks whether NBC compiler exists. If it doesn't, ask user if they want to specify one.
 		Boolean exists = new File(PreferenceStore.getString(Preference.NBCTOOL)).exists();
-		
 		if(!exists){
-		    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-			Object[] options = { "Yes", "No" };
+		    Object[] options = { "Yes", "No" };
 			int response = JOptionPane
 					.showOptionDialog(
 							tab,
@@ -57,42 +86,14 @@ public class CompileAction extends JBricxAbstractAction {
 			if(response == JOptionPane.YES_OPTION){
 				CompilerNotFoundWindow window = new CompilerNotFoundWindow(jBManager);
 				window.setVisible(true);
-				return run();
+				return compile(actionText, resultText, finalActionText, buttonText, download);
 			}
 		}
-		
-		return value;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		compile("saved", "compile", "save", "Save");
-	}
-	
-	/**
-	 * Preforms checks to make sure the file was saved before it compiles
-	 * @param actionText
-	 * @param resultText
-	 * @param buttonText
-	 * @return
-	 */
-	public Boolean compile(String actionText, String resultText, String finalActionText, String buttonText)
-	{
-	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-	    Boolean saved = true;
-	    //If the file hasnt been saved then prompt the user to save.
-	    if(tab.isDirty())
-	    {
-	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText))
-	    	{
-		    	SaveAction action = new SaveAction(jBManager);
-		    	saved = action.saveFile();
-	    	}
-	    	else
-	    		saved = false;
-	    }
-	    if(saved){
-	    	this.getManager().getStatusPane().pushMessage(this.run());
+	    
+		// if we are trying to compile, run the compile action
+		// if we are trying to download, don't run the compile action
+	    if(saved && !download){
+	    	jBManager.getStatusPane().pushMessage(this.run(), false);
 	    }
 	    return saved;
 	}

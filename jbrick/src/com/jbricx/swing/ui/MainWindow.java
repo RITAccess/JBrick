@@ -6,9 +6,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import javax.swing.InputMap;
@@ -23,9 +20,7 @@ import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
 import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
-import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
-import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
@@ -33,7 +28,7 @@ import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
-
+	
 	Preferences prefs;
 	
 	JBricxEditorTabFolder editorPane;

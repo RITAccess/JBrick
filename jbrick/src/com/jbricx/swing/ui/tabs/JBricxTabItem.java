@@ -52,6 +52,7 @@ public class JBricxTabItem extends TextEditorPane {
 		this.setWrapStyleWord(true);
 		InputMap im = this.getInputMap();
 		im.put(KeyStroke.getKeyStroke((char) KeyEvent.VK_ENTER), "Enter");
+		
 		CaretListener caretListener = new CaretListener() {
 			
 			private JBricxTabItem tab;
@@ -66,7 +67,6 @@ public class JBricxTabItem extends TextEditorPane {
 				int newLine = tab.getCaretLineNumber() + 1;
 				if (tab.line != newLine) {
 					tab.line = newLine;
-					System.out.println(tab.line);
 					tab.getAccessibleContext().firePropertyChange(AccessibleContext.ACCESSIBLE_DESCRIPTION_PROPERTY, "", Integer.toString(tab.line));
 					
 				}
@@ -74,6 +74,7 @@ public class JBricxTabItem extends TextEditorPane {
 			
 		}.setJBricxTabItem(this);
 		this.addCaretListener(caretListener);
+		
 		
 	}
 

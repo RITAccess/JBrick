@@ -78,11 +78,10 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 * @param strings
 	 *            Message to **append** to the current text.
 	 */
-	public void pushMessage(HashMap<String, ArrayList<String>> map) {
+	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.setText("");
 		StringBuffer sb = new StringBuffer();
 		for (String file : map.keySet()){
-			System.out.println(file);
 			File programFile = new File(file);
 			if (programFile.exists()){
 				sb.append(String.format(
@@ -103,7 +102,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 			}
 		}
 		if (map.keySet().size() == 0){
-			sb.append("Compile Successful");
+			sb.append((download ? "Download" : "Compile") + " Successful");
 		}
 		messagePane.addHyperlinkListener(this);
 		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
