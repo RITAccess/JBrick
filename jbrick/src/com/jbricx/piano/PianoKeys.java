@@ -1,27 +1,23 @@
 package com.jbricx.piano;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JSlider;
 
-public class PianoKeys   {
+
+public class PianoKeys {
 	
 	private JPanel pianoBoard;
 	private JLabel picLabel;
 	private Image pianoPic;
 	private ImageIcon piano;
-	private KeyListener keyType;
+	InputMap im;
+	ActionMap am;
 	
 	/**
 	 * Constructor for keyboard image
@@ -41,18 +37,8 @@ public class PianoKeys   {
 	//TODO: Add mouselisteners to the image for clicking options
 	//TODO: Add keyboardlisters/bindings for the letters on the keyboard
 	//TODO: Add the musical components and save notes 
+
 	
-	private Action setNotes(){
-		
-		Action NoteKey = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				
-				
-			}
-		};
-		return NoteKey;
-	}
 	/**
 	 * Add a label that displays the piano image to a panel
 	 * 

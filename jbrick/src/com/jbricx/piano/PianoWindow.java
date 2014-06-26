@@ -5,12 +5,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JFrame;
+import javax.swing.JRadioButton;
 
 public class PianoWindow extends JFrame {
 
 	private static NotesView textView = new NotesView();
 	private static PianoKeys pianoKeyboard = new PianoKeys();
 	private static PianoControls controls = new PianoControls();
+	private static NoteLengths notePrint = new NoteLengths();
+	public static JRadioButton testbutton = new JRadioButton("Testing");
 	
 	/**
 	 * Set up the orientation of the panels in the JFrame
@@ -41,7 +44,7 @@ public class PianoWindow extends JFrame {
 		gbCon.gridy = 2;
 		pianoControls.add(controls.setUpControls(),gbCon);
 		
-		pianoControls.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pianoControls.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		pianoControls.pack();
 		pianoControls.setLocationRelativeTo(null);
 		pianoControls.setVisible(true);
@@ -49,6 +52,10 @@ public class PianoWindow extends JFrame {
 
 	}
 	
+	public static void setUpActions() {
+		notePrint.setButtonValue();
+		textView.printNotes(notePrint.getCurrent());
+	}
 	/**
 	 * Create the UI of the piano composer 
 	 * 
@@ -56,5 +63,7 @@ public class PianoWindow extends JFrame {
 	 */
 	public static void main(String args[]) {
 		setUpPiano();
+		setUpActions();
 	}
+
 }

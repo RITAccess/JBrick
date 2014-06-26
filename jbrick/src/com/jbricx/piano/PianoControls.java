@@ -4,8 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
@@ -29,6 +30,7 @@ public class PianoControls {
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
 		rest = new JButton("Rest");
+		rest.addActionListener(setNoteButton(noteRadioPanel));
 	}
 	
 	/**
@@ -47,7 +49,20 @@ public class PianoControls {
 		gbCon.anchor = GridBagConstraints.CENTER;
 		return gbCon;
 	}
-	
+	private ActionListener setNoteButton(NoteLengths noteRadioPanel) {
+		ActionListener noteListener = new ActionListener() {
+			private NoteLengths noteLengths;
+			public ActionListener setLength(NoteLengths noteLengths) {
+				this.noteLengths = noteLengths;
+				return this;
+			}
+			public void actionPerformed(ActionEvent av) {
+				System.out.println(noteLengths.getCurrent());
+			}
+		}.setLength(noteRadioPanel);
+		
+		return noteListener;
+	}
 	/**
 	 * Set up for the other panels orientation within the central panel
 	 * 
@@ -72,6 +87,9 @@ public class PianoControls {
 		centerPanel.add(noteRadioPanel.noteLengthPanel(),gbCon);
 		centerPanel.add(rest,restSetUp());
 		return centerPanel;
+	}
+	public JButton test() {
+		return rest;
 	}
 	
 	/**

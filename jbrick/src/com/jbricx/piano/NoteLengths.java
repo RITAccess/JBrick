@@ -4,7 +4,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
@@ -15,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-public class NoteLengths {
+public class NoteLengths extends NotesView {
 
 	private JLabel noteTime;
 	private JTextField noteField;
@@ -31,7 +41,8 @@ public class NoteLengths {
 	private JPanel radioPanel;
 	private JPanel customLengthPanel;
 	private Border radioBorder;
-
+	NotesView noteText = new NotesView();
+	private String currentLength;
 	
 	/**
 	 * Constructor for the radio buttons and the custom text fields
@@ -48,6 +59,7 @@ public class NoteLengths {
 		
 		noteLength = new ButtonGroup();
 		firsts = new JRadioButton("1/1");
+		firsts.setSelected(true);
 		noteLength.add(firsts);
 		seconds = new JRadioButton("1/2");
 		noteLength.add(seconds);
@@ -59,12 +71,76 @@ public class NoteLengths {
 		noteLength.add(eighths);
 		sixteenths =new JRadioButton("1/16");
 		noteLength.add(sixteenths);
-		
 
 		radioBorder = new EtchedBorder();
 		
 	}
 	
+	/**
+	 * Checks for if a textarea has been selected 
+	 * If yes, any radio buttons are deselected 
+	 */
+	private void selectNote(JTextField textNote) {
+		textNote.addFocusListener(new FocusListener() {
+			
+			public void focusGained(FocusEvent checkCursor) {
+				
+				firsts.setEnabled(false);
+				firsts.setSelected(false);
+				seconds.setEnabled(false);
+				seconds.setSelected(false);
+				thirds.setEnabled(false);
+				thirds.setSelected(false);
+				fourths.setEnabled(false);
+				fourths.setSelected(false);
+				eighths.setEnabled(false);
+				eighths.setSelected(false);
+				sixteenths.setEnabled(false);
+				sixteenths.setSelected(false);
+				
+				noteField.setEditable(true);
+				waitField.setEditable(true);
+				
+			}
+			
+			public void focusLost(FocusEvent noCursor) {
+				
+				radioPanel.addMouseListener(new MouseAdapter() {
+
+					public void mouseClicked(MouseEvent e) {
+						// TODO Auto-generated method stub
+						radioPanel = (JPanel) e.getSource();
+				
+					}
+					
+				});
+				noteField.setEditable(false);
+				waitField.setEditable(false);
+			}
+		});
+	}
+	/**
+	 * Tell noteReader to print out the name of the button to its display
+	 * @return the string value of the radio button selected to the NotesView
+	 *
+	 */
+	
+	public void setButtonValue() {
+		
+		ArrayList<JRadioButton> rbList = new ArrayList<JRadioButton>();
+		rbList.add(firsts);
+		rbList.add(seconds);
+		rbList.add(thirds);
+		rbList.add(fourths);
+		rbList.add(eighths);
+		rbList.add(sixteenths);
+		for (JRadioButton button: rbList) {
+			button.addActionListener(new RadioAction(this, button.getText()));
+		}
+	
+	}
+	
+
 	/**
 	 * Set up for the text field components orientations
 	 * 
@@ -99,6 +175,14 @@ public class NoteLengths {
 		return customLengthPanel;
 	}
 	
+	public void setCurrent(String length){
+		this.currentLength = length;
+	}
+	
+	public String getCurrent(){
+		return this.currentLength;
+	}
+	
 	/**
 	 * Add the radio buttons and their title to a panel
 	 * 
@@ -112,10 +196,26 @@ public class NoteLengths {
 		radioPanel.add(fourths);
 		radioPanel.add(eighths);
 		radioPanel.add(sixteenths);
-
 		radioPanel.add(customLengthPanel);
 		radioPanel.setBorder(BorderFactory.createTitledBorder(radioBorder,"Length"));
-
+		selectNote(noteField);
+		selectNote(waitField);
 		return radioPanel;
+	}
+
+}
+
+class RadioAction implements ActionListener{	
+	private NoteLengths nl;
+	private String length;
+
+	public RadioAction(NoteLengths nl, String length){
+		this.nl = nl;
+		this.length = length;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		nl.setCurrent(length);
 	}
 }
