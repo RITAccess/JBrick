@@ -21,7 +21,6 @@ public class ButtonActions {
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 	
-	private JButton rest;
 	private JButton clear;
 	private JButton copy;
 	private JButton play;
@@ -40,7 +39,6 @@ public class ButtonActions {
 		buttonPanel = new JPanel(new GridBagLayout());
 		buttonBorder = new EtchedBorder();
 
-		rest = new JButton("Rest");
 		play = new JButton("Play");
 		copy = new JButton("Copy");
 		save = new JButton("Save");
@@ -78,7 +76,6 @@ public class ButtonActions {
 	 */
 	public void buttonAction() {
 		
-		rest.setToolTipText("Adds a rest or note of chosen time interval");
 		play.setToolTipText("Plays back notes and rests added");
 		copy.setToolTipText("Copies NXC code that will play");
 		save.setToolTipText("Saves NXC code that will play");

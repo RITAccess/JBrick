@@ -27,9 +27,8 @@ public class NotesView {
 	/**
 	 * TODO: Have the text area display the note readouts
 	 */
-	
-	private void noteReader(){
-		
+	public void printNotes(String noteInfo) {
+		notesView.setText(noteInfo + " note");
 	}
 	
 	/**
