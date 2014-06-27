@@ -109,8 +109,6 @@ public class USBConnection
 	}
 
 	public static int connect(MindStormDevice mindStormDevice, ByteBuffer commandBuffer) {
-		// run application in a 32 bit java vm (add -d32 to project arguments if on mac)
-		// otherwise it will display a loader error (because your running 64 bit java on 32 usb libraries
     	int result = LibUsb.init(null);
     	if (result != LibUsb.SUCCESS){
     		throw new LibUsbException("unable to initialize libusb", result);
