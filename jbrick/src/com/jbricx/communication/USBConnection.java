@@ -103,8 +103,12 @@ public class USBConnection
         Device device = findDevice(mindStormDevice.vendor, mindStormDevice.product);
         return device != null;
 	}
+	
+	public static int connect(ByteBuffer commandBuffer){
+		return connect(MindStormDevice.NXT, commandBuffer);
+	}
 
-	public static int Connect(MindStormDevice mindStormDevice, ByteBuffer commandBuffer) {
+	public static int connect(MindStormDevice mindStormDevice, ByteBuffer commandBuffer) {
     	int result = LibUsb.init(null);
     	if (result != LibUsb.SUCCESS){
     		throw new LibUsbException("unable to initialize libusb", result);
@@ -159,7 +163,7 @@ public class USBConnection
 	    	
 	    	ByteBuffer buffer = ByteBuffer.allocateDirect(6);
 	        buffer.put(new byte[]{(byte) 0x80, (byte) 0x03, (byte) 0xf0, (byte) 0x01, (byte) 0xf4, (byte) 0x01});
-	    	USBConnection.Connect(USBConnection.MindStormDevice.NXT, buffer);
+	    	USBConnection.connect(USBConnection.MindStormDevice.NXT, buffer);
 	    	
     	}
     	
