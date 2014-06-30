@@ -24,6 +24,9 @@ import javax.swing.KeyStroke;
  */
 public class PianoKeyboard extends JPanel{
 	
+	// items with access
+	JLabel octaveLabel;
+	
 	public PianoKeyboard() {
 		this.setLayout(new BorderLayout());
 		// Building all the keys 
@@ -57,7 +60,7 @@ public class PianoKeyboard extends JPanel{
 		ActionButton dnOctave = new ActionButton("-", '-');
 		JPanel octavePanel = new JPanel();
 
-		JLabel octaveLabel = new JLabel("3");
+		octaveLabel = new JLabel("3");
 		upOctave.setAction(new OctaveChangeAction(octaveLabel, 1));
 		dnOctave.setAction(new OctaveChangeAction(octaveLabel, -1));
 		octavePanel.add(dnOctave);
@@ -67,6 +70,10 @@ public class PianoKeyboard extends JPanel{
 		this.add(BorderLayout.CENTER, pianoKeys);
 		this.add(BorderLayout.EAST, restButton);
 		this.add(BorderLayout.SOUTH, octavePanel);
+	}
+	
+	public JLabel getOctaveLabel(){
+		return octaveLabel;
 	}
 	
 	public static void main(String[] arg0){
