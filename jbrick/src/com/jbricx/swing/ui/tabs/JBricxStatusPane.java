@@ -13,11 +13,15 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -25,7 +29,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
-	JEditorPane messagePane;
+	JTextPane messagePane;
 	private JBricxEditorTabFolder tab;
 	// Using this as a hack because preferences update too many times(one update
 	// fired per preference changed.)
@@ -35,11 +39,9 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	public JBricxStatusPane(MainWindow main) {
 		this.main = main;
 		tab = main.getTabFolder();
-		messagePane = new JEditorPane();
+		messagePane = new JTextPane();
 		messagePane.setEditable(false);
 		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
-		messagePane.setDisabledTextColor(new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND))));
-		messagePane.setFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);
 		
@@ -81,11 +83,15 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.setText("");
 		StringBuffer sb = new StringBuffer();
+		
+		Color color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
+		String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		
 		for (String file : map.keySet()){
 			File programFile = new File(file);
 			if (programFile.exists()){
 				sb.append(String.format(
-						"<a href=\"%s\">%s</a><br>", 
+						"<a style=\"color:" + hex  + "\" href=\"%s\">%s</a><br>", 
 						programFile.getAbsolutePath(), programFile.getName() // file path, file name
 				));
 			} else {
@@ -95,7 +101,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
-							"<a href=\"%s,%s\">%s</a> %s <br>", 
+							"<a style=\"color:" + hex  + "\" href=\"%s,%s\">%s</a> %s <br>", 
 							programFile, match.group(2), match.group(1), match.group(3)
 					));
 				}
@@ -106,8 +112,12 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		}
 		messagePane.addHyperlinkListener(this);
 		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
+		color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
+		hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		
 		messagePane.setText("<p style=\"font-size:" + newFont.getSize()
-				+ "px\">" + sb.toString() + "</p>");
+				+ "px; color:" + hex + "\">" + sb.toString() + "</p>");
+		System.out.println(sb.toString());
 	}
 
 	public void clearOldMessages() {
@@ -125,7 +135,9 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 	 */
 	public void refresh() {
 		clearOldMessages();
+		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
 	}
+	
 
 	@Override
 	public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
