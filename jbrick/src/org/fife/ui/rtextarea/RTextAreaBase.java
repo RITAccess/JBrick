@@ -932,6 +932,7 @@ public RTextAreaBase(Color backgroundColor){
 			//bright = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null)[2];
 			//lineHighlightColor = bright > 0.5 ? color.darker().darker() : color.brighter().brighter();
 			
+			//Makes the line highlight color based on the background color and the foreground color. 
 			lineHighlightColor = color = new Color(
 					(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND).getRed() + color.getRed()*3)/4,
 					(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND).getGreen() + color.getGreen()*3)/4,

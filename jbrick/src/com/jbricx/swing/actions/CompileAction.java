@@ -92,7 +92,7 @@ public class CompileAction extends JBricxAbstractAction {
 	    
 		// if we are trying to compile, run the compile action
 		// if we are trying to download, don't run the compile action
-	    if(saved && !download){
+	    if(saved && !download && !tab.isNewFile()){
 	    	jBManager.getStatusPane().pushMessage(this.run(), false);
 	    }
 	    return saved;

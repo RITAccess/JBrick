@@ -37,8 +37,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		tab = main.getTabFolder();
 		messagePane = new JEditorPane();
 		messagePane.setEditable(false);
-		messagePane.setBackground(Color.WHITE);
-		messagePane.setDisabledTextColor(Color.BLACK);
+		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
+		messagePane.setDisabledTextColor(new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND))));
 		messagePane.setFont(Font.decode(PreferenceStore.getString(Preference.FONT)));
 		messagePane.setContentType("text/html");
 		messagePane.getCaret().setVisible(true);

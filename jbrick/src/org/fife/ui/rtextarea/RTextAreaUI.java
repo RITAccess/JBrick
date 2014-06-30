@@ -16,7 +16,6 @@ import javax.swing.border.Border;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
-
 /**
  * The UI used by instances of <code>RTextArea</code>.  This UI takes into
  * account all of the "extras" involved in an <code>RTextArea</code>, including
@@ -191,7 +190,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		return map;
 
 	}
-
 
 	/**
 	 * Creates a default action map.  This action map contains actions for all
@@ -392,10 +390,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		if (am!=null) {
 		    SwingUtilities.replaceUIActionMap(textArea, am);
 		}
-
-
 	}
-
 
 	/**
 	 * Installs this UI to the given text component.
@@ -576,6 +571,4 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		}
 
 	}
-
-
 }
