@@ -29,14 +29,7 @@ public class NotesView {
 		typedNotes = new JLabel("Current notes: ");
 		
 	}
-	
-	/**
-	 * TODO: Have the text area display the note readouts
-	 */
-	public void printNotes(String noteInfo) {
-		notesView.setText(noteInfo + " note");
-	}
-	
+		
 	/**
 	 * Add title and the note view text field to a panel
 	 * 

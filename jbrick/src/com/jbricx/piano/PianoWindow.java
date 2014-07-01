@@ -15,7 +15,16 @@ public class PianoWindow extends JFrame {
 	private static PianoControls controls = new PianoControls();
 	private static NoteLengths notePrint = new NoteLengths();
 	private static OctaveChange transposer = new OctaveChange();
-	private static PianoKeyboard pianoKeyboard = new PianoKeyboard();
+	static PianoActionHandler pianoHandler = new PianoActionHandler(){
+
+		@Override
+		public void pianoActionHit(String noteInformation) {
+			// TODO Auto-generated method stub
+			// Add note information + octave + note length to the textview 
+		}
+		
+	};
+	private static PianoKeyboard pianoKeyboard = new PianoKeyboard(pianoHandler);
 	
 
 	/**
@@ -63,7 +72,7 @@ public class PianoWindow extends JFrame {
 	
 	public static void setUpActions() {
 		notePrint.setButtonValue();
-		textView.printNotes(notePrint.getCurrent());
+		
 	}
 	/**
 	 * Create the UI of the piano composer 
