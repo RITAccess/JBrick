@@ -7,17 +7,19 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
 public class PianoControls {
 	
-	ButtonActions buttonPanel = new ButtonActions();
-	NoteLengths noteRadioPanel = new NoteLengths();
-	OctaveChange transPanel = new OctaveChange();
+	ButtonActions buttonPanel;
+	NoteLengths noteRadioPanel;
+	NotesView textViewPanel;
+	PianoKeys keysPanel;
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
-	
+
 	private JPanel centerPanel;
 	private JPanel controlPanel;
 	private JButton rest;
@@ -29,7 +31,10 @@ public class PianoControls {
 		
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
-		rest = new JButton("Rest");
+		textViewPanel = new NotesView();
+		buttonPanel = new ButtonActions();
+		noteRadioPanel = new NoteLengths();
+		rest = new JButton("Rest (C)");
 		rest.addActionListener(setNoteButton(noteRadioPanel));
 	}
 	
@@ -70,26 +75,33 @@ public class PianoControls {
 	 */
 	private JPanel setUpMidControls(){
 		
-		gbCon.insets = new Insets(0,10,0,50);
-		gbCon.ipadx = 100;
-		gbCon.ipady = 200;
+		gbCon.gridx = 0;
+		gbCon.gridy = 0;
+		gbCon.gridheight = 2;
+		gbCon.ipadx = 150;
+		gbCon.insets = new Insets(0,20,20,20);
+		gbCon.fill = GridBagConstraints.BOTH;
+		centerPanel.add(textViewPanel.setUpNoteView(),gbCon);
+		
+		gbCon.ipadx = 50;
+		gbCon.insets = new Insets(10,10,0,0);
 		gbCon.weightx = .75;
 		gbCon.weighty = .75;
-		gbCon.gridx = 2;
+		gbCon.gridheight = 1;
+		gbCon.gridx = 1;
 		gbCon.gridy = 0;
-		gbCon.anchor = GridBagConstraints.CENTER;
+		gbCon.fill = GridBagConstraints.HORIZONTAL;
+		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
 		centerPanel.add(buttonPanel.setUpBPanel(),gbCon);
 		
-		gbCon.weightx = 0.5;
+		gbCon.ipady = 100;
+    	gbCon.weightx = 0.5;
 		gbCon.weighty = 0.5;
-		gbCon.gridx = 1;
-		gbCon.anchor = GridBagConstraints.WEST;
+		gbCon.gridy = 1;
+		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
 		centerPanel.add(noteRadioPanel.noteLengthPanel(),gbCon);
-		centerPanel.add(rest,restSetUp());
+		
 		return centerPanel;
-	}
-	public JButton test() {
-		return rest;
 	}
 	
 	/**
@@ -99,10 +111,8 @@ public class PianoControls {
 	 */
 	public JPanel setUpControls(){
 		
-		controlPanel.add(transPanel.setUpTransposer(),BorderLayout.NORTH);
-
-		controlPanel.add(setUpMidControls(),BorderLayout.CENTER);
-		noteRadioPanel.customPanel().setAlignmentY(noteRadioPanel.noteLengthPanel().getAlignmentY());
+		
+		controlPanel.add(setUpMidControls());
 		return controlPanel;
 	}
 }

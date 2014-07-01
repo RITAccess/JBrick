@@ -68,10 +68,12 @@ public class PianoKeyboard extends JPanel{
 		this.add(BorderLayout.EAST, restButton);
 		this.add(BorderLayout.SOUTH, octavePanel);
 	}
+
 	
 	public static void main(String[] arg0){
 		JFrame.setDefaultLookAndFeelDecorated(false);
 		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		PianoKeyboard pk = new PianoKeyboard();
 		frame.add(pk);
 		frame.setSize(pk.getSize());

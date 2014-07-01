@@ -2,7 +2,6 @@ package com.jbricx.piano;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,9 +13,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,35 +26,29 @@ import javax.swing.border.EtchedBorder;
 
 public class NoteLengths extends NotesView {
 
-	private JLabel noteTime;
 	private JTextField noteField;
-	private JLabel waitTime;
-	private JTextField waitField;
 	private JRadioButton firsts;
 	private JRadioButton seconds;
 	private JRadioButton thirds;
 	private JRadioButton fourths;
 	private JRadioButton eighths;
 	private JRadioButton sixteenths;
+	private JRadioButton custom;
 	private ButtonGroup noteLength;
 	private JPanel radioPanel;
-	private JPanel customLengthPanel;
 	private Border radioBorder;
 	NotesView noteText = new NotesView();
 	private String currentLength;
+	GridBagConstraints gbCon = new GridBagConstraints();
+	ButtonActions align = new ButtonActions();
 	
 	/**
 	 * Constructor for the radio buttons and the custom text fields
 	 */
 	public NoteLengths() {
 		
-		radioPanel = new JPanel(new GridLayout(7,1));
-		customLengthPanel = new JPanel(new GridBagLayout());
-		
-		noteTime = new JLabel("Note Time: ");
+		radioPanel = new JPanel(new GridBagLayout());
 		noteField = new JTextField(3);
-		waitTime = new JLabel("Wait Time: ");
-		waitField = new JTextField(3);
 		
 		noteLength = new ButtonGroup();
 		firsts = new JRadioButton("1/1");
@@ -71,54 +64,12 @@ public class NoteLengths extends NotesView {
 		noteLength.add(eighths);
 		sixteenths =new JRadioButton("1/16");
 		noteLength.add(sixteenths);
-
+		custom = new JRadioButton("Custom Note/Rest Time: ");
+		noteLength.add(custom);
 		radioBorder = new EtchedBorder();
 		
 	}
 	
-	/**
-	 * Checks for if a textarea has been selected 
-	 * If yes, any radio buttons are deselected 
-	 */
-	private void selectNote(JTextField textNote) {
-		textNote.addFocusListener(new FocusListener() {
-			
-			public void focusGained(FocusEvent checkCursor) {
-				
-				firsts.setEnabled(false);
-				firsts.setSelected(false);
-				seconds.setEnabled(false);
-				seconds.setSelected(false);
-				thirds.setEnabled(false);
-				thirds.setSelected(false);
-				fourths.setEnabled(false);
-				fourths.setSelected(false);
-				eighths.setEnabled(false);
-				eighths.setSelected(false);
-				sixteenths.setEnabled(false);
-				sixteenths.setSelected(false);
-				
-				noteField.setEditable(true);
-				waitField.setEditable(true);
-				
-			}
-			
-			public void focusLost(FocusEvent noCursor) {
-				
-				radioPanel.addMouseListener(new MouseAdapter() {
-
-					public void mouseClicked(MouseEvent e) {
-						// TODO Auto-generated method stub
-						radioPanel = (JPanel) e.getSource();
-				
-					}
-					
-				});
-				noteField.setEditable(false);
-				waitField.setEditable(false);
-			}
-		});
-	}
 	/**
 	 * Tell noteReader to print out the name of the button to its display
 	 * @return the string value of the radio button selected to the NotesView
@@ -134,45 +85,11 @@ public class NoteLengths extends NotesView {
 		rbList.add(fourths);
 		rbList.add(eighths);
 		rbList.add(sixteenths);
+		rbList.add(custom);
 		for (JRadioButton button: rbList) {
 			button.addActionListener(new RadioAction(this, button.getText()));
 		}
 	
-	}
-	
-
-	/**
-	 * Set up for the text field components orientations
-	 * 
-	 * @param noteCustoms
-	 * @param xPlace
-	 * @param yPlace
-	 */
-	private void setUpCustom(JComponent noteCustoms,int xPlace, int yPlace) {
-		
-		GridBagConstraints gbCon = new GridBagConstraints();
-		
-		gbCon.insets = new Insets(0,0,30,5);
-		gbCon.weighty = 0.25;
-		gbCon.gridx = xPlace;
-		gbCon.gridy = yPlace;
-		gbCon.anchor = GridBagConstraints.WEST;
-		customLengthPanel.add(noteCustoms,gbCon);
-	}
-	
-	/**
-	 * Add components for the custom length panel
-	 * 
-	 * @return the custom notes length panel
-	 */
-	public JPanel customPanel() {
-		
-		setUpCustom(noteTime,0,0);
-		setUpCustom(noteField,1,0);
-		setUpCustom(waitTime,2,0);
-		setUpCustom(waitField,3,0);
-
-		return customLengthPanel;
 	}
 	
 	public void setCurrent(String length){
@@ -183,23 +100,32 @@ public class NoteLengths extends NotesView {
 		return this.currentLength;
 	}
 	
-	/**
+	private void radioPanel(JComponent noteButton,int xPlace,int yPlace) {
+		gbCon.insets = new Insets(20,0,20,0);
+		gbCon.anchor = GridBagConstraints.WEST;
+		gbCon.gridx = xPlace;
+		gbCon.gridy = yPlace;
+		radioPanel.add(noteButton,gbCon);
+
+	}
+	
+	/** 
 	 * Add the radio buttons and their title to a panel
 	 * 
 	 * @return radio note length panel
 	 */
 	public JPanel noteLengthPanel(){
 		
-		radioPanel.add(firsts);
-		radioPanel.add(seconds);
-		radioPanel.add(thirds);
-		radioPanel.add(fourths);
-		radioPanel.add(eighths);
-		radioPanel.add(sixteenths);
-		radioPanel.add(customLengthPanel);
+		radioPanel(firsts,0,0);
+		radioPanel(seconds,1,0);
+		radioPanel(thirds,0,1);
+		radioPanel(fourths,1,1);
+		radioPanel(eighths,0,2);
+		radioPanel(sixteenths,1,2);
+		radioPanel(custom,0,3);
+		radioPanel(noteField,1,3);
 		radioPanel.setBorder(BorderFactory.createTitledBorder(radioBorder,"Length"));
-		selectNote(noteField);
-		selectNote(waitField);
+		radioPanel.setSize(align.setUpBPanel().getSize());
 		return radioPanel;
 	}
 
