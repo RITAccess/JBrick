@@ -10,11 +10,15 @@ package org.fife.ui.rtextarea;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
  * The UI used by instances of <code>RTextArea</code>.  This UI takes into
@@ -37,6 +41,8 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 										new RTATextTransferHandler();
 
 	private static final String RTEXTAREA_KEYMAP_NAME	= "RTextAreaKeymap";
+	
+	ArrayList<Integer> highlightedLines = new ArrayList<Integer>();
 
 
 	/**
@@ -136,7 +142,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		if (margin==null) {
 			editor.setMargin(new InsetsUIResource(2, 2, 2, 2));
 		}
-
 	}
 
 
@@ -419,7 +424,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		paintLineHighlights(g);
 		paintCurrentLineHighlight(g, visibleRect);
 		paintMarginLine(g, visibleRect);
-
 	}
 
 
@@ -430,10 +434,10 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	 * @param visibleRect The visible rectangle of the text area.
 	 */
 	protected void paintCurrentLineHighlight(Graphics g, Rectangle visibleRect) {
-
 		if (textArea.getHighlightCurrentLine()) {
-
+			
 			Caret caret = textArea.getCaret();
+			
 			if (caret.getDot()==caret.getMark()) {
 
 				Color highlight = textArea.getCurrentLineHighlightColor();
@@ -446,30 +450,81 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 				// before it is displayed).
 				//int height = textArea.currentCaretRect.height);
 				int height = textArea.getLineHeight();
-
-				if (textArea.getFadeCurrentLineHighlight()) {
-					Graphics2D g2d = (Graphics2D)g;
-					Color bg = textArea.getBackground();
-					GradientPaint paint = new GradientPaint(
-						visibleRect.x,0, highlight,
-						visibleRect.x+visibleRect.width,0,
-								bg==null ? Color.WHITE : bg);
-					g2d.setPaint(paint);
-					g2d.fillRect(visibleRect.x,textArea.currentCaretY,
-									visibleRect.width, height);
-				}
-				else {
-					g.setColor(highlight);
-					g.fillRect(visibleRect.x,textArea.currentCaretY,
-									visibleRect.width, height);
-				}
-
+				g.setColor(highlight);
+				g.fillRect(visibleRect.x,textArea.currentCaretY,
+						visibleRect.width, height);
 			} // End of if (caret.getDot()==caret.getMark()).
-
 		} // End of if (textArea.isCurrentLineHighlightEnabled()...
-
+		
+		drawHighlights(g, visibleRect);
+		
 	}
-
+	
+	/**
+	 * Draws all highlights on line needed to be highlighted
+	 * @param g The graphics context with which to paint.
+	 * @param visibleRect The visible rectangle of the text area.
+	 */
+	private void drawHighlights(Graphics g, Rectangle visibleRect){
+		Color currBg = PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND);
+		int hRed = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getRed() + currBg.getRed()*1)/2, 0, 255);
+		int hGreen = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getGreen() + currBg.getGreen()*1)/2, 0, 255);
+		int hBlue = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getBlue() + currBg.getBlue()*1)/2,0 ,255);
+		
+		Color highlight = new Color(hRed, hGreen, hBlue);
+		
+		int height = textArea.getLineHeight();
+		g.setColor(highlight);
+		
+		for (Integer line : highlightedLines){
+			Graphics2D g2d = (Graphics2D)g;
+			Color bg = textArea.getBackground();
+			Color blend = new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), 0);
+			GradientPaint paint = new GradientPaint(
+				visibleRect.x,0, highlight,
+				visibleRect.x+visibleRect.width/2,0,
+						bg==null ? Color.WHITE : blend);
+			g2d.setPaint(paint);
+			g2d.fillRect(visibleRect.x,line,
+							visibleRect.width, height);
+		}
+	}
+	
+	/**
+	 * Clamps a int between a min and max value
+	 * @param val Int to be clamped
+	 * @param min Minimum possible value
+	 * @param max Maximum possivle value
+	 * @return
+	 */
+	private int clamp(int val, int min, int max){
+		if(val > max){
+			val = max;
+		}
+		else if(val < min){
+			val = min;
+		}
+		return val;
+	}
+	
+	/**
+	 * Adds the curent line to the list of lines to be highlighted
+	 */
+	public void toggleHighlightLine(){
+			if(!highlightedLines.contains(textArea.currentCaretY)){
+				highlightedLines.add(textArea.currentCaretY);
+			}
+			else{
+				for(int i = 0; i < highlightedLines.size(); i++)
+				{
+					if(highlightedLines.get(i) == textArea.currentCaretY)
+					{
+						highlightedLines.remove(i);
+						break;
+					}
+				}
+			}
+	}
 
 	/**
 	 * Paints any line highlights.
@@ -569,6 +624,5 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		public boolean isEnabled() {
 			return textArea.isEditable();
 		}
-
 	}
 }
