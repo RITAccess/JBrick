@@ -31,28 +31,11 @@ public class PianoControls {
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
 		textViewPanel = new NotesView();
-		buttonPanel = new ButtonActions();
+		buttonPanel = new ButtonActions(textViewPanel);
 		noteRadioPanel = new NoteLengths();
 		transPanel = new OctaveChange();
 		rest = new JButton("Rest (C)");
 		rest.addActionListener(setNoteButton(noteRadioPanel));
-	}
-	
-	/**
-	 * Set up for the rest button's orientation in the panel
-	 */
-	private GridBagConstraints restSetUp(){
-		
-		gbCon.fill = GridBagConstraints.VERTICAL;
-		gbCon.insets = new Insets(100,50,100,50);
-		gbCon.weightx = 0.25;
-		gbCon.weighty = 0.5;
-		gbCon.ipadx = 100;
-		gbCon.ipady = 200;
-		gbCon.gridx = 0;
-		gbCon.gridy = 0;
-		gbCon.anchor = GridBagConstraints.CENTER;
-		return gbCon;
 	}
 	
 	private ActionListener setNoteButton(NoteLengths noteRadioPanel) {

@@ -50,10 +50,11 @@ public class PianoKeyboard extends JPanel{
 		} else {
 			PianoButton.setParentPanel(parentPanel);
 		}
-		char[] whiteKeys = {'A','S','D','F','G','H','J'};
-		String[] whiteKeyStrings = {"C", "D", "E", "F", "G", "A", "B"};
-		char[] blackKeys = {'W','E',' ','T','Y','U'};
-		String[] blackKeyStrings = {"C#", "D#", "", "F#", "G#", "A#"};
+		char[] whiteKeys = "ASDFGHJ".toCharArray();
+		String[] whiteKeyStrings = {"A", "B", "C", "D", "E", "F", "G"};
+		char[] blackKeys = "W RT UI".toCharArray();
+		String[] blackKeyStrings = {"A#", "", "C#", "D#", "", "F#", "G#"};
+		PianoButton.setKeyCount(whiteKeys.length);
 		for (int k = 0; k < whiteKeys.length + blackKeys.length; k++){
 			PianoButton key;
 			if (k < whiteKeys.length) {
@@ -130,7 +131,7 @@ class PianoButton extends ActionButton{
 	private static int yOffset = 0;
 	private static int width = 0;
 	private static int height = 0;
-	private static int keyWidthCount = 7;
+	static int keyCount = 7;
 	private static Component panel;
 	
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
@@ -158,7 +159,7 @@ class PianoButton extends ActionButton{
 				public void componentResized(ComponentEvent arg0) {
 					int width = panel.getWidth() == 0 ? PianoButton.width : panel.getWidth();
 					int height = panel.getHeight() == 0 ? PianoButton.height : panel.getHeight(); 
-					button.setSize(width / PianoButton.keyWidthCount, (int)(height * (whiteKey ? 1.0 : 0.65)));
+					button.setSize(width / PianoButton.keyCount, (int)(height * (whiteKey ? 1.0 : 0.65)));
 					button.setLocation(PianoButton.xOffset + index * button.getWidth() + (whiteKey ? 0 : button.getWidth()/2), PianoButton.yOffset);
 					
 				}
@@ -196,6 +197,10 @@ class PianoButton extends ActionButton{
 		PianoButton.yOffset = yOffset;
 		PianoButton.width = width;
 		PianoButton.height = height;
+	}
+	
+	public static void setKeyCount(int count){
+		PianoButton.keyCount = count;
 	}
 }
 

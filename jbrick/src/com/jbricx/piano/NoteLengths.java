@@ -26,7 +26,6 @@ public class NoteLengths {
 	private JPanel radioPanel;
 	private Border radioBorder;
 	GridBagConstraints gbCon = new GridBagConstraints();
-	ButtonActions align = new ButtonActions();
 	private static String selectedValue;
 	private static String customString = "Custom Note/Rest Time: ";
 	
@@ -138,7 +137,6 @@ public class NoteLengths {
 		}
 		insertRadioButton(noteField, x, y);
 		radioPanel.setBorder(BorderFactory.createTitledBorder(radioBorder,"Length"));
-		radioPanel.setSize(align.setUpBPanel().getSize());
 		return radioPanel;
 	}
 
