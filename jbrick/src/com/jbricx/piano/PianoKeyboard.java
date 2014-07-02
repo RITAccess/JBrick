@@ -36,7 +36,7 @@ public class PianoKeyboard extends JPanel{
 	 * @param handler
 	 */
 	public PianoKeyboard(PianoActionHandler handler) {
-		this.setLayout(new GridBagLayout());
+		this.setLayout(new BorderLayout());
 		// Building all the keys 
 		
 		// white and black
