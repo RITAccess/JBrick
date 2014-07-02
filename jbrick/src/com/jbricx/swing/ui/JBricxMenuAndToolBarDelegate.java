@@ -18,6 +18,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import com.jbricx.swing.actions.AboutAction;
+import com.jbricx.swing.actions.AudioBreakAction;
 import com.jbricx.swing.actions.CloseAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
@@ -85,6 +86,7 @@ public class JBricxMenuAndToolBarDelegate {
 		FIND(FindAction.class, "Find and Replace", editMenu),
 		PREFERENCES(PreferencesAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_R, modifier), editMenu),
 		GOTO(GotoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), toolsMenu),
+		AUDIOBREAK(AudioBreakAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), toolsMenu),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), compileMenu),
 		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), compileMenu),
@@ -181,6 +183,7 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(ActionSet.FIND.button);
 		mainToolBar.add(ActionSet.GOTO.button);
+		mainToolBar.add(ActionSet.AUDIOBREAK.button);
 		mainToolBar.add( new JToolBar.Separator());
 		//mainToolBar.add(Box.createHorizontalStrut(45));
 		mainToolBar.add(Box.createHorizontalGlue());
@@ -233,6 +236,7 @@ public class JBricxMenuAndToolBarDelegate {
 	        ActionSet.SELECTALL.button,
 	        ActionSet.FIND.button,
 	        ActionSet.GOTO.button,
+	        ActionSet.AUDIOBREAK.button,
 	        ActionSet.COMPILE.button,
 	        ActionSet.DOWNLOAD.button,
 	        ActionSet.SHOWHIDEFILEVIEWER.button,
