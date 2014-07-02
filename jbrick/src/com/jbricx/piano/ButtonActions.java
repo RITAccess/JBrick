@@ -21,7 +21,6 @@ public class ButtonActions {
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 	
-	private JButton rest;
 	private JButton clear;
 	private JButton copy;
 	private JButton play;
@@ -40,7 +39,6 @@ public class ButtonActions {
 		buttonPanel = new JPanel(new GridBagLayout());
 		buttonBorder = new EtchedBorder();
 		
-		rest = new JButton("Rest");
 		play = new JButton("Play");
 		copy = new JButton("Copy");
 		save = new JButton("Save");
@@ -69,11 +67,6 @@ public class ButtonActions {
 		gbCon.gridy = yPlace;
 		buttonPanel.add(ctrlButton,gbCon);
 
-	}
-	
-	public JButton restButton() {
-		
-		return rest;
 	}
 
 	/**

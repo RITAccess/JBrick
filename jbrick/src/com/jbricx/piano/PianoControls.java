@@ -15,7 +15,6 @@ public class PianoControls {
 	public ButtonActions buttonPanel;
 	public NoteLengths noteRadioPanel;
 	public NotesView textViewPanel;
-	public PianoKeys keysPanel;
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 
