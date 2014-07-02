@@ -2,8 +2,13 @@ package com.jbricx.piano;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -20,7 +25,7 @@ import javax.swing.KeyStroke;
  * 
  * Holds all the information and action events to do key presses
  * Generates a keyboard that can be inserted into a panel
- * @author Ethan Jurmna
+ * @author Ethan Jurman
  *
  */
 public class PianoKeyboard extends JPanel{
@@ -33,15 +38,17 @@ public class PianoKeyboard extends JPanel{
 	 * 
 	 * @param handler
 	 */
-	public PianoKeyboard(PianoActionHandler handler, int xOffset, int yOffset, float xScale, float yScale) {
-		// setting pianokey sizes
-		PianoButton.setSizes(xOffset, yOffset, xScale, yScale);
-
+	public PianoKeyboard(PianoActionHandler handler, JPanel parentPanel) {
 		this.setLayout(new BorderLayout());
 		// Building all the keys 
 		
 		// white and black
 		JLayeredPane pianoKeys = new JLayeredPane();
+		if (parentPanel == null){
+			PianoButton.setParentPanel(pianoKeys);
+		} else {
+			PianoButton.setParentPanel(parentPanel);
+		}
 		char[] whiteKeys = {'A','S','D','F','G','H','J'};
 		String[] whiteKeyStrings = {"C", "D", "E", "F", "G", "A", "B"};
 		char[] blackKeys = {'W','E',' ','T','Y','U'};
@@ -59,7 +66,7 @@ public class PianoKeyboard extends JPanel{
 		}
 		
 		// rest
-		ActionButton restButton = new ActionButton("REST", '/', handler);
+		ActionButton restButton = new ActionButton("REST", '\\', handler);
 		this.setSize(pianoKeys.getWidth() + restButton.getWidth(), 200);
 		
 		// octave changers
@@ -74,16 +81,10 @@ public class PianoKeyboard extends JPanel{
 		octavePanel.add(octaveLabel);
 		octavePanel.add(upOctave);
 		
-		JPanel keyPanel = new JPanel(new GridLayout(1,1));
-		keyPanel.add(pianoKeys);
-		
-		this.add(keyPanel);
+		this.add(pianoKeys);
 		this.add(BorderLayout.EAST, restButton);
 		this.add(BorderLayout.SOUTH, octavePanel);
-	}
-	
-	PianoKeyboard(PianoActionHandler handler){
-		this(handler, 0, 0, 1, 1);
+		this.setVisible(true);
 	}
 	
 	public JPanel test(){
@@ -108,12 +109,11 @@ public class PianoKeyboard extends JPanel{
 			}
 			
 		};
-		
-		
-		PianoKeyboard pk = new PianoKeyboard(pianoHandler, 100, 50, 3.0f, 3.0f);
 
+		PianoKeyboard pk = new PianoKeyboard(pianoHandler, null);
 		frame.add(pk);
 		frame.setSize(pk.getSize());
+		frame.pack();
 		frame.setVisible(true);
 	}
 }
@@ -127,25 +127,49 @@ public class PianoKeyboard extends JPanel{
 @SuppressWarnings("serial")
 class PianoButton extends ActionButton{
 	
-	private static int xOffset = 0;
-	private static int yOffset = 0;
-	private static float xScale = 1;
-	private static float yScale = 1;
+	private static Component panel;
 	
-	PianoButton(String text, char key, boolean whiteKey, int index, PianoActionHandler actionHandler) {
+	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
 		this.setLayout(new BorderLayout());
 		this.add(BorderLayout.SOUTH, new JLabel(""+key));
 		this.setBackground(whiteKey ? Color.WHITE : Color.BLACK);
 		this.setOpaque(true);
-		this.setSize(
-				(int)((whiteKey ? 32 : 28) * xScale),
-				(int)((whiteKey ? 130 : 70) * yScale)
-			);
-		this.setLocation(
-				(int)(xOffset + index * (32 * xScale) + (whiteKey ? 0 : (14 * xScale))),
-				yOffset
-			);
+		if (panel != null){
+			panel.addComponentListener(new ComponentListener(){
+	
+				private ActionButton button;
+				
+				public ComponentListener setButton(ActionButton button){
+					this.button = button;
+					return this;
+				}
+				
+				@Override
+				public void componentHidden(ComponentEvent arg0) {
+					button.setVisible(false);
+				}
+	
+				@Override
+				public void componentResized(ComponentEvent arg0) {
+					System.out.println(panel.getSize());
+					button.setSize(panel.getWidth() / 7, (int)(panel.getHeight() * (whiteKey ? 1.0 : 0.65)));
+					button.setLocation(index * button.getWidth() + (whiteKey ? 0 : button.getWidth()/2), 0);
+				}
+	
+				@Override
+				public void componentShown(ComponentEvent arg0) {
+					button.setVisible(true);
+				}
+
+				@Override
+				public void componentMoved(ComponentEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			}.setButton(this));
+		}
 	}
 	
 	PianoButton(char text, boolean whiteKey, int index, PianoActionHandler actionHandler) {
@@ -156,12 +180,8 @@ class PianoButton extends ActionButton{
 		return this.getBackground() == Color.WHITE;
 	}
 	
-	public static void setSizes(int xOffset, int yOffset, float xScale, float yScale){
-		PianoButton.xOffset = xOffset;
-		PianoButton.yOffset = yOffset;
-		PianoButton.xScale = xScale;
-		PianoButton.yScale = yScale;
-		
+	public static void setParentPanel(Component panel){
+		PianoButton.panel = panel;
 	}
 }
 
