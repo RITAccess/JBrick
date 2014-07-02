@@ -45,7 +45,8 @@ public class PianoWindow extends JFrame {
 			}
 			
 		}.setTextArea(textView);
-		pianoKeyboard = new PianoKeyboard(pianoHandler);
+		PianoButton.setSize(400, 125, 100, 0);
+		pianoKeyboard = new PianoKeyboard(pianoHandler,null);
 	}
 
 	/**
@@ -83,8 +84,8 @@ public class PianoWindow extends JFrame {
 		
 		pianoControls.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		pianoControls.setLocationRelativeTo(null);
-		pianoControls.pack();
 		pianoControls.setVisible(true);
+		pianoControls.pack();
 		pianoControls.setTitle("Piano Composer");
 		
 		transposer.getSlider().addChangeListener(new ChangeListener(){
