@@ -66,7 +66,7 @@ public class PianoKeyboard extends JPanel{
 		ActionButton dnOctave = new ActionButton("-", '-', handler);
 		JPanel octavePanel = new JPanel();
 
-		octaveLabel = new JLabel("3");
+		octaveLabel = new JLabel("4");
 		upOctave.setAction(new OctaveChangeAction(octaveLabel, 1));
 		dnOctave.setAction(new OctaveChangeAction(octaveLabel, -1));
 		octavePanel.add(dnOctave);

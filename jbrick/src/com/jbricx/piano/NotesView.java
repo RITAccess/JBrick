@@ -29,6 +29,17 @@ public class NotesView {
 		typedNotes = new JLabel("Current notes: ");
 		
 	}
+	
+	public void appendText(String text){
+		notesView.append(text);
+		notesView.repaint();
+		notesPanel.repaint();
+	}
+	
+	public void clearText(){
+		notesView.setText("");
+		notesView.repaint();
+	}
 		
 	/**
 	 * Add title and the note view text field to a panel

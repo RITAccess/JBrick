@@ -13,10 +13,10 @@ import javax.swing.JButton;
 
 public class PianoControls {
 	
-	ButtonActions buttonPanel;
-	NoteLengths noteRadioPanel;
-	NotesView textViewPanel;
-	PianoKeys keysPanel;
+	public ButtonActions buttonPanel;
+	public NoteLengths noteRadioPanel;
+	public NotesView textViewPanel;
+	public PianoKeys keysPanel;
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 
@@ -54,6 +54,7 @@ public class PianoControls {
 		gbCon.anchor = GridBagConstraints.CENTER;
 		return gbCon;
 	}
+	
 	private ActionListener setNoteButton(NoteLengths noteRadioPanel) {
 		ActionListener noteListener = new ActionListener() {
 			private NoteLengths noteLengths;
@@ -68,6 +69,7 @@ public class PianoControls {
 		
 		return noteListener;
 	}
+	
 	/**
 	 * Set up for the other panels orientation within the central panel
 	 * 

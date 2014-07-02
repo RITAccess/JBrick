@@ -53,6 +53,15 @@ public class OctaveChange{
 
 		
 	}
+	
+	/**
+	 * gets transposer slider
+	 * @return
+	 */
+	public JSlider getSlider(){
+		return transposer;
+	}
+	
 	/**
 	 * Add the title and the transposer slider to a panel
 	 * 
