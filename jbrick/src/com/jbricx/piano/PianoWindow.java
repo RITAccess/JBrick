@@ -24,8 +24,8 @@ public class PianoWindow extends JFrame {
 	
 	PianoWindow() {
 		
-		transposer = new OctaveChange();
 		controls = new PianoControls();
+		transposer = controls.transPanel;
 		notePrint = controls.noteRadioPanel;
 		textView = controls.textViewPanel;
 		
@@ -40,8 +40,12 @@ public class PianoWindow extends JFrame {
 			
 			@Override
 			public void pianoActionHit(String noteInformation) {
-				textView.appendText(noteInformation + transposer.getSlider().getValue() +" "+ notePrint.getValue());
-				System.out.println(noteInformation + transposer.getSlider().getValue() +" "+ notePrint.getValue());
+				if(noteInformation == "REST") {
+					textView.appendText(noteInformation + " " + notePrint.getValue() + "\n");
+				}
+				else {
+					textView.appendText(noteInformation + transposer.getSlider().getValue() +" "+ notePrint.getValue() + "\n");
+				}
 			}
 			
 		}.setTextArea(textView);
@@ -81,7 +85,7 @@ public class PianoWindow extends JFrame {
 		gbCon.gridx = 0;
 		gbCon.gridy = 4;
 		pianoControls.add(controls.setUpControls(),gbCon);
-		
+	
 		pianoControls.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		pianoControls.setLocationRelativeTo(null);
 		pianoControls.setVisible(true);
@@ -115,6 +119,6 @@ public class PianoWindow extends JFrame {
 	public static void main(String args[]) {
 		PianoWindow pw = new PianoWindow();
 		pw.setUpPiano();
-	}
+		}
 
 }
