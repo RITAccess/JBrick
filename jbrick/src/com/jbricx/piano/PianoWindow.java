@@ -11,7 +11,6 @@ import javax.swing.JRadioButton;
 
 public class PianoWindow extends JFrame {
 
-	private static NotesView textView = new NotesView();
 	private static PianoControls controls = new PianoControls();
 	private static NoteLengths notePrint = new NoteLengths();
 	private static OctaveChange transposer = new OctaveChange();
@@ -40,13 +39,13 @@ public class PianoWindow extends JFrame {
 		
 		pianoControls.setLayout(new GridBagLayout());
 		GridBagConstraints gbCon = new GridBagConstraints();
-		gbCon.ipadx = 100;
+		gbCon.anchor = GridBagConstraints.CENTER;
+		gbCon.fill = GridBagConstraints.HORIZONTAL;
+		
+		gbCon.ipadx = 50;
 		gbCon.ipady = 100;
 		gbCon.gridx = 0;
 		gbCon.gridy = 0;
-		gbCon.gridwidth = 3;
-		gbCon.gridheight = 2;
-		gbCon.fill = GridBagConstraints.BOTH;
 		pianoControls.add(pianoKeyboard,gbCon);
 		
 		gbCon.insets = new Insets(0,0,0,20);
@@ -54,10 +53,8 @@ public class PianoWindow extends JFrame {
 		gbCon.gridx = 0;
 		gbCon.gridy = 3;
 		gbCon.gridheight = 1;
-		gbCon.fill = GridBagConstraints.HORIZONTAL;
 		pianoControls.add(transposer.setUpTransposer(),gbCon);
 		
-		gbCon.fill = GridBagConstraints.NONE;
 		gbCon.gridx = 0;
 		gbCon.gridy = 4;
 		pianoControls.add(controls.setUpControls(),gbCon);

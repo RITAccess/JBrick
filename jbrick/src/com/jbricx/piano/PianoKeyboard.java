@@ -1,7 +1,10 @@
 package com.jbricx.piano;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -26,13 +29,14 @@ public class PianoKeyboard extends JPanel{
 	
 	// items with access
 	JLabel octaveLabel;
+	private JPanel keyPanel;
 	
 	/**
 	 * 
 	 * @param handler
 	 */
 	public PianoKeyboard(PianoActionHandler handler) {
-		this.setLayout(new BorderLayout());
+		this.setLayout(new GridBagLayout());
 		// Building all the keys 
 		
 		// white and black
@@ -73,22 +77,30 @@ public class PianoKeyboard extends JPanel{
 		octavePanel.add(octaveLabel);
 		octavePanel.add(upOctave);
 		
-		this.add(BorderLayout.CENTER, pianoKeys);
+		JPanel keyPanel = new JPanel(new GridLayout(1,1));
+		keyPanel.add(pianoKeys);
+		
+		GridBagConstraints gbCon = new GridBagConstraints();
+		
+		this.add(keyPanel);
 		this.add(BorderLayout.EAST, restButton);
 		this.add(BorderLayout.SOUTH, octavePanel);
+		
+		
 	}
-
+	public JPanel test(){
+		return keyPanel;
+	}
 	
 	public JLabel getOctaveLabel(){
 		return octaveLabel;
 	}
 	
 	public static void main(String[] arg0){
+	
 		JFrame.setDefaultLookAndFeelDecorated(false);
 		JFrame frame = new JFrame();
-
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 		
 		PianoActionHandler pianoHandler = new PianoActionHandler(){
 
