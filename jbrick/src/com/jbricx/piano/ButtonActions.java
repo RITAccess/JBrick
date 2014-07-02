@@ -60,9 +60,11 @@ public class ButtonActions {
 	 * @param yplace
 	 */
 	private void bPanel(JButton ctrlButton,int xPlace,int yPlace) {
-		gbCon.insets = new Insets(20,20,20,20);
-		gbCon.ipadx = 75;
-		gbCon.ipady = 30;
+		
+		gbCon.anchor = GridBagConstraints.CENTER;
+		gbCon.insets = new Insets(10,10,10,10);
+		gbCon.ipadx = 50;
+		gbCon.ipady = 20;
 		gbCon.gridx = xPlace;
 		gbCon.gridy = yPlace;
 		buttonPanel.add(ctrlButton,gbCon);

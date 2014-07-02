@@ -7,7 +7,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
@@ -81,12 +80,12 @@ public class PianoControls {
 		gbCon.gridy = 0;
 		gbCon.gridheight = 2;
 		gbCon.ipadx = 150;
-		gbCon.insets = new Insets(0,20,20,20);
+		gbCon.insets = new Insets(0,20,20,10);
 		gbCon.fill = GridBagConstraints.BOTH;
 		centerPanel.add(textViewPanel.setUpNoteView(),gbCon);
 		
-		gbCon.ipadx = 50;
 		gbCon.insets = new Insets(10,10,0,0);
+		gbCon.ipadx = 0;
 		gbCon.weightx = .75;
 		gbCon.weighty = .75;
 		gbCon.gridheight = 1;
@@ -96,7 +95,6 @@ public class PianoControls {
 		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
 		centerPanel.add(buttonPanel.setUpBPanel(),gbCon);
 		
-		gbCon.ipady = 100;
     	gbCon.weightx = 0.5;
 		gbCon.weighty = 0.5;
 		gbCon.gridy = 1;

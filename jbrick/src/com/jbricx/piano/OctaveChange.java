@@ -70,11 +70,9 @@ public class OctaveChange{
 	public JPanel setUpTransposer() {
 		
 		GridBagConstraints gbCon = new GridBagConstraints();
-		gbCon.ipadx = 100;
-		gbCon.weightx = 0.75;
-		gbCon.weighty = 0.75;
-		gbCon.insets = new Insets(0,20,10,0);
 		
+		gbCon.weightx = 0.75;
+		gbCon.insets = new Insets(0,10,10,0);
 		gbCon.gridx = 0;
 		gbCon.gridy = 1;
 		gbCon.fill = GridBagConstraints.HORIZONTAL;

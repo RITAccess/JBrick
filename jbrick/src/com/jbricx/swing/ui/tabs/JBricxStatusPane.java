@@ -116,8 +116,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 		hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 		
 		messagePane.setText("<p style=\"font-size:" + newFont.getSize()
-				+ "px; color:" + hex + "\">" + sb.toString() + "</p>");
-		System.out.println(sb.toString());
+				+ "px; font-family:" + newFont.getFamily() + "; color:" + hex + "\">" + sb.toString() + "</p>");
 	}
 
 	public void clearOldMessages() {

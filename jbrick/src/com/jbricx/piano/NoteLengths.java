@@ -84,7 +84,7 @@ public class NoteLengths {
 	}
 	
 	private void insertRadioButton(JComponent noteButton,int xPlace,int yPlace) {
-		gbCon.insets = new Insets(20,0,20,0);
+		gbCon.insets = new Insets(10,0,10,0);
 		gbCon.anchor = GridBagConstraints.WEST;
 		gbCon.gridx = xPlace;
 		gbCon.gridy = yPlace;
