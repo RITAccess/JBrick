@@ -22,10 +22,12 @@ public class NotesView {
 	public NotesView() {
 		
 		notesPanel = new JPanel(new BorderLayout());
-		notesView = new JTextArea(0,50);
+		notesView = new JTextArea(10,5);
 		noteScroll = new JScrollPane(notesView);
 		noteScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		notesView.setEditable(false);
+		notesView.setLineWrap(true);
+		notesView.setWrapStyleWord(true);
 		typedNotes = new JLabel("Current notes: ");
 		
 	}
@@ -48,7 +50,6 @@ public class NotesView {
 	 */
 	public JPanel setUpNoteView() {
 		
-		notesPanel.add(notesView, BorderLayout.CENTER);
 		notesPanel.add(noteScroll);
 		notesPanel.add(typedNotes, BorderLayout.PAGE_START);
 		return notesPanel;

@@ -12,10 +12,11 @@ import javax.swing.JButton;
 
 public class PianoControls {
 	
-	public ButtonActions buttonPanel;
-	public NoteLengths noteRadioPanel;
-	public NotesView textViewPanel;
-	public PianoKeys keysPanel;
+	protected ButtonActions buttonPanel;
+	protected NoteLengths noteRadioPanel;
+	protected NotesView textViewPanel;
+	protected PianoKeys keysPanel;
+	protected OctaveChange transPanel;
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 
@@ -33,6 +34,7 @@ public class PianoControls {
 		textViewPanel = new NotesView();
 		buttonPanel = new ButtonActions();
 		noteRadioPanel = new NoteLengths();
+		transPanel = new OctaveChange();
 		rest = new JButton("Rest (C)");
 		rest.addActionListener(setNoteButton(noteRadioPanel));
 	}
