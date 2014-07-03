@@ -62,7 +62,7 @@ public class PianoControls {
 		
 		gbCon.gridx = 0;
 		gbCon.gridy = 0;
-		gbCon.gridheight = 2;
+		gbCon.gridheight = 3;
 		gbCon.ipadx = 150;
 		gbCon.insets = new Insets(0,20,20,10);
 		gbCon.fill = GridBagConstraints.BOTH;
@@ -74,16 +74,18 @@ public class PianoControls {
 		gbCon.weighty = .75;
 		gbCon.gridheight = 1;
 		gbCon.gridx = 1;
-		gbCon.gridy = 0;
+		gbCon.gridy = 1;
 		gbCon.fill = GridBagConstraints.HORIZONTAL;
 		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
 		centerPanel.add(buttonPanel.setUpBPanel(),gbCon);
 		
     	gbCon.weightx = 0.5;
 		gbCon.weighty = 0.5;
-		gbCon.gridy = 1;
-		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
+		gbCon.gridy = 2;
 		centerPanel.add(noteRadioPanel.noteLengthPanel(),gbCon);
+		
+		gbCon.gridy = 0;
+		centerPanel.add(buttonPanel.soundCheck(),gbCon);
 		
 		return centerPanel;
 	}
