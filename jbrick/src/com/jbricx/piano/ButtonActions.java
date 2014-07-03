@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.tools.AudioPlayer;
 
 /**
@@ -35,6 +37,7 @@ public class ButtonActions {
 	private JButton play;
 	private JButton save;
 	private JButton help;
+	private JBricxManager manager;
 	
 	private JPanel buttonPanel;
 	private Border buttonBorder;
@@ -108,6 +111,7 @@ public class ButtonActions {
 		});
 		
 		this.help = new JButton("Help");
+		this.help.addActionListener(new HelpContentAction(null));
 		
 		// THE CLEAR BUTTON
 		this.clear = new JButton("Clear");
@@ -193,6 +197,14 @@ public class ButtonActions {
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
 		
+	}
+	
+	/**
+	 * Sets the manager for the help window
+	 * @param manager
+	 */
+	public void setManager(JBricxManager manager){
+		this.manager = manager;
 	}
 }
 
