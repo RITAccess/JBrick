@@ -508,22 +508,35 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	}
 	
 	/**
-	 * Adds the curent line to the list of lines to be highlighted
+	 * Toggles the highlighting on the current line for audio breaks
 	 */
-	public void toggleHighlightLine(){
-			if(!highlightedLines.contains(textArea.currentCaretY)){
-				highlightedLines.add(textArea.currentCaretY);
-			}
-			else{
-				for(int i = 0; i < highlightedLines.size(); i++)
+	public ArrayList<Integer> toggleHighlightLine(){
+		if(!highlightedLines.contains(textArea.currentCaretY)){
+			highlightedLines.add(textArea.currentCaretY);
+		}
+		else{
+			for(int i = 0; i < highlightedLines.size(); i++)
+			{
+				if(highlightedLines.get(i) == textArea.currentCaretY)
 				{
-					if(highlightedLines.get(i) == textArea.currentCaretY)
-					{
-						highlightedLines.remove(i);
-						break;
-					}
+					highlightedLines.remove(i);
+					break;
 				}
 			}
+		}
+		return highlightedLines;
+	}
+	
+	/**
+	 * Gets an array of the lines with audio breaks
+	 * @return Array of lines
+	 */
+	public int[] getBreakPoints(){
+		int[] pointArray = new int[highlightedLines.size()];
+		for(int i = 0; i < pointArray.length; i++){
+			pointArray[i] = highlightedLines.get(i)/24 +1;
+		}
+		return pointArray;
 	}
 
 	/**
@@ -535,6 +548,21 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		LineHighlightManager lhm = textArea.getLineHighlightManager();
 		if (lhm!=null) {
 			lhm.paintLineHighlights(g);
+		}
+	}
+	
+	/**
+	 * Adjusts the line highlights when lines are changed in the document
+	 * @param offset
+	 */
+	public void moveLineHighlights(int offset){
+		
+		offset *= textArea.getLineHeight();
+		
+		for(int i = 0; i < highlightedLines.size(); i++){
+			if(textArea.currentCaretY < highlightedLines.get(i)){
+				highlightedLines.set(i, highlightedLines.get(i) + offset);
+			}
 		}
 	}
 
@@ -615,6 +643,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	/**
 	 * Registered in the ActionMap.
 	 */
+	@SuppressWarnings("serial")
 	class FocusAction extends AbstractAction {
 
 		public void actionPerformed(ActionEvent e) {

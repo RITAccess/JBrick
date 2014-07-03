@@ -74,8 +74,6 @@ public class JBricxTabItem extends TextEditorPane {
 			
 		}.setJBricxTabItem(this);
 		this.addCaretListener(caretListener);
-		
-		
 	}
 
 	/**
@@ -127,5 +125,4 @@ public class JBricxTabItem extends TextEditorPane {
 	public boolean isEmpty() {
 		return this.getDocument().getLength()==0;
 	}
-
 }

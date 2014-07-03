@@ -18,14 +18,18 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.fife.io.UnicodeReader;
 import org.fife.io.UnicodeWriter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
+import org.fife.ui.rtextarea.RTextAreaUI;
 
 
 /**
@@ -89,6 +93,11 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * The value returned by {@link #getLastSaveOrLoadTime()} for remote files.
 	 */
 	public static final long LAST_MODIFIED_UNKNOWN		= 0;
+	
+	/**
+	 * Current number of lines in the document.
+	 */
+	private int currentLineCount;
 
 	/**
 	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 
@@ -370,6 +379,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		if (!dirty) {
 			setDirty(true);
 		}
+		documentChanged(e);
 	}
 
 
@@ -475,6 +485,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		charSet = ur.getEncoding();
 		String old = getFileFullPath();
 		this.loc = loc;
+		currentLineCount = this.getLineCount();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
 
 	}
@@ -523,8 +534,22 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		if (!dirty) {
 			setDirty(true);
 		}
+		
+		documentChanged(e);
 	}
 
+	/**
+	 * Adjust things when the document changes.
+	 * @param e The document event.
+	 */
+	private void documentChanged(DocumentEvent e){
+		if(currentLineCount != this.getLineCount()){
+			int numChangedLines = this.getLineCount() - currentLineCount;
+		    ((RTextAreaUI) this.getUI()).moveLineHighlights(numChangedLines);
+			
+			currentLineCount = this.getLineCount();
+		}
+	}
 
 	/**
 	 * Saves the file in its current encoding.<p>
@@ -538,6 +563,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	public void save() throws IOException {
 		saveImpl(loc);
+		saveDebug(loc);
 		setDirty(false);
 		syncLastSaveOrLoadTimeToActualFile();
 	}
@@ -558,7 +584,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		saveImpl(loc);
 		// No exception thrown - we can "rename" the file.
 		String old = getFileFullPath();
-
+		saveDebug(loc);
 		setDirty(false);
 		lastSaveOrLoadTime = loc.getActualLastModified();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
@@ -582,6 +608,97 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 	}
 
+	/**
+	 * Saves a copy of the file with audio breaks inserted. This will be used when downloading with debugging.
+	 * @throws IOException 
+	 */
+	private void saveDebug(FileLocation loc) throws IOException{
+		FileLocation nLoc = createDebugFilePath(loc);
+		int caretLocY = this.getCaretPosition();
+		
+		RSyntaxDocument oldDoc = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_NXC);
+		RSyntaxDocument newDoc = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_NXC);
+		
+		try {
+			oldDoc.insertString(0, this.getDocument().getText(0, this.getDocument().getLength()), null);
+			newDoc.insertString(0, this.getDocument().getText(0, this.getDocument().getLength()), null);
+			
+			newDoc.remove(0, newDoc.getLength());
+			newDoc.insertString(0, insertBreaks(oldDoc), null);
+			this.setDocument(newDoc);
+			
+		} catch (BadLocationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		saveImpl(nLoc);
+		
+		this.setDocument(oldDoc);
+		this.setCaretPosition(caretLocY);
+	}
+	
+	/**
+	 * Inserts the audio break lines of code into the debug file
+	 * @param doc original document
+	 * @return Full text of the new document with audio breaks included
+	 * @throws BadLocationException 
+	 */
+	private String insertBreaks(Document doc) throws BadLocationException{
+		
+	    int[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
+		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
+		ArrayList<String> finalText = new ArrayList<String>();
+		
+		int totalBreaks = 0;
+		for(int i = 0; i < fullText.length; i++){
+			for(int n = 0; n < breaks.length; n++){
+				if(i == breaks[n] -1){
+					for(int offset = i-1; offset > 0; offset--){
+						if(i > 0 && fullText[offset].trim().endsWith(";")){
+							totalBreaks ++;
+							finalText.add(offset + totalBreaks, "PlayToneEx(2000, 200, 100, false);");
+							break;
+						}
+					}
+				}
+			}
+			finalText.add(fullText[i]);
+		}
+		
+		String returnText = "";
+		for(int i = 0; i < finalText.size(); i++)
+		{
+			returnText += finalText.get(i) + "\n";
+		}
+		
+		return returnText;
+	}
+	
+	/**
+	 * Modifies the file location to be within a subfolder for debugging
+	 * @param loc
+	 * @return
+	 */
+	private FileLocation createDebugFilePath(FileLocation loc){
+		String[] path = loc.getFileFullPath().split("/");
+		String newPath = "";
+		for(int i = 0; i < path.length-1; i++){
+			newPath += path[i] + "/";
+		}
+		newPath += "debug/";
+		
+		//If the debug directory doesnt exist already then create one
+		File file = new File(newPath);
+		if(!file.exists()){
+			file.mkdir();
+		}
+		
+		newPath += "debug." + path[path.length-1];
+		FileLocation filePath = FileLocation.create(newPath);
+		
+		return filePath;
+	}
 
 	/**
 	 * Sets whether or not this text in this editor has unsaved changes.
@@ -590,7 +707,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @param dirty Whether or not the text has been modified.
 	 * @see #isDirty()
 	 */
-	private void setDirty(boolean dirty) {
+	public void setDirty(boolean dirty) {
 		if (this.dirty!=dirty) {
 			this.dirty = dirty;
 			firePropertyChange(DIRTY_PROPERTY, !dirty, dirty);
