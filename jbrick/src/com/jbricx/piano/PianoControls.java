@@ -7,16 +7,15 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
 public class PianoControls {
 	
-	ButtonActions buttonPanel;
-	NoteLengths noteRadioPanel;
-	NotesView textViewPanel;
-	PianoKeys keysPanel;
+	protected ButtonActions buttonPanel;
+	protected NoteLengths noteRadioPanel;
+	protected NotesView textViewPanel;
+	protected OctaveChange transPanel;
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 
@@ -32,28 +31,13 @@ public class PianoControls {
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
 		textViewPanel = new NotesView();
-		buttonPanel = new ButtonActions();
+		buttonPanel = new ButtonActions(textViewPanel);
 		noteRadioPanel = new NoteLengths();
+		transPanel = new OctaveChange();
 		rest = new JButton("Rest (C)");
 		rest.addActionListener(setNoteButton(noteRadioPanel));
 	}
 	
-	/**
-	 * Set up for the rest button's orientation in the panel
-	 */
-	private GridBagConstraints restSetUp(){
-		
-		gbCon.fill = GridBagConstraints.VERTICAL;
-		gbCon.insets = new Insets(100,50,100,50);
-		gbCon.weightx = 0.25;
-		gbCon.weighty = 0.5;
-		gbCon.ipadx = 100;
-		gbCon.ipady = 200;
-		gbCon.gridx = 0;
-		gbCon.gridy = 0;
-		gbCon.anchor = GridBagConstraints.CENTER;
-		return gbCon;
-	}
 	private ActionListener setNoteButton(NoteLengths noteRadioPanel) {
 		ActionListener noteListener = new ActionListener() {
 			private NoteLengths noteLengths;
@@ -68,6 +52,7 @@ public class PianoControls {
 		
 		return noteListener;
 	}
+	
 	/**
 	 * Set up for the other panels orientation within the central panel
 	 * 
@@ -79,12 +64,12 @@ public class PianoControls {
 		gbCon.gridy = 0;
 		gbCon.gridheight = 2;
 		gbCon.ipadx = 150;
-		gbCon.insets = new Insets(0,20,20,20);
+		gbCon.insets = new Insets(0,20,20,10);
 		gbCon.fill = GridBagConstraints.BOTH;
 		centerPanel.add(textViewPanel.setUpNoteView(),gbCon);
 		
-		gbCon.ipadx = 50;
 		gbCon.insets = new Insets(10,10,0,0);
+		gbCon.ipadx = 0;
 		gbCon.weightx = .75;
 		gbCon.weighty = .75;
 		gbCon.gridheight = 1;
@@ -94,7 +79,6 @@ public class PianoControls {
 		gbCon.anchor = GridBagConstraints.BASELINE_LEADING;
 		centerPanel.add(buttonPanel.setUpBPanel(),gbCon);
 		
-		gbCon.ipady = 100;
     	gbCon.weightx = 0.5;
 		gbCon.weighty = 0.5;
 		gbCon.gridy = 1;

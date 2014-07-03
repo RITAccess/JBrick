@@ -4,12 +4,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+
+import com.jbricx.tools.AudioPlayer;
 
 /**
  * Class for creating the buttons in the piano frame and giving them functionality
@@ -21,7 +24,6 @@ public class ButtonActions {
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 	
-	private JButton rest;
 	private JButton clear;
 	private JButton copy;
 	private JButton play;
@@ -33,19 +35,47 @@ public class ButtonActions {
 	
 	/**
 	 * Constructor of the buttons used
+	 * @param textViewPanel - where all the note information is ready to be grabbed 
 	 * 
 	 */
-	public ButtonActions() {
+	public ButtonActions(final NotesView textViewPanel) {
 		
-		buttonPanel = new JPanel(new GridBagLayout());
-		buttonBorder = new EtchedBorder();
+		this.buttonPanel = new JPanel(new GridBagLayout());
+		this.buttonBorder = new EtchedBorder();
 		
-		rest = new JButton("Rest");
-		play = new JButton("Play");
-		copy = new JButton("Copy");
-		save = new JButton("Save");
-		help = new JButton("Help");
-		clear = new JButton("Clear");
+		// THE PLAY BUTTON
+		this.play = new JButton("Play");
+		this.play.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Note[] notes = ButtonActions.getNotesFromText(textViewPanel.getText());
+				int[] lengths = new int[notes.length];
+				String[] noteStrs = new String[notes.length];
+				int count = 0;
+				for (Note n: notes){
+					lengths[count] = n.length;
+					noteStrs[count++] = n.note;
+				}
+				AudioPlayer.play(lengths, noteStrs);
+			}
+			
+		});
+		this.copy = new JButton("Copy");
+		this.save = new JButton("Save");
+		this.help = new JButton("Help");
+		
+		// THE CLEAR BUTTON
+		this.clear = new JButton("Clear");
+		this.clear.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textViewPanel.clearText();
+				
+			}
+			
+		});
 	}
 	
 	/**
@@ -60,18 +90,32 @@ public class ButtonActions {
 	 * @param yplace
 	 */
 	private void bPanel(JButton ctrlButton,int xPlace,int yPlace) {
-		gbCon.insets = new Insets(20,20,20,20);
-		gbCon.ipadx = 75;
-		gbCon.ipady = 30;
+		
+		gbCon.anchor = GridBagConstraints.CENTER;
+		gbCon.insets = new Insets(10,10,10,10);
+		gbCon.ipadx = 50;
+		gbCon.ipady = 20;
 		gbCon.gridx = xPlace;
 		gbCon.gridy = yPlace;
 		buttonPanel.add(ctrlButton,gbCon);
 
 	}
 	
-	public JButton restButton() {
-		
-		return rest;
+	/**
+	 * Grabs the notes from the text and outputs a Note array
+	 * (the Note array contains the String of the Note as well as it's duration in ms)
+	 * @param text
+	 * @return
+	 */
+	public static Note[] getNotesFromText(String[] text){
+		Note[] notes = new Note[text.length];
+		int count = 0;
+		for (String txt: text){
+			String[] len = txt.split(" ")[1].split("/");
+			int ms = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
+			notes[count++] = new Note(txt.split(" ")[0], ms);
+		}
+		return notes;
 	}
 
 	/**
@@ -105,5 +149,14 @@ public class ButtonActions {
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
 		
+	}
+}
+
+class Note{
+	String note;
+	int length;
+	Note(String note, int length){
+		this.note = note;
+		this.length = length;
 	}
 }
