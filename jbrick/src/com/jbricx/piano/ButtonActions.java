@@ -1,5 +1,6 @@
 package com.jbricx.piano;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -7,9 +8,12 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -70,18 +74,39 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Note[] notes = ButtonActions.getNotesFromText(textViewPanel.getText());
-				String copyStr = "";
-				for (Note n: notes){
-					copyStr = copyStr + n.getNXC();
-				}
+				String copyStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
 				StringSelection selection = new StringSelection(copyStr);
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
 			}
 			
 		});
 		
+		// THE SAVE BUTTON
 		this.save = new JButton("Save");
+		this.save.addActionListener(new ActionListener(){
+
+			@Override
+            public void actionPerformed(ActionEvent arg0) {
+				String startStr = "task main()\n{\n";
+				String saveStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
+                JFileChooser saveFile = new JFileChooser();
+                if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+                	PrintWriter out = null;
+                	try {
+						out = new PrintWriter(saveFile.getSelectedFile().getAbsolutePath());
+						out.println(startStr + saveStr + "}");
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						out.close();
+					}
+                	
+                };
+            }
+			
+		});
+		
 		this.help = new JButton("Help");
 		
 		// THE CLEAR BUTTON
@@ -181,5 +206,13 @@ class Note{
 	
 	public String getNXC(){
 		return String.format("PlayTone(%d, %d); Wait(%d);\n", (int)AudioPlayer.getFreq(note), length, length);
+	}
+	
+	public static String getNXC(Note[] notes){
+		String str = "";
+		for (Note n: notes){
+			str = str + n.getNXC();
+		}
+		return str;
 	}
 }
