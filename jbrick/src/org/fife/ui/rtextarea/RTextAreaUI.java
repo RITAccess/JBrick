@@ -534,7 +534,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	public int[] getBreakPoints(){
 		int[] pointArray = new int[highlightedLines.size()];
 		for(int i = 0; i < pointArray.length; i++){
-			pointArray[i] = highlightedLines.get(i)/24 +1;
+			pointArray[i] = highlightedLines.get(i)/textArea.getLineHeight() +1;
 		}
 		return pointArray;
 	}
@@ -566,6 +566,13 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		}
 	}
 
+	
+	public void changeHighlightSize(int diff, int oldSize)
+	{
+		for(int i = 0; i < highlightedLines.size(); i++){
+				highlightedLines.set(i, highlightedLines.get(i) + diff*(highlightedLines.get(i)/oldSize));
+		}
+	}
 
 	/**
 	 * Draws the "margin line" if enabled.

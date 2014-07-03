@@ -25,10 +25,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.fife.ui.rtextarea.RTextScrollPane;
 import org.w3c.dom.Document;
 
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
+import com.jbricx.swing.ui.tabs.JBricxTabItem;
 import com.jbricx.tools.XMLParser;
 
 /**
@@ -690,6 +692,9 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	 * Action Listener method for all of the buttons.
 	 */
 	public void actionPerformed(ActionEvent arg0) {
+		//Tab is needed to update the line highlights
+	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)this.manager.getTabFolder().getSelectedComponent()).getViewport().getView();
+		
 		//A color button was picked - change the buttons color to what was chosen.
 		if(arg0.getActionCommand().equals("backgroundButton") || arg0.getActionCommand().equals("foregroundButton")
 				|| arg0.getActionCommand().equals("commentButton") || arg0.getActionCommand().equals("stringButton")
@@ -779,6 +784,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		}else if(arg0.getActionCommand().equals("apply")){
 			saveValues();
 			manager.updatePreferences();
+		    tab.changedUpdate(null);
 		}else if(arg0.getActionCommand().equals("applytheme")){
 			if(themeLocationTextArea.getText().equalsIgnoreCase(""))
 				themeLocationTextArea.setText(PreferenceStore.getString(Preference.THEMEXML));
@@ -787,6 +793,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 			setJPanelsFromPreferences();
 			saveValues();
 			manager.updatePreferences();
+		    tab.changedUpdate(null);
 		}else if(arg0.getActionCommand().equals("savetheme")){
 			final JFileChooser fc = new JFileChooser("resources/preferences");
 			fc.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
