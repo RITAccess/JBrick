@@ -666,15 +666,28 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		ArrayList<String> finalText = new ArrayList<String>();
 		
 		int totalBreaks = 0;
-		for(int i = 0; i < fullText.length; i++){
-			for(int n = 0; n < breaks.length; n++){
-				if(i == breaks[n] -1){
-					for(int offset = i-1; offset > 0; offset--){
-						if(i > 0 && fullText[offset].trim().endsWith(";")){
+		for(int i = 0; i < fullText.length; i++){ //Loop through document
+			for(int n = 0; n < breaks.length; n++){ //Loop through list of breaks
+				if(i == breaks[n] -1){ //If there is a break on this line in the document
+					boolean lineInserted = false; //Has a audio break been placed yet?
+					for(int offset = i-1; offset > 0; offset--){ //Loop to find the last semicolen before the line with the break on it
+						if(i > 0 && (fullText[offset].trim().endsWith(";") || fullText[offset].trim().endsWith("{"))){
+							//Insert break on line
 							totalBreaks ++;
 							finalText.add(offset + totalBreaks, "PlayToneEx(2000, 200, 100, false);");
+							lineInserted = true;
 							break;
 						}
+						if(fullText[offset].trim().endsWith("}")){
+							break;
+						}
+					}
+					//If no break was placed in last loop attempt to place one at the end of the current line
+					if(!lineInserted){
+						//Insert break on line
+						totalBreaks ++;
+						finalText.add("PlayToneEx(2000, 200, 100, false);");
+						lineInserted = true;
 					}
 				}
 			}
