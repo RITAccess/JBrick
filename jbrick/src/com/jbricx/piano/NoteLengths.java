@@ -5,6 +5,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -13,15 +17,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.JFormattedTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.NumberFormatter;
 
 public class NoteLengths {
 
-	private static JTextField noteField;
+	private static JFormattedTextField noteField;
 	private ButtonGroup buttonGroup;
 	private JPanel radioPanel;
 	private Border radioBorder;
@@ -36,8 +41,17 @@ public class NoteLengths {
 	public NoteLengths() {
 		
 		radioPanel = new JPanel(new GridBagLayout());
-		noteField = new JTextField(3);
+		noteField = new JFormattedTextField();
+		noteField.setColumns(3);
 		noteField.setEditable(false);
+		noteField.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ev) {
+				char c = ev.getKeyChar();
+				if(!("0123456789/".contains("" + c) || c == KeyEvent.VK_BACK_SPACE)) {
+					ev.consume();
+				}
+			}
+		});
 		buttonGroup = new ButtonGroup();
 		String[] lengthStrs = {"1/1", "1/2", "1/3", "1/4", "1/8", "1/16", customString};
 		for (int i = 0; i < lengthStrs.length; i++){
@@ -61,39 +75,40 @@ public class NoteLengths {
 			buttonGroup.add(button);
 		}
 		radioBorder = new EtchedBorder();
-		noteField.getDocument().addDocumentListener(new DocumentListener() {
-			JRadioButton button = new JRadioButton();
-			@Override
-			public void changedUpdate(DocumentEvent ev) {
-				checkUpdate(ev,button);
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			private void checkUpdate (DocumentEvent docEv,JRadioButton button)  {
-				DocumentEvent.EventType type = docEv.getType();
-				if (type.equals(DocumentEvent.EventType.CHANGE)) {
-					setValue(button.getText());
-				}
-			}
-		});
 	}
 	
 	public static void setValue(String text){
-		if (text == customString){
+		if (text.equals(customString)){
 			noteField.setEditable(true);
 			if (noteField.isEditable() == true){
-				NoteLengths.selectedValue = noteField.getText();
+				noteField.getDocument().addDocumentListener(new DocumentListener() {
+
+					@Override
+					public void changedUpdate(DocumentEvent ev) {
+						checkUpdate(ev);
+						
+					}
+
+					@Override
+					public void insertUpdate(DocumentEvent ev) {
+						checkUpdate(ev);
+						
+					}
+
+					@Override
+					public void removeUpdate(DocumentEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					private void checkUpdate(DocumentEvent docEv) {
+						DocumentEvent.EventType type = docEv.getType();
+						if (type.equals(DocumentEvent.EventType.INSERT)) {
+							NoteLengths.selectedValue = noteField.getText();
+						}
+					}
+					
+				});
 			}
 		} else {
 			NoteLengths.selectedValue = text;
