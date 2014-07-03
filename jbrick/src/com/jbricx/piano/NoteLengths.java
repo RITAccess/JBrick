@@ -41,7 +41,7 @@ public class NoteLengths {
 		String[] lengthStrs = {"1/1", "1/2", "1/3", "1/4", "1/8", "1/16", customString};
 		for (int i = 0; i < lengthStrs.length; i++){
 			JRadioButton button = new JRadioButton(lengthStrs[i]);
-			if (i == 0) { button.setSelected(true); NoteLengths.setValue(button.getText());}
+			if (i == 3) { button.setSelected(true); NoteLengths.setValue(button.getText());}
 			button.addActionListener(new ActionListener(){
 				
 				String text;

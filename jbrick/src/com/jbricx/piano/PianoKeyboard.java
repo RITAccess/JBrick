@@ -50,10 +50,10 @@ public class PianoKeyboard extends JPanel{
 		} else {
 			PianoButton.setParentPanel(parentPanel);
 		}
-		char[] whiteKeys = "ASDFGHJ".toCharArray();
-		String[] whiteKeyStrings = {"A", "B", "C", "D", "E", "F", "G"};
-		char[] blackKeys = "W RT UI".toCharArray();
-		String[] blackKeyStrings = {"A#", "", "C#", "D#", "", "F#", "G#"};
+		char[] whiteKeys = "ASDFGHJKL;".toCharArray();
+		String[] whiteKeyStrings = {"C", "D", "E", "F", "G", "A1", "B1", "C1", "D1", "E1"};
+		char[] blackKeys = "WE TYU OP".toCharArray();
+		String[] blackKeyStrings = {"C#", "D#", "", "F#", "G#", "A#1", "", "C#1", "D#1"};
 		PianoButton.setKeyCount(whiteKeys.length);
 		for (int k = 0; k < whiteKeys.length + blackKeys.length; k++){
 			PianoButton key;

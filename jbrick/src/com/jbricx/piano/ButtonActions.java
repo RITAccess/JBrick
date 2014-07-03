@@ -43,6 +43,7 @@ public class ButtonActions {
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonBorder = new EtchedBorder();
 		
+		// THE PLAY BUTTON
 		this.play = new JButton("Play");
 		this.play.addActionListener(new ActionListener(){
 
@@ -63,6 +64,8 @@ public class ButtonActions {
 		this.copy = new JButton("Copy");
 		this.save = new JButton("Save");
 		this.help = new JButton("Help");
+		
+		// THE CLEAR BUTTON
 		this.clear = new JButton("Clear");
 		this.clear.addActionListener(new ActionListener(){
 
@@ -109,9 +112,7 @@ public class ButtonActions {
 		int count = 0;
 		for (String txt: text){
 			String[] len = txt.split(" ")[1].split("/");
-			System.out.println(len[0]);
 			int ms = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
-			System.out.println(ms);
 			notes[count++] = new Note(txt.split(" ")[0], ms);
 		}
 		return notes;

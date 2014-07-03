@@ -44,7 +44,13 @@ public class PianoWindow extends JFrame {
 					textView.appendText(noteInformation + " " + notePrint.getValue() + "\n");
 				}
 				else {
-					textView.appendText(noteInformation + transposer.getSlider().getValue() +" "+ notePrint.getValue() + "\n");
+					int octave = transposer.getSlider().getValue(); 
+					// if 1, go up an octave
+					if (noteInformation.contains("1")){
+						octave++;
+						noteInformation = noteInformation.substring(0, noteInformation.length() - 1);
+					}
+					textView.appendText(noteInformation + octave +" "+ notePrint.getValue() + "\n");
 				}
 			}
 			
