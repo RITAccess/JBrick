@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -22,7 +20,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.NumberFormatter;
+
 
 public class NoteLengths {
 
@@ -50,6 +48,39 @@ public class NoteLengths {
 					ev.consume();
 				}
 			}
+		});
+		noteField.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent ev) {
+				checkUpdate(ev);
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent ev) {
+				checkUpdate(ev);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent ev) {
+				checkUpdate(ev);
+			}
+			
+			private void checkUpdate(DocumentEvent docEv) {
+				DocumentEvent.EventType type = docEv.getType();
+				if (type.equals(DocumentEvent.EventType.INSERT)) {
+					NoteLengths.selectedValue = noteField.getText();
+				}
+				else if(type.equals(DocumentEvent.EventType.CHANGE)) {
+					NoteLengths.selectedValue = noteField.getText();
+				}
+				else if(type.equals(DocumentEvent.EventType.REMOVE)) {
+					NoteLengths.selectedValue = noteField.getText();
+				}
+			}
+			
 		});
 		buttonGroup = new ButtonGroup();
 		String[] lengthStrs = {"1/1", "1/2", "1/3", "1/4", "1/8", "1/16", customString};
@@ -79,38 +110,10 @@ public class NoteLengths {
 	public static void setValue(String text){
 		if (text.equals(customString)){
 			noteField.setEditable(true);
-			if (noteField.isEditable() == true){
-				noteField.getDocument().addDocumentListener(new DocumentListener() {
-
-					@Override
-					public void changedUpdate(DocumentEvent ev) {
-						checkUpdate(ev);
-						
-					}
-
-					@Override
-					public void insertUpdate(DocumentEvent ev) {
-						checkUpdate(ev);
-						
-					}
-
-					@Override
-					public void removeUpdate(DocumentEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					private void checkUpdate(DocumentEvent docEv) {
-						DocumentEvent.EventType type = docEv.getType();
-						if (type.equals(DocumentEvent.EventType.INSERT)) {
-							NoteLengths.selectedValue = noteField.getText();
-						}
-					}
-					
-				});
-			}
+			NoteLengths.selectedValue = noteField.getText();
 		} else {
 			NoteLengths.selectedValue = text;
+			noteField.setEditable(false);
 		}
 	}
 	

@@ -2,6 +2,7 @@ package com.jbricx.piano;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -12,6 +13,7 @@ import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -39,7 +41,10 @@ public class ButtonActions {
 	private JBricxManager manager;
 	
 	private JPanel buttonPanel;
+	private JPanel checkPanel;
 	private Border buttonBorder;
+	private JCheckBox javaBox;
+	private JCheckBox nxtBox;
 	
 	/**
 	 * Constructor of the buttons used
@@ -123,6 +128,9 @@ public class ButtonActions {
 			}
 			
 		});
+		
+		javaBox = new JCheckBox("Java Output");
+		nxtBox = new JCheckBox("NXT Output");
 	}
 	
 	/**
@@ -161,6 +169,14 @@ public class ButtonActions {
 		save.setToolTipText("Saves NXC code that will play");
 		help.setToolTipText("Opens help browser to piano composer");
 		clear.setToolTipText("Clears all keys");
+	}
+	
+	public JPanel soundCheck() {
+		checkPanel = new JPanel(new GridLayout(1,2));
+		checkPanel.add(javaBox);
+		checkPanel.add(nxtBox);
+		checkPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder,"Sound Location Output"));
+		return checkPanel;
 	}
 	
 	/**

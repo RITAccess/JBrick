@@ -93,11 +93,16 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * The value returned by {@link #getLastSaveOrLoadTime()} for remote files.
 	 */
 	public static final long LAST_MODIFIED_UNKNOWN		= 0;
-	
+
 	/**
 	 * Current number of lines in the document.
 	 */
 	private int currentLineCount;
+
+	/**
+	 * Current size of lines in the document.
+	 */
+	private int currentLineSize;
 
 	/**
 	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 
@@ -222,6 +227,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @param e The document event.
 	 */
 	public void changedUpdate(DocumentEvent e) {
+		documentChanged(e);
 	}
 
 
@@ -486,6 +492,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		String old = getFileFullPath();
 		this.loc = loc;
 		currentLineCount = this.getLineCount();
+		currentLineSize = this.getLineHeight();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
 
 	}
@@ -549,7 +556,15 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			
 			currentLineCount = this.getLineCount();
 		}
+		if(currentLineSize != this.getLineHeight()){
+			int heightChange = this.getLineHeight() - currentLineSize;
+		    ((RTextAreaUI) this.getUI()).changeHighlightSize(heightChange, currentLineSize);
+			
+			currentLineSize = this.getLineHeight();
+		}
 	}
+	
+	
 
 	/**
 	 * Saves the file in its current encoding.<p>
