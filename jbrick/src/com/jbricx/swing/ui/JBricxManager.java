@@ -35,5 +35,4 @@ public interface JBricxManager {
 	void openTab(String FilePath);
 
 	void updatePreferences();
-	
 }

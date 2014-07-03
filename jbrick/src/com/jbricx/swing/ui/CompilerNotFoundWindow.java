@@ -208,10 +208,9 @@ public class CompilerNotFoundWindow  extends JDialog implements ActionListener {
 			}
 		}else if(arg0.getActionCommand().equals("cancel")){
 				this.dispose();
-		// User wishes to leave. Saves changes and leaves	
 		}else if(arg0.getActionCommand().equals("OK")){
 			saveValues();
-			manager.updatePreferences(); //Should automatically Update
+			manager.updatePreferences();
 			this.dispose();
 		}
 	}	
