@@ -68,6 +68,11 @@ public class PianoWindow extends JFrame {
 								AudioPlayer.getLength(notePrint.getValue()), 
 								noteInformation + octave);
 					}
+					
+					AudioPlayer.play(
+							AudioPlayer.getLength(notePrint.getValue()),
+							noteInformation + octave);
+					
 				}
 			}
 			
