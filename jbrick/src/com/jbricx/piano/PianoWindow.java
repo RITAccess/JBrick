@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.jbricx.swing.ui.JBricxManager;
+
 @SuppressWarnings("serial")
 public class PianoWindow extends JFrame {
 
@@ -22,12 +24,19 @@ public class PianoWindow extends JFrame {
 	private PianoActionHandler pianoHandler;
 	private PianoKeyboard pianoKeyboard;
 	
-	PianoWindow() {
+	/**
+	 * sets manager for other tools (like piano help)
+	 * @param manager
+	 */
+	PianoWindow(JBricxManager manager) {
 		
 		controls = new PianoControls();
 		transposer = controls.transPanel;
 		notePrint = controls.noteRadioPanel;
 		textView = controls.textViewPanel;
+		if (manager != null){
+			controls.buttonPanel.setManager(manager);
+		}
 		
 		pianoHandler = new PianoActionHandler(){
 
@@ -44,12 +53,17 @@ public class PianoWindow extends JFrame {
 					textView.appendText(noteInformation + " " + notePrint.getValue() + "\n");
 				}
 				else {
-					textView.appendText(noteInformation + transposer.getSlider().getValue() +" "+ notePrint.getValue() + "\n");
+					int octave = transposer.getSlider().getValue(); 
+					// if 1, go up an octave
+					if (noteInformation.contains("1")){
+						octave++;
+						noteInformation = noteInformation.substring(0, noteInformation.length() - 1);
+					}
+					textView.appendText(noteInformation + octave +" "+ notePrint.getValue() + "\n");
 				}
 			}
 			
 		}.setTextArea(textView);
-		PianoButton.setSize(400, 125, 100, 0);
 		pianoKeyboard = new PianoKeyboard(pianoHandler,null);
 	}
 
@@ -60,11 +74,10 @@ public class PianoWindow extends JFrame {
 	 */
 	private void setUpPiano() {
 		
-		PianoWindow pianoControls = new PianoWindow();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		pianoControls.setSize((int) screenSize.getHeight(), (int)screenSize.getWidth());
+		this.setSize((int) screenSize.getHeight(), (int)screenSize.getWidth());
 		
-		pianoControls.setLayout(new GridBagLayout());
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbCon = new GridBagConstraints();
 		gbCon.anchor = GridBagConstraints.CENTER;
 		gbCon.fill = GridBagConstraints.HORIZONTAL;
@@ -73,24 +86,25 @@ public class PianoWindow extends JFrame {
 		gbCon.ipady = 100;
 		gbCon.gridx = 0;
 		gbCon.gridy = 0;
-		pianoControls.add(pianoKeyboard,gbCon);
+		gbCon.insets = new Insets(20,20,0,20);
+		this.add(pianoKeyboard,gbCon);
 		
 		gbCon.insets = new Insets(0,0,0,20);
 		gbCon.ipady = 50;
 		gbCon.gridx = 0;
 		gbCon.gridy = 3;
 		gbCon.gridheight = 1;
-		pianoControls.add(transposer.setUpTransposer(),gbCon);
+		this.add(transposer.setUpTransposer(),gbCon);
 		
 		gbCon.gridx = 0;
 		gbCon.gridy = 4;
-		pianoControls.add(controls.setUpControls(),gbCon);
+		this.add(controls.setUpControls(),gbCon);
 	
-		pianoControls.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		pianoControls.setLocationRelativeTo(null);
-		pianoControls.setVisible(true);
-		pianoControls.pack();
-		pianoControls.setTitle("Piano Composer");
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+		this.pack();
+		this.setTitle("Piano Composer");
 		
 		transposer.getSlider().addChangeListener(new ChangeListener(){
 
@@ -117,7 +131,7 @@ public class PianoWindow extends JFrame {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		PianoWindow pw = new PianoWindow();
+		PianoWindow pw = new PianoWindow(null);
 		pw.setUpPiano();
 		}
 

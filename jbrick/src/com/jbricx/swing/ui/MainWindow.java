@@ -180,23 +180,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		return false;
 	}
 
-//
-//	/**
-//	 * Register observers
-//	 */
-//	public void registerObserver(final JBrickObserver observer) {
-//		//TODO
-//	  }
-//
-//	/**
-//	 * Remove observers
-//	 * @param observer to remove
-//	 */
-//	public void removeObserver(final JBrickObserver observer) {
-//	    //TODO
-//	}
-
-	
 	public JFrame getShell(){
 		return this;
 	}
@@ -276,5 +259,4 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public void refreshExplorerContent() {
 		editorPane.refreshTabTitles();
 	}
-
 }

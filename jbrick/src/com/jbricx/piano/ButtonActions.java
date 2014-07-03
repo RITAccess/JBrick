@@ -1,15 +1,26 @@
 package com.jbricx.piano;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+
+import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.tools.AudioPlayer;
 
 /**
  * Class for creating the buttons in the piano frame and giving them functionality
@@ -21,31 +32,98 @@ public class ButtonActions {
 	
 	GridBagConstraints gbCon = new GridBagConstraints();
 	
-	private JButton rest;
 	private JButton clear;
 	private JButton copy;
 	private JButton play;
 	private JButton save;
 	private JButton help;
+	private JBricxManager manager;
 	
 	private JPanel buttonPanel;
 	private Border buttonBorder;
 	
 	/**
 	 * Constructor of the buttons used
+	 * @param textViewPanel - where all the note information is ready to be grabbed 
 	 * 
 	 */
-	public ButtonActions() {
+	public ButtonActions(final NotesView textViewPanel) {
 		
-		buttonPanel = new JPanel(new GridBagLayout());
-		buttonBorder = new EtchedBorder();
+		this.buttonPanel = new JPanel(new GridBagLayout());
+		this.buttonBorder = new EtchedBorder();
 		
-		rest = new JButton("Rest");
-		play = new JButton("Play");
-		copy = new JButton("Copy");
-		save = new JButton("Save");
-		help = new JButton("Help");
-		clear = new JButton("Clear");
+		// THE PLAY BUTTON
+		this.play = new JButton("Play");
+		this.play.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Note[] notes = ButtonActions.getNotesFromText(textViewPanel.getText());
+				int[] lengths = new int[notes.length];
+				String[] noteStrs = new String[notes.length];
+				int count = 0;
+				for (Note n: notes){
+					lengths[count] = n.length;
+					noteStrs[count++] = n.note;
+				}
+				AudioPlayer.play(lengths, noteStrs);
+			}
+			
+		});
+		
+		// THE COPY BUTTON
+		this.copy = new JButton("Copy");
+		this.copy.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String copyStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
+				StringSelection selection = new StringSelection(copyStr);
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
+			}
+			
+		});
+		
+		// THE SAVE BUTTON
+		this.save = new JButton("Save");
+		this.save.addActionListener(new ActionListener(){
+
+			@Override
+            public void actionPerformed(ActionEvent arg0) {
+				String startStr = "task main()\n{\n";
+				String saveStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
+                JFileChooser saveFile = new JFileChooser();
+                if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+                	PrintWriter out = null;
+                	try {
+						out = new PrintWriter(saveFile.getSelectedFile().getAbsolutePath());
+						out.println(startStr + saveStr + "}");
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally {
+						out.close();
+					}
+                	
+                };
+            }
+			
+		});
+		
+		this.help = new JButton("Help");
+		this.help.addActionListener(new HelpContentAction(null));
+		
+		// THE CLEAR BUTTON
+		this.clear = new JButton("Clear");
+		this.clear.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textViewPanel.clearText();
+				
+			}
+			
+		});
 	}
 	
 	/**
@@ -71,9 +149,21 @@ public class ButtonActions {
 
 	}
 	
-	public JButton restButton() {
-		
-		return rest;
+	/**
+	 * Grabs the notes from the text and outputs a Note array
+	 * (the Note array contains the String of the Note as well as it's duration in ms)
+	 * @param text
+	 * @return
+	 */
+	public static Note[] getNotesFromText(String[] text){
+		Note[] notes = new Note[text.length];
+		int count = 0;
+		for (String txt: text){
+			String[] len = txt.split(" ")[1].split("/");
+			int ms = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
+			notes[count++] = new Note(txt.split(" ")[0], ms);
+		}
+		return notes;
 	}
 
 	/**
@@ -107,5 +197,34 @@ public class ButtonActions {
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
 		
+	}
+	
+	/**
+	 * Sets the manager for the help window
+	 * @param manager
+	 */
+	public void setManager(JBricxManager manager){
+		this.manager = manager;
+	}
+}
+
+class Note{
+	String note;
+	int length;
+	Note(String note, int length){
+		this.note = note;
+		this.length = length;
+	}
+	
+	public String getNXC(){
+		return String.format("PlayTone(%d, %d); Wait(%d);\n", (int)AudioPlayer.getFreq(note), length, length);
+	}
+	
+	public static String getNXC(Note[] notes){
+		String str = "";
+		for (Note n: notes){
+			str = str + n.getNXC();
+		}
+		return str;
 	}
 }

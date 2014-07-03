@@ -24,6 +24,7 @@ import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
 import com.jbricx.swing.actions.DownloadAction;
+import com.jbricx.swing.actions.DownloadDebugAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
 import com.jbricx.swing.actions.GotoAction;
@@ -90,6 +91,7 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), compileMenu),
 		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), compileMenu),
+		DOWNLOADDEBUG(DownloadDebugAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0), compileMenu),
 		
 		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", viewMenu),
 		MAXSTATUS(MaxStatusAction.class, "Maximize Status", viewMenu),
@@ -190,6 +192,7 @@ public class JBricxMenuAndToolBarDelegate {
 		mainToolBar.add( new JToolBar.Separator());
 		mainToolBar.add(ActionSet.COMPILE.button);
 		mainToolBar.add(ActionSet.DOWNLOAD.button);
+		mainToolBar.add(ActionSet.DOWNLOADDEBUG.button);
 		mainToolBar.add( new JToolBar.Separator());
 		//mainToolBar.add(Box.createHorizontalStrut(45));
 		mainToolBar.add(Box.createHorizontalGlue()); 
@@ -239,6 +242,7 @@ public class JBricxMenuAndToolBarDelegate {
 	        ActionSet.AUDIOBREAK.button,
 	        ActionSet.COMPILE.button,
 	        ActionSet.DOWNLOAD.button,
+	        ActionSet.DOWNLOADDEBUG.button,
 	        ActionSet.SHOWHIDEFILEVIEWER.button,
 	        ActionSet.MAXVIEWER.button,
 	        ActionSet.MAXEDITOR.button,

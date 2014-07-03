@@ -256,13 +256,12 @@ public class FirstTimeSettingsWindow  extends JDialog implements ActionListener 
 				    "First Time Setup",
 				    JOptionPane.YES_NO_OPTION);
 			if(n == JOptionPane.YES_OPTION){
-				//manager.updatePreferences(); //Should automatically update.
 				this.dispose();
 			}
 		// User wishes to leave. Saves changes and leaves	
 		}else if(arg0.getActionCommand().equals("OK")){
 			saveValues();
-			manager.updatePreferences(); //Should automatically Update
+			manager.updatePreferences();
 			this.dispose();
 		}
 	}	

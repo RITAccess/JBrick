@@ -24,7 +24,7 @@ public class NXTAccess {
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
 	public static HashMap<String, ArrayList<String>> compile(String filepath){
-		return NXTAccess.runNBC(filepath, false);
+		return NXTAccess.runNBC(filepath, false, false);
 	}
 	
 	/**
@@ -32,8 +32,8 @@ public class NXTAccess {
 	 * @param filepath
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
-	public static HashMap<String, ArrayList<String>> downloadToBrick(String filepath){
-		return NXTAccess.runNBC(filepath, true);
+	public static HashMap<String, ArrayList<String>> downloadToBrick(String filepath, boolean debug){
+		return NXTAccess.runNBC(filepath, true, debug);
 	}
 	
 	/**
@@ -44,7 +44,19 @@ public class NXTAccess {
 	 * @param download - whether or not the program needs to be downloaded to the nxt brick
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
-	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download){
+	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download, boolean debug){		
+		//If it is in debugging mode then use the debug version of the file
+		if(debug){
+			String[] path = filepath.split("/");
+			String newPath = "";
+			for(int i = 0; i < path.length-1; i++){
+				newPath += path[i] + "/";
+			}
+			newPath += "debug/";
+			newPath += "debug." + path[path.length-1];
+			filepath = newPath;
+		}
+		
 		String nbc = PreferenceStore.getString(Preference.NBCTOOL);
 		File nbcFile = new File(nbc);
 		

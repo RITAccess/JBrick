@@ -38,6 +38,10 @@ public class NotesView {
 		notesPanel.repaint();
 	}
 	
+	public String[] getText(){
+		return notesView.getText().split("\n");
+	}
+	
 	public void clearText(){
 		notesView.setText("");
 		notesView.repaint();
