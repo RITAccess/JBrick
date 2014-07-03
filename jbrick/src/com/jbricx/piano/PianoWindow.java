@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.jbricx.communication.USBConnection;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.tools.AudioPlayer;
 
 @SuppressWarnings("serial")
 public class PianoWindow extends JFrame {
@@ -49,10 +51,10 @@ public class PianoWindow extends JFrame {
 			
 			@Override
 			public void pianoActionHit(String noteInformation) {
+				
 				if(noteInformation == "REST") {
 					textView.appendText(noteInformation + " " + notePrint.getValue() + "\n");
-				}
-				else {
+				} else {
 					int octave = transposer.getSlider().getValue(); 
 					// if 1, go up an octave
 					if (noteInformation.contains("1")){
@@ -60,6 +62,12 @@ public class PianoWindow extends JFrame {
 						noteInformation = noteInformation.substring(0, noteInformation.length() - 1);
 					}
 					textView.appendText(noteInformation + octave +" "+ notePrint.getValue() + "\n");
+					
+					if(USBConnection.isConnected()){
+						AudioPlayer.playNXT(
+								AudioPlayer.getLength(notePrint.getValue()), 
+								noteInformation + octave);
+					}
 				}
 			}
 			

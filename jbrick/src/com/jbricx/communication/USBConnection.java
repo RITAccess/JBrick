@@ -35,7 +35,7 @@ public class USBConnection
 	 * NXT -- VENDOR : 0x0694, PRODUCT : 0x0002, INTERFACE : 0, ENDPOINT_OUT : 0x01, ENDPOINT_IN : 0x82
 	 * EV3 -- VENDOR : 0x1684, PRODUCT : 0x0005 
 	 */
-	enum MindStormDevice{
+	public enum MindStormDevice{
 		NXT((short) 0x0694, (short) 0x0002, 0, (byte) 0x01, (byte) 0x82),
 		//EV3((short) 0x0694, (short) 0x0005, 0, (byte) 0x01, (byte) 0x81), // TODO unsure about the interface and endpoints for EV3 model
 		;

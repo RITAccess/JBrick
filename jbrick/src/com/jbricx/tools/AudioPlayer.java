@@ -113,6 +113,16 @@ public class AudioPlayer {
 		// return the frequency
 		return Math.pow(2d, (double)(n-49)/12d) * 440;
     }
+    
+    /**
+     * get the length of a string (note) in ms
+     * @param lengthStr - a piano length (usually in fraciton notation)
+     * @return length 
+     */
+    public static int getLength(String lengthStr){
+    	String[] len = lengthStr.split("/");
+    	return (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
+    }
 
     
     /**

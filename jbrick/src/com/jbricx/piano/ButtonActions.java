@@ -1,6 +1,5 @@
 package com.jbricx.piano;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -58,7 +57,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Note[] notes = ButtonActions.getNotesFromText(textViewPanel.getText());
+				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
 				int[] lengths = new int[notes.length];
 				String[] noteStrs = new String[notes.length];
 				int count = 0;
@@ -77,7 +76,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String copyStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
+				String copyStr = Note.getNXC(Note.getNotesFromText(textViewPanel.getText()));
 				StringSelection selection = new StringSelection(copyStr);
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
 			}
@@ -91,7 +90,7 @@ public class ButtonActions {
 			@Override
             public void actionPerformed(ActionEvent arg0) {
 				String startStr = "task main()\n{\n";
-				String saveStr = Note.getNXC(ButtonActions.getNotesFromText(textViewPanel.getText()));
+				String saveStr = Note.getNXC(Note.getNotesFromText(textViewPanel.getText()));
                 JFileChooser saveFile = new JFileChooser();
                 if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
                 	PrintWriter out = null;
@@ -111,7 +110,7 @@ public class ButtonActions {
 		});
 		
 		this.help = new JButton("Help");
-		this.help.addActionListener(new HelpContentAction(null));
+		this.help.addActionListener(new HelpContentAction(manager));
 		
 		// THE CLEAR BUTTON
 		this.clear = new JButton("Clear");
@@ -147,23 +146,6 @@ public class ButtonActions {
 		gbCon.gridy = yPlace;
 		buttonPanel.add(ctrlButton,gbCon);
 
-	}
-	
-	/**
-	 * Grabs the notes from the text and outputs a Note array
-	 * (the Note array contains the String of the Note as well as it's duration in ms)
-	 * @param text
-	 * @return
-	 */
-	public static Note[] getNotesFromText(String[] text){
-		Note[] notes = new Note[text.length];
-		int count = 0;
-		for (String txt: text){
-			String[] len = txt.split(" ")[1].split("/");
-			int ms = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
-			notes[count++] = new Note(txt.split(" ")[0], ms);
-		}
-		return notes;
 	}
 
 	/**
@@ -211,9 +193,16 @@ public class ButtonActions {
 class Note{
 	String note;
 	int length;
+	
 	Note(String note, int length){
 		this.note = note;
 		this.length = length;
+	}
+	
+	Note(String txt){
+		String[] len = txt.split(" ")[1].split("/");
+		this.note = txt.split(" ")[0];
+		this.length = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
 	}
 	
 	public String getNXC(){
@@ -226,5 +215,20 @@ class Note{
 			str = str + n.getNXC();
 		}
 		return str;
+	}
+	
+	/**
+	 * Grabs the notes from the text and outputs a Note array
+	 * (the Note array contains the String of the Note as well as it's duration in ms)
+	 * @param text
+	 * @return
+	 */
+	public static Note[] getNotesFromText(String[] text){
+		Note[] notes = new Note[text.length];
+		int count = 0;
+		for (String txt: text){
+			notes[count++] = new Note(txt);
+		}
+		return notes;
 	}
 }
