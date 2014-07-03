@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
@@ -46,6 +48,9 @@ public class ButtonActions {
 	private JCheckBox javaBox;
 	private JCheckBox nxtBox;
 	
+	protected boolean nxtOutput = false;
+	protected boolean javaOutput = true;
+	
 	/**
 	 * Constructor of the buttons used
 	 * @param textViewPanel - where all the note information is ready to be grabbed 
@@ -70,7 +75,9 @@ public class ButtonActions {
 					lengths[count] = n.length;
 					noteStrs[count++] = n.note;
 				}
-				AudioPlayer.play(lengths, noteStrs);
+				if (ButtonActions.this.javaOutput){
+					AudioPlayer.play(lengths, noteStrs);
+				}
 			}
 			
 		});
@@ -129,8 +136,29 @@ public class ButtonActions {
 			
 		});
 		
+		// THE CHECK BOXES
 		javaBox = new JCheckBox("Java Output");
+		javaBox.setSelected(true);
+		javaBox.addItemListener(new ItemListener(){
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				ButtonActions.this.javaOutput = (arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
+				ButtonActions.this.play.setEnabled(arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
+			}
+
+			
+		});
 		nxtBox = new JCheckBox("NXT Output");
+		nxtBox.addItemListener(new ItemListener(){
+
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				ButtonActions.this.nxtOutput = (arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
+			}
+
+			
+		});
 	}
 	
 	/**

@@ -63,15 +63,16 @@ public class PianoWindow extends JFrame {
 					}
 					textView.appendText(noteInformation + octave +" "+ notePrint.getValue() + "\n");
 					
-					if(USBConnection.isConnected()){
+					if(controls.buttonPanel.nxtOutput && USBConnection.isConnected()){
 						AudioPlayer.playNXT(
 								AudioPlayer.getLength(notePrint.getValue()), 
 								noteInformation + octave);
 					}
-					
-					AudioPlayer.play(
-							AudioPlayer.getLength(notePrint.getValue()),
-							noteInformation + octave);
+					if(controls.buttonPanel.javaOutput){
+						AudioPlayer.play(
+								AudioPlayer.getLength(notePrint.getValue()),
+								noteInformation + octave);
+					}
 					
 				}
 			}
