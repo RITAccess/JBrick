@@ -3,6 +3,8 @@ package com.jbricx.piano;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -61,7 +63,24 @@ public class ButtonActions {
 			}
 			
 		});
+		
+		// THE COPY BUTTON
 		this.copy = new JButton("Copy");
+		this.copy.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Note[] notes = ButtonActions.getNotesFromText(textViewPanel.getText());
+				String copyStr = "";
+				for (Note n: notes){
+					copyStr = copyStr + n.getNXC();
+				}
+				StringSelection selection = new StringSelection(copyStr);
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
+			}
+			
+		});
+		
 		this.save = new JButton("Save");
 		this.help = new JButton("Help");
 		
@@ -158,5 +177,9 @@ class Note{
 	Note(String note, int length){
 		this.note = note;
 		this.length = length;
+	}
+	
+	public String getNXC(){
+		return String.format("PlayTone(%d, %d); Wait(%d);\n", (int)AudioPlayer.getFreq(note), length, length);
 	}
 }
