@@ -1,5 +1,5 @@
 /*
- * 11/25/2008
+w * 11/25/2008
  *
  * TextEditorPane.java - A syntax highlighting text area that has knowledge of
  * the file it is editing on disk.
@@ -16,9 +16,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -663,44 +665,24 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		
 	    int[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
 		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
-		ArrayList<String> finalText = new ArrayList<String>();
-		
-		int totalBreaks = 0;
-		for(int i = 0; i < fullText.length; i++){ //Loop through document
-			for(int n = 0; n < breaks.length; n++){ //Loop through list of breaks
-				if(i == breaks[n] -1){ //If there is a break on this line in the document
-					boolean lineInserted = false; //Has a audio break been placed yet?
-					for(int offset = i-1; offset > 0; offset--){ //Loop to find the last semicolen before the line with the break on it
-						if(i > 0 && (fullText[offset].trim().endsWith(";") || fullText[offset].trim().endsWith("{"))){
-							//Insert break on line
-							totalBreaks ++;
-							finalText.add(offset + totalBreaks, "PlayToneEx(2000, 200, 100, false);");
-							lineInserted = true;
-							break;
-						}
-						if(fullText[offset].trim().endsWith("}")){
-							break;
-						}
-					}
-					//If no break was placed in last loop attempt to place one at the end of the current line
-					if(!lineInserted){
-						//Insert break on line
-						totalBreaks ++;
-						finalText.add("PlayToneEx(2000, 200, 100, false);");
-						lineInserted = true;
-					}
-				}
+		String debugStr = ";PlayTone(554, 125); Wait(125)";
+		for(Integer lineNum : breaks){
+			lineNum--;
+			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){
+				lineNum++;
+			};
+			if (lineNum != fullText.length){
+				int posSemiColon = fullText[lineNum].lastIndexOf(';');
+				fullText[lineNum] = fullText[lineNum].substring(0, posSemiColon) 
+					+ debugStr 
+					+ fullText[lineNum].substring(posSemiColon);
 			}
-			finalText.add(fullText[i]);
 		}
-		
-		String returnText = "";
-		for(int i = 0; i < finalText.size(); i++)
-		{
-			returnText += finalText.get(i) + "\n";
+		String returnString = "";
+		for (String text : fullText){
+			returnString += text + "\n";
 		}
-		
-		return returnText;
+		return returnString;
 	}
 	
 	/**

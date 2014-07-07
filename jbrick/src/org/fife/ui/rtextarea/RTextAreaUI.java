@@ -11,6 +11,7 @@ package org.fife.ui.rtextarea;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -482,7 +483,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 			Color blend = new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), 0);
 			GradientPaint paint = new GradientPaint(
 				visibleRect.x,0, highlight,
-				visibleRect.x+visibleRect.width/2,0,
+				visibleRect.x+visibleRect.width,0,
 						bg==null ? Color.WHITE : blend);
 			g2d.setPaint(paint);
 			g2d.fillRect(visibleRect.x,line,
@@ -509,22 +510,16 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	
 	/**
 	 * Toggles the highlighting on the current line for audio breaks
+	 * also checks if the line is valid - if not the line will not be toggled
 	 */
-	public ArrayList<Integer> toggleHighlightLine(){
-		if(!highlightedLines.contains(textArea.currentCaretY)){
-			highlightedLines.add(textArea.currentCaretY);
+	public void toggleHighlightLine(){
+		
+		// toggle off if highlightedLines contains line ... else toggle on
+		if(highlightedLines.contains(textArea.currentCaretY)){
+			highlightedLines.remove(Integer.valueOf(textArea.currentCaretY));
+		} else {
+			highlightedLines.add(Integer.valueOf(textArea.currentCaretY));
 		}
-		else{
-			for(int i = 0; i < highlightedLines.size(); i++)
-			{
-				if(highlightedLines.get(i) == textArea.currentCaretY)
-				{
-					highlightedLines.remove(i);
-					break;
-				}
-			}
-		}
-		return highlightedLines;
 	}
 	
 	/**
