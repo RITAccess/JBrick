@@ -33,6 +33,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 import org.fife.ui.rtextarea.RTextAreaUI;
 
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
+
 
 /**
  * An extension of {@link org.fife.ui.rsyntaxtextarea.RSyntaxTextArea}
@@ -662,10 +664,12 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws BadLocationException 
 	 */
 	private String insertBreaks(Document doc) throws BadLocationException{
+
 		
 	    int[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
 		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
 		String debugStr = ";PlayTone(554, 125); Wait(125)";
+		BreakpointsStore.putBreakpoints(loc.getFileName(), breaks);
 		for(Integer lineNum : breaks){
 			lineNum--;
 			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){

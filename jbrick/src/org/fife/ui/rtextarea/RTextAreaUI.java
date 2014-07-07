@@ -19,6 +19,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 /**
@@ -519,6 +520,12 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 			highlightedLines.remove(Integer.valueOf(textArea.currentCaretY));
 		} else {
 			highlightedLines.add(Integer.valueOf(textArea.currentCaretY));
+		}
+	}
+	
+	public void setHighlightLines(int...i){
+		for(Integer line : i){
+			highlightedLines.add((line - 1) * textArea.getLineHeight());
 		}
 	}
 	

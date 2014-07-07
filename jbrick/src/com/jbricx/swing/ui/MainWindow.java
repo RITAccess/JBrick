@@ -20,6 +20,7 @@ import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
 import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
@@ -43,6 +44,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	 */
 	public void run() {
 		new PreferenceStore();
+		new BreakpointsStore();
 		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
