@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,9 +16,14 @@ import javax.swing.event.ChangeListener;
 import com.jbricx.communication.USBConnection;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.tools.AudioPlayer;
+/**
+ * 
+ * @author Melissa Young
+ *
+ */
 
 @SuppressWarnings("serial")
-public class PianoWindow extends JFrame {
+public class PianoWindow extends JDialog {
 
 	private NotesView textView;
 	private PianoControls controls;
@@ -30,7 +36,7 @@ public class PianoWindow extends JFrame {
 	 * sets manager for other tools (like piano help)
 	 * @param manager
 	 */
-	PianoWindow(JBricxManager manager) {
+	public PianoWindow(JBricxManager manager) {
 		
 		controls = new PianoControls();
 		transposer = controls.transPanel;
@@ -86,7 +92,7 @@ public class PianoWindow extends JFrame {
 	 * 
 	 * Set up the settings of the JFrame
 	 */
-	private void setUpPiano() {
+	public void setUpPiano() {
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize((int) screenSize.getHeight(), (int)screenSize.getWidth());

@@ -64,14 +64,14 @@ public class PianoControls {
 		gbCon.gridy = 0;
 		gbCon.gridheight = 3;
 		gbCon.ipadx = 150;
-		gbCon.insets = new Insets(0,20,20,10);
+		gbCon.insets = new Insets(0,20,20,5);
 		gbCon.fill = GridBagConstraints.BOTH;
 		centerPanel.add(textViewPanel.setUpNoteView(),gbCon);
 		
-		gbCon.insets = new Insets(10,10,0,0);
+		gbCon.insets = new Insets(5,10,0,0);
 		gbCon.ipadx = 0;
 		gbCon.weightx = .75;
-		gbCon.weighty = .75;
+		gbCon.weighty = .25;
 		gbCon.gridheight = 1;
 		gbCon.gridx = 1;
 		gbCon.gridy = 1;
