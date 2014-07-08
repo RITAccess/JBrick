@@ -1,5 +1,5 @@
 /*
- * 11/25/2008
+w * 11/25/2008
  *
  * TextEditorPane.java - A syntax highlighting text area that has knowledge of
  * the file it is editing on disk.
@@ -18,7 +18,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -30,6 +29,9 @@ import org.fife.io.UnicodeWriter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextAreaEditorKit;
 import org.fife.ui.rtextarea.RTextAreaUI;
+
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
+import com.jbricx.swing.ui.tabs.AudioBreak;
 
 
 /**
@@ -552,14 +554,11 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	private void documentChanged(DocumentEvent e){
 		if(currentLineCount != this.getLineCount()){
 			int numChangedLines = this.getLineCount() - currentLineCount;
-		    ((RTextAreaUI) this.getUI()).moveLineHighlights(numChangedLines);
-			
+		    ((RTextAreaUI) this.getUI()).moveAudioBreaks(numChangedLines);
 			currentLineCount = this.getLineCount();
 		}
 		if(currentLineSize != this.getLineHeight()){
-			int heightChange = this.getLineHeight() - currentLineSize;
-		    ((RTextAreaUI) this.getUI()).changeHighlightSize(heightChange, currentLineSize);
-			
+		    ((RTextAreaUI) this.getUI()).changeHighlightSize(this.getLineHeight());
 			currentLineSize = this.getLineHeight();
 		}
 	}
@@ -660,34 +659,29 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws BadLocationException 
 	 */
 	private String insertBreaks(Document doc) throws BadLocationException{
+
 		
-	    int[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
+	    AudioBreak[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
 		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
-		ArrayList<String> finalText = new ArrayList<String>();
-		
-		int totalBreaks = 0;
-		for(int i = 0; i < fullText.length; i++){
-			for(int n = 0; n < breaks.length; n++){
-				if(i == breaks[n] -1){
-					for(int offset = i-1; offset > 0; offset--){
-						if(i > 0 && fullText[offset].trim().endsWith(";")){
-							totalBreaks ++;
-							finalText.add(offset + totalBreaks, "PlayToneEx(2000, 200, 100, false);");
-							break;
-						}
-					}
-				}
+		BreakpointsStore.putBreakpoints(loc.getFileName(), breaks);
+		for(AudioBreak line : breaks){
+			String debugStr = ";PlayTone(" + line.getTone() +", 125); Wait(125)";
+			int lineNum = line.getLineNumber() - 1;
+			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){
+				lineNum++;
+			};
+			if (lineNum != fullText.length){
+				int posSemiColon = fullText[lineNum].lastIndexOf(';');
+				fullText[lineNum] = fullText[lineNum].substring(0, posSemiColon) 
+					+ debugStr 
+					+ fullText[lineNum].substring(posSemiColon);
 			}
-			finalText.add(fullText[i]);
 		}
-		
-		String returnText = "";
-		for(int i = 0; i < finalText.size(); i++)
-		{
-			returnText += finalText.get(i) + "\n";
+		String returnString = "";
+		for (String text : fullText){
+			returnString += text + "\n";
 		}
-		
-		return returnText;
+		return returnString;
 	}
 	
 	/**

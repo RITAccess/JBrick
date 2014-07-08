@@ -3,6 +3,8 @@ package com.jbricx.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -20,6 +22,7 @@ import com.apple.eawt.AppEvent.QuitEvent;
 import com.apple.eawt.Application;
 import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
@@ -37,12 +40,15 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	
 	JSplitPane leftRightSplit;
 	JSplitPane upDownSplit;
+
+	long lostFocusTime;
 	
 	/**
 	 * Runs the application. Called by initial class
 	 */
 	public void run() {
 		new PreferenceStore();
+		new BreakpointsStore();
 		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
@@ -203,9 +209,14 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		editorPane.checkUpdates(lostFocusTime);
 	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		lostFocusTime = System.currentTimeMillis();
+	}
+	
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
@@ -214,11 +225,6 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		close();
-		
-	}
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override

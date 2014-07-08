@@ -19,6 +19,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.tabs.AudioBreak;
 
 /**
  * The UI used by instances of <code>RTextArea</code>.  This UI takes into
@@ -42,7 +43,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 
 	private static final String RTEXTAREA_KEYMAP_NAME	= "RTextAreaKeymap";
 	
-	ArrayList<Integer> highlightedLines = new ArrayList<Integer>();
+	private ArrayList<AudioBreak> audioBreakList = new ArrayList<AudioBreak>();
 
 
 	/**
@@ -476,16 +477,16 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		int height = textArea.getLineHeight();
 		g.setColor(highlight);
 		
-		for (Integer line : highlightedLines){
+		for (AudioBreak line : audioBreakList){
 			Graphics2D g2d = (Graphics2D)g;
 			Color bg = textArea.getBackground();
 			Color blend = new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), 0);
 			GradientPaint paint = new GradientPaint(
 				visibleRect.x,0, highlight,
-				visibleRect.x+visibleRect.width/2,0,
+				visibleRect.x+visibleRect.width,0,
 						bg==null ? Color.WHITE : blend);
 			g2d.setPaint(paint);
-			g2d.fillRect(visibleRect.x,line,
+			g2d.fillRect(visibleRect.x,line.getScreenPosition(),
 							visibleRect.width, height);
 		}
 	}
@@ -509,32 +510,48 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	
 	/**
 	 * Toggles the highlighting on the current line for audio breaks
+	 * also checks if the line is valid - if not the line will not be toggled
 	 */
-	public ArrayList<Integer> toggleHighlightLine(){
-		if(!highlightedLines.contains(textArea.currentCaretY)){
-			highlightedLines.add(textArea.currentCaretY);
+	public void toggleAudioBreak(){
+		
+		// toggle off if highlightedLines contains line ... else toggle on
+		AudioBreak tempBreak;
+		if((tempBreak = containsLine(audioBreakList, textArea.currentCaretY)) != null){
+			audioBreakList.remove(tempBreak);
+		} else {
+			audioBreakList.add(new AudioBreak(textArea.currentCaretY/textArea.getLineHeight(), textArea.getLineHeight()));
 		}
-		else{
-			for(int i = 0; i < highlightedLines.size(); i++)
-			{
-				if(highlightedLines.get(i) == textArea.currentCaretY)
-				{
-					highlightedLines.remove(i);
-					break;
-				}
+	}
+	
+	private AudioBreak containsLine(ArrayList<AudioBreak> list, int screenPosition){
+		for(AudioBreak audioBreak : list){
+			if(audioBreak.getScreenPosition() == screenPosition){
+				return audioBreak;
 			}
 		}
-		return highlightedLines;
+		return null;
+	}
+	
+	/**
+	 * Sets the audio breaks array list equal to an array.
+	 * @param breaks Array to use
+	 */
+	public void setAudioBreaks(AudioBreak[] breaks){
+		audioBreakList.clear();
+		for(AudioBreak audioBreak : breaks){
+			audioBreak.setLineHeight(this.textArea.getLineHeight());
+			audioBreakList.add(audioBreak);
+		}
 	}
 	
 	/**
 	 * Gets an array of the lines with audio breaks
 	 * @return Array of lines
 	 */
-	public int[] getBreakPoints(){
-		int[] pointArray = new int[highlightedLines.size()];
+	public AudioBreak[] getBreakPoints(){
+		AudioBreak[] pointArray = new AudioBreak[audioBreakList.size()];
 		for(int i = 0; i < pointArray.length; i++){
-			pointArray[i] = highlightedLines.get(i)/textArea.getLineHeight() +1;
+			pointArray[i] = audioBreakList.get(i);
 		}
 		return pointArray;
 	}
@@ -552,25 +569,25 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	}
 	
 	/**
-	 * Adjusts the line highlights when lines are changed in the document
-	 * @param offset
+	 * Adjusts the audio breaks when lines are changed in the document
+	 * @param offset number of lines added or removed
 	 */
-	public void moveLineHighlights(int offset){
-		
-		offset *= textArea.getLineHeight();
-		
-		for(int i = 0; i < highlightedLines.size(); i++){
-			if(textArea.currentCaretY < highlightedLines.get(i)){
-				highlightedLines.set(i, highlightedLines.get(i) + offset);
+	public void moveAudioBreaks(int offset){
+		for(int i = 0; i < audioBreakList.size(); i++){
+			if(textArea.currentCaretY < audioBreakList.get(i).getScreenPosition()){
+				audioBreakList.get(i).setLineNum(audioBreakList.get(i).getLineNumber() + offset); //set(i, highlightedLines.get(i) + offset);
 			}
 		}
 	}
 
-	
-	public void changeHighlightSize(int diff, int oldSize)
+	/**
+	 * Changes the hight of the highlights on all lines. Use when font size has changed.
+	 * @param newSize New height of lines
+	 */
+	public void changeHighlightSize(int newSize)
 	{
-		for(int i = 0; i < highlightedLines.size(); i++){
-				highlightedLines.set(i, highlightedLines.get(i) + diff*(highlightedLines.get(i)/oldSize));
+		for(int i = 0; i < audioBreakList.size(); i++){
+				audioBreakList.get(i).setLineHeight(newSize);
 		}
 	}
 

@@ -29,7 +29,7 @@ public class AudioBreakAction extends JBricxAbstractAction {
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-	    ((RTextAreaUI) tab.getUI()).toggleHighlightLine();
+	    ((RTextAreaUI) tab.getUI()).toggleAudioBreak();
 	    tab.setDirty(true);
 	    tab.repaint();
 	}

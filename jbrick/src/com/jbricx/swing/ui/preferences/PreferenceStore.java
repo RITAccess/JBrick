@@ -75,6 +75,8 @@ public class PreferenceStore {
 
 	public static final String DEFAULT_FILE = "resources/preferences/Default.xml";
 	
+	public static final String FILEDEBUG_DEFAULT = "";
+	
 	//Parser to parse the preference files
 	public static Document currentDoc;
 	
@@ -108,7 +110,9 @@ public class PreferenceStore {
 			    LINENUM (MISC, PreferenceStore.LINENUM_DEFAULT),
 				NBCTOOL (MISC, PreferenceStore.NBCTOOL_DEFAULT),
 				WORKSPACE (MISC, PreferenceStore.WRKSPC_DEFAULT),
-				THEMEXML (MISC, PreferenceStore.THEMEXML_DEFAULT);
+				THEMEXML (MISC, PreferenceStore.THEMEXML_DEFAULT),
+				FILEDEBUG (MISC, PreferenceStore.FILEDEBUG_DEFAULT),
+		;
 		
 		private Preference parent = null;
 		private ArrayList<Preference> children = new ArrayList<Preference>();

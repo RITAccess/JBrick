@@ -7,9 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
@@ -53,6 +55,7 @@ public class OpenAction extends JBricxAbstractAction {
 			if(selectedFile.exists()){
 				getManager().getTabFolder().open(selectedFile.getAbsolutePath());
 			    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
+			    ((RTextAreaUI) tab.getUI()).setAudioBreaks(BreakpointsStore.getBreakLines(tab.getFileName()));
 			    tab.clearUndo();
 			}
 		}
