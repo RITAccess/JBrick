@@ -2,6 +2,8 @@ package com.jbricx.swing.ui.preferences;
 
 import java.util.prefs.Preferences;
 
+import com.jbricx.swing.ui.tabs.AudioBreak;
+
 
 public class BreakpointsStore {
 
@@ -17,44 +19,67 @@ public class BreakpointsStore {
 	public static void removeBreakpoints(String filename){
 		breakpointPrefs.remove(filename);
 	}
-
-	public static void putBreakpoints(String filename, int[] lines) {
-		if (lines.length == 0){
-			removeBreakpoints(filename);
-		} else {
-			breakpointPrefs.put(filename, intArrayToStr(lines));
+	/**
+	 * Put an array of break points in a preferences file for a specific NXC file.
+	 * @param filename Name of the NXC file.
+	 * @param breaks Array of breaks.
+	 */
+	public static void putBreakpoints(String filename, AudioBreak[] breaks) {
+		removeBreakpoints(filename);
+		if (breaks.length > 0){
+			breakpointPrefs.put(filename, breakPointsToStr(breaks));
 		}
 	}
 	
 	public static Preferences getBreakpointPrefs(){
 		return breakpointPrefs;
 	}
-
-	public static int[] getBreakLines(String fileName) {
-		int[] lineNumbers = {};
+	/**
+	 * Get the audio breaks from a file.
+	 * @param fileName Name of NXC file.
+	 * @return Array of audio breaks.
+	 */
+	public static AudioBreak[] getBreakLines(String fileName) {
+		AudioBreak[] audioBreaks = {};
 		String lines = breakpointPrefs.get(fileName, "");
 		if (lines != "") { 
-			lineNumbers = strToIntArray(lines);
+			audioBreaks = strToAudioBreakArray(lines);
 		}
-		return lineNumbers;
+		return audioBreaks;
 	}
 	
-	private static String intArrayToStr(int[] intArray){
+	/**
+	 * Converts an array of audio breaks into a string for storage within java preferences.
+	 * @param breakArray Array to be stored
+	 * @return String for use in preferences
+	 */
+	private static String breakPointsToStr(AudioBreak[] breakArray){
 		StringBuilder str = new StringBuilder(); 
-		for (int i = 0; i < intArray.length - 1; i++){
-			str.append(intArray[i] + ", ");
+		for (int i = 0; i < breakArray.length - 1; i++){
+			str.append(breakArray[i].getLineNumber() + ": " + breakArray[i].getTone() + ", ");
 		}
-		str.append(intArray[intArray.length - 1]);
+		
+		str.append(breakArray[breakArray.length - 1].getLineNumber() + ": " + breakArray[breakArray.length - 1].getTone());
+		
 		return str.toString();
 	}
 	
-	private static int[] strToIntArray(String str){
-		int[] intArray = new int[str.split(", ").length];
+	/**
+	 * Converts a string to an array of audio breaks. These breaks do not have their line height set. 
+	 * To properly display them this must be set at a later point
+	 * @param str String to convert.
+	 * @return AudioBreak[]
+	 */
+	private static AudioBreak[] strToAudioBreakArray(String str){
+		AudioBreak[] breakArray = new AudioBreak[str.split(", ").length];
 		int count = 0;
 		for (String s : str.split(", ")){
-			intArray[count] = Integer.parseInt(s);
+			int lineNum = Integer.parseInt(s.split(":")[0].trim());
+			int tone = Integer.parseInt(s.split(":")[1].trim());
+			breakArray[count] = new AudioBreak(lineNum);
+			breakArray[count].setTone(tone);
 			count++;
 		}
-		return intArray;
+		return breakArray;
 	}
 }

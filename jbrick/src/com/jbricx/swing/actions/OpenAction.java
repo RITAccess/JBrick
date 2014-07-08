@@ -55,7 +55,7 @@ public class OpenAction extends JBricxAbstractAction {
 			if(selectedFile.exists()){
 				getManager().getTabFolder().open(selectedFile.getAbsolutePath());
 			    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-			    ((RTextAreaUI) tab.getUI()).setHighlightLines(BreakpointsStore.getBreakLines(tab.getFileName()));
+			    ((RTextAreaUI) tab.getUI()).setAudioBreaks(BreakpointsStore.getBreakLines(tab.getFileName()));
 			    tab.clearUndo();
 			}
 		}
