@@ -37,6 +37,7 @@ import com.jbricx.swing.actions.MaxViewerAction;
 import com.jbricx.swing.actions.NewAction;
 import com.jbricx.swing.actions.OpenAction;
 import com.jbricx.swing.actions.PasteAction;
+import com.jbricx.swing.actions.PianoAction;
 import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
@@ -102,6 +103,7 @@ public class JBricxMenuAndToolBarDelegate {
 		ABOUT(AboutAction.class, helpMenu),
 		KEYSHORTCUT(KeyboardShortcutReferencesAction.class, "Keyboard Shortcut Reference", helpMenu),
 		HELP(HelpContentAction.class, "Help Content", KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0), helpMenu),
+		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), toolsMenu),
 		
 		;
 		
@@ -197,6 +199,7 @@ public class JBricxMenuAndToolBarDelegate {
 		//mainToolBar.add(Box.createHorizontalStrut(45));
 		mainToolBar.add(Box.createHorizontalGlue()); 
 		mainToolBar.add( new JToolBar.Separator());
+		mainToolBar.add(ActionSet.PIANO.button);
 		mainToolBar.add(ActionSet.PREFERENCES.button);
 		mainToolBar.add(ActionSet.HELP.button);
 		mainToolBar.add( new JToolBar.Separator());
@@ -247,6 +250,7 @@ public class JBricxMenuAndToolBarDelegate {
 	        ActionSet.MAXVIEWER.button,
 	        ActionSet.MAXEDITOR.button,
 	        ActionSet.MAXSTATUS.button,
+	        ActionSet.PIANO.button,
 	        ActionSet.PREFERENCES.button,
 	        ActionSet.HELP.button
 		);

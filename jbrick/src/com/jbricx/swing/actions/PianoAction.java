@@ -2,26 +2,25 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 
-//import com.jbricx.ui.piano.PianoUIWindow;
-
-
-
 import javax.swing.ImageIcon;
 
+import com.jbricx.piano.PianoWindow;
 import com.jbricx.swing.ui.JBricxManager;
 
 /**
  * @author Priya Sankaran
  * @author Abhishek Shrestha
+ * 
+ * @author Melissa Young
  */
 @SuppressWarnings("serial") 
-public class PianoAction extends JBricxAbstractAction /*implements NXTObserver*/ {
+public class PianoAction extends JBricxAbstractAction{
 
   /**
-   * PreferencesAction constructor
+   * PianoAction constructor
    */
-  public PianoAction(JBricxManager manager) {
-	  super("", new ImageIcon("images/piano_icon.png"), manager);
+  public PianoAction(final JBricxManager manager) {
+	  super("", new ImageIcon(PianoAction.class.getResource("/images/piano_icon.png")), manager);
   }
 
   /**
@@ -29,17 +28,8 @@ public class PianoAction extends JBricxAbstractAction /*implements NXTObserver*/
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-	/*
-    PianoUIWindow piano = new PianoUIWindow(getManager().getShell());
-    piano.setBlockOnOpen(true);
-    
-    NXTManager.getInstance().register(piano);
-    piano.open();
-    */
+	PianoWindow pianoWindow = new PianoWindow(getManager());
+	pianoWindow.setUpPiano();
+	pianoWindow.setVisible(true);
   }
-  /*
-  public void update(boolean isConnected) {
-    setEnabled(isConnected);
-  }
- */
 }

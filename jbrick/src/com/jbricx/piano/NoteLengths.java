@@ -71,13 +71,13 @@ public class NoteLengths {
 			private void checkUpdate(DocumentEvent docEv) {
 				DocumentEvent.EventType type = docEv.getType();
 				if (type.equals(DocumentEvent.EventType.INSERT)) {
-					NoteLengths.selectedValue = noteField.getText();
+					checkInput();
 				}
 				else if(type.equals(DocumentEvent.EventType.CHANGE)) {
-					NoteLengths.selectedValue = noteField.getText();
+					checkInput();
 				}
 				else if(type.equals(DocumentEvent.EventType.REMOVE)) {
-					NoteLengths.selectedValue = noteField.getText();
+					checkInput();
 				}
 			}
 			
@@ -107,10 +107,26 @@ public class NoteLengths {
 		radioBorder = new EtchedBorder();
 	}
 	
+	private static void checkInput() {
+		NoteLengths.selectedValue = noteField.getText();
+		String checkInput = noteField.getText();
+		//No change
+		if(checkInput.matches("^[0-9]+(/[0-9]+)?$")) {
+			if (!(checkInput.contains("/"))) {
+				NoteLengths.selectedValue = noteField.getText() + "/1";
+			}
+		} else {
+			NoteLengths.selectedValue = "1/4";
+		}
+		
+		
+	}
+	
 	public static void setValue(String text){
 		if (text.equals(customString)){
 			noteField.setEditable(true);
-			NoteLengths.selectedValue = noteField.getText();
+			checkInput();
+			
 		} else {
 			NoteLengths.selectedValue = text;
 			noteField.setEditable(false);
