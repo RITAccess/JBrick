@@ -75,7 +75,7 @@ public class PianoKeyboard extends JPanel{
 		ActionButton dnOctave = new ActionButton("-", '-', null);
 		JPanel octavePanel = new JPanel();
 
-		octaveLabel = new JLabel("4");
+		octaveLabel = new JLabel("5");
 		upOctave.setAction(new OctaveChangeAction(octaveLabel, 1));
 		dnOctave.setAction(new OctaveChangeAction(octaveLabel, -1));
 		octavePanel.add(dnOctave);
@@ -271,8 +271,8 @@ class OctaveChangeAction extends AbstractAction{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		int currentOctave = Integer.parseInt(ol.getText());
-		if (!((currentOctave >= 8 && direction > 0) ||
-				(currentOctave <= 0 && direction < 0))){
+		if (!((currentOctave >= 7 && direction > 0) ||
+				(currentOctave <= 3 && direction < 0))){
 			ol.setText( "" + (currentOctave + direction) );
 		}
 	}

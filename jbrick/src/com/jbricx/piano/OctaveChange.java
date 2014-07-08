@@ -15,15 +15,11 @@ public class OctaveChange{
 	private JLabel transpose;
 	private JSlider transposer;
 	
-	static final int OCTAVE_ZEROTH = 0;
-	static final int OCTAVE_FIRST = 1;
-	static final int OCTAVE_SECOND = 2;
-	static final int OCTAVE_FIFTH = 5;
-	static final int OCTAVE_FOURTH = 4;
 	static final int OCTAVE_THIRD = 3;
+	static final int OCTAVE_FOURTH = 4;
+	static final int OCTAVE_FIFTH = 5;
 	static final int OCTAVE_SIXTH = 6;
 	static final int OCTAVE_SEVENTH = 7;
-	static final int OCTAVE_EIGHTH = 8;
 	
 	/**
 	 * Constructor for transposer 
@@ -33,19 +29,15 @@ public class OctaveChange{
 		
 		transPanel = new JPanel(new GridBagLayout());
 		transpose = new JLabel("Transposer/Octave");
-		transposer = new JSlider(JSlider.HORIZONTAL,OCTAVE_ZEROTH,OCTAVE_EIGHTH,OCTAVE_FOURTH);
+		transposer = new JSlider(JSlider.HORIZONTAL,OCTAVE_THIRD,OCTAVE_SEVENTH,OCTAVE_FIFTH);
 		
 		Hashtable<Integer,JLabel> transLabels =
 				new Hashtable<Integer,JLabel>();
-		transLabels.put(new Integer(OCTAVE_ZEROTH), new JLabel("0th"));
-		transLabels.put(new Integer(OCTAVE_FIRST), new JLabel("1st"));
-		transLabels.put(new Integer(OCTAVE_SECOND), new JLabel("2nd"));
 		transLabels.put(new Integer(OCTAVE_THIRD), new JLabel("3rd"));
 		transLabels.put(new Integer(OCTAVE_FOURTH), new JLabel("4th"));
 		transLabels.put(new Integer(OCTAVE_FIFTH), new JLabel("5th"));
 		transLabels.put(new Integer(OCTAVE_SIXTH), new JLabel("6th"));
 		transLabels.put(new Integer(OCTAVE_SEVENTH), new JLabel("7th"));
-		transLabels.put(new Integer(OCTAVE_EIGHTH), new JLabel("8th"));
 		
 		transposer.setLabelTable(transLabels);
 		transposer.setPaintLabels(true);
