@@ -22,11 +22,13 @@ import javax.swing.KeyStroke;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rtextarea.Gutter;
+import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
@@ -173,6 +175,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		if (!listOfFiles.contains(absoluteFilePath)){
 			listOfFiles.add(absoluteFilePath);
 		}
+	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)this.getSelectedComponent()).getViewport().getView();
+	    ((RTextAreaUI) tab.getUI()).setAudioBreaks(BreakpointsStore.getBreakLines(tab.getFileName()));
+	    tab.clearUndo();
 	}
 
 	/**

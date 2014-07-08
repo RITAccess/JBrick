@@ -42,8 +42,10 @@ public class BreakpointsStore {
 	public static AudioBreak[] getBreakLines(String fileName) {
 		AudioBreak[] audioBreaks = {};
 		String lines = breakpointPrefs.get(fileName, "");
-		if (lines != "") { 
+		if (lines.matches("([0-9]*: [0-9]*(, )?)+")) { 
 			audioBreaks = strToAudioBreakArray(lines);
+		} else {
+			removeBreakpoints(fileName);
 		}
 		return audioBreaks;
 	}
