@@ -25,10 +25,12 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.pjo.ActionControlClass;
+import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
+@SuppressWarnings("serial")
 public class JBricxEditorTabFolder extends JTabbedPane {
 	private JBricxManager manager;
 	// Used to name new files when opened
@@ -50,6 +52,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public JBricxEditorTabFolder(JBricxManager manager) {
 		this.manager = manager;
 		listOfFiles = new ArrayList<String>();
+		
 		prefs = PreferenceStore.getPrefs();
 
 		if (prefs.getBoolean(PreferenceStore.BOOLRECENTFILES, 
@@ -166,6 +169,9 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			}
 		} else {
 			this.setSelectedIndex(tabIndex);
+		}
+		if (!listOfFiles.contains(absoluteFilePath)){
+			listOfFiles.add(absoluteFilePath);
 		}
 	}
 
@@ -419,7 +425,6 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				tab.setFont(font);
 			}
 			// Colors for main code
-			Preferences prefs = PreferenceStore.getPrefs();
 			
 			Color foreground = PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND);
 			Color background = PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND);
@@ -488,5 +493,39 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			recentFiles.append(";");
 		}
 		return recentFiles;
+	}
+	
+	/**
+	 * check for updates on multiple files/tabs
+	 * @param checkTimeStamp - any file updated after time stamp will be asked to update
+	 */
+	public void checkUpdates(long checkTimeStamp) {
+		// when the program first runs checkTimeStamp will be 
+		// 0 and will think all files need to be updated
+		ArrayList<String> fileList = new ArrayList<String>(listOfFiles); // prevent concurrentModExceptions
+		if (checkTimeStamp > 0){
+			for(String s : fileList){
+				File file = new File(s);
+				if (file.lastModified() > checkTimeStamp){
+					fileUpdateRequired( s );
+				}
+			}
+		}
+	}
+	
+	private void fileUpdateRequired(String fileName){
+	    Object[] options = { "Yes", "No" };
+		int response = JOptionPane
+				.showOptionDialog(
+						null,
+						String.format("%s has been modified externally. Would you like to update it now?", fileName),
+						"File Modified Externally",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options,
+						options[0]);
+		if(response == JOptionPane.YES_OPTION){
+			this.removeTabAt(getTabIndexByFilepath(fileName));
+			this.open(fileName);
+		}
 	}
 }
