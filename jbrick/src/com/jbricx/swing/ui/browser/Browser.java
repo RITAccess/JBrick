@@ -51,8 +51,8 @@ public class Browser extends JDialog implements ActionListener
   /**
    * A browser for the help documents.
    */
-  public Browser(JBricxManager manager){
-		super(manager.getShell(),"Preferences",true);
+  public Browser(JFrame window){
+		super(window,"Preferences",true);
 		
 	  font = Font.decode("Consolas-plain-20");
 	  

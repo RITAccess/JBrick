@@ -17,12 +17,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import com.jbricx.swing.actions.HelpContentAction;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.browser.Browser;
 import com.jbricx.tools.AudioPlayer;
 
 /**
@@ -40,7 +42,6 @@ public class ButtonActions {
 	private JButton play;
 	private JButton save;
 	private JButton help;
-	private JBricxManager manager;
 	
 	private JPanel buttonPanel;
 	private JPanel checkPanel;
@@ -56,7 +57,7 @@ public class ButtonActions {
 	 * @param textViewPanel - where all the note information is ready to be grabbed 
 	 * 
 	 */
-	public ButtonActions(final NotesView textViewPanel) {
+	public ButtonActions(final NotesView textViewPanel, final JFrame window) {
 		
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonBorder = new EtchedBorder();
@@ -122,7 +123,14 @@ public class ButtonActions {
 		});
 		
 		this.help = new JButton("Help");
-		this.help.addActionListener(new HelpContentAction(manager));
+		this.help.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new Browser(window);
+			}
+			
+		});
 		
 		// THE CLEAR BUTTON
 		this.clear = new JButton("Clear");
@@ -225,13 +233,6 @@ public class ButtonActions {
 		
 	}
 	
-	/**
-	 * Sets the manager for the help window
-	 * @param manager
-	 */
-	public void setManager(JBricxManager manager){
-		this.manager = manager;
-	}
 }
 
 class Note{

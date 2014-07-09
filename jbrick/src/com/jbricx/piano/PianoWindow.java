@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -23,7 +22,7 @@ import com.jbricx.tools.AudioPlayer;
  */
 
 @SuppressWarnings("serial")
-public class PianoWindow extends JDialog {
+public class PianoWindow extends JFrame {
 
 	private NotesView textView;
 	private PianoControls controls;
@@ -36,15 +35,12 @@ public class PianoWindow extends JDialog {
 	 * sets manager for other tools (like piano help)
 	 * @param manager
 	 */
-	public PianoWindow(JBricxManager manager) {
+	public PianoWindow() {
 		
-		controls = new PianoControls();
+		controls = new PianoControls(this);
 		transposer = controls.transPanel;
 		notePrint = controls.noteRadioPanel;
 		textView = controls.textViewPanel;
-		if (manager != null){
-			controls.buttonPanel.setManager(manager);
-		}
 		
 		pianoHandler = new PianoActionHandler(){
 
@@ -151,7 +147,7 @@ public class PianoWindow extends JDialog {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		PianoWindow pw = new PianoWindow(null);
+		PianoWindow pw = new PianoWindow();
 		pw.setUpPiano();
 		}
 

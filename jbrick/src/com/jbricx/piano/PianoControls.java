@@ -26,12 +26,12 @@ public class PianoControls {
 	/**
 	 * Constructor for the different panels and components 
 	 */
-	public PianoControls(){
+	public PianoControls(PianoWindow window){
 		
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
 		textViewPanel = new NotesView();
-		buttonPanel = new ButtonActions(textViewPanel);
+		buttonPanel = new ButtonActions(textViewPanel, window);
 		noteRadioPanel = new NoteLengths();
 		transPanel = new OctaveChange();
 		rest = new JButton("Rest (C)");
