@@ -523,7 +523,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		int response = JOptionPane
 				.showOptionDialog(
 						null,
-						String.format("%s has been modified externally. Would you like to update it now?", fileName),
+						String.format("%s has been modified externally. Would you like to update it now?", new File(fileName).getName()),
 						"File Modified Externally",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options,
