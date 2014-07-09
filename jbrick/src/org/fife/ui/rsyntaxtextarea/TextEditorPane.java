@@ -665,7 +665,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
 		BreakpointsStore.putBreakpoints(loc.getFileName(), breaks);
 		for(AudioBreak line : breaks){
-			String debugStr = ";PlayTone(" + line.getTone() +", 125); Wait(125)";
+			String debugStr = ";PlayTone(" + line.getTone() +", 125); Wait(350)";
 			int lineNum = line.getLineNumber() - 1;
 			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){
 				lineNum++;

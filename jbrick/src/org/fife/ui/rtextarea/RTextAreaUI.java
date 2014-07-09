@@ -468,18 +468,14 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	 */
 	private void drawHighlights(Graphics g, Rectangle visibleRect){
 		Color currBg = PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND);
-		int hRed = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getRed() + currBg.getRed()*1)/2, 0, 255);
-		int hGreen = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getGreen() + currBg.getGreen()*1)/2, 0, 255);
-		int hBlue = clamp((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getBlue() + currBg.getBlue()*1)/2,0 ,255);
-		
-		Color highlight = new Color(hRed, hGreen, hBlue);
-		
 		int height = textArea.getLineHeight();
-		g.setColor(highlight);
 		
 		for (AudioBreak line : audioBreakList){
+			Color highlight = line.calculateColor(currBg); 
+			g.setColor(highlight);
 			Graphics2D g2d = (Graphics2D)g;
 			Color bg = textArea.getBackground();
+			
 			Color blend = new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), 0);
 			GradientPaint paint = new GradientPaint(
 				visibleRect.x,0, highlight,
@@ -489,23 +485,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 			g2d.fillRect(visibleRect.x,line.getScreenPosition(),
 							visibleRect.width, height);
 		}
-	}
-	
-	/**
-	 * Clamps a int between a min and max value
-	 * @param val Int to be clamped
-	 * @param min Minimum possible value
-	 * @param max Maximum possivle value
-	 * @return
-	 */
-	private int clamp(int val, int min, int max){
-		if(val > max){
-			val = max;
-		}
-		else if(val < min){
-			val = min;
-		}
-		return val;
 	}
 	
 	/**
@@ -523,6 +502,12 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		}
 	}
 	
+	/**
+	 * A method to check if a audio break with a certain screen position exists. If it does then it will return the break
+	 * @param list
+	 * @param screenPosition
+	 * @return
+	 */
 	private AudioBreak containsLine(ArrayList<AudioBreak> list, int screenPosition){
 		for(AudioBreak audioBreak : list){
 			if(audioBreak.getScreenPosition() == screenPosition){
@@ -530,6 +515,22 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Raises or lowers the tone of the audio break at the current carret position.
+	 * @param raise True to raise. False to lower.
+	 */
+	public void RaiseLowerTone(boolean raise){
+		AudioBreak tempBreak;
+		if((tempBreak = containsLine(audioBreakList, textArea.currentCaretY)) != null){
+			if(raise){
+				tempBreak.raiseKey();
+				}
+			else{
+				tempBreak.lowerKey();
+				}
+		}
 	}
 	
 	/**
