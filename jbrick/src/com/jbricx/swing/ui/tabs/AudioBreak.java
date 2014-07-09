@@ -1,12 +1,18 @@
 package com.jbricx.swing.ui.tabs;
 
+import java.awt.Color;
+
+import com.jbricx.swing.ui.preferences.PreferenceStore;
+
 public class AudioBreak {
 
-	private final int MINTONE = 0;
-	private final int MAXTONE = 2000;
+	private final int MINKEY = 37; 	//key 40 on piano (C4 Middle C)
+	private final int MAXKEY = 87; 	//key 50 on piano (A#4/B(flat)4)
+	private final int STARTKEY = 61;	//key 45 on piano (F4)
+	private final int INCREMENT = 4;
 	
 	private int lineNumber;
-	private int tone;
+	private int key;
 	private int screenPosition;
 	private int lineHeight;
 	
@@ -19,7 +25,7 @@ public class AudioBreak {
 		lineHeight = nLineHeight;
 		lineNumber = nLineNumber;
 		recalculateScreenPos();
-		tone = 750;
+		key = STARTKEY;
 	}
 	
 	/**
@@ -59,9 +65,8 @@ public class AudioBreak {
 	 * Sets the tone to be played when the NXC code is run.
 	 * @param nTone
 	 */
-	public void setTone(int nTone){
-		tone = nTone;
-		clampTone(MINTONE, MAXTONE);
+	public void setKey(int nKey){
+		key = clamp(nKey, MINKEY, MAXKEY);
 	}
 	
 	//Getters
@@ -91,22 +96,72 @@ public class AudioBreak {
 	 * @return
 	 */
 	public int getTone(){
-		return tone;
+		int keyAsTone = (int) (Math.pow(2.0, (((double)key)-49.0)/12)*440);
+		System.out.println(keyAsTone);
+		return keyAsTone;
+	}
+	
+	public int getKey(){
+		return key;
 	}
 	/**
 	 * Raises the pitch of the tone
 	 */
-	public void raiseTone(){
-		tone += 250;
-		clampTone(MINTONE, MAXTONE);
+	public void raiseKey(){
+		key = clamp(key+INCREMENT, MINKEY, MAXKEY);
 	}
 	/**
 	 * Lowers the pitch of the tone.
 	 */
-	public void lowerTone(){
-		tone -=250;
-		clampTone(MINTONE, MAXTONE);
+	public void lowerKey(){
+		key = clamp(key-INCREMENT, MINKEY, MAXKEY);
 	}
+	
+	public Color calculateColor(Color bGColor)
+	{
+		int hRed = clamp((int) ((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getRed() + bGColor.getRed()*1)/2), 0, 255);
+		int hGreen = clamp((int) ((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getGreen() + bGColor.getGreen()*1)/2), 0, 255);
+		int hBlue = clamp((int) ((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getBlue() + bGColor.getBlue()*1)/2),0 ,255);
+		
+		float[] hsbValues = new float[3];
+		Color.RGBtoHSB(hRed, hGreen, hBlue, hsbValues);
+		if(hsbValues[0] == 0 && hsbValues[1] == 0){
+			hsbValues[1] += 100;
+		}
+		int range = MAXKEY - MINKEY + 1;
+		int index = (key-STARTKEY);
+		if(index < 0){
+			index += range;
+		}
+		float increment = 1.0f/((float)range);
+		
+		for(int i = 0; i < index; i ++){
+			hsbValues[0] = (hsbValues[0]+increment)%1;
+		}
+		
+		Color highlight = new Color(Color.HSBtoRGB(hsbValues[0], hsbValues[1], hsbValues[2]));
+		
+		return highlight;
+	}
+
+	
+	/**
+	 * Clamps a int between a min and max value
+	 * @param val Int to be clamped
+	 * @param min Minimum possible value
+	 * @param max Maximum possivle value
+	 * @return
+	 */
+	private int clamp(int val, int min, int max){
+		if(val > max){
+			val = max;
+		}
+		else if(val < min){
+			val = min;
+		}
+		return val;
+	}
+	
 	/**
 	 * Recalculates the screen position variable based on the line number and line height.
 	 */
@@ -118,18 +173,5 @@ public class AudioBreak {
 	 */
 	private void recalculateLineNumber(){
 		lineNumber = screenPosition/lineHeight;
-	}
-	/**
-	 * Clamps the tone between two variables
-	 * @param min
-	 * @param max
-	 */
-	private void clampTone(int min, int max){
-		if(tone > max){
-			tone = max;
-		}
-		if(tone < min){
-			tone = min;
-		}
 	}
 }

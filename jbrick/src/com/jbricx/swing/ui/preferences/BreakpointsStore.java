@@ -58,10 +58,10 @@ public class BreakpointsStore {
 	private static String breakPointsToStr(AudioBreak[] breakArray){
 		StringBuilder str = new StringBuilder(); 
 		for (int i = 0; i < breakArray.length - 1; i++){
-			str.append(breakArray[i].getLineNumber() + ": " + breakArray[i].getTone() + ", ");
+			str.append(breakArray[i].getLineNumber() + ": " + breakArray[i].getKey() + ", ");
 		}
 		
-		str.append(breakArray[breakArray.length - 1].getLineNumber() + ": " + breakArray[breakArray.length - 1].getTone());
+		str.append(breakArray[breakArray.length - 1].getLineNumber() + ": " + breakArray[breakArray.length - 1].getKey());
 		
 		return str.toString();
 	}
@@ -77,9 +77,9 @@ public class BreakpointsStore {
 		int count = 0;
 		for (String s : str.split(", ")){
 			int lineNum = Integer.parseInt(s.split(":")[0].trim());
-			int tone = Integer.parseInt(s.split(":")[1].trim());
+			int key = Integer.parseInt(s.split(":")[1].trim());
 			breakArray[count] = new AudioBreak(lineNum);
-			breakArray[count].setTone(tone);
+			breakArray[count].setKey(key);
 			count++;
 		}
 		return breakArray;
