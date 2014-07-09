@@ -14,6 +14,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.jbricx.communication.NXTAccess;
 import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
@@ -129,9 +130,10 @@ public class CompileAction extends JBricxAbstractAction {
 			if(checkbox.isSelected()){
 				PreferenceStore.set(PreferenceStore.Preference.AUTOCOMPILE, true);
 			}
-			
+			MainWindow.lostFocusTime = 0;
 			return true;
 		}
+		MainWindow.lostFocusTime = 0;
 		return false;
 	}
 }
