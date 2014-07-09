@@ -6,11 +6,12 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -56,13 +57,30 @@ public class JBricxMenuAndToolBarDelegate {
 
 	static String modifierStr = Platform.getOSType() == Platform.MAC ? "command" : "control";
 	static Integer modifier = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-
-	private static JMenu fileMenu;
-	private static JMenu editMenu;
-	private static JMenu compileMenu;
-	private static JMenu toolsMenu;
-	private static JMenu viewMenu;
-	private static JMenu helpMenu;
+	static int toolbarSize = 4;
+	static HashMap<Integer, ArrayList<ActionSet>> toolbarMap = new HashMap<Integer, ArrayList<ActionSet>>();
+	
+	/**
+	 * MenuEnum - contains all the information for the top menus
+	 * This allows us to iterate over static components (by calling MenuEnum.values()) 
+	 * @author Ethan Jurman
+	 *
+	 */
+	enum MenuEnum{
+		fileMenu("File"),
+		editMenu("Edit"),
+		compileMenu("Compile"),
+		toolsMenu("Tools"),
+		viewMenu("View"),
+		helpMenu("Help"),
+		;
+		
+		JMenu menu;
+		
+		MenuEnum(String name){
+			this.menu = new JMenu(name);
+		}
+	}
 	
 	/**
 	 * Enum structured to hold all the actions, tip text, event keys, etc. for the various actions for jbrick
@@ -70,58 +88,69 @@ public class JBricxMenuAndToolBarDelegate {
 	 *
 	 */
 	enum ActionSet{
-		NEW(NewAction.class, "New File", KeyStroke.getKeyStroke(KeyEvent.VK_N, modifier), fileMenu),
-		OPEN(OpenAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_O, modifier), fileMenu),
-		SAVE(SaveAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_S, modifier), fileMenu),
-		SAVEAS(SaveAsAction.class, "Save As", fileMenu),
-		PRINTPREVIEW(PrintPreviewAction.class, "Print Preview", fileMenu),
-		PRINT(PrintAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_P, modifier), fileMenu),
-		CLOSE(CloseAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_W, modifier), fileMenu),
-		EXIT(ExitAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifier), fileMenu),
+		NEW(NewAction.class, "New File", KeyStroke.getKeyStroke(KeyEvent.VK_N, modifier), 0, MenuEnum.fileMenu),
+		OPEN(OpenAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_O, modifier), 0, MenuEnum.fileMenu),
+		SAVE(SaveAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_S, modifier), 0, MenuEnum.fileMenu),
+		SAVEAS(SaveAsAction.class, "Save As", 0, MenuEnum.fileMenu),
+		PRINTPREVIEW(PrintPreviewAction.class, "Print Preview", -1, MenuEnum.fileMenu),
+		PRINT(PrintAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_P, modifier), -1, MenuEnum.fileMenu),
+		CLOSE(CloseAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_W, modifier), -1, MenuEnum.fileMenu),
+		EXIT(ExitAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifier), -1, MenuEnum.fileMenu),
 		
-		UNDO(UndoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier), editMenu),
-		REDO(RedoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier + KeyEvent.SHIFT_MASK), editMenu),
-		CUT(CutAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_X, modifier), editMenu),
-		COPY(CopyAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_C, modifier), editMenu),
-		PASTE(PasteAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_V, modifier), editMenu),
-		SELECTALL(SelectAllAction.class, "Select All", KeyStroke.getKeyStroke(KeyEvent.VK_A, modifier), editMenu),
-		FIND(FindAction.class, "Find and Replace", editMenu),
-		PREFERENCES(PreferencesAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_R, modifier), editMenu),
-		GOTO(GotoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), toolsMenu),
-		AUDIOBREAK(AudioBreakAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), toolsMenu),
+		UNDO(UndoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier), 1, MenuEnum.editMenu),
+		REDO(RedoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier + KeyEvent.SHIFT_MASK), 1, MenuEnum.editMenu),
+		CUT(CutAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_X, modifier), 1, MenuEnum.editMenu),
+		COPY(CopyAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_C, modifier), 1, MenuEnum.editMenu),
+		PASTE(PasteAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_V, modifier), 1, MenuEnum.editMenu),
+		SELECTALL(SelectAllAction.class, "Select All", KeyStroke.getKeyStroke(KeyEvent.VK_A, modifier), -1, MenuEnum.editMenu),
+		FIND(FindAction.class, "Find and Replace", 1, MenuEnum.editMenu),
+		PREFERENCES(PreferencesAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_R, modifier), 3, MenuEnum.editMenu),
 		
-		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), compileMenu),
-		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), compileMenu),
-		DOWNLOADDEBUG(DownloadDebugAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0), compileMenu),
+		GOTO(GotoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), 1, MenuEnum.toolsMenu),
+		AUDIOBREAK(AudioBreakAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), 2, MenuEnum.toolsMenu),
+		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), 3, MenuEnum.toolsMenu),
 		
-		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", viewMenu),
-		MAXSTATUS(MaxStatusAction.class, "Maximize Status", viewMenu),
-		MAXVIEWER(MaxViewerAction.class, "Max Viewer", viewMenu),
-		RESETVIEW(ResetViewAction.class, "Reset View", viewMenu),
-		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", viewMenu),
+		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.compileMenu),
+		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), 2, MenuEnum.compileMenu),
+		DOWNLOADDEBUG(DownloadDebugAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0), 2, MenuEnum.compileMenu),
 		
-		ABOUT(AboutAction.class, helpMenu),
-		KEYSHORTCUT(KeyboardShortcutReferencesAction.class, "Keyboard Shortcut Reference", helpMenu),
-		HELP(HelpContentAction.class, "Help Content", KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0), helpMenu),
-		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), toolsMenu),
+		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", -1, MenuEnum.viewMenu),
+		MAXSTATUS(MaxStatusAction.class, "Maximize Status", -1, MenuEnum.viewMenu),
+		MAXVIEWER(MaxViewerAction.class, "Max Viewer", -1, MenuEnum.viewMenu),
+		RESETVIEW(ResetViewAction.class, "Reset View", -1, MenuEnum.viewMenu),
+		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", -1, MenuEnum.viewMenu),
+		
+		ABOUT(AboutAction.class, -1, MenuEnum.helpMenu),
+		KEYSHORTCUT(KeyboardShortcutReferencesAction.class, "Keyboard Shortcut Reference", 3, MenuEnum.helpMenu),
+		HELP(HelpContentAction.class, "Help Content", KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0), 3, MenuEnum.helpMenu),
 		
 		;
-		
+
 		Object action;
 		JButton button;
 		Class<? extends JBricxAbstractAction> actionClass;
 		JMenuItem mi;
 		String name;
-		ActionSet(Class<? extends JBricxAbstractAction> c, JComponent...parents) {
-			this(c, null, null, parents);
+		
+		ActionSet(Class<? extends JBricxAbstractAction> c, int toolbarIndex, MenuEnum...parents) {
+			this(c, null, null, toolbarIndex, parents);
 		}
-		ActionSet(Class<? extends JBricxAbstractAction> c, String name, JComponent...parents) {
-			this(c, name, null, parents);
+		ActionSet(Class<? extends JBricxAbstractAction> c, String name, int toolbarIndex, MenuEnum...parents) {
+			this(c, name, null, toolbarIndex, parents);
 		}
-		ActionSet(Class<? extends JBricxAbstractAction> c, KeyStroke eventKeys, JComponent...parents) {
-			this(c, null, eventKeys, parents);
+		ActionSet(Class<? extends JBricxAbstractAction> c, KeyStroke eventKeys, int toolbarIndex, MenuEnum...parents) {
+			this(c, null, eventKeys, toolbarIndex, parents);
 		}
-		ActionSet(Class<? extends JBricxAbstractAction> c, String name, KeyStroke eventKeys, JComponent...parents){
+		/**
+		 * ActionSet constructor - This allows the creation of a action to be placed in a Menu bar and/ or Tool bar
+		 * 
+		 * @param c - an action that gets called when button gets hit in the tool / menu bar.
+		 * @param name - name that is shown in the menu bar and as a tool tip text in the tool bar. (if null, will attempt to grab enum name)
+		 * @param eventKeys - the keyStroke that will trigger the button.
+		 * @param toolbarIndex - where to place the item in the tool bar. if -1 the item will not be placed.
+		 * @param parents - the menu(s) that the item will be placed in.
+		 */
+		ActionSet(Class<? extends JBricxAbstractAction> c, String name, KeyStroke eventKeys, int toolbarIndex, MenuEnum...parents){
 			
 			this.actionClass = c;
 			this.name = name == null ? (this.toString().substring(0,1) + this.toString().substring(1).toLowerCase()) : name;
@@ -147,7 +176,14 @@ public class JBricxMenuAndToolBarDelegate {
 				mi.setAccelerator(eventKeys);
 				mi.getAccessibleContext().setAccessibleName(this.name + " shortcut " + modStr + eventKeys.getKeyChar());
 			}
-			for (JComponent p : parents) { if (p != null) { p.add(mi); } }
+			for (MenuEnum p : parents) { p.menu.add(mi); }
+			if (!toolbarMap.containsKey(toolbarIndex)){
+				toolbarMap.put(toolbarIndex, new ArrayList<ActionSet>());
+			}
+			toolbarMap.get(toolbarIndex).add(this);
+		}
+		public static ArrayList<ActionSet> values(int i) {
+			return toolbarMap.get(i);
 		}
 	}
 
@@ -155,54 +191,23 @@ public class JBricxMenuAndToolBarDelegate {
 
 	public JBricxMenuAndToolBarDelegate(final JBricxManager manager) {
 		JBricxMenuAndToolBarDelegate.manager = manager;
-		this.makeMainMenus();
 	}
 
 	public JToolBar getToolBar() {
 		JToolBar mainToolBar = new JToolBar();
 		mainToolBar.setFloatable(false);
-
-		// Add all the buttons to the tool bar
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.NEW.button);
-		mainToolBar.add(ActionSet.OPEN.button);
-		mainToolBar.add(ActionSet.SAVE.button);
-		mainToolBar.add(ActionSet.SAVEAS.button);
-		mainToolBar.add( new JToolBar.Separator());
-		//mainToolBar.add(Box.createHorizontalStrut(45));
-		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.UNDO.button);
-		mainToolBar.add(ActionSet.REDO.button);
-		mainToolBar.add( new JToolBar.Separator());
-		//mainToolBar.add(Box.createHorizontalStrut(45));
-		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.CUT.button);
-		mainToolBar.add(ActionSet.COPY.button);
-		mainToolBar.add(ActionSet.PASTE.button);
-		mainToolBar.add( new JToolBar.Separator());
-		//mainToolBar.add(Box.createHorizontalStrut(45));
-		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.FIND.button);
-		mainToolBar.add(ActionSet.GOTO.button);
-		mainToolBar.add(ActionSet.AUDIOBREAK.button);
-		mainToolBar.add( new JToolBar.Separator());
-		//mainToolBar.add(Box.createHorizontalStrut(45));
-		mainToolBar.add(Box.createHorizontalGlue());
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.COMPILE.button);
-		mainToolBar.add(ActionSet.DOWNLOAD.button);
-		mainToolBar.add(ActionSet.DOWNLOADDEBUG.button);
-		mainToolBar.add( new JToolBar.Separator());
-		//mainToolBar.add(Box.createHorizontalStrut(45));
-		mainToolBar.add(Box.createHorizontalGlue()); 
-		mainToolBar.add( new JToolBar.Separator());
-		mainToolBar.add(ActionSet.PIANO.button);
-		mainToolBar.add(ActionSet.PREFERENCES.button);
-		mainToolBar.add(ActionSet.HELP.button);
-		mainToolBar.add( new JToolBar.Separator());
+		ActionSet.values();
+		for(int i = 0; i < toolbarSize; i++){
+			mainToolBar.add( new JToolBar.Separator());
+			for(ActionSet action : ActionSet.values(i)){
+				mainToolBar.add(action.button);
+			}
+			mainToolBar.add( new JToolBar.Separator());
+			// if it's not the last menu
+			if (i != toolbarSize -1){
+				mainToolBar.add(Box.createHorizontalGlue());
+			}
+		}
 
 		setOrder();
         mainToolBar.setFocusTraversalPolicy(new ToolBarFocusTraversalPolicy(order));
@@ -263,22 +268,10 @@ public class JBricxMenuAndToolBarDelegate {
 	public JMenuBar getMenuBar() {
 		JMenuBar mainMenuBar = new JMenuBar();
 		mainMenuBar.requestFocusInWindow();
-		mainMenuBar.add(fileMenu);
-		mainMenuBar.add(editMenu);
-		mainMenuBar.add(compileMenu);
-		mainMenuBar.add(toolsMenu);
-		mainMenuBar.add(viewMenu);
-		mainMenuBar.add(helpMenu);
+		for(MenuEnum menu : MenuEnum.values()){
+			mainMenuBar.add(menu.menu);
+		}
 		return mainMenuBar;
-	}
-
-	private void makeMainMenus() {
-		fileMenu = new JMenu("File");
-		editMenu = new JMenu("Edit");
-		compileMenu = new JMenu("Compile");
-		toolsMenu = new JMenu("Tools");
-		viewMenu = new JMenu("View");
-		helpMenu = new JMenu("Help");
 	}
 
 	public static class ToolBarFocusTraversalPolicy extends FocusTraversalPolicy {
