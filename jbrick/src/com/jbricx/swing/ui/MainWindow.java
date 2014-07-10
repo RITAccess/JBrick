@@ -41,7 +41,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	JSplitPane leftRightSplit;
 	JSplitPane upDownSplit;
 
-	long lostFocusTime;
+	public static long lostFocusTime;
 	
 	/**
 	 * Runs the application. Called by initial class

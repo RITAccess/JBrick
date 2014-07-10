@@ -32,6 +32,7 @@ import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
 import com.jbricx.swing.actions.JBricxAbstractAction;
 import com.jbricx.swing.actions.KeyboardShortcutReferencesAction;
+import com.jbricx.swing.actions.LowerToneAction;
 import com.jbricx.swing.actions.MaxEditorAction;
 import com.jbricx.swing.actions.MaxStatusAction;
 import com.jbricx.swing.actions.MaxViewerAction;
@@ -42,6 +43,7 @@ import com.jbricx.swing.actions.PianoAction;
 import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
+import com.jbricx.swing.actions.RaiseToneAction;
 import com.jbricx.swing.actions.RedoAction;
 import com.jbricx.swing.actions.ResetViewAction;
 import com.jbricx.swing.actions.SaveAction;
@@ -108,6 +110,8 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		GOTO(GotoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), 1, MenuEnum.toolsMenu),
 		AUDIOBREAK(AudioBreakAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), 2, MenuEnum.toolsMenu),
+		RAISETONE(RaiseToneAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier), -1, MenuEnum.toolsMenu),
+		LOWERTONE(LowerToneAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier), -1, MenuEnum.toolsMenu),
 		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), 3, MenuEnum.toolsMenu),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.compileMenu),

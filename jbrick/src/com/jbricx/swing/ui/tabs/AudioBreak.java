@@ -6,9 +6,10 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 public class AudioBreak {
 
-	private final int MINKEY = 37; 	//key 40 on piano (C4 Middle C)
-	private final int MAXKEY = 87; 	//key 50 on piano (A#4/B(flat)4)
-	private final int STARTKEY = 61;	//key 45 on piano (F4)
+	//Keys based on http://en.wikipedia.org/wiki/Piano_key_frequencies
+	private final int MINKEY = 37; //Lower limit of NXT brick
+	private final int MAXKEY = 87; //Upper limit of NXT brick
+	private final int STARTKEY = 61;
 	private final int INCREMENT = 4;
 	
 	private int lineNumber;
@@ -97,7 +98,6 @@ public class AudioBreak {
 	 */
 	public int getTone(){
 		int keyAsTone = (int) (Math.pow(2.0, (((double)key)-49.0)/12)*440);
-		System.out.println(keyAsTone);
 		return keyAsTone;
 	}
 	
