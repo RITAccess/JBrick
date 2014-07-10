@@ -253,7 +253,19 @@ class ActionButton extends JButton{
 		this.addActionListener(newAction);
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 				KeyStroke.getKeyStroke(key, 0), key + "_pressed");
-		this.getActionMap().put(key + "_pressed", newAction);
+		this.getActionMap().put(key + "_pressed",
+		new AbstractAction(){
+			private ActionButton actionButton;
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				actionButton.doClick();
+			}
+
+			public AbstractAction getButton(ActionButton actionButton) {
+				this.actionButton = actionButton;
+				return this;
+			}
+		}.getButton(this));
 	}
 }
 
