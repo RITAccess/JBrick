@@ -59,7 +59,7 @@ public class ButtonActions {
 	 * @param textViewPanel - where all the note information is ready to be grabbed 
 	 * 
 	 */
-	public ButtonActions(final NotesView textViewPanel, final JFrame window) {
+	public ButtonActions(final NotesView textViewPanel, final PianoWindow window) {
 		
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonBorder = new EtchedBorder();

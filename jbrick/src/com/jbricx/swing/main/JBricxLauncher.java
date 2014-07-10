@@ -1,3 +1,4 @@
+
 package com.jbricx.swing.main;
 
 import java.awt.Image;
