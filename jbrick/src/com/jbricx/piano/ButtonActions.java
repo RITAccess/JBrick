@@ -21,9 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import com.jbricx.swing.actions.HelpContentAction;
-import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.browser.Browser;
 import com.jbricx.tools.AudioPlayer;
 
@@ -51,6 +51,8 @@ public class ButtonActions {
 	
 	protected boolean nxtOutput = false;
 	protected boolean javaOutput = true;
+	
+	NotesView checkInput = new NotesView();
 	
 	/**
 	 * Constructor of the buttons used
@@ -271,8 +273,15 @@ class Note{
 	public static Note[] getNotesFromText(String[] text){
 		Note[] notes = new Note[text.length];
 		int count = 0;
+		if (text.length == 0) {
+			String message = "Not usable while text area is blank";
+			// TODO: Send message to status pane widget 
+			}
+		else {
 		for (String txt: text){
 			notes[count++] = new Note(txt);
+			}
+		
 		}
 		return notes;
 	}
