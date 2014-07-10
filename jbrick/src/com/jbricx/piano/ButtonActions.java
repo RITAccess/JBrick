@@ -227,7 +227,7 @@ public class ButtonActions {
 		bPanel(save,1,0);
 		bPanel(help,1,1);
 		bPanel(clear,0,2);
-		
+		buttonAction();
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
 		

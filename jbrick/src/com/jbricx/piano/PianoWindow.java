@@ -13,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.jbricx.communication.USBConnection;
-import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.tools.AudioPlayer;
 /**
  * 

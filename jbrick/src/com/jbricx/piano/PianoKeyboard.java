@@ -69,6 +69,7 @@ public class PianoKeyboard extends JPanel{
 		
 		// rest
 		ActionButton restButton = new ActionButton("REST", '\\', handler);
+		restButton.getAccessibleContext().setAccessibleName("Rest");
 		
 		// octave changers
 		ActionButton upOctave = new ActionButton("+", '=', null);
@@ -76,8 +77,11 @@ public class PianoKeyboard extends JPanel{
 		JPanel octavePanel = new JPanel();
 
 		octaveLabel = new JLabel("5");
-		upOctave.setAction(new OctaveChangeAction(octaveLabel, 1));
-		dnOctave.setAction(new OctaveChangeAction(octaveLabel, -1));
+		upOctave.getAccessibleContext().setAccessibleName("Increase Octave");
+		dnOctave.getAccessibleContext().setAccessibleName("Decrease Octave");
+		upOctave.setAction(new OctaveChangeAction(octaveLabel, 1,upOctave));
+		dnOctave.setAction(new OctaveChangeAction(octaveLabel,-1,dnOctave));
+		
 		octavePanel.add(dnOctave);
 		octavePanel.add(octaveLabel);
 		octavePanel.add(upOctave);
@@ -136,6 +140,7 @@ class PianoButton extends ActionButton{
 	
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
+		this.getAccessibleContext().setAccessibleName(text);
 		this.setLayout(new BorderLayout());
 		this.add(BorderLayout.SOUTH, new JLabel(""+key));
 		this.setBackground(whiteKey ? Color.WHITE : Color.BLACK);
@@ -262,19 +267,23 @@ class OctaveChangeAction extends AbstractAction{
 	
 	JLabel ol;
 	int direction;
+	ActionButton button;
 	
-	public OctaveChangeAction(JLabel ol, int d){
+	public OctaveChangeAction(JLabel ol, int d,ActionButton button){
 		this.ol = ol;
 		this.direction = d;
+		this.button = button;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		int currentOctave = Integer.parseInt(ol.getText());
+		String label = "";
 		if (!((currentOctave >= 7 && direction > 0) ||
 				(currentOctave <= 3 && direction < 0))){
-			ol.setText( "" + (currentOctave + direction) );
+			 ol.setText( "" + (currentOctave + direction) );
+			 label = Integer.toString(currentOctave + direction);
+			 button.getAccessibleContext().setAccessibleName("Octave " + Integer.toString(currentOctave) + " went to " + label);
 		}
 	}
-	
 }

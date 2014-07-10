@@ -39,6 +39,7 @@ public class NoteLengths {
 		
 		radioPanel = new JPanel(new GridBagLayout());
 		noteField = new JFormattedTextField();
+		noteField.getAccessibleContext().setAccessibleName("Enter Custom Length");
 		noteField.setColumns(3);
 		noteField.setEditable(false);
 		noteField.addKeyListener(new KeyAdapter() {
