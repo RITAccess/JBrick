@@ -10,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.accessibility.AccessibleContext;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -219,10 +222,11 @@ class PianoButton extends ActionButton{
 class ActionButton extends JButton{
 	
 	final char key;
+	boolean keyHit = false;
 	ActionButton(String label, final char key, PianoActionHandler actionHandler){
 		this.add(new JLabel(label));
 		this.key = key;
-		
+		 
 		if (actionHandler != null){
 			AbstractAction buttonPressed = new AbstractAction(){
 	
@@ -255,17 +259,12 @@ class ActionButton extends JButton{
 				KeyStroke.getKeyStroke(key, 0), key + "_pressed");
 		this.getActionMap().put(key + "_pressed",
 		new AbstractAction(){
-			private ActionButton actionButton;
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				actionButton.doClick();
+				ActionButton.this.doClick();
+				ActionButton.this.requestFocus();
 			}
-
-			public AbstractAction getButton(ActionButton actionButton) {
-				this.actionButton = actionButton;
-				return this;
-			}
-		}.getButton(this));
+		});
 	}
 }
 

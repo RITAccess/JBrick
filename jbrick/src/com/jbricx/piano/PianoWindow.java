@@ -5,10 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -16,12 +20,12 @@ import com.jbricx.communication.USBConnection;
 import com.jbricx.tools.AudioPlayer;
 /**
  * 
- * @author Melissa Young
+ * @author Melissa Young, Ethan Jurman
  *
  */
 
 @SuppressWarnings("serial")
-public class PianoWindow extends JFrame {
+public class PianoWindow extends JFrame implements WindowListener {
 
 	private NotesView textView;
 	private PianoControls controls;
@@ -29,13 +33,14 @@ public class PianoWindow extends JFrame {
 	private OctaveChange transposer;
 	private PianoActionHandler pianoHandler;
 	private PianoKeyboard pianoKeyboard;
+	private SourceDataLine line;
 	
 	/**
 	 * sets manager for other tools (like piano help)
 	 * @param manager
 	 */
 	public PianoWindow() {
-		
+		line = AudioPlayer.openLine();
 		controls = new PianoControls(this);
 		transposer = controls.transPanel;
 		notePrint = controls.noteRadioPanel;
@@ -71,8 +76,9 @@ public class PianoWindow extends JFrame {
 					}
 					if(controls.buttonPanel.javaOutput){
 						AudioPlayer.play(
-								AudioPlayer.getLength(notePrint.getValue()),
-								noteInformation + octave);
+								line,
+								noteInformation + octave,
+								AudioPlayer.getLength(notePrint.getValue()));
 					}
 					
 				}
@@ -115,7 +121,6 @@ public class PianoWindow extends JFrame {
 		gbCon.gridy = 4;
 		this.add(controls.setUpControls(),gbCon);
 	
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.pack();
@@ -137,8 +142,13 @@ public class PianoWindow extends JFrame {
 			}
 			
 		});
+		this.addWindowListener(this);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
 
 	}
+	
+	
 	
 	/**
 	 * Create the UI of the piano composer 
@@ -148,6 +158,48 @@ public class PianoWindow extends JFrame {
 	public static void main(String args[]) {
 		PianoWindow pw = new PianoWindow();
 		pw.setUpPiano();
-		}
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		AudioPlayer.closeLine(line);
+		this.dispose();
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

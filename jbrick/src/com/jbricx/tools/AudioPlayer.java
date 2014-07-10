@@ -25,20 +25,37 @@ public class AudioPlayer {
      * @param notes - the notes in Scientific piano notation (examples above)
      */
     public static void play(int[] lengths, String[] notes){
+		SourceDataLine line = openLine();
+    	for (int i = 0; i < notes.length; i++){
+    		play(line, notes[i], lengths[i]);
+    	}
+    	closeLine(line);
+    }
+    
+    /**
+     * openLine - returns a SourceDataLine that can be used for playing audio
+     * if you use this method you must use closeLine to end the line
+     * @return
+     */
+    public static SourceDataLine openLine(){
     	AudioFormat af = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
-    	
+    	SourceDataLine line = null;
 		try {
-			SourceDataLine line = AudioSystem.getSourceDataLine(af);
+			line = AudioSystem.getSourceDataLine(af);
 	    	line.open(af, SAMPLE_RATE);
 	    	line.start();
-	    	for (int i = 0; i < notes.length; i++){
-	    		play(line, notes[i], lengths[i]);
-	    	}
-	    	line.drain();
-	    	line.close();
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		}
+		return line;
+    }
+    
+    /**
+     * Used for closing a line that is open (look at openLine())
+     */
+    public static void closeLine(SourceDataLine line){
+    	line.drain();
+    	line.close();
     }
     
     public static void play(int length, String...notes){
@@ -126,13 +143,14 @@ public class AudioPlayer {
 
     
     /**
-     * Uses the SourceDataLine provided to make sound
+     * Uses the SourceDataLine (line) provided to make sound
+     * Look at openLine and closeLine methods in AudioPlayer
      * 
      * @param line
      * @param note
      * @param ms
      */
-    private static void play(SourceDataLine line, String note, int ms){
+    public static void play(SourceDataLine line, String note, int ms){
     	ms = Math.min(ms, SECONDS * 1000);
         int length = SAMPLE_RATE * ms / 1000;
         line.write(getByteNote(note), 0, length);
