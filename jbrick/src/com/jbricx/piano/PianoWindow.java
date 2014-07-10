@@ -17,6 +17,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.jbricx.communication.USBConnection;
+import com.jbricx.tools.AccessibleWidget;
 import com.jbricx.tools.AudioPlayer;
 /**
  * 
@@ -34,6 +35,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 	private PianoActionHandler pianoHandler;
 	private PianoKeyboard pianoKeyboard;
 	private SourceDataLine line;
+	public AccessibleWidget accessibleStatus = new AccessibleWidget();
 	
 	/**
 	 * sets manager for other tools (like piano help)
@@ -121,6 +123,14 @@ public class PianoWindow extends JFrame implements WindowListener {
 		gbCon.gridy = 4;
 		this.add(controls.setUpControls(),gbCon);
 	
+		gbCon.gridx = 0;
+		gbCon.gridwidth = 2;
+		gbCon.fill = GridBagConstraints.NONE;
+		gbCon.gridy = 5;
+		gbCon.ipady = 0;
+		gbCon.insets = new Insets(0,0,20,0);
+		
+		this.add(accessibleStatus, gbCon);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.pack();
