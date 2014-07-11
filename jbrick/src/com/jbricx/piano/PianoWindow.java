@@ -12,6 +12,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -98,9 +100,11 @@ public class PianoWindow extends JFrame implements WindowListener {
 	public void setUpPiano() {
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		JPanel mainPanel = new JPanel();
+		JScrollPane mainScroll = new JScrollPane(mainPanel);
 		this.setSize((int) screenSize.getHeight(), (int)screenSize.getWidth());
 		
-		this.setLayout(new GridBagLayout());
+		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbCon = new GridBagConstraints();
 		gbCon.anchor = GridBagConstraints.CENTER;
 		gbCon.fill = GridBagConstraints.HORIZONTAL;
@@ -110,18 +114,18 @@ public class PianoWindow extends JFrame implements WindowListener {
 		gbCon.gridx = 0;
 		gbCon.gridy = 0;
 		gbCon.insets = new Insets(20,20,0,20);
-		this.add(pianoKeyboard,gbCon);
+		mainPanel.add(pianoKeyboard,gbCon);
 		
 		gbCon.insets = new Insets(0,0,0,20);
 		gbCon.ipady = 50;
 		gbCon.gridx = 0;
 		gbCon.gridy = 3;
 		gbCon.gridheight = 1;
-		this.add(transposer.setUpTransposer(),gbCon);
+		mainPanel.add(transposer.setUpTransposer(),gbCon);
 		
 		gbCon.gridx = 0;
 		gbCon.gridy = 4;
-		this.add(controls.setUpControls(),gbCon);
+		mainPanel.add(controls.setUpControls(),gbCon);
 	
 		gbCon.gridx = 0;
 		gbCon.gridwidth = 2;
@@ -130,7 +134,9 @@ public class PianoWindow extends JFrame implements WindowListener {
 		gbCon.ipady = 0;
 		gbCon.insets = new Insets(0,0,20,0);
 		
-		this.add(accessibleStatus, gbCon);
+		mainPanel.add(accessibleStatus, gbCon);
+		mainScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.add(mainScroll);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.pack();
