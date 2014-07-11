@@ -38,8 +38,16 @@ public class NotesView {
 		notesPanel.repaint();
 	}
 	
-	public String[] getText(){
+	public String[] getStringNotes(){
 		return notesView.getText().split("\n");
+	}
+
+	public String getText(){
+		return notesView.getText();
+	}
+	
+	public void setText(String notes){
+		notesView.setText(notes);
 	}
 	
 	public void clearText(){

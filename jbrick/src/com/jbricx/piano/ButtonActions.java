@@ -39,6 +39,7 @@ public class ButtonActions {
 	private JButton play;
 	private JButton save;
 	private JButton help;
+	private JButton back;
 	
 	private JPanel buttonPanel;
 	private JPanel checkPanel;
@@ -68,7 +69,7 @@ public class ButtonActions {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				final Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				final Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
 					window.accessibleStatus.readLabel("No Notes To Play", window, ButtonActions.this.play);
 					return;
@@ -104,7 +105,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
 					window.accessibleStatus.readLabel("No Notes To Copy", window, ButtonActions.this.copy);
 					return;
@@ -122,7 +123,7 @@ public class ButtonActions {
 
 			@Override
             public void actionPerformed(ActionEvent arg0) {
-				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
 					window.accessibleStatus.readLabel("No Notes To Save", window, ButtonActions.this.save);
 					return;
@@ -157,6 +158,8 @@ public class ButtonActions {
 			
 		});
 		
+		
+		
 		// THE CLEAR BUTTON
 		this.clear = new JButton("Clear");
 		this.clear.addActionListener(new ActionListener(){
@@ -164,6 +167,29 @@ public class ButtonActions {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				textViewPanel.clearText();
+				
+			}
+			
+		});
+		
+		// THE BACK BUTTON
+		this.back = new JButton("Undo");
+		this.back.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
+				if (notes == null){
+					window.accessibleStatus.readLabel("No Notes to delete", window, ButtonActions.this.back);
+					return;
+				}
+				if((textViewPanel.getText().contains("\n"))) {
+					String newNotes = Note.deleteLastNote(textViewPanel.getText());
+					textViewPanel.setText(newNotes);
+				}
+				else{
+					textViewPanel.clearText();
+				}
 				
 			}
 			
@@ -231,6 +257,7 @@ public class ButtonActions {
 		save.setToolTipText("Saves NXC code that will play");
 		help.setToolTipText("Opens help browser to piano composer");
 		clear.setToolTipText("Clears all keys");
+		back.setToolTipText("Deletes last note typed");
 	}
 	
 	public JPanel soundCheck() {
@@ -252,7 +279,8 @@ public class ButtonActions {
 		bPanel(copy,0,1);
 		bPanel(save,1,0);
 		bPanel(help,1,1);
-		bPanel(clear,0,2);
+		bPanel(back,0,2);
+		bPanel(clear,1,2);
 		buttonAction();
 		buttonPanel.setBorder(BorderFactory.createTitledBorder(buttonBorder, "Edit Controls"));
 		return buttonPanel;
@@ -264,6 +292,7 @@ public class ButtonActions {
 class Note{
 	String note;
 	int length;
+	NotesView textViewPanel = new NotesView();
 	
 	Note(String note, int length){
 		this.note = note;
@@ -306,4 +335,20 @@ class Note{
 		}
 		return notes;
 	}
+	
+	/**
+	 * Deletes the last note written
+	 * 
+	 * @param text
+	 * @return 
+	 */
+	public static String deleteLastNote(String text){
+		if (text == " ") {
+			return text;
+		}
+		String result = text.substring(0, text.lastIndexOf('\n'));
+		
+		return result;
+	}
+	
 }

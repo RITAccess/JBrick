@@ -61,9 +61,34 @@ public class PianoWindow extends JFrame implements WindowListener {
 			
 			@Override
 			public void pianoActionHit(String noteInformation) {
-				
+				if (textView.getText().isEmpty()){
+					if(noteInformation == "REST") {
+						textView.appendText(noteInformation + " " + notePrint.getValue());
+					} else {
+						int octave = transposer.getSlider().getValue(); 
+						// if 1, go up an octave
+						if (noteInformation.contains("1")){
+							octave++;
+							noteInformation = noteInformation.substring(0, noteInformation.length() - 1);
+						}
+						textView.appendText(noteInformation + octave +" "+ notePrint.getValue());
+						
+						if(controls.buttonPanel.nxtOutput && USBConnection.isConnected()){
+							AudioPlayer.playNXT(
+									AudioPlayer.getLength(notePrint.getValue()), 
+									noteInformation + octave);
+						}
+						if(controls.buttonPanel.javaOutput){
+							AudioPlayer.play(
+									line,
+									noteInformation + octave,
+									AudioPlayer.getLength(notePrint.getValue()));
+						}
+					}
+				}
+				else {
 				if(noteInformation == "REST") {
-					textView.appendText(noteInformation + " " + notePrint.getValue() + "\n");
+					textView.appendText("\n" + noteInformation + " " + notePrint.getValue());
 				} else {
 					int octave = transposer.getSlider().getValue(); 
 					// if 1, go up an octave
@@ -71,7 +96,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 						octave++;
 						noteInformation = noteInformation.substring(0, noteInformation.length() - 1);
 					}
-					textView.appendText(noteInformation + octave +" "+ notePrint.getValue() + "\n");
+					textView.appendText("\n" + noteInformation + octave +" "+ notePrint.getValue());
 					
 					if(controls.buttonPanel.nxtOutput && USBConnection.isConnected()){
 						AudioPlayer.playNXT(
@@ -84,6 +109,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 								noteInformation + octave,
 								AudioPlayer.getLength(notePrint.getValue()));
 					}
+				}
 					
 				}
 			}
