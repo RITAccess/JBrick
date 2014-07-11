@@ -68,7 +68,12 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
 				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				if (notes == null){
+					window.accessibleStatus.readLabel("No Notes To Play", window, ButtonActions.this.play);
+					return;
+				}
 				int[] lengths = new int[notes.length];
 				String[] noteStrs = new String[notes.length];
 				int count = 0;
@@ -89,7 +94,12 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String copyStr = Note.getNXC(Note.getNotesFromText(textViewPanel.getText()));
+				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				if (notes == null){
+					window.accessibleStatus.readLabel("No Notes To Copy", window, ButtonActions.this.copy);
+					return;
+				}
+				String copyStr = Note.getNXC(notes);
 				StringSelection selection = new StringSelection(copyStr);
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
 			}
@@ -102,8 +112,13 @@ public class ButtonActions {
 
 			@Override
             public void actionPerformed(ActionEvent arg0) {
+				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				if (notes == null){
+					window.accessibleStatus.readLabel("No Notes To Save", window, ButtonActions.this.save);
+					return;
+				}
 				String startStr = "task main()\n{\n";
-				String saveStr = Note.getNXC(Note.getNotesFromText(textViewPanel.getText()));
+				String saveStr = Note.getNXC(notes);
                 JFileChooser saveFile = new JFileChooser();
                 if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
                 	PrintWriter out = null;
@@ -264,12 +279,16 @@ class Note{
 	
 	/**
 	 * Grabs the notes from the text and outputs a Note array
+	 * returns null if no text
 	 * (the Note array contains the String of the Note as well as it's duration in ms)
 	 * @param text
 	 * @return
 	 */
 	public static Note[] getNotesFromText(String[] text){
 		Note[] notes = new Note[text.length];
+		if (text[0].length() == 0){
+			return null;
+		}
 		int count = 0;
 		for (String txt: text){
 			notes[count++] = new Note(txt);

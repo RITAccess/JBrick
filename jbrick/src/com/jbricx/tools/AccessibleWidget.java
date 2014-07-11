@@ -3,6 +3,8 @@ package com.jbricx.tools;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import com.jbricx.piano.PianoWindow;
+
 @SuppressWarnings("serial")
 public class AccessibleWidget extends JLabel {
 	public AccessibleWidget(String string) {
@@ -10,13 +12,14 @@ public class AccessibleWidget extends JLabel {
 	}
 
 	public AccessibleWidget() {
-		super();
+		super(" ");
 	}
 
-	public void readLabel(String text, JComponent previousComponent){
+	public void readLabel(String text, PianoWindow window, JComponent previousComponent){
 		this.setText(text);
 		this.requestFocus();
-		previousComponent.requestFocusInWindow();
-		this.setText("");
+		
+		//previousComponent.requestFocusInWindow();
+		//this.setText(" ");
 	}
 }

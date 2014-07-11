@@ -35,7 +35,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 	private PianoActionHandler pianoHandler;
 	private PianoKeyboard pianoKeyboard;
 	private SourceDataLine line;
-	public AccessibleWidget accessibleStatus = new AccessibleWidget();
+	public AccessibleWidget accessibleStatus = new AccessibleWidget(" ");
 	
 	/**
 	 * sets manager for other tools (like piano help)
