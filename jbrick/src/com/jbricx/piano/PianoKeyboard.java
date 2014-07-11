@@ -143,7 +143,16 @@ class PianoButton extends ActionButton{
 	
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
-		this.getAccessibleContext().setAccessibleName(text);
+		if(text.contains("#")) {
+			text = text.replaceFirst("#", " sharp");
+			System.out.println(text);
+			this.getAccessibleContext().setAccessibleName(text);
+		}
+		else {
+			System.out.println(text);
+			this.getAccessibleContext().setAccessibleName(text);
+		}
+		
 		this.setLayout(new BorderLayout());
 		this.add(BorderLayout.SOUTH, new JLabel(""+key));
 		this.setBackground(whiteKey ? Color.WHITE : Color.BLACK);
