@@ -3,17 +3,10 @@ package com.jbricx.piano;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-import javax.accessibility.AccessibleContext;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -143,15 +136,7 @@ class PianoButton extends ActionButton{
 	
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
-		if(text.contains("#")) {
-			text = text.replaceFirst("#", " sharp");
-			System.out.println(text);
-			this.getAccessibleContext().setAccessibleName(text);
-		}
-		else {
-			System.out.println(text);
-			this.getAccessibleContext().setAccessibleName(text);
-		}
+		
 		
 		this.setLayout(new BorderLayout());
 		this.add(BorderLayout.SOUTH, new JLabel(""+key));
@@ -194,6 +179,15 @@ class PianoButton extends ActionButton{
 				}
 				
 			}.setButton(this));
+		}
+
+		if(text.contains("#")) {
+			text = text.replaceFirst("#", " sharp ");
+			System.out.println(text);
+			this.getAccessibleContext().setAccessibleName(text);
+		} else {
+			System.out.println(text);
+			this.getAccessibleContext().setAccessibleName(text);
 		}
 	}
 	

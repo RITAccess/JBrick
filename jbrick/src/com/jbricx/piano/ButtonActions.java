@@ -17,12 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import com.jbricx.swing.ui.browser.Browser;
 import com.jbricx.tools.AudioPlayer;
@@ -71,7 +68,7 @@ public class ButtonActions {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Note[] notes = Note.getNotesFromText(textViewPanel.getText());
+				final Note[] notes = Note.getNotesFromText(textViewPanel.getText());
 				if (notes == null){
 					window.accessibleStatus.readLabel("No Notes To Play", window, ButtonActions.this.play);
 					return;
@@ -85,6 +82,17 @@ public class ButtonActions {
 				}
 				if (ButtonActions.this.javaOutput){
 					AudioPlayer.play(lengths, noteStrs);
+				}
+				if (ButtonActions.this.nxtOutput){
+					for (final Note n : notes){
+						AudioPlayer.playNXT(n.length, n.note);
+						try {
+							Thread.sleep(n.length);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 			
@@ -169,7 +177,7 @@ public class ButtonActions {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				ButtonActions.this.javaOutput = (arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
-				ButtonActions.this.play.setEnabled(arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
+				ButtonActions.this.play.setEnabled(nxtOutput | javaOutput);
 			}
 
 			
@@ -180,6 +188,7 @@ public class ButtonActions {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				ButtonActions.this.nxtOutput = (arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
+				ButtonActions.this.play.setEnabled(nxtOutput | javaOutput);
 			}
 
 			
@@ -292,15 +301,8 @@ class Note{
 			return null;
 		}
 		int count = 0;
-		if (text.length == 0) {
-			String message = "Not usable while text area is blank";
-			// TODO: Send message to status pane widget 
-			}
-		else {
 		for (String txt: text){
 			notes[count++] = new Note(txt);
-			}
-		
 		}
 		return notes;
 	}
