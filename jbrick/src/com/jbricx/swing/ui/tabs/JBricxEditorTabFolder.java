@@ -26,7 +26,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;

@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,7 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.preferences.PreferenceStore;
 
 @SuppressWarnings("serial")
 public class Browser extends JDialog implements ActionListener
@@ -52,12 +53,12 @@ public class Browser extends JDialog implements ActionListener
    * A browser for the help documents.
    */
   public Browser(JFrame window){
-		super(window,"Preferences",true);
+		super(window,"Help",true);
 		
-	  font = Font.decode("Consolas-plain-20");
+	  font = Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT));
 	  
       // now add it all to a frame
-      jWindow = new JFrame("HtmlEditorKit Test");
+      jWindow = new JFrame("Help");
       // display the frame
       jWindow.setSize(new Dimension(800,600));
 
@@ -65,7 +66,7 @@ public class Browser extends JDialog implements ActionListener
       loadPage("Home");
       loadPage("Home");
       
-      jWindow.setDefaultCloseOperation(HIDE_ON_CLOSE);;
+      jWindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       
       // center the jframe, then make it visible
       jWindow.setLocationRelativeTo(null);
@@ -78,6 +79,7 @@ public class Browser extends JDialog implements ActionListener
    */
   private void loadPage(String pageName)
   {
+	  kit.setStyleSheet(null);
       // create a document, set it on the jeditorpane, then add the html
 	  try
 	  {
@@ -98,6 +100,7 @@ public class Browser extends JDialog implements ActionListener
       {
     	  System.err.print("CSS file not found!");
       }
+
       kit.setStyleSheet(sheet);
   }
   
@@ -131,48 +134,8 @@ public class Browser extends JDialog implements ActionListener
   private void makeSideBar()
   {
 	  jLeftPanel = new JPanel();
-      jLeftPanel.setLayout(new BoxLayout(jLeftPanel, BoxLayout.Y_AXIS));
+      jLeftPanel.setLayout(new BoxLayout(jLeftPanel, BoxLayout.PAGE_AXIS));
       jWindow.getContentPane().add(jLeftPanel, BorderLayout.WEST);
-  }
-  
-  /**
-   * Sets a button to a set of default values.
-   * @param button
-   * @param name of button
-   */
-  private void createButton(JButton button, String name)
-  {
-	  button.setActionCommand(name);
-	  button.addActionListener(this);
-	  button.setBorderPainted(false);
-	  button.setForeground(Color.blue);
-	  button.setFont(font);
-	  button.getAccessibleContext().setAccessibleName(name + " page. Click to go to the " + name + " page");
-      jLeftPanel.add(button);
-  }
-
-  /**
-   * Loads a Style sheet from a .css file.
-   * @param filePath
-   * @return StyleSheet
-   */
-  private static StyleSheet getCSSFromFile(String filePath)
-  {
-	try 
-	{
-		File file = new File(filePath);
-		URL url = file.toURI().toURL();
-		Reader reader = new InputStreamReader(new FileInputStream(file));
-		StyleSheet sheet = new StyleSheet();
-		sheet.loadRules(reader, url);
-		return sheet;
-		
-	} 
-	catch (Exception e) 
-	{
-		System.err.println(e.getLocalizedMessage());
-	}
-	return null;
   }
 
   /**
@@ -200,6 +163,50 @@ public class Browser extends JDialog implements ActionListener
       
       legalButton = new JButton("Legal");
       createButton(legalButton, legalButton.getText());
+  }
+  
+  /**
+   * Sets a button to a set of default values.
+   * @param button
+   * @param name of button
+   */
+  private void createButton(JButton button, String name)
+  {
+	  button.setActionCommand(name);
+	  button.addActionListener(this); 
+	  button.setAlignmentX(jWindow.CENTER_ALIGNMENT);
+	  button.setForeground(Color.blue);
+	  button.setFont(font);
+	  button.setMargin(new Insets(0,0,0,0));
+	  button.getAccessibleContext().setAccessibleName(name + " page. Click to go to the " + name + " page");
+      jLeftPanel.add(button);
+  }
+
+  /**
+   * Loads a Style sheet from a .css file.
+   * @param filePath
+   * @return StyleSheet
+   */
+  private static StyleSheet getCSSFromFile(String filePath)
+  {
+	try 
+	{
+		File file = new File(filePath);
+		URL url = file.toURI().toURL();
+		Reader reader = new InputStreamReader(new FileInputStream(file));
+		StyleSheet sheet = new StyleSheet();
+		sheet.loadRules(reader, url);
+		sheet.addRule("* {font-size: " + 
+				Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT)).getSize() 
+				+ "pt !important;}");
+		return sheet;
+		
+	} 
+	catch (Exception e) 
+	{
+		System.err.println(e.getLocalizedMessage());
+	}
+	return null;
   }
   
   /**
