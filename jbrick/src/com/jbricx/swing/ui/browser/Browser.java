@@ -9,11 +9,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -52,7 +52,7 @@ public class Browser extends JDialog implements ActionListener
   /**
    * A browser for the help documents.
    */
-  public Browser(JFrame window){
+  public Browser(JFrame window, String startingWindow){
 		super(window,"Help",true);
 		
 	  font = Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT));
@@ -63,8 +63,7 @@ public class Browser extends JDialog implements ActionListener
       jWindow.setSize(new Dimension(800,600));
 
       makeComponents();
-      loadPage("Home");
-      loadPage("Home");
+      loadPage(startingWindow);
       
       jWindow.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       
@@ -134,7 +133,7 @@ public class Browser extends JDialog implements ActionListener
   private void makeSideBar()
   {
 	  jLeftPanel = new JPanel();
-      jLeftPanel.setLayout(new BoxLayout(jLeftPanel, BoxLayout.PAGE_AXIS));
+      jLeftPanel.setLayout(new GridLayout(14, 1));
       jWindow.getContentPane().add(jLeftPanel, BorderLayout.WEST);
   }
 
@@ -175,8 +174,8 @@ public class Browser extends JDialog implements ActionListener
 	  button.setActionCommand(name);
 	  button.addActionListener(this); 
 	  button.setAlignmentX(jWindow.CENTER_ALIGNMENT);
-	  button.setForeground(Color.blue);
-	  button.setFont(font);
+	  button.setForeground(Color.black);
+	  button.setFont(Font.decode("Consolas=plain-24"));
 	  button.setMargin(new Insets(0,0,0,0));
 	  button.getAccessibleContext().setAccessibleName(name + " page. Click to go to the " + name + " page");
       jLeftPanel.add(button);
@@ -196,9 +195,14 @@ public class Browser extends JDialog implements ActionListener
 		Reader reader = new InputStreamReader(new FileInputStream(file));
 		StyleSheet sheet = new StyleSheet();
 		sheet.loadRules(reader, url);
-		sheet.addRule("* {font-size: " + 
-				Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT)).getSize() 
-				+ "pt !important;}");
+		int fontSize = (int) (Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT)).getSize()*.8);
+		//apply font size to everything
+		sheet.addRule("span {font-size: " + fontSize + "pt;}");
+		sheet.addRule("p {font-size: " + fontSize + "pt;}");
+		sheet.addRule("div {font-size: " + fontSize + "pt;}");
+		sheet.addRule("h1 {font-size: " + fontSize + "pt;}");
+		sheet.addRule("h2 {font-size: " + fontSize + "pt;}");
+		sheet.addRule("h3 {font-size: " + fontSize + "pt;}");
 		return sheet;
 		
 	} 

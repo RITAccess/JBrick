@@ -153,7 +153,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new Browser(window);
+				new Browser(window, "Piano");
 			}
 			
 		});
