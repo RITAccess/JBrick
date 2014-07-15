@@ -19,7 +19,7 @@ public class PreferencesAction extends JBricxAbstractAction {
 	 * PreferencesAction constructor
 	 */
 	public PreferencesAction(final JBricxManager manager) {
-		super("", new ImageIcon(PreferencesAction.class.getResource("/images/preferences-desktop.png")),
+		super("", new ImageIcon(PreferencesAction.class.getResource("/icons/preferences.png")),
 				manager);
 	}
 

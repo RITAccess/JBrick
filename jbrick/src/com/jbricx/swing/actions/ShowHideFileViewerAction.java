@@ -19,7 +19,7 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	
 
 	public ShowHideFileViewerAction(final JBricxManager manager){
-		super("", new ImageIcon(ShowHideFileViewerAction.class.getResource("/images/right.png")), manager);
+		super("", new ImageIcon(ShowHideFileViewerAction.class.getResource("/icons/fileViewer.png")), manager);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class AudioBreakAction extends JBricxAbstractAction {
 	 */
 	public AudioBreakAction(final JBricxManager manager) {
 		//Name set to "" so that "AudioBreakAction" does not show in toolbar icon.
-		super("", new ImageIcon(AudioBreakAction.class.getResource("/images/help-browser.png")), manager);
+		super("", new ImageIcon(AudioBreakAction.class.getResource("/icons/audioBreak1.png")), manager);
 	}
 
 	/**

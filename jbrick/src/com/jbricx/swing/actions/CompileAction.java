@@ -32,7 +32,7 @@ public class CompileAction extends JBricxAbstractAction {
 	 */
 	public CompileAction(final JBricxManager manager) {
 		super("", new ImageIcon(CompileAction.class.getResource(
-				"/images/compile.png")), manager);
+				"/icons/compile.png")), manager);
 		jBManager = manager;
 	}
 	

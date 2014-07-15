@@ -13,7 +13,7 @@ public class HelpContentAction extends JBricxAbstractAction {
 	Browser browser;
 	
   public HelpContentAction(final JBricxManager manager) {
-    super("", new ImageIcon(HelpContentAction.class.getResource("/images/help-browser.png")), manager);
+    super("", new ImageIcon(HelpContentAction.class.getResource("/icons/helpBrowser.png")), manager);
   }
 
   /**

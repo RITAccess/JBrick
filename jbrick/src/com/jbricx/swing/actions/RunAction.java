@@ -20,7 +20,7 @@ public class RunAction extends JBricxAbstractAction{
 	 * Constructor
 	 */
 	public RunAction(final JBricxManager manager) {
-		super("", new ImageIcon(DownloadAction.class.getResource("/images/media-playback-start.png")), manager);
+		super("", new ImageIcon(DownloadAction.class.getResource("/icons/run.png")), manager);
 		this.jBManager = manager;
 	}
 

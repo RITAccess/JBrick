@@ -22,7 +22,7 @@ public class SaveAction extends JBricxAbstractAction {
    * SaveAction constructor
    */
   public SaveAction(final JBricxManager manager) {
-	  super("", new ImageIcon(SaveAction.class.getResource("/images/document-save.png")), manager);
+	  super("", new ImageIcon(SaveAction.class.getResource("/icons/save.png")), manager);
   }
 
   @Override

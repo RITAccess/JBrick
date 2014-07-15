@@ -11,7 +11,7 @@ import com.jbricx.swing.ui.JBricxManager;
 public class ResetViewAction extends JBricxAbstractAction{
 
 	public ResetViewAction(JBricxManager manager) {
-		super("", new ImageIcon(ResetViewAction.class.getResource("/images/view-fullscreen.png")), manager);
+		super("", new ImageIcon(ResetViewAction.class.getResource("/icons/resetView.png")), manager);
 		
 		
 		

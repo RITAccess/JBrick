@@ -1,6 +1,7 @@
 package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 
@@ -16,7 +17,7 @@ public class NewAction extends JBricxAbstractAction {
    * NewAction constructor
    */
   public NewAction(final JBricxManager manager) {
-	  super("", new ImageIcon(NewAction.class.getResource("/images/document-new.png")), manager);
+	  super("", new ImageIcon(NewAction.class.getResource("/icons/newDocument.png")), manager);
   }
 
   /**

@@ -19,7 +19,7 @@ public class UndoAction extends JBricxAbstractAction {
    * UndoAction constructor
    */
   public UndoAction(final JBricxManager manager) {
-	  super("", new ImageIcon(UndoAction.class.getResource("/images/edit-undo.png")), manager);
+	  super("", new ImageIcon(UndoAction.class.getResource("/icons/editUndo.png")), manager);
   }
 
   /**

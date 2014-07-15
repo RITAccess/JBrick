@@ -20,7 +20,7 @@ public class DownloadDebugAction extends JBricxAbstractAction{
 	 * Constructor
 	 */
 	public DownloadDebugAction(final JBricxManager manager) {
-		super("", new ImageIcon(DownloadAction.class.getResource("/images/download.png")), manager);
+		super("", new ImageIcon(DownloadAction.class.getResource("/icons/downloadDebug.png")), manager);
 		this.jBManager = manager;
 	}
 

@@ -27,7 +27,7 @@ public class PrintPreviewAction extends JBricxAbstractAction {
    * AboutAction constructor
    */
   public PrintPreviewAction(final JBricxManager manager) {
-	  super("", new ImageIcon(PrintPreviewAction.class.getResource("/images/document-printpreview.png")), manager);
+	  super("", new ImageIcon(PrintPreviewAction.class.getResource("/icons/printPreview.png")), manager);
   }
 
   /**

@@ -20,7 +20,7 @@ public class PianoAction extends JBricxAbstractAction{
    * PianoAction constructor
    */
   public PianoAction(final JBricxManager manager) {
-	  super("", new ImageIcon(PianoAction.class.getResource("/images/piano_icon.png")), manager);
+	  super("", new ImageIcon(PianoAction.class.getResource("/icons/piano_icon.png")), manager);
   }
 
   /**

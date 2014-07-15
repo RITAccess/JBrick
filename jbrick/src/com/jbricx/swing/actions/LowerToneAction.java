@@ -18,7 +18,7 @@ public class LowerToneAction extends JBricxAbstractAction {
 	 */
 	public LowerToneAction(final JBricxManager manager) {
 		//Name set to "" so that "AudioBreakAction" does not show in toolbar icon.
-		super("", new ImageIcon(AudioBreakAction.class.getResource("/images/piano_icon.png")), manager);
+		super("", new ImageIcon(AudioBreakAction.class.getResource("/icons/toneDown.png")), manager);
 	}
 
 	/**

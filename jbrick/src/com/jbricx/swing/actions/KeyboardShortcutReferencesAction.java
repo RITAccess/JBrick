@@ -22,7 +22,7 @@ public class KeyboardShortcutReferencesAction extends JBricxAbstractAction
 	public KeyboardShortcutReferencesAction(final JBricxManager manager) 
 	{
 		//Name set to "" so that "About" does not show in toolbar icon.
-		super("",new ImageIcon(AboutAction.class.getResource("/images/help-browser.png")), manager);
+		super("",new ImageIcon(AboutAction.class.getResource("/icons/keyboardShortcuts.png")), manager);
 	}
 	
     private void copyInputstreamToFile (InputStream in, OutputStream out) {

@@ -18,7 +18,7 @@ public class PasteAction extends JBricxAbstractAction {
    * PasteAction constructor
    */
   public PasteAction(final JBricxManager manager) {
-	  super("", new ImageIcon(PasteAction.class.getResource("/images/edit-paste.png")), manager);
+	  super("", new ImageIcon(PasteAction.class.getResource("/icons/editPaste.png")), manager);
   }
 
   /**

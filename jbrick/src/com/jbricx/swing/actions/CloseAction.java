@@ -14,7 +14,7 @@ public class CloseAction extends JBricxAbstractAction{
 	 * CutAction constructor
 	 */
 	public CloseAction(final JBricxManager manager) {
-		super("", new ImageIcon(CopyAction.class.getResource("/images/mail-mark-not-junk.png")), manager);
+		super("", new ImageIcon(CopyAction.class.getResource("/icons/close.png")), manager);
 	}
 	
 	@Override
