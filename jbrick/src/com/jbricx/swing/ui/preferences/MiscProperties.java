@@ -11,25 +11,26 @@ public class MiscProperties {
 	private static String store = "propertiesJbricks"; 
 	private static Preferences propertiesMisc = Preferences.userRoot().node(store);
 	private static MainWindow window;
-	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private static Dimension screenSize; 
 	
 	public MiscProperties(MainWindow jbricks){
 		MiscProperties.window = jbricks;
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
 	public static enum misc {
 		X(new Callable<Integer>(){
 			public Integer call() throws Exception { return window.getX(); }
-		}, screenSize.width-screenSize.width/10),
+		}, 30 ),
 		Y(new Callable<Integer>(){
 			public Integer call() throws Exception { return window.getY(); }
-		}, screenSize.height-(screenSize.height/10) ),
+		}, 30 ),
 		WIDTH(new Callable<Integer>(){
 			public Integer call() throws Exception { return window.getWidth(); }
-		}, 0),
+		}, screenSize.width-(screenSize.width/10) ),
 		HEIGHT(new Callable<Integer>(){
 			public Integer call() throws Exception { return window.getHeight(); }
-		}, 0),
+		}, screenSize.height-(screenSize.height/10) ),
 		;
 
 		Callable<Integer> propertyUpdateFunction;
