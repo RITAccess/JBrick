@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -173,7 +174,7 @@ public class Browser extends JDialog implements ActionListener
   {
 	  button.setActionCommand(name);
 	  button.addActionListener(this); 
-	  button.setAlignmentX(jWindow.CENTER_ALIGNMENT);
+	  button.setAlignmentX(Component.CENTER_ALIGNMENT);
 	  button.setForeground(Color.black);
 	  button.setFont(Font.decode("Consolas=plain-24"));
 	  button.setMargin(new Insets(0,0,0,0));
@@ -195,7 +196,7 @@ public class Browser extends JDialog implements ActionListener
 		Reader reader = new InputStreamReader(new FileInputStream(file));
 		StyleSheet sheet = new StyleSheet();
 		sheet.loadRules(reader, url);
-		int fontSize = (int) (Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT)).getSize()*.8);
+		int fontSize = (int) (Font.decode(PreferenceStore.getString(PreferenceStore.Preference.FONT)).getSize()*.8); //The *.8 is to reduce the size to more closely match whats in the editor
 		//apply font size to everything
 		sheet.addRule("span {font-size: " + fontSize + "pt;}");
 		sheet.addRule("p {font-size: " + fontSize + "pt;}");
