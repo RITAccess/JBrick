@@ -10,6 +10,9 @@ import javax.swing.event.CaretListener;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
+import com.jbricx.swing.ui.JBricxManager;
+import com.jbricx.swing.ui.MainWindow;
+
 /**
  * An individual tab item to be used in the editor pane.
  * 
@@ -20,6 +23,7 @@ import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 public class JBricxTabItem extends TextEditorPane {
 	private boolean isNewFile;
 	private int line = -1;
+	JBricxEditorTabFolder parent;
 	
 	/** 
 	 * Constructor to open a new file.
@@ -30,6 +34,7 @@ public class JBricxTabItem extends TextEditorPane {
 	public JBricxTabItem(JBricxEditorTabFolder parent, int newFileNumber){
 		super(newFileNumber);
 		isNewFile = true;
+		this.parent = parent;
 		setTabItem();
 	}
 	
@@ -41,6 +46,7 @@ public class JBricxTabItem extends TextEditorPane {
 	public JBricxTabItem(JBricxEditorTabFolder parent, String fileName) {
 		super(fileName);
 		isNewFile = false;
+		this.parent = parent;
 		setTabItem();
 	}
 	
@@ -54,25 +60,24 @@ public class JBricxTabItem extends TextEditorPane {
 		im.put(KeyStroke.getKeyStroke((char) KeyEvent.VK_ENTER), "Enter");
 		
 		CaretListener caretListener = new CaretListener() {
-			
-			private JBricxTabItem tab;
-			
-			public CaretListener setJBricxTabItem(JBricxTabItem tab){
-				this.tab = tab;
-				return this;
-			}
 
 			@Override
 			public void caretUpdate(CaretEvent arg0) {
-				int newLine = tab.getCaretLineNumber() + 1;
-				if (tab.line != newLine) {
-					tab.line = newLine;
-					tab.getAccessibleContext().firePropertyChange(AccessibleContext.ACCESSIBLE_DESCRIPTION_PROPERTY, "", Integer.toString(tab.line));
-					
+				JBricxTabItem tab = JBricxTabItem.this;
+				if (tab != null){
+					int newLine = tab.getCaretLineNumber() + 1;
+					if (tab.line != newLine) {
+						tab.line = newLine;
+						MainWindow manager = (MainWindow) tab.parent.getManager();
+						if (manager.accessPane != null) {
+							manager.accessPane.setText("Line: " + newLine);
+							manager.accessPane.readLabel("Line: " + newLine, manager, tab);
+						}
+					}
 				}
 			}
 			
-		}.setJBricxTabItem(this);
+		};
 		this.addCaretListener(caretListener);
 	}
 

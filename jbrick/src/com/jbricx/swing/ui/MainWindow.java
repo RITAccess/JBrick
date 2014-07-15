@@ -3,8 +3,8 @@ package com.jbricx.swing.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -23,14 +23,17 @@ import com.apple.eawt.Application;
 import com.apple.eawt.QuitHandler;
 import com.apple.eawt.QuitResponse;
 import com.jbricx.swing.ui.preferences.BreakpointsStore;
+import com.jbricx.swing.ui.preferences.MiscProperties;
+import com.jbricx.swing.ui.preferences.MiscProperties.misc;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
+import com.jbricx.tools.AccessibleWidget;
 import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame implements JBricxManager,WindowListener  {
+public class MainWindow extends JFrame implements JBricxManager,WindowListener,ComponentListener  {
 	
 	Preferences prefs;
 	
@@ -40,6 +43,8 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	
 	JSplitPane leftRightSplit;
 	JSplitPane upDownSplit;
+	
+	public AccessibleWidget accessPane;
 
 	public static long lostFocusTime;
 	
@@ -49,11 +54,13 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 	public void run() {
 		new PreferenceStore();
 		new BreakpointsStore();
+		new MiscProperties(this);
 		prefs = PreferenceStore.getPrefs();		
 		
 		initMainWindow();
 		
 		addWindowListener(this);
+		addComponentListener(this);
 		
 		// Set on close operation for mac client (command + q / Jbricks -> quit)
 		if (Platform.isMac()){
@@ -87,6 +94,11 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 			firstTimeWindow.setVisible(true);
 			prefs.putBoolean("ranPreviously",true);
 		}
+		accessPane = new AccessibleWidget("JBricks");
+		accessPane.setVisible(true);
+		this.add(accessPane, BorderLayout.SOUTH);
+		accessPane.revalidate();
+		accessPane.requestFocus();
 	}
 	
 	/**
@@ -96,8 +108,16 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 		buildMenuAndToolbar();
 		buildMainWindow();
 		setupEnterActionForAllButtons();
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setSize((screenSize.width-screenSize.width/10),(screenSize.height-(screenSize.height/10)));
+
+		this.setSize(
+				MiscProperties.getInt(misc.WIDTH),
+				MiscProperties.getInt(misc.HEIGHT)
+			);
+		this.setLocation(
+				MiscProperties.getInt(misc.X),
+				MiscProperties.getInt(misc.Y)
+			);
+		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
@@ -264,5 +284,29 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener  
 
 	public void refreshExplorerContent() {
 		editorPane.refreshTabTitles();
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent arg0) {
+		MiscProperties.setInt(misc.X);
+		MiscProperties.setInt(misc.Y);
+	}
+
+	@Override
+	public void componentResized(ComponentEvent arg0) {
+		MiscProperties.setInt(misc.WIDTH);
+		MiscProperties.setInt(misc.HEIGHT);
+	}
+
+	@Override
+	public void componentShown(ComponentEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

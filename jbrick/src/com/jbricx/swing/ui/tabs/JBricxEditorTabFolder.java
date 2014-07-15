@@ -533,4 +533,8 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			this.open(fileName);
 		}
 	}
+	
+	public JBricxManager getManager() {
+		return manager;
+	}
 }

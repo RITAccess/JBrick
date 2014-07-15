@@ -1,9 +1,9 @@
 package com.jbricx.tools;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import com.jbricx.piano.PianoWindow;
 
 @SuppressWarnings("serial")
 public class AccessibleWidget extends JLabel {
@@ -15,11 +15,16 @@ public class AccessibleWidget extends JLabel {
 		super(" ");
 	}
 
-	public void readLabel(String text, PianoWindow window, JComponent previousComponent){
+	public void readLabel(String text, JFrame window, JComponent previousComponent){
 		this.setText(text);
+		/*
 		this.requestFocus();
-		
-		//previousComponent.requestFocusInWindow();
-		//this.setText(" ");
+		if (previousComponent.getFocusListeners().length > 2){
+			FocusListener fl = previousComponent.getFocusListeners()[1];
+			previousComponent.removeFocusListener(fl);
+			previousComponent.requestFocusInWindow();
+			previousComponent.addFocusListener(fl);
+		}
+		*/
 	}
 }
