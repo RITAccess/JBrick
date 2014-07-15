@@ -24,7 +24,7 @@ public class NXTAccess {
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
 	public static HashMap<String, ArrayList<String>> compile(String filepath){
-		return NXTAccess.runNBC(filepath, false, false);
+		return NXTAccess.runNBC(filepath, false, false, false);
 	}
 	
 	/**
@@ -32,8 +32,8 @@ public class NXTAccess {
 	 * @param filepath
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
-	public static HashMap<String, ArrayList<String>> downloadToBrick(String filepath, boolean debug){
-		return NXTAccess.runNBC(filepath, true, debug);
+	public static HashMap<String, ArrayList<String>> downloadToBrick(String filepath, boolean debug, boolean run){
+		return NXTAccess.runNBC(filepath, true, debug, run);
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class NXTAccess {
 	 * @param download - whether or not the program needs to be downloaded to the nxt brick
 	 * @return a HashMap containing filepaths, and errors for individual files
 	 */
-	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download, boolean debug){		
+	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download, boolean debug, boolean run){		
 		//If it is in debugging mode then use the debug version of the file
 		if(debug){
 			String[] path = filepath.split("/");
@@ -74,7 +74,12 @@ public class NXTAccess {
 		
 		ProcessBuilder pb;
 		if (download){
-			pb = new ProcessBuilder(nbc, "-d", filepath);
+			if(run){
+				pb = new ProcessBuilder(nbc, "-r", filepath);
+			}
+			else{
+				pb = new ProcessBuilder(nbc, "-d", filepath);	
+			}
 		} else {
 			pb = new ProcessBuilder(nbc, filepath);
 		}

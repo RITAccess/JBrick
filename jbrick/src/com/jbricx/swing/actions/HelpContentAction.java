@@ -21,7 +21,7 @@ public class HelpContentAction extends JBricxAbstractAction {
    */
   public void actionPerformed(ActionEvent e){
 	  if(browser == null)
-		  browser = new Browser(getManager().getShell());
+		  browser = new Browser(getManager().getShell(),"Home");
 	  else
 		  browser.reOpen();
   }

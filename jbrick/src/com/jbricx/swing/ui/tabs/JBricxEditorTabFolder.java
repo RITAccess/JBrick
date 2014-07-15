@@ -26,7 +26,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -238,9 +237,8 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 					}
 
 					if (saveSuccess) {
-						if (closingTime) {
-							listOfFiles.add(tabItem.getFileFullPath());
-						} else {
+						closingCheck(tabItem);
+						if (!closingTime) {
 							keepAFileOpen();
 						}
 						return true;
@@ -256,9 +254,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 						File f = new File(fpathname);
 						f.delete();
 					} else {
-						if (closingTime && !tabItem.isNewFile()) {
-							listOfFiles.add(tabItem.getFileFullPath());
-						}
+						closingCheck(tabItem);
 					}
 					keepAFileOpen();
 					return true;
@@ -268,16 +264,25 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 				}
 				// File was already saved, do not need to prompt
 			} else {
-				if (closingTime) {
-					if (!tabItem.isNewFile()) {
-						listOfFiles.add(tabItem.getFileFullPath());
-					}
-				}
+				closingCheck(tabItem);
 				keepAFileOpen();
 				return true;
 			}
 		} else {
 			return false;
+		}
+	}
+	
+	/**
+	 * Preforms a check on a tab to decide what it should do while closing this tab.
+	 * @param tab
+	 */
+	private void closingCheck(JBricxTabItem tab){
+		if (closingTime && !tab.isNewFile() && !listOfFiles.contains(tab.getFileFullPath())) {
+				listOfFiles.add(tab.getFileFullPath());
+		}
+		else if(!closingTime && listOfFiles.contains(tab.getFileFullPath())){
+			listOfFiles.remove(tab.getFileFullPath());
 		}
 	}
 

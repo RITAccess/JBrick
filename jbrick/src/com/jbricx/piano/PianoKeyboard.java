@@ -183,10 +183,8 @@ class PianoButton extends ActionButton{
 
 		if(text.contains("#")) {
 			text = text.replaceFirst("#", " sharp ");
-			System.out.println(text);
 			this.getAccessibleContext().setAccessibleName(text);
 		} else {
-			System.out.println(text);
 			this.getAccessibleContext().setAccessibleName(text);
 		}
 	}

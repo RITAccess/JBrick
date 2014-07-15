@@ -46,6 +46,7 @@ import com.jbricx.swing.actions.PrintPreviewAction;
 import com.jbricx.swing.actions.RaiseToneAction;
 import com.jbricx.swing.actions.RedoAction;
 import com.jbricx.swing.actions.ResetViewAction;
+import com.jbricx.swing.actions.RunAction;
 import com.jbricx.swing.actions.SaveAction;
 import com.jbricx.swing.actions.SaveAsAction;
 import com.jbricx.swing.actions.SelectAllAction;
@@ -117,6 +118,7 @@ public class JBricxMenuAndToolBarDelegate {
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.compileMenu),
 		DOWNLOAD(DownloadAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0), 2, MenuEnum.compileMenu),
 		DOWNLOADDEBUG(DownloadDebugAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0), 2, MenuEnum.compileMenu),
+		RUN(RunAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0), -1, MenuEnum.compileMenu),
 		
 		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", -1, MenuEnum.viewMenu),
 		MAXSTATUS(MaxStatusAction.class, "Maximize Status", -1, MenuEnum.viewMenu),
@@ -255,6 +257,7 @@ public class JBricxMenuAndToolBarDelegate {
 	        ActionSet.COMPILE.button,
 	        ActionSet.DOWNLOAD.button,
 	        ActionSet.DOWNLOADDEBUG.button,
+	        ActionSet.RUN.button,
 	        ActionSet.SHOWHIDEFILEVIEWER.button,
 	        ActionSet.MAXVIEWER.button,
 	        ActionSet.MAXEDITOR.button,

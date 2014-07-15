@@ -35,7 +35,10 @@ public class OpenAction extends JBricxAbstractAction {
 	        @Override
 	        public boolean accept(File file) {
 	            // Allow only directories, or files with ".nxc" extension
-	        	return file.isDirectory() || file.getAbsolutePath().endsWith(PreferenceStore.FILTER_EXTENSION);
+	        	String extension = getExtension(file);
+	        	boolean validFile = extension.equalsIgnoreCase(PreferenceStore.FILTER_EXTENSION);
+	        	
+	        	return file.isDirectory() || validFile;
 	        }
 	        @Override
 	        public String getDescription() {
@@ -61,4 +64,19 @@ public class OpenAction extends JBricxAbstractAction {
 		}
 		
 	}
+	
+	/**
+	 * Gets the extension of a file
+	 * @param file
+	 * @return Returns extension or and empty string if it has none.
+	 */
+	public String getExtension(File file){
+		String name = file.getName();
+		if(name.lastIndexOf(".") > 0){
+			return "." + name.substring(name.lastIndexOf(".")+1);
+		}
+		else{
+			return "";
+		}
 	}
+}
