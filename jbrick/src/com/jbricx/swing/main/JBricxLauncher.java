@@ -42,7 +42,7 @@ public class JBricxLauncher {
 		
 		MainWindow mainWindow = new MainWindow();
 		try {
-		     Image img = Toolkit.getDefaultToolkit().getImage("icons/icon-small.png");
+		     Image img = Toolkit.getDefaultToolkit().getImage("images/icons/icon-small.png");
 		     mainWindow.setIconImage(img);
 		     if(Platform.isMac()){
 			     Application app = Application.getApplication();

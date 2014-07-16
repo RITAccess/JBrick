@@ -38,17 +38,18 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener {
 
 	public JBricxStatusPane(MainWindow main) {
 		this.main = main;
+		
+		//returns the editor pane as a whole
 		tab = main.getTabFolder();
 		messagePane = new JTextPane();
 		messagePane.setEditable(false);
 		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
 		messagePane.setContentType("text/html");
-		messagePane.getCaret().setVisible(true);
 		
 		// set up the scrollpane
 		JScrollPane status = new JScrollPane(messagePane,
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		increaseScrollBarSize(status);
 		
