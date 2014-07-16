@@ -17,12 +17,9 @@ public class HelpContentAction extends JBricxAbstractAction {
   }
 
   /**
-   * Shows an about box
+   * Opens Browser panel
    */
   public void actionPerformed(ActionEvent e){
-	  if(browser == null)
-		  browser = new Browser(getManager().getShell(),"Home");
-	  else
-		  browser.reOpen();
+	  Browser.openBrowser(getManager().getShell(), "Home");
   }
 }
