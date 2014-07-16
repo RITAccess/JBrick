@@ -122,8 +122,8 @@ public class JBricxMenuAndToolBarDelegate {
 		
 		MAXEDITOR(MaxEditorAction.class, "Maximize Editor", -1, MenuEnum.viewMenu),
 		MAXSTATUS(MaxStatusAction.class, "Maximize Status Panel", -1, MenuEnum.viewMenu),
-		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", -1, MenuEnum.viewMenu),
 		MAXVIEWER(MaxViewerAction.class, "Maximize File Viewer", -1, MenuEnum.viewMenu),
+		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", -1, MenuEnum.viewMenu),
 		RESETVIEW(ResetViewAction.class, "Reset View", -1, MenuEnum.viewMenu),
 		
 		ABOUT(AboutAction.class, -1, MenuEnum.helpMenu),
