@@ -25,6 +25,7 @@ import com.jbricx.swing.actions.GotoAction;
  * @author Daniel Larsen
  *
  */
+@SuppressWarnings("serial")
 public class GoToDialog extends JDialog implements ActionListener{
 
 	private JLabel goToInstruction;

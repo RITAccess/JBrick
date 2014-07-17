@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import com.jbricx.swing.ui.browser.Browser;
+import com.jbricx.swing.ui.browser.HelpWindow;
 import com.jbricx.tools.AudioPlayer;
 
 /**
@@ -153,7 +153,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				Browser.openBrowser(window, "Piano");
+				HelpWindow.openHelpWindow("Piano");
 			}
 			
 		});

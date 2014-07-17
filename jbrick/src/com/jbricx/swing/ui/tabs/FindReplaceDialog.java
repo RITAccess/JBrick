@@ -14,6 +14,7 @@ import javax.swing.JTextArea;
  * Modified for JBricx
  * @author Pradeep Yadav
  */
+@SuppressWarnings("serial")
 public class FindReplaceDialog extends javax.swing.JDialog
 {
 	// the variable declaration begins here.

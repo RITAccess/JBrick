@@ -2,7 +2,6 @@ package com.jbricx.swing.ui.tabs;
 
 import java.awt.event.KeyEvent;
 
-import javax.accessibility.AccessibleContext;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.event.CaretEvent;
@@ -10,7 +9,6 @@ import javax.swing.event.CaretListener;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 
-import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
 
 /**

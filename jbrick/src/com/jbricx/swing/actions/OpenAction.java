@@ -7,13 +7,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.fife.ui.rtextarea.RTextAreaUI;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
-import com.jbricx.swing.ui.tabs.JBricxTabItem;
 
 /**
  * This action class responds to requests open a file

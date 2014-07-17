@@ -21,6 +21,7 @@ import javax.swing.KeyStroke;
 
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.TextEditorPane;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -146,7 +147,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 			newItem.setLineWrap(PreferenceStore.getBool(PreferenceStore.Preference.WRAP));
 			
 			//Property listenter to know when they file becomes either clean or dirty
-			newItem.addPropertyChangeListener(newItem.DIRTY_PROPERTY, new PropertyChangeListener() {
+			newItem.addPropertyChangeListener(TextEditorPane.DIRTY_PROPERTY, new PropertyChangeListener() {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					refreshTabTitles();	

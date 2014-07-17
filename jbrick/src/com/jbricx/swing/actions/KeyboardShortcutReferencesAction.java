@@ -1,16 +1,10 @@
 package com.jbricx.swing.actions;
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.swing.ui.browser.Browser;
+import com.jbricx.swing.ui.browser.HelpWindow;
 
 @SuppressWarnings("serial")
 public class KeyboardShortcutReferencesAction extends JBricxAbstractAction 
@@ -28,6 +22,6 @@ public class KeyboardShortcutReferencesAction extends JBricxAbstractAction
      * Opens help browser with keyboard information
      */
     public void actionPerformed(ActionEvent e){
-    	Browser.openBrowser(getManager().getShell(), "Shortcuts");
+    	HelpWindow.openHelpWindow("Shortcuts");
     }
 }

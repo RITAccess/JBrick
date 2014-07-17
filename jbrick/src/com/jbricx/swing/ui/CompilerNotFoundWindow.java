@@ -2,7 +2,6 @@ package com.jbricx.swing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +21,7 @@ import javax.swing.JTextField;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
+@SuppressWarnings("serial")
 public class CompilerNotFoundWindow  extends JDialog implements ActionListener {
 	private JPanel mainArea;
 	
