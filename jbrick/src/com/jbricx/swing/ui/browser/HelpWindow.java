@@ -6,8 +6,11 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.net.URL;
 
@@ -16,9 +19,13 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+
+import com.sun.jna.Platform;
 
 /**
  * HelpWindow opens a Frame that displays help information.
@@ -34,6 +41,8 @@ public class HelpWindow extends JFrame{
 	
 	// This is the helpWindow that prevents multiple help windows
 	static HelpWindow helpWindow = null;
+	// Font size should stay consistent
+	static int fontSize = 20;
 	// Main panel that contians the content
 	JScrollPane jDisplayPane = null;
 	
@@ -100,6 +109,21 @@ public class HelpWindow extends JFrame{
 		this.repaint();
 	}
 	
+	private static void increaseFontSize(JEditorPane editor){
+		
+		String[] rules = {
+				"span {font-size: " + fontSize + "pt;}",
+				"p {font-size: " + fontSize + "pt;}",
+				"div {font-size: " + fontSize + "pt;}",
+				"h3 {font-size: " + (fontSize + 3) + "pt;}",
+				"h2 {font-size: " + (fontSize + 7) + "pt;}",
+				"h1 {font-size: " + (fontSize + 12) + "pt;}"
+		};
+		for (String rule : rules){
+		    ((HTMLDocument)editor.getDocument()).getStyleSheet().addRule(rule);
+		}
+	}
+	
 	/**
 	 * htmlContent - generates the editor that is used 
 	 * to display html pages. This will generate a new 
@@ -130,6 +154,35 @@ public class HelpWindow extends JFrame{
 			}
 			
 		});
+		editor.addKeyListener(new KeyListener(){
+
+			JEditorPane editor;
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int modifier = Platform.isMac() ? KeyEvent.META_MASK : KeyEvent.CTRL_MASK; 
+				if ((e.getKeyCode() == KeyEvent.VK_EQUALS) && ((e.getModifiers() & modifier) != 0)) {
+                    fontSize = fontSize + 5;
+                } else if ((e.getKeyCode() == KeyEvent.VK_MINUS) && ((e.getModifiers() & modifier) != 0)) {
+                	fontSize = fontSize - 5;
+                }
+                increaseFontSize(editor);
+                editor.repaint();
+			}
+
+			public KeyListener setEditor(JEditorPane editor) {
+				this.editor = editor;
+				return this;
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			
+		}.setEditor(editor));
+		increaseFontSize(editor);
 		return editor;
 	}
 	
@@ -142,8 +195,10 @@ public class HelpWindow extends JFrame{
 		if (jDisplayPane != null){
 			this.remove(jDisplayPane);
 		}
-		jDisplayPane = new JScrollPane(htmlContent(page));
+		JEditorPane editor = htmlContent(page);
+		jDisplayPane = new JScrollPane(editor);
 		this.add(jDisplayPane, BorderLayout.CENTER);
+		editor.requestFocus();
 		this.setVisible(true);
 		this.repaint();
 	}
