@@ -20,6 +20,15 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.event.HyperlinkListener;
 
+/**
+ * HelpWindow opens a Frame that displays help information.
+ * Only one is allowed open at a time. Use the openHelpWindow
+ * call to open / make visible the help window. You can use the
+ * openHelpWindow method to also change the page (it doesn't 
+ * open multiple windows).
+ * @author Ethan Jurman
+ *
+ */
 @SuppressWarnings("serial")
 public class HelpWindow extends JFrame{
 	
