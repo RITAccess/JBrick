@@ -579,7 +579,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		int selecEnd = 0;
 		//Atempt to find the lines that are currently highlighted
 		try {
-			if(textArea.getSelectionStart() < textArea.getDocument().getLength()){
+			if(textArea.getSelectionStart() <= textArea.getDocument().getLength()){
 				selecStart = textArea.getLineOfOffset(textArea.getSelectionStart());
 				selecEnd = selecStart + numSelecLines;
 			}
@@ -591,10 +591,12 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 			//If the break is inside a line that was highlighted then remove it
 			if(audioBreakList.get(i).getLineNumber() > selecStart && audioBreakList.get(i).getLineNumber() < selecEnd){
 				audioBreakList.remove(i);
+				i--;
 			}
 			//If the break was on a line where a new line was added then remove it
 			else if(textArea.currentCaretY == audioBreakList.get(i).getScreenPosition()) {
 				audioBreakList.remove(i);
+				i--;
 			}
 			else if(textArea.currentCaretY < audioBreakList.get(i).getScreenPosition()) {
 				audioBreakList.get(i).setLineNum(audioBreakList.get(i).getLineNumber() + offset);
