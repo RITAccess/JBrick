@@ -19,6 +19,8 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -56,7 +58,7 @@ import com.jbricx.swing.ui.tabs.AudioBreak;
  * @see FileLocation
  */
 public class TextEditorPane extends RSyntaxTextArea implements
-									DocumentListener {
+									DocumentListener, CaretListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -106,6 +108,11 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	private int currentLineSize;
 
+	/**
+	 * number of selected lines.
+	 */
+	private int numberOfSelectedLines = 0;
+	
 	/**
 	 * JBRICX MODIFIED CONSTRUCTOR. Overwrote old constructor. 
 	 * 
@@ -220,19 +227,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		setLineWrap(wordWrapEnabled);
 		init(loc, defaultEnc,"");
 	}
-
-
-	/**
-	 * Callback for when styles in the current document change.
-	 * This method is never called.
-	 *
-	 * @param e The document event.
-	 */
-	public void changedUpdate(DocumentEvent e) {
-		documentChanged(e);
-	}
-
-
 
 	/**
 	 * Returns the default encoding for this operating system.
@@ -374,20 +368,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 
 		setDirty(false);
-
-	}
-
-
-	/**
-	 * Callback for when text is inserted into the document.
-	 *
-	 * @param e Information on the insertion.
-	 */
-	public void insertUpdate(DocumentEvent e) {
-		if (!dirty) {
-			setDirty(true);
-		}
-		documentChanged(e);
 	}
 
 
@@ -488,7 +468,8 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			doc.addDocumentListener(this);
 			r.close();
 		}
-
+		
+		this.addCaretListener(this);
 		// No IOException thrown, so we can finally change the location.
 		charSet = ur.getEncoding();
 		String old = getFileFullPath();
@@ -535,6 +516,26 @@ public class TextEditorPane extends RSyntaxTextArea implements
 
 
 	/**
+	 * Callback for when styles in the current document change.
+	 *
+	 * @param e The document event.
+	 */
+	public void changedUpdate(DocumentEvent e) {
+		documentChanged(e);
+	}
+
+	/**
+	 * Callback for when text is inserted into the document.
+	 *
+	 * @param e Information on the insertion.
+	 */
+	public void insertUpdate(DocumentEvent e) {
+		if (!dirty) {
+			setDirty(true);
+		}
+	}
+
+	/**
 	 * Called whenever text is removed from this editor.
 	 *
 	 * @param e The document event.
@@ -543,8 +544,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		if (!dirty) {
 			setDirty(true);
 		}
-		
-		documentChanged(e);
 	}
 
 	/**
@@ -554,7 +553,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	private void documentChanged(DocumentEvent e){
 		if(currentLineCount != this.getLineCount()){
 			int numChangedLines = this.getLineCount() - currentLineCount;
-		    ((RTextAreaUI) this.getUI()).moveAudioBreaks(numChangedLines);
+		    ((RTextAreaUI) this.getUI()).updateAudioBreaks(numChangedLines, numberOfSelectedLines);
 			currentLineCount = this.getLineCount();
 		}
 		if(currentLineSize != this.getLineHeight()){
@@ -564,6 +563,19 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	}
 	
 	
+	@Override
+	public void caretUpdate(CaretEvent event) {
+		//keep a record of the number of line selected
+		numberOfSelectedLines = 0;
+		if(event.getDot() != event.getMark()){
+			if(event.getDot() > event.getMark()){
+				numberOfSelectedLines = this.getText().substring(event.getMark(), event.getDot()).split("\n").length;
+			}
+			else{
+				numberOfSelectedLines = this.getText().substring(event.getDot(), event.getMark()).split("\n").length;
+			}
+		}
+	}
 
 	/**
 	 * Saves the file in its current encoding.<p>
@@ -642,7 +654,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			this.setDocument(newDoc);
 			
 		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
+			System.err.println(e1.getLocalizedMessage());
 			e1.printStackTrace();
 		}
 		
@@ -660,13 +672,14 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 */
 	private String insertBreaks(Document doc) throws BadLocationException{
 
-		
 	    AudioBreak[] breaks = ((RTextAreaUI) this.getUI()).getBreakPoints();
 		String[] fullText = doc.getText(0, doc.getLength()).split("\n");
-		BreakpointsStore.putBreakpoints(loc.getFileName(), breaks);
+		BreakpointsStore.putBreakpoints(loc.getFileName(), breaks); //Recordes the breaks the java preferences file
+		//inserts the breaks into the text
 		for(AudioBreak line : breaks){
 			String debugStr = ";PlayTone(" + line.getTone() +", 125); Wait(350)";
 			int lineNum = line.getLineNumber() - 1;
+			if(lineNum < 0) { lineNum = 0;} //stops line number form going below zero
 			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){
 				lineNum++;
 			};
@@ -835,7 +848,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 	}
 
-
 	/**
 	 * Syncs this text area's "last saved or loaded" time to that of the file
 	 * being edited, if that file is local and exists.  If the file is
@@ -853,6 +865,4 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			lastSaveOrLoadTime = loc.getActualLastModified();
 		}
 	}
-
-
 }
