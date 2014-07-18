@@ -53,7 +53,7 @@ public class GoToDialog extends JDialog implements ActionListener{
 		goToInstruction = new JLabel("Enter a number between 1 and " + getLineNumbers());
 		panel.add(goToInstruction,BorderLayout.NORTH);
 		
-		goToLineInputBox = new IntTextField(10);
+		goToLineInputBox = new IntTextField(15);
 		panel.add(goToLineInputBox,BorderLayout.CENTER);
 		
 		JPanel buttonBox = new JPanel();
@@ -67,6 +67,7 @@ public class GoToDialog extends JDialog implements ActionListener{
 		buttonBox.add(goToCancelButton);
 		panel.add(buttonBox,BorderLayout.SOUTH);
 		this.add(panel);
+		this.pack();
 	}
 
 	/**
