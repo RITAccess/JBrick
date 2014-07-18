@@ -548,6 +548,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	}
 	
 	private void checkBreaks(){
+		//This is accessed with a regular for loop to avoid a ConcurrentModificationException that apears with a for each loop
 		for(int i = 0; i < audioBreakList.size(); i ++){
 			if(audioBreakList.get(i).getLineNumber() < 0 || audioBreakList.get(i).getLineNumber() > textArea.getLineCount()){
 				audioBreakList.remove(i);
