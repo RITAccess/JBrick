@@ -477,7 +477,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		currentLineCount = this.getLineCount();
 		currentLineSize = this.getLineHeight();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
-
 	}
 
 

@@ -11,6 +11,7 @@ package org.fife.ui.rtextarea;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -542,6 +543,16 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		for(AudioBreak audioBreak : breaks){
 			audioBreak.setLineHeight(this.textArea.getLineHeight());
 			audioBreakList.add(audioBreak);
+		}
+		checkBreaks();
+	}
+	
+	private void checkBreaks(){
+		for(int i = 0; i < audioBreakList.size(); i ++){
+			if(audioBreakList.get(i).getLineNumber() < 0 || audioBreakList.get(i).getLineNumber() > textArea.getLineCount()){
+				audioBreakList.remove(i);
+				i--;
+			}
 		}
 	}
 	
