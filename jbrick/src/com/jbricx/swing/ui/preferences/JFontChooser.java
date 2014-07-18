@@ -66,6 +66,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 *   }
 * <pre>
 **/
+@SuppressWarnings("serial")
 public class JFontChooser extends JComponent
 {
    // class variables

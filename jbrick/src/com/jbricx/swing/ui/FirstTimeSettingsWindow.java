@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
+@SuppressWarnings("serial")
 public class FirstTimeSettingsWindow  extends JDialog implements ActionListener {
 	private JPanel mainArea;
 	

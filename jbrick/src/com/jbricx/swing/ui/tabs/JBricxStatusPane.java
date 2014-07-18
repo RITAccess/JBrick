@@ -25,6 +25,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
