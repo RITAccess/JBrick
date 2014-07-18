@@ -11,7 +11,7 @@ import com.jbricx.swing.ui.JBricxManager;
 public class MaxViewerAction extends JBricxAbstractAction{
 
 	public MaxViewerAction(final JBricxManager manager) {
-		super("", new ImageIcon(MaxViewerAction.class.getResource("/icons/maxSideThing.png")), manager);
+		super("", new ImageIcon(MaxViewerAction.class.getResource("/icons/maxFileView.png")), manager);
 		
 	}
 
