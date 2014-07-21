@@ -71,7 +71,7 @@ public class ButtonActions {
 				
 				final Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Play", window, ButtonActions.this.play);
+					window.accessibleStatus.readLabel("No Notes To Play",ButtonActions.this.play);
 					return;
 				}
 				int[] lengths = new int[notes.length];
@@ -107,7 +107,7 @@ public class ButtonActions {
 			public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Copy", window, ButtonActions.this.copy);
+					window.accessibleStatus.readLabel("No Notes To Copy",ButtonActions.this.copy);
 					return;
 				}
 				String copyStr = Note.getNXC(notes);
@@ -125,7 +125,7 @@ public class ButtonActions {
             public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Save", window, ButtonActions.this.save);
+					window.accessibleStatus.readLabel("No Notes To Save",ButtonActions.this.save);
 					return;
 				}
 				String startStr = "task main()\n{\n";
@@ -180,7 +180,7 @@ public class ButtonActions {
 			public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes to delete", window, ButtonActions.this.back);
+					window.accessibleStatus.readLabel("No Notes to Delete",ButtonActions.this.back);
 					return;
 				}
 				if((textViewPanel.getText().contains("\n"))) {

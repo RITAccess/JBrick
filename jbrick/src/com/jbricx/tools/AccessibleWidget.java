@@ -15,7 +15,7 @@ public class AccessibleWidget extends JLabel {
 		super(" ");
 	}
 
-	public void readLabel(String text, JFrame window, JComponent previousComponent){
+	public void readLabel(String text, JComponent previousComponent){
 		this.setText(text);
 		/*
 		this.requestFocus();
