@@ -477,7 +477,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		currentLineCount = this.getLineCount();
 		currentLineSize = this.getLineHeight();
 		firePropertyChange(FULL_PATH_PROPERTY, old, getFileFullPath());
-
 	}
 
 
@@ -567,7 +566,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	public void caretUpdate(CaretEvent event) {
 		//keep a record of the number of line selected
 		numberOfSelectedLines = 0;
-		if(event.getDot() != event.getMark()){
+		if(event.getDot() != event.getMark() && event.getMark() <= this.getText().length()){
 			if(event.getDot() > event.getMark()){
 				numberOfSelectedLines = this.getText().substring(event.getMark(), event.getDot()).split("\n").length;
 			}
@@ -639,29 +638,16 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws IOException 
 	 */
 	private void saveDebug(FileLocation loc) throws IOException{
-		FileLocation nLoc = createDebugFilePath(loc);
-		int caretLocY = this.getCaretPosition();
-		
-		RSyntaxDocument oldDoc = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_NXC);
-		RSyntaxDocument newDoc = new RSyntaxDocument(SyntaxConstants.SYNTAX_STYLE_NXC);
-		
+
+		PrintWriter out = new PrintWriter(createDebugFilePath(loc));
 		try {
-			oldDoc.insertString(0, this.getDocument().getText(0, this.getDocument().getLength()), null);
-			newDoc.insertString(0, this.getDocument().getText(0, this.getDocument().getLength()), null);
-			
-			newDoc.remove(0, newDoc.getLength());
-			newDoc.insertString(0, insertBreaks(oldDoc), null);
-			this.setDocument(newDoc);
-			
-		} catch (BadLocationException e1) {
-			System.err.println(e1.getLocalizedMessage());
-			e1.printStackTrace();
+			out.println(insertBreaks(this.getDocument()));
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}
-		
-		saveImpl(nLoc);
-		
-		this.setDocument(oldDoc);
-		this.setCaretPosition(caretLocY);
+		finally{
+			out.close();
+		}
 	}
 	
 	/**
@@ -702,7 +688,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @param loc
 	 * @return
 	 */
-	private FileLocation createDebugFilePath(FileLocation loc){
+	private String createDebugFilePath(FileLocation loc){
 		String[] path = loc.getFileFullPath().split("/");
 		String newPath = "";
 		for(int i = 0; i < path.length-1; i++){
@@ -717,9 +703,8 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		}
 		
 		newPath += "debug." + path[path.length-1];
-		FileLocation filePath = FileLocation.create(newPath);
 		
-		return filePath;
+		return newPath;
 	}
 
 	/**
