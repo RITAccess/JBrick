@@ -11,7 +11,7 @@ package org.fife.ui.rtextarea;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -472,6 +472,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		int height = textArea.getLineHeight();
 		
 		for (AudioBreak line : audioBreakList){
+			System.out.println(line.getLineNumber());
 			Color highlight = line.calculateColor(currBg); 
 			g.setColor(highlight);
 			Graphics2D g2d = (Graphics2D)g;
@@ -483,8 +484,12 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 				visibleRect.x+visibleRect.width,0,
 						bg==null ? Color.WHITE : blend);
 			g2d.setPaint(paint);
-			g2d.fillRect(visibleRect.x,line.getScreenPosition(),
-							visibleRect.width, height);
+			g2d.fillRect(
+					visibleRect.x,
+					line.getLineNumber() * height,
+					visibleRect.width,
+					height
+				);
 		}
 	}
 	
@@ -496,22 +501,23 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		
 		// toggle off if highlightedLines contains line ... else toggle on
 		AudioBreak tempBreak;
-		if((tempBreak = containsLine(audioBreakList, textArea.currentCaretY)) != null){
+		int line = textArea.currentCaretY/textArea.getLineHeight();
+		if((tempBreak = containsLine(audioBreakList, line)) != null){
 			audioBreakList.remove(tempBreak);
 		} else {
-			audioBreakList.add(new AudioBreak(textArea.currentCaretY/textArea.getLineHeight(), textArea.getLineHeight()));
+			audioBreakList.add(new AudioBreak(line));
 		}
 	}
 	
 	/**
 	 * A method to check if a audio break with a certain screen position exists. If it does then it will return the break
 	 * @param list
-	 * @param screenPosition
+	 * @param lineNumber
 	 * @return
 	 */
-	private AudioBreak containsLine(ArrayList<AudioBreak> list, int screenPosition){
+	private AudioBreak containsLine(ArrayList<AudioBreak> list, int lineNumber){
 		for(AudioBreak audioBreak : list){
-			if(audioBreak.getScreenPosition() == screenPosition){
+			if(audioBreak.getLineNumber() == lineNumber){
 				return audioBreak;
 			}
 		}
@@ -523,14 +529,14 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	 * @param raise True to raise. False to lower.
 	 */
 	public void RaiseLowerTone(boolean raise){
+		int line = textArea.currentCaretY/textArea.getLineHeight();
 		AudioBreak tempBreak;
-		if((tempBreak = containsLine(audioBreakList, textArea.currentCaretY)) != null){
+		if((tempBreak = containsLine(audioBreakList, line)) != null){
 			if(raise){
 				tempBreak.raiseKey();
-				}
-			else{
+			} else {
 				tempBreak.lowerKey();
-				}
+			}
 		}
 	}
 	
@@ -539,11 +545,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	 * @param breaks Array to use
 	 */
 	public void setAudioBreaks(AudioBreak[] breaks){
-		audioBreakList.clear();
-		for(AudioBreak audioBreak : breaks){
-			audioBreak.setLineHeight(this.textArea.getLineHeight());
-			audioBreakList.add(audioBreak);
-		}
+		audioBreakList = new ArrayList<AudioBreak>(Arrays.asList(breaks));
 		checkBreaks();
 	}
 	
@@ -589,6 +591,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		
 		int selecStart = 0;
 		int selecEnd = 0;
+		int line = textArea.currentCaretY/textArea.getLineHeight();
 		//Atempt to find the lines that are currently highlighted
 		try {
 			if(textArea.getSelectionStart() <= textArea.getDocument().getLength()){
@@ -598,7 +601,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		} catch (BadLocationException e1) {
 			e1.printStackTrace();
 		}
-		
 		for(int i = 0; i < audioBreakList.size(); i++) {
 			//If the break is inside a line that was highlighted then remove it
 			if(audioBreakList.get(i).getLineNumber() > selecStart && audioBreakList.get(i).getLineNumber() < selecEnd){
@@ -606,23 +608,13 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 				i--;
 			}
 			//If the break was on a line where a new line was added then remove it
-			else if(textArea.currentCaretY == audioBreakList.get(i).getScreenPosition()) {
+			else if(line == audioBreakList.get(i).getLineNumber()) {
 				audioBreakList.remove(i);
 				i--;
 			}
-			else if(textArea.currentCaretY < audioBreakList.get(i).getScreenPosition()) {
+			else if(line < audioBreakList.get(i).getLineNumber()) {
 				audioBreakList.get(i).setLineNum(audioBreakList.get(i).getLineNumber() + offset);
 			}
-		}
-	}
-
-	/**
-	 * Changes the hight of the highlights on all lines. Use when font size has changed.
-	 * @param newSize New height of lines
-	 */
-	public void changeHighlightSize(int newSize) {
-		for(int i = 0; i < audioBreakList.size(); i++){
-				audioBreakList.get(i).setLineHeight(newSize);
 		}
 	}
 

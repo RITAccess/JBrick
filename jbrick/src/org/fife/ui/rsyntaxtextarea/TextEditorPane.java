@@ -555,10 +555,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 		    ((RTextAreaUI) this.getUI()).updateAudioBreaks(numChangedLines, numberOfSelectedLines);
 			currentLineCount = this.getLineCount();
 		}
-		if(currentLineSize != this.getLineHeight()){
-		    ((RTextAreaUI) this.getUI()).changeHighlightSize(this.getLineHeight());
-			currentLineSize = this.getLineHeight();
-		}
 	}
 	
 	
