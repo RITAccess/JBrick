@@ -20,7 +20,6 @@ public class AudioBreak {
 	 * @param nLineHeight The current height of lines. This is determined by font size.
 	 */
 	public AudioBreak(int nLineNumber){
-		System.out.println(nLineNumber);
 		lineNumber = nLineNumber;
 		key = STARTKEY;
 	}

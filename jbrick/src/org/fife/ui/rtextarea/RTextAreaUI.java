@@ -472,7 +472,6 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		int height = textArea.getLineHeight();
 		
 		for (AudioBreak line : audioBreakList){
-			System.out.println(line.getLineNumber());
 			Color highlight = line.calculateColor(currBg); 
 			g.setColor(highlight);
 			Graphics2D g2d = (Graphics2D)g;
