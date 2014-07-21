@@ -24,12 +24,14 @@ import com.jbricx.swing.actions.CloseAction;
 import com.jbricx.swing.actions.CompileAction;
 import com.jbricx.swing.actions.CopyAction;
 import com.jbricx.swing.actions.CutAction;
+import com.jbricx.swing.actions.DecreaseFontSizeAction;
 import com.jbricx.swing.actions.DownloadAction;
 import com.jbricx.swing.actions.DownloadDebugAction;
 import com.jbricx.swing.actions.ExitAction;
 import com.jbricx.swing.actions.FindAction;
 import com.jbricx.swing.actions.GotoAction;
 import com.jbricx.swing.actions.HelpContentAction;
+import com.jbricx.swing.actions.IncreaseFontSizeAction;
 import com.jbricx.swing.actions.JBricxAbstractAction;
 import com.jbricx.swing.actions.KeyboardShortcutReferencesAction;
 import com.jbricx.swing.actions.LowerToneAction;
@@ -97,7 +99,7 @@ public class JBricxMenuAndToolBarDelegate {
 		SAVEAS(SaveAsAction.class, "Save As", 0, MenuEnum.fileMenu),
 		PRINTPREVIEW(PrintPreviewAction.class, "Print Preview", -1, MenuEnum.fileMenu),
 		PRINT(PrintAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_P, modifier), -1, MenuEnum.fileMenu),
-		CLOSE(CloseAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_W, modifier), -1, MenuEnum.fileMenu),
+		CLOSE(CloseAction.class, "Close File", KeyStroke.getKeyStroke(KeyEvent.VK_W, modifier), -1, MenuEnum.fileMenu),
 		EXIT(ExitAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifier), -1, MenuEnum.fileMenu),
 		
 		UNDO(UndoAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifier), 1, MenuEnum.editMenu),
@@ -106,13 +108,13 @@ public class JBricxMenuAndToolBarDelegate {
 		COPY(CopyAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_C, modifier), 1, MenuEnum.editMenu),
 		PASTE(PasteAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_V, modifier), 1, MenuEnum.editMenu),
 		SELECTALL(SelectAllAction.class, "Select All", KeyStroke.getKeyStroke(KeyEvent.VK_A, modifier), -1, MenuEnum.editMenu),
-		FIND(FindAction.class, "Find and Replace", 1, MenuEnum.editMenu),
+		FIND(FindAction.class, "Find and Replace", KeyStroke.getKeyStroke(KeyEvent.VK_F, modifier), 1, MenuEnum.editMenu),
 		PREFERENCES(PreferencesAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_R, modifier), 3, MenuEnum.editMenu),
 		
 		GOTO(GotoAction.class, "Go-to line", KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), 1, MenuEnum.toolsMenu),
 		AUDIOBREAK(AudioBreakAction.class, "Audio Break", KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), 2, MenuEnum.toolsMenu),
-		RAISETONE(RaiseToneAction.class, "Raise Tone", KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier), -1, MenuEnum.toolsMenu),
-		LOWERTONE(LowerToneAction.class, "Lower Tone", KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier), -1, MenuEnum.toolsMenu),
+		RAISETONE(RaiseToneAction.class, "Raise Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.toolsMenu),
+		LOWERTONE(LowerToneAction.class, "Lower Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.toolsMenu),
 		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), 3, MenuEnum.toolsMenu),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.compileMenu),
@@ -125,6 +127,8 @@ public class JBricxMenuAndToolBarDelegate {
 		MAXVIEWER(MaxViewerAction.class, "Maximize File Viewer", -1, MenuEnum.viewMenu),
 		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", -1, MenuEnum.viewMenu),
 		RESETVIEW(ResetViewAction.class, "Reset View", -1, MenuEnum.viewMenu),
+		INCREASEFONT(IncreaseFontSizeAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier), -1, MenuEnum.viewMenu),
+		DECREASEFONT(DecreaseFontSizeAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier), -1, MenuEnum.viewMenu),
 		
 		ABOUT(AboutAction.class, -1, MenuEnum.helpMenu),
 		KEYSHORTCUT(KeyboardShortcutReferencesAction.class, "Keyboard Shortcut Reference", 3, MenuEnum.helpMenu),

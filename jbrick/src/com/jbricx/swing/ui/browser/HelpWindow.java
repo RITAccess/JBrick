@@ -6,7 +6,6 @@ import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,7 +18,6 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.event.HyperlinkListener;
@@ -55,7 +53,7 @@ public class HelpWindow extends JFrame{
 		HOME,
 		BASICS,
 		TUTORIAL,
-		JOYSTICK,
+		//JOYSTICK,
 		PIANO,
 		LEGAL,
 		SHORTCUTS,
@@ -117,7 +115,10 @@ public class HelpWindow extends JFrame{
 				"div {font-size: " + fontSize + "pt;}",
 				"h3 {font-size: " + (fontSize + 3) + "pt;}",
 				"h2 {font-size: " + (fontSize + 7) + "pt;}",
-				"h1 {font-size: " + (fontSize + 12) + "pt;}"
+				"h1 {font-size: " + (fontSize + 12) + "pt;}",
+				"td {font-size: " + fontSize + "pt;}",
+				"pre {font-size:" + fontSize + "pt;}",
+				"th {font-size:" + fontSize + "pt;}"
 		};
 		for (String rule : rules){
 		    ((HTMLDocument)editor.getDocument()).getStyleSheet().addRule(rule);
