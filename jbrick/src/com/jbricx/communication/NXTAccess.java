@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
+import com.sun.jna.Platform;
 
 /**
  * NXTAccess provides all the necessary functions to get the programs to download on a NXT brick
@@ -47,12 +48,19 @@ public class NXTAccess {
 	private static HashMap<String, ArrayList<String>> runNBC(String filepath, boolean download, boolean debug, boolean run){		
 		//If it is in debugging mode then use the debug version of the file
 		if(debug){
-			String[] path = filepath.split("/");
+			String slash = "";
+			if(Platform.isMac()){
+				slash = "/";
+			}
+			else{
+				slash = "\\\\";
+			}
+			String[] path = filepath.split(slash);
 			String newPath = "";
 			for(int i = 0; i < path.length-1; i++){
-				newPath += path[i] + "/";
+				newPath += path[i] + slash;
 			}
-			newPath += "debug/";
+			newPath += "debug" + slash;
 			newPath += "debug." + path[path.length-1];
 			filepath = newPath;
 		}
