@@ -154,12 +154,18 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.setText("");
 		caretListener();
-		
-		errorMessage(map);
-		
+		sb = new StringBuffer();
+
 		if (map.keySet().size() == 0){
+			System.out.println(sb.toString());
 			sb.append((download ? "Download" : "Compile") + " Successful");
 		}
+		else{
+			color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
+			hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+			errorMessage(map);	
+		}
+		
 		messagePane.addHyperlinkListener(this);
 		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 		color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
@@ -192,8 +198,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 					));
 					errorFile.add(match.group(2));
 				}
-			}	
-			//System.out.println(errorFile);
+			}
 		} return errorFile;
 
 	}

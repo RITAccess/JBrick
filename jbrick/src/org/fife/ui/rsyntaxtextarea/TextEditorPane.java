@@ -34,6 +34,7 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 
 import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.tabs.AudioBreak;
+import com.sun.jna.Platform;
 
 
 /**
@@ -634,7 +635,6 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @throws IOException 
 	 */
 	private void saveDebug(FileLocation loc) throws IOException{
-
 		PrintWriter out = new PrintWriter(createDebugFilePath(loc));
 		try {
 			out.println(insertBreaks(this.getDocument()));
@@ -685,12 +685,22 @@ public class TextEditorPane extends RSyntaxTextArea implements
 	 * @return
 	 */
 	private String createDebugFilePath(FileLocation loc){
-		String[] path = loc.getFileFullPath().split("/");
+		String[] path;
 		String newPath = "";
-		for(int i = 0; i < path.length-1; i++){
-			newPath += path[i] + "/";
+		String slash = "";
+		if(Platform.isMac()){
+			slash = "/";
 		}
-		newPath += "debug/";
+		else{
+			slash = "\\\\";
+		}
+		
+		path = loc.getFileFullPath().split(slash);
+		
+		for(int i = 0; i < path.length-1; i++){
+			newPath += path[i] + slash;
+		}
+		newPath += "debug" + slash;
 		
 		//If the debug directory doesnt exist already then create one
 		File file = new File(newPath);
