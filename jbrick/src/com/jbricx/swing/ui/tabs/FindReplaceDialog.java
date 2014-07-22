@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
@@ -113,7 +113,7 @@ public class FindReplaceDialog extends JDialog {
 								.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
 										.addComponent(findTextField)
 										.addComponent(accessibleStatus)
-										.addComponent(replaceTextField, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
+										.addComponent(replaceTextField, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
 										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 												.addGroup(layout.createSequentialGroup()
 														.addGap(8, 8, 8)
@@ -168,11 +168,11 @@ public class FindReplaceDialog extends JDialog {
 		// Check if the find text field is empty
 		// Replace should be able to remain empty in case you want to delete all occurances of that word
 		if (findTextField.getText().isEmpty()) {
-			accessibleStatus.readLabel("One or more fields is missing", FindReplaceDialog.this.replaceAllButton);
+			accessibleStatus.readLabel("Find Field is Empty", FindReplaceDialog.this.replaceAllButton);
 		}
 		
 		// Check for if the word doesn't exists
-		else if (pos == -1) {
+		else if (!(oldContent.contains(findTextField.getText()))) {
 			accessibleStatus.readLabel("Cannot Find to Replace",FindReplaceDialog.this.replaceAllButton);
 		}
 		
@@ -183,10 +183,10 @@ public class FindReplaceDialog extends JDialog {
 			textArea.setText( newContent );
 			
 			int count = 0;
-			int replaced = textArea.getText().indexOf(replaceTextField.getText());
+			int replaced = oldContent.indexOf(findTextField.getText());
 			
 			while (replaced != -1) {
-				replaced = textArea.getText().indexOf(replaceTextField.getText(),replaced + 1);
+				replaced = oldContent.indexOf(findTextField.getText(),replaced + 1);
 				count ++;
 			}
 			
@@ -234,7 +234,7 @@ public class FindReplaceDialog extends JDialog {
 		
 		// Check if anything to search was entered
 		if (wordToFind.isEmpty()) {
-			accessibleStatus.readLabel("Find Field is missing", FindReplaceDialog.this.findButton);
+			accessibleStatus.readLabel("Find Field is Empty", FindReplaceDialog.this.findButton);
 		} else {
 			
 			// Check if any instances of the text entered occurs in the main area
