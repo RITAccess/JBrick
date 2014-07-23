@@ -37,6 +37,9 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
+import org.fife.ui.rsyntaxtextarea.ActiveLineRangeEvent;
+import org.fife.ui.rsyntaxtextarea.ActiveLineRangeListener;
+
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
@@ -240,8 +243,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		// if the hyperlink / text is an int
 		String desc = ((AbstractButton) arg0.getSource()).getText();
 		Matcher match = Pattern.compile("href=\"(.+)\">").matcher(desc);
-		if (match.find()) { desc = match.group(1); } 
-		System.out.println(desc);
+		if (match.find()) { desc = match.group(1); }
 		int split = desc.indexOf(",");
 		
 		// open file. (if a file is all that is given, the split int will be -1)
@@ -249,20 +251,12 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		
 		// go to line in file
 		if (desc.matches(".*,\\d+")){
-			int ln = Integer.parseInt(desc.substring(split + 1)) - 1;
-
-			JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
-					.getSelectedComponent()).getViewport().getView();
-
-			try {
-				if (ln >= 0 && ln < tab.getLineCount()) {
-					tab.scrollRectToVisible(tab.modelToView(tab
-							.getLineStartOffset(ln)));
-					tab.setCaretPosition(tab.getLineStartOffset(ln));
-				}
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
+			final int ln = Integer.parseInt(desc.substring(split + 1)) - 1;
+			// open file with linenumber
+			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split), ln);
+		} else {
+			// open file. (if a file is all that is given, the split int will be -1)
+			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));
 		}
 	}
 }

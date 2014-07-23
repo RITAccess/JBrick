@@ -265,6 +265,10 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener,C
 	public void openTab(String FilePath) {
 		editorPane.open(FilePath);
 	}
+	
+	public void openTab(String FilePath, int lineNumber) {
+		editorPane.open(FilePath, lineNumber);
+	}
 
 	public void updatePreferences() {
 		editorPane.refreshTabItems();
