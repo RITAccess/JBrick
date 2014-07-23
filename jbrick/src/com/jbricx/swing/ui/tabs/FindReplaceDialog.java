@@ -97,7 +97,7 @@ public class FindReplaceDialog extends JDialog {
 		// Basic set up for the dialog box
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Find/Replace");
-		setModal(true);
+		setModal(false);
 
 		// Layout for the components in the dialog box
 		GroupLayout layout = new GroupLayout(getContentPane());

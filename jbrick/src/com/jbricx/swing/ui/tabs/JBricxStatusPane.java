@@ -3,6 +3,8 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -14,22 +16,27 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Utilities;
 
-import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
@@ -37,15 +44,15 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 
 @SuppressWarnings("serial")
-public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, KeyListener{
-	JTextPane messagePane;
+public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, KeyListener, ActionListener{
+	JPanel messagePane;
 	JScrollPane status;
 	List<String> errorLine;
 	private JBricxEditorTabFolder tab;
 	private MainWindow main;
 
 	// Hack created as result of too many preference updates (One fired per change) 
-	private int scrollIncrease= 10;
+	private int scrollIncrease = 10;
 	
 	public JBricxStatusPane(MainWindow main) {
 		
@@ -53,22 +60,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		
 		// Create the status pane as a whole
 		tab = main.getTabFolder();
-		messagePane = new JTextPane();
-		messagePane.setEditable(false);
-		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
-		messagePane.setContentType("text/html");
-		
-		// Set the caret as visible in the statsu area without it being editable and only when focused
-		messagePane.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				messagePane.getCaret().setVisible(true);
-			}
-			@Override
-			public void focusLost(FocusEvent e){
-				messagePane.getCaret().setVisible(false);
-			}
-		});
+		messagePane = new JPanel();
+		messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.Y_AXIS));
 		
 		// Set up the scrollpane for the status area 
 		status = new JScrollPane(messagePane, 
@@ -78,19 +71,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 			
 		// Add the components to the tabpane
 			this.addTab("Status",status);
-	}
-	
-	/**
-	 * Check for a change in the caret position
-	 */
-	private void caretListener(){
-		messagePane.addCaretListener(new CaretListener(){
-			
-			@Override
-			public void caretUpdate(CaretEvent ev) {
-				caretRow(ev.getDot(),(JTextComponent)ev.getSource());
-			}
-		});
 	}
 
 	/**
@@ -111,51 +91,28 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		        		hScrollBar.getPreferredSize().height + scrollIncrease);
 		        hScrollBar.setPreferredSize(hScrollBarDim);
 	}
-	/**
-	 * Return the row number that the caret is occupying
-	 * @param position
-	 * @param area
-	 * @return
-	 */
-	private int caretRow(int position, JTextComponent area) {
-		int rn = (position == 0)? 1:0;
-		try {
-			int offs = position;
-			while (offs > 0) {
-				offs = Utilities.getRowStart(area, offs)-1;
-				rn++;
-			}
-		} catch (BadLocationException ev) {
-		 ev.printStackTrace();
-		}
-		
-		return rn;
-	}
 
 	/**
 	 * Set the status pane back to blank 
 	 * 
 	 */
 	public void refresh() {
-		Document doc = messagePane.getDocument();
-		try {
-			
-			doc.remove(0, doc.getLength());
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
+//		Document doc = messagePane.getDocument();
+//		try {
+//			
+//			doc.remove(0, doc.getLength());
+//		} catch (BadLocationException e) {
+//			e.printStackTrace();
+//		}
+//		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
 	}
 	
-	StringBuffer sb = new StringBuffer();
 	Color color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
 	String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
-		messagePane.setText("");
-		caretListener();
-		sb = new StringBuffer();
-
+		StringBuffer sb = new StringBuffer();
+		List<String> messages = null;
 		if (map.keySet().size() == 0){
 			System.out.println(sb.toString());
 			sb.append((download ? "Download" : "Compile") + " Successful");
@@ -163,28 +120,42 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		else{
 			color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
 			hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-			errorMessage(map);	
+			messages = errorMessage(map, sb);	
 		}
 		
-		messagePane.addHyperlinkListener(this);
+		//messagePane.addHyperlinkListener(this);
 		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 		color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
 		hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+		String[] stringBuffList = sb.toString().split("\n");
+		for (int i = 0; i < stringBuffList.length; i++){
+			String str = stringBuffList[i];
+			JButton button = new JButton(
+					"<html><p style=\"font-size:" + newFont.getSize()
+					+ "px; font-family:" + newFont.getFamily() + "; color:" + hex + "\">" + str.toString() + "</p></html>"
+				);
+			button.setBorder(BorderFactory.createEmptyBorder());
+			button.setHorizontalAlignment(SwingConstants.LEFT);
+			//button.setBackground(Color.WHITE);
+			button.getAccessibleContext().setAccessibleName(messages.get(i));
+			button.addActionListener(this);
+			
+			messagePane.add(button);
+		}
 		
-		messagePane.setText("<p style=\"font-size:" + newFont.getSize()
-				+ "px; font-family:" + newFont.getFamily() + "; color:" + hex + "\">" + sb.toString() + "</p>");
 	}
 
-	public List<String> errorMessage(HashMap<String, ArrayList<String>> map) {
+	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
 		List<String> errorFile = new ArrayList<String>();
-
+		List<String> messages = new ArrayList<String>();
 		for (String file : map.keySet()){
 			File programFile = new File(file);
 			if (programFile.exists()){
 				sb.append(String.format(
-						"<a style=\"color:" + hex  + "\" href=\"%s\">%s</a><br>", 
+						"<a style=\"color:" + hex  + "\" href=\"%s\">%s</a><br>\n", 
 						programFile.getAbsolutePath(), programFile.getName()  // file path, file name
 				));
+				messages.add(programFile.getName());
 				//System.out.println(programFile.getName());
 			} else {
 				sb.append(file + "\n"); // not a file, some other message or error
@@ -193,13 +164,14 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
-							"<a style=\"color:" + hex  + "\" href=\"%s,%s\">%s</a> %s" + "<br>", 
+							"<a style=\"color:" + hex  + "\" href=\"%s,%s\">%s</a> %s<br>\n", 
 							programFile, match.group(2), match.group(1), match.group(3)
 					));
 					errorFile.add(match.group(2));
+					messages.add(error);
 				}
 			}
-		} return errorFile;
+		} return messages;
 
 	}
 	
@@ -207,8 +179,8 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 	public void keyPressed(KeyEvent keyEv) {
 		if (keyEv.getKeyCode() == KeyEvent.VK_ENTER) {
 			
-			String desc = messagePane.getText();
-			System.out.println(desc);
+			//String desc = messagePane.getText();
+			//System.out.println(desc);
 		}
 		
 	}
@@ -255,6 +227,34 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 				}
 			}
 		}
-		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// if the hyperlink / text is an int
+		String desc = ((AbstractButton) arg0.getSource()).getText();
+		Matcher match = Pattern.compile("href=\"(.+)\">").matcher(desc);
+		if (match.find()) { desc = match.group(1); } 
+		System.out.println(desc);
+		int split = desc.indexOf(",");
+		// open file. (if a file is all that is given, the split int will be -1)
+		this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));	
+		// go to line in file
+		if (desc.matches(".*,\\d+")){
+			int ln = Integer.parseInt(desc.substring(split + 1));
+
+			JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
+					.getSelectedComponent()).getViewport().getView();
+			try {
+				ln -= 1;
+				if (ln >= 0 && ln < tab.getLineCount()) {
+					tab.scrollRectToVisible(tab.modelToView(tab
+							.getLineStartOffset(ln)));
+					tab.setCaretPosition(tab.getLineStartOffset(ln));
+				}
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
