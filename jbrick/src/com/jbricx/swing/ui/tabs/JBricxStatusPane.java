@@ -111,6 +111,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 	String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
+		messagePane.removeAll();
 		StringBuffer sb = new StringBuffer();
 		List<String> messages = null;
 		if (map.keySet().size() == 0){
@@ -143,8 +144,9 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 			button.addActionListener(this);
 			
 			messagePane.add(button);
-			messagePane.validate();
 		}
+		messagePane.repaint();
+		messagePane.validate();
 		
 	}
 
@@ -240,16 +242,18 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		if (match.find()) { desc = match.group(1); } 
 		System.out.println(desc);
 		int split = desc.indexOf(",");
+		
 		// open file. (if a file is all that is given, the split int will be -1)
-		this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));	
+		this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));
+		
 		// go to line in file
 		if (desc.matches(".*,\\d+")){
-			int ln = Integer.parseInt(desc.substring(split + 1));
+			int ln = Integer.parseInt(desc.substring(split + 1)) - 1;
 
 			JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
 					.getSelectedComponent()).getViewport().getView();
+
 			try {
-				ln -= 1;
 				if (ln >= 0 && ln < tab.getLineCount()) {
 					tab.scrollRectToVisible(tab.modelToView(tab
 							.getLineStartOffset(ln)));
