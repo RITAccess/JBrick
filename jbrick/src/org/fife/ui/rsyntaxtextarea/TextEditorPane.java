@@ -662,7 +662,7 @@ public class TextEditorPane extends RSyntaxTextArea implements
 			String debugStr = ";PlayTone(" + line.getTone() +", 125); Wait(350)";
 			int lineNum = line.getLineNumber() - 1;
 			if(lineNum < 0) { lineNum = 0;} //stops line number form going below zero
-			while(!fullText[lineNum].contains(";") || lineNum == fullText.length){
+			while(lineNum < fullText.length && !fullText[lineNum].contains(";")){
 				lineNum++;
 			};
 			if (lineNum != fullText.length){
