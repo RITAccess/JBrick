@@ -68,9 +68,10 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			increaseScrollBarSize(status);
-			
+		
 		// Add the components to the tabpane
-			this.addTab("Status",status);
+		this.addTab("Status",status);
+		refresh();
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 //		} catch (BadLocationException e) {
 //			e.printStackTrace();
 //		}
-//		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
+		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
 	}
 	
 	Color color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
@@ -136,7 +137,7 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 				);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setHorizontalAlignment(SwingConstants.LEFT);
-			//button.setBackground(Color.WHITE);
+			button.setContentAreaFilled(false);
 			if (messages != null){
 				button.getAccessibleContext().setAccessibleName(messages.get(i));
 			}
