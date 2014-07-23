@@ -127,8 +127,8 @@ public class JBricxMenuAndToolBarDelegate {
 		MAXVIEWER(MaxViewerAction.class, "Maximize File Viewer", -1, MenuEnum.viewMenu),
 		SHOWHIDEFILEVIEWER(ShowHideFileViewerAction.class, "Toggle File Viewer", -1, MenuEnum.viewMenu),
 		RESETVIEW(ResetViewAction.class, "Reset View", -1, MenuEnum.viewMenu),
-		INCREASEFONT(IncreaseFontSizeAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier), -1, MenuEnum.viewMenu),
-		DECREASEFONT(DecreaseFontSizeAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier), -1, MenuEnum.viewMenu),
+		INCREASEFONT(IncreaseFontSizeAction.class, "Increase Font Size", KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier), -1, MenuEnum.viewMenu),
+		DECREASEFONT(DecreaseFontSizeAction.class, "Decrease Font Size", KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier), -1, MenuEnum.viewMenu),
 		
 		ABOUT(AboutAction.class, -1, MenuEnum.helpMenu),
 		KEYSHORTCUT(KeyboardShortcutReferencesAction.class, "Keyboard Shortcut Reference", 3, MenuEnum.helpMenu),

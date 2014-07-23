@@ -3,6 +3,8 @@ package com.jbricx.swing.actions;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
+import javax.swing.ImageIcon;
+
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
@@ -16,7 +18,7 @@ public class DecreaseFontSizeAction extends JBricxAbstractAction {
 	   * DecreaseFontSizeAction constructor
 	   */
 	  public DecreaseFontSizeAction(final JBricxManager manager) {
-		  super("", null, manager);
+		  super("", new ImageIcon(CopyAction.class.getResource("/icons/fontDecrease.png")), manager);
 		  this.manager = manager;
 	  }
 
