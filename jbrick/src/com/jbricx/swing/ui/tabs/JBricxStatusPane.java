@@ -137,10 +137,13 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setHorizontalAlignment(SwingConstants.LEFT);
 			//button.setBackground(Color.WHITE);
-			button.getAccessibleContext().setAccessibleName(messages.get(i));
+			if (messages != null){
+				button.getAccessibleContext().setAccessibleName(messages.get(i));
+			}
 			button.addActionListener(this);
 			
 			messagePane.add(button);
+			messagePane.validate();
 		}
 		
 	}
