@@ -61,7 +61,7 @@ abstract class RTextAreaBase extends JTextArea {
 	private boolean fadeCurrentLineHighlight;	// "Fade effect" for current line highlight.
 	private boolean roundedSelectionEdges;
 	private int previousCaretY;
-	int currentCaretY;							// Used to know when to rehighlight current line.
+	private int currentCaretY;							// Used to know when to rehighlight current line.
 
 	private BackgroundPainterStrategy backgroundPainter;	// Paints the background.
 
@@ -540,6 +540,14 @@ public RTextAreaBase(Color backgroundColor){
 	 */
 	public int getLineHeight() {
 		return getRowHeight();
+	}
+	
+	/**
+	 * Returns the current position of the carret on the Y axis ignoring boarders.
+	 * @return
+	 */
+	public int getCurrentCaretY(){
+		return this.currentCaretY -	getInsets().top;
 	}
 
 
