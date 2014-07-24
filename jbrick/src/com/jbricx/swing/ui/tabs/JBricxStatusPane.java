@@ -1,6 +1,7 @@
 package com.jbricx.swing.ui.tabs;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,25 +23,12 @@ import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.Utilities;
-
-import org.fife.ui.rsyntaxtextarea.ActiveLineRangeEvent;
-import org.fife.ui.rsyntaxtextarea.ActiveLineRangeListener;
 
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -47,12 +37,13 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 
 @SuppressWarnings("serial")
-public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, KeyListener, ActionListener{
+public class JBricxStatusPane extends JTabbedPane implements ActionListener {
 	JPanel messagePane;
 	JScrollPane status;
 	List<String> errorLine;
-	private JBricxEditorTabFolder tab;
 	private MainWindow main;
+	Color altBackground;
+	Color background;
 
 	// Hack created as result of too many preference updates (One fired per change) 
 	private int scrollIncrease = 10;
@@ -62,7 +53,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		this.main = main;
 		
 		// Create the status pane as a whole
-		tab = main.getTabFolder();
 		messagePane = new JPanel();
 		messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.Y_AXIS));
 		
@@ -97,18 +87,17 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 	}
 
 	/**
-	 * Set the status pane back to blank 
+	 * Set the status pane back to black 
 	 * 
 	 */
 	public void refresh() {
-//		Document doc = messagePane.getDocument();
-//		try {
-//			
-//			doc.remove(0, doc.getLength());
-//		} catch (BadLocationException e) {
-//			e.printStackTrace();
-//		}
-		messagePane.setBackground(new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND))));
+		this.background = new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND)));
+		Color foreground = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
+		this.altBackground = new Color(
+				(foreground.getRed() + background.getRed()*3)/4,
+				(foreground.getGreen() + background.getGreen()*3)/4,
+				(foreground.getBlue() + background.getBlue()*3)/4);
+		messagePane.setBackground(this.background);
 	}
 	
 	Color color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
@@ -135,23 +124,80 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 		String[] stringBuffList = sb.toString().split("\n");
 		for (int i = 0; i < stringBuffList.length; i++){
 			String str = stringBuffList[i];
-			JButton button = new JButton(
+			final JButton button = new JButton(
 					"<html><p style=\"font-size:" + newFont.getSize()
 					+ "px; font-family:" + newFont.getFamily() + "; color:" + hex + "\">" + str.toString() + "</p></html>"
 				);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setHorizontalAlignment(SwingConstants.LEFT);
+			button.setBackground(altBackground);
 			button.setContentAreaFilled(false);
 			if (messages != null){
 				button.getAccessibleContext().setAccessibleName(messages.get(i));
 			}
 			button.addActionListener(this);
-			
+			button.addMouseListener(new MouseListener(){
+
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					if (arg0.getClickCount() == 2){
+						main.getTabFolder().getSelection().requestFocus();
+					}
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					button.setContentAreaFilled(true);
+					button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}
+
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					button.setContentAreaFilled(false);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent arg0) {}
+
+				@Override
+				public void mouseReleased(MouseEvent arg0) {}
+				
+			});
+			button.addKeyListener(new KeyListener(){
+
+				@Override
+				public void keyPressed(KeyEvent arg0) {
+					if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
+						// TODO go to line in doc.
+						button.doClick();
+						main.getTabFolder().getSelection().requestFocus();
+					}
+				}
+
+				@Override
+				public void keyReleased(KeyEvent arg0) {}
+
+				@Override
+				public void keyTyped(KeyEvent arg0) {}
+				
+			});
+			button.addFocusListener(new FocusListener(){
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					button.setContentAreaFilled(true);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+					button.setContentAreaFilled(false);
+				}
+				
+			});
 			messagePane.add(button);
 		}
 		messagePane.repaint();
 		messagePane.validate();
-		
 	}
 
 	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
@@ -182,60 +228,6 @@ public class JBricxStatusPane extends JTabbedPane implements HyperlinkListener, 
 			}
 		} return messages;
 
-	}
-	
-	@Override
-	public void keyPressed(KeyEvent keyEv) {
-		if (keyEv.getKeyCode() == KeyEvent.VK_ENTER) {
-			
-			//String desc = messagePane.getText();
-			//System.out.println(desc);
-		}
-		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent keyEv) {
-		
-	}
-
-	/**
-	 * Create the hyperlink for the errors 
-	 */
-	@Override
-	public void hyperlinkUpdate(HyperlinkEvent hyperEv) {
-		
-		HyperlinkEvent.EventType type = hyperEv.getEventType();
-		if (type == HyperlinkEvent.EventType.ACTIVATED){
-			// if the hyperlink / text is an int
-			String desc = hyperEv.getDescription();
-			int split = desc.indexOf(",");
-			// open file. (if a file is all that is given, the split int will be -1)
-			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));	
-			// go to line in file
-			if (desc.matches(".*,\\d+")){
-				int ln = Integer.parseInt(desc.substring(split + 1));
-
-				JBricxTabItem tab = (JBricxTabItem) ((JScrollPane) this.tab
-						.getSelectedComponent()).getViewport().getView();
-				try {
-					ln -= 1;
-					if (ln >= 0 && ln < tab.getLineCount()) {
-						tab.scrollRectToVisible(tab.modelToView(tab
-								.getLineStartOffset(ln)));
-						tab.setCaretPosition(tab.getLineStartOffset(ln));
-					}
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	@Override
