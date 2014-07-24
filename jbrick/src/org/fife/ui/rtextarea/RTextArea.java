@@ -11,6 +11,7 @@ package org.fife.ui.rtextarea;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.InputMap;
@@ -814,7 +816,7 @@ public class RTextArea extends RTextAreaBase
 	 * @param textMode The text mode.
 	 */
 	private void init(int textMode) {
-
+		
 		// NOTE: Our actions are created here instead of in a static block
 		// so they are only created when the first RTextArea is instantiated,
 		// not before.  There have been reports of users calling static getters
@@ -844,7 +846,7 @@ public class RTextArea extends RTextAreaBase
 
 		// Fix the odd "Ctrl+H <=> Backspace" Java behavior.
 		fixCtrlH();
-
+		this.setMargin(new Insets(0,0,0,0));
 	}
 
 

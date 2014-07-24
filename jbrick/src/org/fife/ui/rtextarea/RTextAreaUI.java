@@ -453,7 +453,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 				//int height = textArea.currentCaretRect.height);
 				int height = textArea.getLineHeight();
 				g.setColor(highlight);
-				g.fillRect(visibleRect.x,textArea.getCurrentCaretY(),
+				g.fillRect(visibleRect.x,textArea.currentCaretY,
 						visibleRect.width, height);
 			} // End of if (caret.getDot()==caret.getMark()).
 		} // End of if (textArea.isCurrentLineHighlightEnabled()...
@@ -499,7 +499,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	public void toggleAudioBreak(){
 		// toggle off if highlightedLines contains line ... else toggle on
 		AudioBreak tempBreak;
-		int line = textArea.getCurrentCaretY()/textArea.getLineHeight();
+		int line = textArea.currentCaretY/textArea.getLineHeight();
 		
 		if((tempBreak = containsLine(audioBreakList, line)) != null){
 			audioBreakList.remove(tempBreak);
@@ -528,7 +528,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 	 * @param raise True to raise. False to lower.
 	 */
 	public void RaiseLowerTone(boolean raise){
-		int line = textArea.getCurrentCaretY()/textArea.getLineHeight();
+		int line = textArea.currentCaretY/textArea.getLineHeight();
 		AudioBreak tempBreak;
 		if((tempBreak = containsLine(audioBreakList, line)) != null){
 			if(raise){
@@ -590,7 +590,7 @@ public class RTextAreaUI extends BasicTextAreaUI implements ViewFactory {
 		
 		int selecStart = 0;
 		int selecEnd = 0;
-		int line = textArea.getCurrentCaretY()/textArea.getLineHeight();
+		int line = textArea.currentCaretY/textArea.getLineHeight();
 		//Atempt to find the lines that are currently highlighted
 		try {
 			if(textArea.getSelectionStart() <= textArea.getDocument().getLength()){
