@@ -130,8 +130,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 * 
 	 * @param absoluteFilePath
 	 *            Absolute path of the filename to open.
+	 * @param lineNumber
+	 * 			  line number that the cursor will be at
 	 */
-	public void open(final String absoluteFilePath) {
+	public void open(final String absoluteFilePath, int lineNumber) {
 		int tabIndex = getTabIndexByFilepath(absoluteFilePath);
 		// Make a new file because it was not currently found in the list of
 		// open files
@@ -169,15 +171,36 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 						"The file you have specified does not exits!",
 						"File Not Found!", JOptionPane.WARNING_MESSAGE);
 			}
+			newItem.clearUndo();
 		} else {
 			this.setSelectedIndex(tabIndex);
 		}
 		if (!listOfFiles.contains(absoluteFilePath)){
 			listOfFiles.add(absoluteFilePath);
 		}
-	    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)this.getSelectedComponent()).getViewport().getView();
+	    JBricxTabItem tab = (JBricxTabItem)((RTextScrollPane)this.getSelectedComponent()).getViewport().getView();
 	    ((RTextAreaUI) tab.getUI()).setAudioBreaks(BreakpointsStore.getBreakLines(tab.getFileName()));
-	    tab.clearUndo();
+	    int caretPos = 0;
+	    // get the caretPos based on the line number
+	    // newlines are chars too
+	    String[] text = tab.getText().split("\n");
+	    while(lineNumber != -1){
+	    	caretPos += text[lineNumber].length() + 1;
+	    	lineNumber--;
+	    }
+	    
+	    tab.setCaretPosition(caretPos - 1);
+	}
+	
+	/**
+	 * Opens a new file with the given filename. Makes a new tab item and hands
+	 * off the filepath to it.
+	 * 
+	 * @param absoluteFilePath
+	 *            Absolute path of the filename to open.
+	 */
+	public void open(final String absoluteFilePath) {
+		open(absoluteFilePath, 0);
 	}
 
 	/**
@@ -543,4 +566,5 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	public JBricxManager getManager() {
 		return manager;
 	}
+	
 }
