@@ -89,7 +89,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 	private JLabel workspaceLabel;
 
 	private JCheckBox wordWrapBox;
-	private JCheckBox autoCompileBox;
+	private JCheckBox autoSaveOnCompileBox;
 	private JCheckBox loadRecentlyBox;
 	
 	private JLabel toolLocationLabel;
@@ -284,7 +284,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		//Horizontal group for other area
 		GroupLayout.SequentialGroup hGroup2 = otherOptionsGroupLayout.createSequentialGroup();
 		hGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup()
-				.addComponent(autoCompileBox)
+				.addComponent(autoSaveOnCompileBox)
 				.addComponent(loadRecentlyBox)
 				.addComponent(toolLocationLabel)
 				.addComponent(workspaceLabel)
@@ -305,7 +305,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		//Vertical group for the other area
 		GroupLayout.SequentialGroup vGroup2 = otherOptionsGroupLayout.createSequentialGroup();
 		vGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				.addComponent(autoCompileBox)
+				.addComponent(autoSaveOnCompileBox)
 		);
 		vGroup2.addComponent(loadRecentlyBox);
 		vGroup2.addGroup(otherOptionsGroupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -512,10 +512,10 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		wordWrapBox.setSelected(PreferenceStore.getBool(Preference.WRAP));
 		wordWrapBox.getAccessibleContext().setAccessibleName("Word Wrap Check Box. Press Space to Toggle");
 		
-		autoCompileBox = new JCheckBox();
-		autoCompileBox.setText("Auto Compile");
-		autoCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOCOMPILE));
-		autoCompileBox.getAccessibleContext().setAccessibleName("Auto Compile Box. Press Space to Toggle");
+		autoSaveOnCompileBox = new JCheckBox();
+		autoSaveOnCompileBox.setText("Auto Save on Compile");
+		autoSaveOnCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOSAVEONCOMPILE));
+		autoSaveOnCompileBox.getAccessibleContext().setAccessibleName("Auto Save on Compile Box. Press Space to Toggle");
 		
 		loadRecentlyBox = new JCheckBox();
 		loadRecentlyBox.setText("Load Recent Files");
@@ -645,7 +645,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		PreferenceStore.set(Preference.FONT, currentFontText.getText());
 
 		PreferenceStore.set(Preference.WRAP, wordWrapBox.isSelected());
-		PreferenceStore.set(Preference.AUTOCOMPILE, autoCompileBox.isSelected());
+		PreferenceStore.set(Preference.AUTOSAVEONCOMPILE, autoSaveOnCompileBox.isSelected());
 		PreferenceStore.set(Preference.BOOLRECENTFILES, loadRecentlyBox.isSelected());
 
 		PreferenceStore.set(Preference.NBCTOOL, toolLocationTextArea.getText());
@@ -678,7 +678,7 @@ public class JBricxPreferencesWindow extends JDialog implements ActionListener {
 		currentFontText.setText(PreferenceStore.getString(Preference.FONT));
 		currentFontText.setFont(Font.decode(currentFontText.getText()));
 		wordWrapBox.setSelected(PreferenceStore.getBool(Preference.WRAP));
-		autoCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOCOMPILE));
+		autoSaveOnCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOSAVEONCOMPILE));
 		loadRecentlyBox.setSelected(PreferenceStore.getBool(Preference.BOOLRECENTFILES));
 		toolLocationTextArea.setText(PreferenceStore.getString(Preference.NBCTOOL));
 		directoryTextArea.setText(PreferenceStore.getString(Preference.WORKSPACE));

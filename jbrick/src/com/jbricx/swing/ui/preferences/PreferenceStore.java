@@ -35,7 +35,7 @@ public class PreferenceStore {
 	private static final String WRKSPC_DEFAULT = System.getProperty("user.home")
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
-	private static boolean AUTOCOMPILE_DEFAULT = false;
+	private static boolean AUTOSAVEONCOMPILE_DEFAULT = false;
 	private static boolean LINENUM_DEFAULT = true;
 	private static String NBCTOOL_DEFAULT = "";
 	private static final String THEMEXML_DEFAULT = "resources/preferences/Default.xml";
@@ -105,7 +105,7 @@ public class PreferenceStore {
 		    	ICONSIZE (ICON, PreferenceStore.ICONSIZE_DEFAULT),
 		    MISC(PROPERTIES),
 		    	WRAP (MISC, PreferenceStore.WRAP_DEFAULT),
-			    AUTOCOMPILE (MISC, PreferenceStore.AUTOCOMPILE_DEFAULT),
+			    AUTOSAVEONCOMPILE (MISC, PreferenceStore.AUTOSAVEONCOMPILE_DEFAULT),
 			    BOOLRECENTFILES (MISC, PreferenceStore.BOOLRECENTFILES_DEFAULT),
 			    LINENUM (MISC, PreferenceStore.LINENUM_DEFAULT),
 				NBCTOOL (MISC, PreferenceStore.NBCTOOL_DEFAULT),
@@ -243,7 +243,7 @@ public class PreferenceStore {
 		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
 		WRAP_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
 		tempNode = XMLParser.retrieve(doc, "misc", "autocompile");
-		AUTOCOMPILE_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
+		AUTOSAVEONCOMPILE_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
 		tempNode = XMLParser.retrieve(doc, "misc", "linenum");
 		LINENUM_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
 		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");

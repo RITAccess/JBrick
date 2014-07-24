@@ -66,7 +66,7 @@ public class CompileAction extends JBricxAbstractAction {
 	    Boolean saved = !tab.isDirty();
 	    //If the file hasn't been saved then prompt the user to save.
 	    if(!saved){
-	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText)){
+	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOSAVEONCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText)){
 		    	SaveAction action = new SaveAction(jBManager);
 		    	saved = action.saveFile();
 	    	}
@@ -128,7 +128,7 @@ public class CompileAction extends JBricxAbstractAction {
 		if (overwrite == JOptionPane.OK_OPTION) {
 			//Checks if the user wants to always preform this acton
 			if(checkbox.isSelected()){
-				PreferenceStore.set(PreferenceStore.Preference.AUTOCOMPILE, true);
+				PreferenceStore.set(PreferenceStore.Preference.AUTOSAVEONCOMPILE, true);
 			}
 			MainWindow.lostFocusTime = 0;
 			return true;
