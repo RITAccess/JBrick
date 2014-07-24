@@ -10,8 +10,7 @@ package com.jbricx.swing.ui.tabs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -87,17 +86,10 @@ public class FindReplaceDialog extends JDialog {
 			}
 		});
 
-		findTextField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent evt) {
-				findTextKeyAction(evt);
-			}
-		}); 
-		
 		// Basic set up for the dialog box
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Find/Replace");
-		setModal(true);
+		setModal(false);
 
 		// Layout for the components in the dialog box
 		GroupLayout layout = new GroupLayout(getContentPane());
@@ -151,14 +143,6 @@ public class FindReplaceDialog extends JDialog {
 	}
 
 	/**
-	 * Set the current position for the set up
-	 * @param evt
-	 */
-	private void findTextKeyAction(KeyEvent evt) {
-		currentPos = 0;
-	}
-
-	/**
 	 * Take text from find field, find all occurances in the main area, and replace them all with the text from the replace field
 	 * @param evt
 	 */
@@ -179,8 +163,7 @@ public class FindReplaceDialog extends JDialog {
 		// If the word exist, it replaces all instances of the word with the user input
 		else {
 			accessibleStatus.readLabel(" ", FindReplaceDialog.this.replaceAllButton);
-			String newContent = oldContent.replaceAll( findTextField.getText() , replaceTextField.getText() );
-			textArea.setText( newContent );
+			textArea.setText(oldContent.replaceAll( findTextField.getText() , replaceTextField.getText()));
 			
 			int count = 0;
 			int replaced = oldContent.indexOf(findTextField.getText());
