@@ -184,6 +184,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	    // get the caretPos based on the line number
 	    // newlines are chars too
 	    String[] text = tab.getText().split("\n");
+	    lineNumber = Math.min(lineNumber, tab.getText().split("\n").length - 1);
 	    while(lineNumber != -1){
 	    	caretPos += text[lineNumber].length() + 1;
 	    	lineNumber--;

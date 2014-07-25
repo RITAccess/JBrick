@@ -1,6 +1,7 @@
 package com.jbricx.swing.ui.tabs;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -37,13 +38,13 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
 
 @SuppressWarnings("serial")
-public class JBricxStatusPane extends JTabbedPane implements ActionListener {
+public class JBricxStatusPane extends JTabbedPane {
 	JPanel messagePane;
 	JScrollPane status;
 	List<String> errorLine;
 	private MainWindow main;
-	Color altBackground;
-	Color background;
+	Color backgroundColor;
+	Color altBackgroundColor;
 
 	// Hack created as result of too many preference updates (One fired per change) 
 	private int scrollIncrease = 10;
@@ -91,109 +92,64 @@ public class JBricxStatusPane extends JTabbedPane implements ActionListener {
 	 * 
 	 */
 	public void refresh() {
-		this.background = new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND)));
-		Color foreground = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
-		this.altBackground = new Color(
-				(foreground.getRed() + background.getRed()*3)/4,
-				(foreground.getGreen() + background.getGreen()*3)/4,
-				(foreground.getBlue() + background.getBlue()*3)/4);
-		messagePane.setBackground(this.background);
+		
+		this.backgroundColor = new Color(Integer.parseInt(PreferenceStore.getString(Preference.BACKGROUND)));
+		Color textColor = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
+		
+		this.altBackgroundColor = new Color(
+				(textColor.getRed() + backgroundColor.getRed()*3)/4,
+				(textColor.getGreen() + backgroundColor.getGreen()*3)/4,
+				(textColor.getBlue() + backgroundColor.getBlue()*3)/4);
+		
+		HTMLString.setFontAndColors(
+				Font.decode(PreferenceStore.getString(Preference.FONT)),
+				new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT))),
+				textColor
+			);
+		
+		// Refresh all the button colors / fonts
+		for (Component statusButton : messagePane.getComponents()){
+			if (statusButton instanceof StatusButton){
+				((StatusButton)statusButton).updateAltBackgroundColor(altBackgroundColor);
+				((StatusButton)statusButton).updateTextStyle();
+				
+			}
+		}
+		messagePane.setBackground(this.backgroundColor);
 	}
-	
-	Color color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
-	String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.removeAll();
 		StringBuffer sb = new StringBuffer();
-		List<String> messages = null;
 		if (map.keySet().size() == 0){
 			System.out.println(sb.toString());
 			sb.append((download ? "Download" : "Compile") + " Successful");
-		}
-		else{
-			color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.CONSTANT)));
-			hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-			messages = errorMessage(map, sb);	
+		} else {
+			errorMessage(map, sb);	
 		}
 		
-		//messagePane.addHyperlinkListener(this);
-		Font newFont = Font.decode(PreferenceStore.getString(Preference.FONT));
-		color = new Color(Integer.parseInt(PreferenceStore.getString(Preference.FOREGROUND)));
-		hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 		String[] stringBuffList = sb.toString().split("\n");
 		for (int i = 0; i < stringBuffList.length; i++){
 			String str = stringBuffList[i];
-			final JButton button = new JButton(
-					"<html><p style=\"font-size:" + newFont.getSize()
-					+ "px; font-family:" + newFont.getFamily() + "; color:" + hex + "\">" + str.toString() + "</p></html>"
-				);
-			button.setBorder(BorderFactory.createEmptyBorder());
-			button.setHorizontalAlignment(SwingConstants.LEFT);
-			button.setBackground(altBackground);
-			button.setContentAreaFilled(false);
-			if (messages != null){
-				button.getAccessibleContext().setAccessibleName(messages.get(i));
+			StatusButton button;
+			Matcher match = Pattern.compile("\\[(.+)\\],(.+)\\),?(.*)?").matcher(str.toString());
+			if (match.find()){
+				button = new StatusButton(
+						match.group(1), // hyperlink text
+						match.group(2), // hyperlink link
+						match.group(3), // text text
+						this.altBackgroundColor, // Background color
+						main
+					);
+			} else {
+				button = new StatusButton(
+						"", // hyperlink text
+						"", // hyperlink link
+						str.toString(), // text text
+						this.altBackgroundColor, // Background color
+						main
+					);
 			}
-			button.addActionListener(this);
-			button.addMouseListener(new MouseListener(){
-
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					if (arg0.getClickCount() == 2){
-						main.getTabFolder().getSelection().requestFocus();
-					}
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					button.setContentAreaFilled(true);
-					button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					button.setContentAreaFilled(false);
-				}
-
-				@Override
-				public void mousePressed(MouseEvent arg0) {}
-
-				@Override
-				public void mouseReleased(MouseEvent arg0) {}
-				
-			});
-			button.addKeyListener(new KeyListener(){
-
-				@Override
-				public void keyPressed(KeyEvent arg0) {
-					if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-						// TODO go to line in doc.
-						button.doClick();
-						main.getTabFolder().getSelection().requestFocus();
-					}
-				}
-
-				@Override
-				public void keyReleased(KeyEvent arg0) {}
-
-				@Override
-				public void keyTyped(KeyEvent arg0) {}
-				
-			});
-			button.addFocusListener(new FocusListener(){
-
-				@Override
-				public void focusGained(FocusEvent e) {
-					button.setContentAreaFilled(true);
-				}
-
-				@Override
-				public void focusLost(FocusEvent e) {
-					button.setContentAreaFilled(false);
-				}
-				
-			});
 			messagePane.add(button);
 		}
 		messagePane.repaint();
@@ -207,11 +163,10 @@ public class JBricxStatusPane extends JTabbedPane implements ActionListener {
 			File programFile = new File(file);
 			if (programFile.exists()){
 				sb.append(String.format(
-						"<a style=\"color:" + hex  + "\" href=\"%s\">%s</a><br>\n", 
-						programFile.getAbsolutePath(), programFile.getName()  // file path, file name
+						"([%s],%s)\n", // file path, file name
+						programFile.getAbsolutePath(), programFile.getName()
 				));
 				messages.add(programFile.getName());
-				//System.out.println(programFile.getName());
 			} else {
 				sb.append(file + "\n"); // not a file, some other message or error
 			}
@@ -219,7 +174,7 @@ public class JBricxStatusPane extends JTabbedPane implements ActionListener {
 				Matcher match = Pattern.compile("(Error line ([0-9]*)): (.*)").matcher(error);
 				if (match.matches()) {
 					sb.append(String.format(
-							"<a style=\"color:" + hex  + "\" href=\"%s,%s\">%s</a> %s<br>\n", 
+							"([%s,%s],%s),%s\n", // program, line, hyperlinkText, text
 							programFile, match.group(2), match.group(1), match.group(3)
 					));
 					errorFile.add(match.group(2));
@@ -229,26 +184,150 @@ public class JBricxStatusPane extends JTabbedPane implements ActionListener {
 		} return messages;
 
 	}
+}
 
+@SuppressWarnings("serial")
+class StatusButton extends JButton implements MouseListener, KeyListener, FocusListener, ActionListener {
+	
+	MainWindow main;
+	String hyperlinkText;
+	String hyperlinkLink;
+	String text;
+	Font font;
+	String hexColor;
+	
+	StatusButton(String hyperlinkText, String hyperlinkLink, String text, Color backgroundColor, MainWindow main){
+		super(HTMLString.getHTMLString(hyperlinkLink, hyperlinkText, text));
+		this.main = main;
+		this.hyperlinkText = hyperlinkText;
+		this.hyperlinkLink = hyperlinkLink;
+		this.text = text;
+		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setHorizontalAlignment(SwingConstants.LEFT);
+		this.setBackground(backgroundColor);
+		this.setContentAreaFilled(false);
+		this.getAccessibleContext().setAccessibleName(hyperlinkText + text);
+		this.addActionListener(this);
+		this.addMouseListener(this);
+		this.addKeyListener(this);
+		this.addFocusListener(this);
+	}
+	
+	public void updateAltBackgroundColor(Color altBackground){
+		this.setBackground(altBackground);
+	}
+	
+	public void updateTextStyle(){
+		this.setText(HTMLString.getHTMLString(hyperlinkText, hyperlinkLink, text));
+	}
+	
+	public void updateText(String hyperlinkText, String hyperlinkLink, String text){
+		this.hyperlinkText = hyperlinkText;
+		this.hyperlinkLink = hyperlinkLink;
+		this.text = text;
+		this.updateTextStyle();
+	}
+	
+	public void updateAccessText(String accessText){
+		this.getAccessibleContext().setAccessibleName(accessText);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		if (arg0.getClickCount() == 2){
+			main.getTabFolder().getSelection().requestFocus();
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		StatusButton.this.setContentAreaFilled(true);
+		StatusButton.this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		StatusButton.this.setContentAreaFilled(false);
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
+			// TODO go to line in doc.
+			StatusButton.this.doClick();
+			main.getTabFolder().getSelection().requestFocus();
+		}
+	}
+	
+	@Override
+	public void focusGained(FocusEvent e) {
+		StatusButton.this.setContentAreaFilled(true);
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		StatusButton.this.setContentAreaFilled(false);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// if the hyperlink / text is an int
-		String desc = ((AbstractButton) arg0.getSource()).getText();
-		Matcher match = Pattern.compile("href=\"(.+)\">").matcher(desc);
-		if (match.find()) { desc = match.group(1); }
-		int split = desc.indexOf(",");
-		
-		// open file. (if a file is all that is given, the split int will be -1)
-		this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));
-		
-		// go to line in file
-		if (desc.matches(".*,\\d+")){
-			final int ln = Integer.parseInt(desc.substring(split + 1)) - 1;
-			// open file with linenumber
-			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split), ln);
+		String[] link = hyperlinkText.split(",");
+		if (link.length > 1) {
+			this.main.openTab(link[0], Integer.parseInt(link[1]) -1);
 		} else {
-			// open file. (if a file is all that is given, the split int will be -1)
-			this.main.openTab(desc.substring(0,split == -1 ? desc.length() : split));
+			this.main.openTab(link[0]);
 		}
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent arg0) {}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {}
+		
+	@Override
+	public void mousePressed(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {}
+}
+
+class HTMLString {
+	
+	static Font font;
+	static Color hyperlinkColor;
+	static Color textColor;
+	
+	public static void setFontAndColors(Font font, Color hyperlinkColor, Color textColor){
+		HTMLString.font = font;
+		HTMLString.hyperlinkColor = hyperlinkColor;
+		HTMLString.textColor = textColor;
+	}
+	
+	public static String getHTMLString(String hyperlinkText, String hyperlinkLink, String text) {
+		return getHTMLString( font, hyperlinkColor, textColor, hyperlinkText, hyperlinkLink, text );
+	}
+	
+	/**
+	 * 
+	 * @param font - Font to use
+	 * @param hlColor - hyperlink color
+	 * @param textColor - text color
+	 * @param hyperlinkText - text to be hyperlinked
+	 * @param hyperlinkLink - link that will be hyperlinked
+	 * @param text - text (no hyperlink)
+	 * @return
+	 */
+	public static String getHTMLString(Font font, Color hlColor, Color textColor, String hyperlinkText, String hyperlinkLink, String text) {
+		return String.format(
+				"<html>" +
+				"<div style=\"font-size:%spx; font-family:%s; color:#%02x%02x%02x\">" +
+				"<a style=\"color:#%02x%02x%02x\" href=\"%s\">%s</a> %s" +
+				"</div>" +
+				"</html>\n",
+				font.getSize(), font.getFamily(), textColor.getRed(), textColor.getGreen(), textColor.getBlue(),
+				hlColor.getRed(), hlColor.getGreen(), hlColor.getBlue(), hyperlinkLink, hyperlinkText, text
+			);
 	}
 }
