@@ -275,7 +275,7 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 		String[] link = hyperlinkText.split(",");
 		if (link.length > 1) {
 			this.main.openTab(link[0], Integer.parseInt(link[1]) -1);
-		} else {
+		} else if(!link[0].equals("")){
 			this.main.openTab(link[0]);
 		}
 	}
