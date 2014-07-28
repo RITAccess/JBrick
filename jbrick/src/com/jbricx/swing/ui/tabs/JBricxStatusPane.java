@@ -210,7 +210,7 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 		this.setHorizontalAlignment(SwingConstants.LEFT);
 		this.setBackground(backgroundColor);
 		this.setContentAreaFilled(false);
-		this.getAccessibleContext().setAccessibleName(hyperlinkText + text);
+		this.getAccessibleContext().setAccessibleName(hyperlinkText +" : "+ text);
 		this.addActionListener(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);
