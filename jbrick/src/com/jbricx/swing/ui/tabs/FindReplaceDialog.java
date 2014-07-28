@@ -68,6 +68,9 @@ public class FindReplaceDialog extends JDialog {
 		replaceLabel = new JLabel("Replace : ");
 		accessibleStatus = new AccessibleWidget(" ");
 		
+		findTextField.getAccessibleContext().setAccessibleDescription("Find text field");
+		replaceTextField.getAccessibleContext().setAccessibleDescription("Replace text field");
+		
 		findButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent evt) {
 				findButtonAction(evt);
