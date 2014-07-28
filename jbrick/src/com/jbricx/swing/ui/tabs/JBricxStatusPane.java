@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -88,7 +87,7 @@ public class JBricxStatusPane extends JTabbedPane {
 	}
 
 	/**
-	 * Set the status pane back to black 
+	 * Set the status pane preferences from Preference Store
 	 * 
 	 */
 	public void refresh() {
@@ -118,11 +117,15 @@ public class JBricxStatusPane extends JTabbedPane {
 		messagePane.setBackground(this.backgroundColor);
 	}
 	
+	/**
+	 * push messages from compile errors to status pane
+	 * @param map
+	 * @param download
+	 */
 	public void pushMessage(HashMap<String, ArrayList<String>> map, boolean download) {
 		messagePane.removeAll();
 		StringBuffer sb = new StringBuffer();
 		if (map.keySet().size() == 0){
-			System.out.println(sb.toString());
 			sb.append((download ? "Download" : "Compile") + " Successful");
 		} else {
 			errorMessage(map, sb);	
@@ -135,8 +138,8 @@ public class JBricxStatusPane extends JTabbedPane {
 			Matcher match = Pattern.compile("\\[(.+)\\],(.+)\\),?(.*)?").matcher(str.toString());
 			if (match.find()){
 				button = new StatusButton(
-						match.group(1), // hyperlink text
-						match.group(2), // hyperlink link
+						match.group(1), // hyperlink link
+						match.group(2), // hyperlink text
 						match.group(3), // text text
 						this.altBackgroundColor, // Background color
 						main
@@ -154,6 +157,7 @@ public class JBricxStatusPane extends JTabbedPane {
 		}
 		messagePane.repaint();
 		messagePane.validate();
+		messagePane.requestFocus();
 	}
 
 	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
@@ -196,7 +200,7 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 	Font font;
 	String hexColor;
 	
-	StatusButton(String hyperlinkText, String hyperlinkLink, String text, Color backgroundColor, MainWindow main){
+	StatusButton(String hyperlinkLink, String hyperlinkText, String text, Color backgroundColor, MainWindow main){
 		super(HTMLString.getHTMLString(hyperlinkLink, hyperlinkText, text));
 		this.main = main;
 		this.hyperlinkText = hyperlinkText;
@@ -218,10 +222,10 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 	}
 	
 	public void updateTextStyle(){
-		this.setText(HTMLString.getHTMLString(hyperlinkText, hyperlinkLink, text));
+		this.setText(HTMLString.getHTMLString(hyperlinkLink, hyperlinkText, text));
 	}
 	
-	public void updateText(String hyperlinkText, String hyperlinkLink, String text){
+	public void updateText(String hyperlinkLink, String hyperlinkText, String text){
 		this.hyperlinkText = hyperlinkText;
 		this.hyperlinkLink = hyperlinkLink;
 		this.text = text;
@@ -272,7 +276,7 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// if the hyperlink / text is an int
-		String[] link = hyperlinkText.split(",");
+		String[] link = hyperlinkLink.split(",");
 		if (link.length > 1) {
 			this.main.openTab(link[0], Integer.parseInt(link[1]) -1);
 		} else if(!link[0].equals("")){
@@ -305,8 +309,8 @@ class HTMLString {
 		HTMLString.textColor = textColor;
 	}
 	
-	public static String getHTMLString(String hyperlinkText, String hyperlinkLink, String text) {
-		return getHTMLString( font, hyperlinkColor, textColor, hyperlinkText, hyperlinkLink, text );
+	public static String getHTMLString(String hyperlinkLink, String hyperlinkText, String text) {
+		return getHTMLString( font, hyperlinkColor, textColor, hyperlinkLink, hyperlinkText, text );
 	}
 	
 	/**
@@ -319,7 +323,7 @@ class HTMLString {
 	 * @param text - text (no hyperlink)
 	 * @return
 	 */
-	public static String getHTMLString(Font font, Color hlColor, Color textColor, String hyperlinkText, String hyperlinkLink, String text) {
+	public static String getHTMLString(Font font, Color hlColor, Color textColor,String hyperlinkLink, String hyperlinkText, String text) {
 		return String.format(
 				"<html>" +
 				"<div style=\"font-size:%spx; font-family:%s; color:#%02x%02x%02x\">" +
