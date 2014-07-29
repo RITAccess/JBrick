@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -39,14 +40,14 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane {
 	JPanel messagePane;
-	JScrollPane status;
+	static JScrollPane scrollPane;
 	List<String> errorLine;
 	private MainWindow main;
 	Color backgroundColor;
 	Color altBackgroundColor;
 
 	// Hack created as result of too many preference updates (One fired per change) 
-	private int scrollIncrease = 10;
+	private static int scrollIncrease = 10;
 	
 	public JBricxStatusPane(MainWindow main) {
 		
@@ -57,13 +58,13 @@ public class JBricxStatusPane extends JTabbedPane {
 		messagePane.setLayout(new BoxLayout(messagePane, BoxLayout.Y_AXIS));
 		
 		// Set up the scrollpane for the status area 
-		status = new JScrollPane(messagePane, 
+		scrollPane = new JScrollPane(messagePane, 
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			increaseScrollBarSize(status);
+		increaseScrollBarSize(scrollPane);
 		
 		// Add the components to the tabpane
-		this.addTab("Status",status);
+		this.addTab("Status",scrollPane);
 		refresh();
 	}
 
@@ -74,16 +75,16 @@ public class JBricxStatusPane extends JTabbedPane {
 	private void increaseScrollBarSize(JScrollPane sp){
 		
 		// increase the width of the vertical border
-				JScrollBar vScrollBar = sp.getVerticalScrollBar();
-		        Dimension vScrollBarDim = new Dimension(vScrollBar.getPreferredSize().width+scrollIncrease,
-		        		vScrollBar.getPreferredSize().height);
-		        vScrollBar.setPreferredSize(vScrollBarDim);
-		        
-		        // increase the height of the horizontal border
-				JScrollBar hScrollBar = sp.getHorizontalScrollBar();
-		        Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
-		        		hScrollBar.getPreferredSize().height + scrollIncrease);
-		        hScrollBar.setPreferredSize(hScrollBarDim);
+		JScrollBar vScrollBar = sp.getVerticalScrollBar();
+        Dimension vScrollBarDim = new Dimension(vScrollBar.getPreferredSize().width+scrollIncrease,
+        		vScrollBar.getPreferredSize().height);
+        vScrollBar.setPreferredSize(vScrollBarDim);
+        
+        // increase the height of the horizontal border
+		JScrollBar hScrollBar = sp.getHorizontalScrollBar();
+        Dimension hScrollBarDim = new Dimension(hScrollBar.getPreferredSize().width,
+        		hScrollBar.getPreferredSize().height + scrollIncrease);
+        hScrollBar.setPreferredSize(hScrollBarDim);
 	}
 
 	/**
@@ -142,6 +143,7 @@ public class JBricxStatusPane extends JTabbedPane {
 						match.group(2), // hyperlink text
 						match.group(3), // text text
 						this.altBackgroundColor, // Background color
+						i, // index
 						main
 					);
 			} else {
@@ -150,14 +152,14 @@ public class JBricxStatusPane extends JTabbedPane {
 						"", // hyperlink link
 						str.toString(), // text text
 						this.altBackgroundColor, // Background color
+						i, // index
 						main
 					);
 			}
 			messagePane.add(button);
 		}
-		messagePane.repaint();
-		messagePane.validate();
-		messagePane.requestFocus();
+		this.revalidate();
+		this.repaint();
 	}
 
 	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
@@ -199,8 +201,9 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 	String text;
 	Font font;
 	String hexColor;
+	int index;
 	
-	StatusButton(String hyperlinkLink, String hyperlinkText, String text, Color backgroundColor, MainWindow main){
+	StatusButton(String hyperlinkLink, String hyperlinkText, String text, Color backgroundColor, int index, MainWindow main){
 		super(HTMLString.getHTMLString(hyperlinkLink, hyperlinkText, text));
 		this.main = main;
 		this.hyperlinkText = hyperlinkText;
@@ -215,6 +218,7 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 		this.addFocusListener(this);
+		this.index = index;
 	}
 	
 	public void updateAltBackgroundColor(Color altBackground){
@@ -265,7 +269,15 @@ class StatusButton extends JButton implements MouseListener, KeyListener, FocusL
 	
 	@Override
 	public void focusGained(FocusEvent e) {
-		StatusButton.this.setContentAreaFilled(true);
+		StatusButton button = StatusButton.this;
+		JScrollBar scroll = JBricxStatusPane.scrollPane.getVerticalScrollBar();
+		button.setContentAreaFilled(true);
+		while (scroll.getValue() + scroll.getHeight() < button.getBounds().y + button.getBounds().height) {
+			scroll.setValue(scroll.getValue() + button.getBounds().height);
+		} 
+		while (scroll.getValue() > button.getBounds().y) {
+			scroll.setValue(scroll.getValue() - button.getBounds().height);
+		}
 	}
 
 	@Override
