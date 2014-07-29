@@ -189,18 +189,6 @@ public class PianoWindow extends JFrame implements WindowListener {
 		
 
 	}
-	
-	
-	
-	/**
-	 * Create the UI of the piano composer 
-	 * 
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		PianoWindow pw = new PianoWindow();
-		pw.setUpPiano();
-	}
 
 	@Override
 	public void windowActivated(WindowEvent arg0) {

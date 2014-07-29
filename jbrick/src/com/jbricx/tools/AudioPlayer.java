@@ -166,13 +166,4 @@ public class AudioPlayer {
         buffer.put((byte) (ms >> 8));
     	USBConnection.connect(buffer);
     }
-
-    public static void main(String[] args) throws LineUnavailableException {
-    	AudioPlayer.playNXT( 500, "C4" );
-    	AudioPlayer.play( 500, "C4" );
-//    	AudioPlayer.play(750, "C4", "C3", "C2");
-//    	int[] lens = {250, 500, 750}; String[] notes = {"A4", "B4", "C4"};
-//    	AudioPlayer.play(lens, notes);
-//        AudioPlayer.play("D#4", "REST", "C4");
-    }
 }
