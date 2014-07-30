@@ -18,6 +18,7 @@ import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
 import com.jbricx.swing.actions.GotoAction;
+import com.jbricx.swing.ui.JBricxDialog;
 
 /**
  * Dialog box for jumping to a line.
@@ -26,7 +27,7 @@ import com.jbricx.swing.actions.GotoAction;
  *
  */
 @SuppressWarnings("serial")
-public class GoToDialog extends JDialog implements ActionListener{
+public class GoToDialog extends JBricxDialog implements ActionListener{
 
 	private JLabel goToInstruction;
 	private JTextField goToLineInputBox;

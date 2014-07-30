@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -57,7 +58,7 @@ public class ButtonActions {
 	 * @param textViewPanel - where all the note information is ready to be grabbed 
 	 * 
 	 */
-	public ButtonActions(final NotesView textViewPanel, final PianoWindow window) {
+	public ButtonActions(final NotesView textViewPanel, final PianoWindow window, final JFrame shell) {
 		
 		this.buttonPanel = new JPanel(new GridBagLayout());
 		this.buttonBorder = new EtchedBorder();
@@ -153,7 +154,7 @@ public class ButtonActions {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				HelpWindow.openHelpWindow("Piano");
+				HelpWindow.openHelpWindow("Piano",shell);
 			}
 			
 		});

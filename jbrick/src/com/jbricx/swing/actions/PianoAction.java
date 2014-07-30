@@ -28,8 +28,9 @@ public class PianoAction extends JBricxAbstractAction{
    */
   @Override
   public void actionPerformed(ActionEvent e) {
-	PianoWindow pianoWindow = new PianoWindow();
+	PianoWindow pianoWindow = new PianoWindow(this.getManager().getShell());
 	pianoWindow.setUpPiano();
 	pianoWindow.setVisible(true);
+	pianoWindow.setAlwaysOnTop(true);
   }
 }

@@ -29,11 +29,8 @@ public class FindAction extends JBricxAbstractAction {
 
 		// Old code from run method
 		JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-		 FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(),true,tab);
+		 FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(),false,tab);
 		dlg.setVisible(true);
-		 // FindReplaceDialog(getManager().getShell(),
-		// getManager().getTabFolder().getSelection().getDocument(),
-		// getManager().getTabFolder().getSourceViewer());
-		// dlg.open();
+		
 	}
 }
