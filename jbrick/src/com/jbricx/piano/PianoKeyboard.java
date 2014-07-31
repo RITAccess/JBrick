@@ -3,11 +3,13 @@ package com.jbricx.piano;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -134,14 +136,25 @@ class PianoButton extends ActionButton{
 	static int keyCount = 7;
 	private static Component panel;
 	
+	private Color backgroundColor;
+	private Color hoverColor;
+	private Color pressedColor;
+	
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
 		
+		backgroundColor = whiteKey ? Color.WHITE : Color.BLACK;
+		hoverColor = whiteKey ? Color.WHITE.darker() : Color.GRAY.darker().darker();
+		pressedColor = whiteKey ? Color.GRAY.brighter() : Color.GRAY.darker();
 		
 		this.setLayout(new BorderLayout());
-		this.add(BorderLayout.SOUTH, new JLabel(""+key));
-		this.setBackground(whiteKey ? Color.WHITE : Color.BLACK);
+		this.add(BorderLayout.SOUTH, new JLabel("<html><div style= \"font-size:40spx; color: #" + (whiteKey ? "000000" : "FFFFFF") + "\">"+key + "</div></html>"));
+		this.setBackground(backgroundColor);
+		this.setBorder(BorderFactory.createLineBorder(whiteKey ? Color.BLACK : Color.WHITE));
+		this.setContentAreaFilled(false);
 		this.setOpaque(true);
+		
+		
 		if (panel != null){
 			panel.addComponentListener(new ComponentListener(){
 	
@@ -188,6 +201,23 @@ class PianoButton extends ActionButton{
 			this.getAccessibleContext().setAccessibleName(text);
 		}
 	}
+	
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (getModel().isPressed()) {
+            g.setColor(pressedColor);
+            this.setBackground(pressedColor);
+        } else if (getModel().isRollover()) {
+            g.setColor(hoverColor);
+            this.setBackground(hoverColor);
+        } else {
+            g.setColor(backgroundColor);
+            this.setBackground(backgroundColor);
+        }
+        g.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
+        this.repaint();
+    }
 	
 	PianoButton(char text, boolean whiteKey, int index, PianoActionHandler actionHandler) {
 		this("" + text, text, whiteKey, index, actionHandler);
@@ -248,12 +278,10 @@ class ActionButton extends JButton{
 			}.setActionInformation(actionHandler, label);
 			this.setAction(buttonPressed);
 		}
-		
 	}
 	ActionButton(final char key, PianoActionHandler actionHandler){
 		this("", key, actionHandler);
 	}
-	
 	public void setAction(AbstractAction newAction){
 		this.addActionListener(newAction);
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
