@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +27,9 @@ import com.jbricx.swing.ui.JBricxDialog;
  */
 @SuppressWarnings("serial")
 public class GoToDialog extends JBricxDialog implements ActionListener{
+	
+	// Help prevent multiple windows
+	static GoToDialog goToDialog = null;
 
 	private JLabel goToInstruction;
 	private JTextField goToLineInputBox;
@@ -43,7 +45,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 	 * @param shell main JFrame - used to keep modal
 	 */
 	public GoToDialog(int maxLineNumber,GotoAction action,JFrame shell ){
-		super(shell,"Go To",true);
+		super(shell,"Go To",false);
 		this.setSize(new Dimension(212,145));
 		this.action = action;
 		this.maxLineNumber = maxLineNumber;
@@ -148,5 +150,17 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		
 	}
 	
+	/**
+	 * Create one instance of the go to dialog and only one while it is open
+	 * @param maxLineNumber
+	 * @param action
+	 * @param shell
+	 */
+	public static void openGoTo(int maxLineNumber,GotoAction action,JFrame shell) {
+		if (goToDialog == null) {
+			goToDialog = new GoToDialog(maxLineNumber,action,shell);
+		}
+		goToDialog.requestFocus();
+	}
 	
 }

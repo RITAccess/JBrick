@@ -40,6 +40,8 @@ import com.jbricx.tools.AudioPlayer;
 @SuppressWarnings("serial")
 public class PianoWindow extends JBricxDialog implements WindowListener {
 
+	static PianoWindow pianoWindow = null;
+	
 	private NotesView textView;
 	private PianoControls controls;
 	private NoteLengths notePrint;
@@ -198,6 +200,18 @@ public class PianoWindow extends JBricxDialog implements WindowListener {
 		});
 		this.addWindowListener(this);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	}
+	
+	/**
+	 * Create one piano window and allow only one while it is open
+	 * @param shell
+	 */
+	public static void openPiano(JFrame shell) {
+		if (pianoWindow == null) {
+			pianoWindow = new PianoWindow(shell);
+			pianoWindow.setUpPiano();
+		}
+		pianoWindow.requestFocusInWindow();
 	}
 
 	@Override

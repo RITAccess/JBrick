@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -34,6 +33,9 @@ import com.jbricx.tools.AccessibleWidget;
 @SuppressWarnings("serial")
 public class FindReplaceDialog extends JBricxDialog {
 
+	// To help avoid multiple help windows
+	static FindReplaceDialog findReplace = null;
+	
 	private JTextArea textArea;
 	private int currentPos;
 	private int pos;
@@ -250,6 +252,19 @@ public class FindReplaceDialog extends JBricxDialog {
 					accessibleStatus.readLabel("Cannot Find",FindReplaceDialog.this.findButton);
 			}
 		}
+	}
+	
+	/**
+	 * Create one find and replace dialog and allow only one open while it is open
+	 * @param parent
+	 * @param modal
+	 * @param textArea
+	 */
+	public static void openFindReplace(JFrame parent, boolean modal, JTextArea textArea) {
+		if (findReplace == null) {
+			findReplace = new FindReplaceDialog(parent,modal,textArea);
+		}
+		findReplace.requestFocus();
 	}
 }
 

@@ -217,4 +217,6 @@ public class HelpWindow extends JBricxDialog{
 		}
 		helpWindow.changePageContent(page);
 	}
+
+	
 }

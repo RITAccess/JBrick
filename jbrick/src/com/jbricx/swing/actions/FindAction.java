@@ -23,14 +23,13 @@ public class FindAction extends JBricxAbstractAction {
 		super("", new ImageIcon(FindAction.class.getResource("/icons/findAndReplace.png")), manager);
 	}
 
+	/**
+	 * Get the text area from the current tab
+	 * Open a find and replace dialog for that current tab
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Add logic to open and run find window
-
-		// Old code from run method
 		JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-		 FindReplaceDialog dlg = new FindReplaceDialog(getManager().getShell(),false,tab);
-		dlg.setVisible(true);
-		
+		FindReplaceDialog.openFindReplace(getManager().getShell(),false,tab);
 	}
 }
