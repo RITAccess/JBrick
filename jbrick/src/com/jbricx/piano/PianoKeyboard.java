@@ -125,7 +125,7 @@ class PianoButton extends ActionButton{
 		pressedColor = whiteKey ? Color.GRAY.brighter() : Color.GRAY.darker();
 		
 		this.setLayout(new BorderLayout());
-		this.add(BorderLayout.SOUTH, new JLabel("<html><div style= \"font-size:40spx; color: #" + (whiteKey ? "000000" : "FFFFFF") + "\">"+key + "</div></html>"));
+		this.add(BorderLayout.SOUTH, new JLabel("<html><div style= \"font-size:26pt; color: #" + (whiteKey ? "000000" : "FFFFFF") + "\">"+key + "</div></html>"));
 		this.setBackground(backgroundColor);
 		this.setBorder(BorderFactory.createLineBorder(whiteKey ? Color.BLACK : Color.WHITE));
 		this.setContentAreaFilled(false);
@@ -193,7 +193,6 @@ class PianoButton extends ActionButton{
         }
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
-        this.repaint();
     }
 	
 	PianoButton(char text, boolean whiteKey, int index, PianoActionHandler actionHandler) {
