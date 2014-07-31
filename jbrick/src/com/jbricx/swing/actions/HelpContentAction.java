@@ -18,6 +18,6 @@ public class HelpContentAction extends JBricxAbstractAction {
    * Opens Browser panel
    */
   public void actionPerformed(ActionEvent e){
-	  HelpWindow.openHelpWindow("Home");
+	  HelpWindow.openHelpWindow("Home",this.getManager().getShell());
   }
 }
