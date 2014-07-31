@@ -12,7 +12,6 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -96,28 +95,6 @@ public class PianoKeyboard extends JPanel{
 	
 	public JLabel getOctaveLabel(){
 		return octaveLabel;
-	}
-	
-	public static void main(String[] arg0){
-	
-		JFrame.setDefaultLookAndFeelDecorated(false);
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		PianoActionHandler pianoHandler = new PianoActionHandler(){
-
-			@Override
-			public void pianoActionHit(String noteInformation) {
-				System.out.println(noteInformation);
-			}
-			
-		};
-
-		PianoKeyboard pk = new PianoKeyboard(pianoHandler, null);
-		frame.add(pk);
-		frame.setSize(pk.getSize());
-		frame.pack();
-		frame.setVisible(true);
 	}
 }
 

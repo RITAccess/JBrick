@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
@@ -26,12 +27,12 @@ public class PianoControls {
 	/**
 	 * Constructor for the different panels and components 
 	 */
-	public PianoControls(PianoWindow window){
+	public PianoControls(PianoWindow window, JFrame shell){
 		
 		centerPanel = new JPanel(new GridBagLayout());
 		controlPanel = new JPanel(new BorderLayout());
 		textViewPanel = new NotesView();
-		buttonPanel = new ButtonActions(textViewPanel, window);
+		buttonPanel = new ButtonActions(textViewPanel, window, shell);
 		noteRadioPanel = new NoteLengths();
 		transPanel = new OctaveChange();
 		rest = new JButton("Rest (C)");

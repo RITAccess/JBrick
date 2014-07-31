@@ -5,20 +5,30 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.sound.sampled.SourceDataLine;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.jbricx.communication.USBConnection;
+import com.jbricx.swing.ui.JBricxDialog;
 import com.jbricx.tools.AccessibleWidget;
 import com.jbricx.tools.AudioPlayer;
 /**
@@ -28,7 +38,7 @@ import com.jbricx.tools.AudioPlayer;
  */
 
 @SuppressWarnings("serial")
-public class PianoWindow extends JFrame implements WindowListener {
+public class PianoWindow extends JBricxDialog implements WindowListener {
 
 	private NotesView textView;
 	private PianoControls controls;
@@ -43,9 +53,10 @@ public class PianoWindow extends JFrame implements WindowListener {
 	 * sets manager for other tools (like piano help)
 	 * @param manager
 	 */
-	public PianoWindow() {
+	public PianoWindow(JFrame shell) {
+		super(shell,"Piano Composer",false);
 		line = AudioPlayer.openLine();
-		controls = new PianoControls(this);
+		controls = new PianoControls(this,shell);
 		transposer = controls.transPanel;
 		notePrint = controls.noteRadioPanel;
 		textView = controls.textViewPanel;
@@ -116,6 +127,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 			
 		}.setTextArea(textView);
 		pianoKeyboard = new PianoKeyboard(pianoHandler,null);
+		
 	}
 
 	/**
@@ -126,7 +138,7 @@ public class PianoWindow extends JFrame implements WindowListener {
 	public void setUpPiano() {
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		JPanel mainPanel = new JPanel();
+		final JPanel mainPanel = new JPanel();
 		JScrollPane mainScroll = new JScrollPane(mainPanel);
 		this.setSize((int) screenSize.getHeight(), (int)screenSize.getWidth());
 		
@@ -186,20 +198,6 @@ public class PianoWindow extends JFrame implements WindowListener {
 		});
 		this.addWindowListener(this);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-
-	}
-	
-	
-	
-	/**
-	 * Create the UI of the piano composer 
-	 * 
-	 * @param args
-	 */
-	public static void main(String args[]) {
-		PianoWindow pw = new PianoWindow();
-		pw.setUpPiano();
 	}
 
 	@Override

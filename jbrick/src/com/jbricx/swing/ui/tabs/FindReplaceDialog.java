@@ -12,17 +12,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
+import com.jbricx.swing.ui.JBricxDialog;
 import com.jbricx.tools.AccessibleWidget;
 
 
@@ -31,7 +32,7 @@ import com.jbricx.tools.AccessibleWidget;
  * @author Melissa Young
  */
 @SuppressWarnings("serial")
-public class FindReplaceDialog extends JDialog {
+public class FindReplaceDialog extends JBricxDialog {
 
 	private JTextArea textArea;
 	private int currentPos;
@@ -49,7 +50,7 @@ public class FindReplaceDialog extends JDialog {
 	* Constructor for find and replace dialog box
 	*/
 	public FindReplaceDialog(JFrame parent, boolean modal, JTextArea textArea) {
-		super(parent,modal);
+		super(parent, "Find and Replace",modal);
 		this.textArea = textArea;
 		setUpFindReplace();
 	}
@@ -91,8 +92,8 @@ public class FindReplaceDialog extends JDialog {
 
 		// Basic set up for the dialog box
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setTitle("Find/Replace");
-		setModal(false);
+		//setTitle("Find/Replace");
+		setAlwaysOnTop(true);
 
 		// Layout for the components in the dialog box
 		GroupLayout layout = new GroupLayout(getContentPane());

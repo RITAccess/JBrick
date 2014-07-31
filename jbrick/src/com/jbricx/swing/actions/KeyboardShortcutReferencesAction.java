@@ -22,6 +22,6 @@ public class KeyboardShortcutReferencesAction extends JBricxAbstractAction
      * Opens help browser with keyboard information
      */
     public void actionPerformed(ActionEvent e){
-    	HelpWindow.openHelpWindow("Shortcuts");
+    	HelpWindow.openHelpWindow("Shortcuts",this.getManager().getShell());
     }
 }

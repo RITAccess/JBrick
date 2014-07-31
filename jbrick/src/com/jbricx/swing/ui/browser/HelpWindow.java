@@ -23,6 +23,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 
+import com.jbricx.swing.ui.JBricxDialog;
 import com.sun.jna.Platform;
 
 /**
@@ -35,7 +36,7 @@ import com.sun.jna.Platform;
  *
  */
 @SuppressWarnings("serial")
-public class HelpWindow extends JFrame{
+public class HelpWindow extends JBricxDialog{
 	
 	// This is the helpWindow that prevents multiple help windows
 	static HelpWindow helpWindow = null;
@@ -82,8 +83,8 @@ public class HelpWindow extends JFrame{
 	 * of the HelpWindow at a time. If you want to open the help window 
 	 * call the static method openHelpWindow.
 	 */
-	private HelpWindow(){
-		super("Help");
+	private HelpWindow(JFrame shell){
+		super(shell,"Help",false);
 		// Layout : BorderLayout
 		this.setLayout(new BorderLayout());
 		// Adding a left panel
@@ -210,9 +211,9 @@ public class HelpWindow extends JFrame{
 	 * use the constructor).
 	 * @param page - the page to generate (home page = "Home")
 	 */
-	public static void openHelpWindow(String page){
+	public static void openHelpWindow(String page,JFrame shell){
 		if (helpWindow == null){
-			helpWindow = new HelpWindow();
+			helpWindow = new HelpWindow(shell);
 		}
 		helpWindow.changePageContent(page);
 	}
