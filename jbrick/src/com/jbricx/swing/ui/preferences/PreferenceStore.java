@@ -86,39 +86,40 @@ public class PreferenceStore {
 	public static enum Preference {
 		PROPERTIES(null),
 			COLOR(PROPERTIES),
-				FOREGROUND (COLOR, PreferenceStore.FOREGROUND_DEFAULT),
-				BACKGROUND (COLOR, PreferenceStore.BACKGROUND_DEFAULT),
-				COMMENT (COLOR, PreferenceStore.COMMENT_DEFAULT),
-				KEYWORD (COLOR, PreferenceStore.KEYWORD_DEFAULT),
-			    OPERATOR (COLOR, PreferenceStore.OPERATOR_DEFAULT),
-			    STRING (COLOR, PreferenceStore.STRING_DEFAULT),
-			    LINENUMBERFG (COLOR, PreferenceStore.LINENUMBERFG_DEFAULT),
-			    LINENUMBERBG (COLOR, PreferenceStore.LINENUMBERBG_DEFAULT),
-			    CONSTANT (COLOR, PreferenceStore.CONSTANT_DEFAULT),
-			    PREPROCESSOR (COLOR, PreferenceStore.PREPROCESSOR_DEFAULT),
-			    CONTAINERS (COLOR, PreferenceStore.CONTAINERS_DEFAULT),
-			FONT(PROPERTIES, PreferenceStore.FONT_DEFAULT),
-				FONTNAME (FONT, PreferenceStore.FONTNAME_DEFAULT),
-				FONTSIZE (FONT, PreferenceStore.FONTSIZE_DEFAULT),
-				FONTSTYLE (FONT, PreferenceStore.FONTSTYLE_DEFAULT),
+				FOREGROUND (COLOR, PreferenceStore.FOREGROUND_DEFAULT, "Foreground"),
+				BACKGROUND (COLOR, PreferenceStore.BACKGROUND_DEFAULT, "Background"),
+				COMMENT (COLOR, PreferenceStore.COMMENT_DEFAULT, "Comment"),
+				KEYWORD (COLOR, PreferenceStore.KEYWORD_DEFAULT, "Keyword"),
+			    OPERATOR (COLOR, PreferenceStore.OPERATOR_DEFAULT, "Operator"),
+			    STRING (COLOR, PreferenceStore.STRING_DEFAULT, "String"),
+			    LINENUMBERFG (COLOR, PreferenceStore.LINENUMBERFG_DEFAULT, "Line Number Foreground"),
+			    LINENUMBERBG (COLOR, PreferenceStore.LINENUMBERBG_DEFAULT, "Line Number Background"),
+			    CONSTANT (COLOR, PreferenceStore.CONSTANT_DEFAULT, "Constant"),
+			    PREPROCESSOR (COLOR, PreferenceStore.PREPROCESSOR_DEFAULT, "Preprocessor"),
+			    CONTAINERS (COLOR, PreferenceStore.CONTAINERS_DEFAULT, "Container"),
+			FONT(PROPERTIES, PreferenceStore.FONT_DEFAULT, "Font"),
+				FONTNAME (FONT, PreferenceStore.FONTNAME_DEFAULT, "Font Name"),
+				FONTSIZE (FONT, PreferenceStore.FONTSIZE_DEFAULT, "Font Size"),
+				FONTSTYLE (FONT, PreferenceStore.FONTSTYLE_DEFAULT, "Font Style"),
 			ICON(PROPERTIES),
-		    	ICONSIZE (ICON, PreferenceStore.ICONSIZE_DEFAULT),
+		    	ICONSIZE (ICON, PreferenceStore.ICONSIZE_DEFAULT, "Icon Size"),
 		    MISC(PROPERTIES),
-		    	WRAP (MISC, PreferenceStore.WRAP_DEFAULT),
-			    AUTOSAVEONCOMPILE (MISC, PreferenceStore.AUTOSAVEONCOMPILE_DEFAULT),
-			    BOOLRECENTFILES (MISC, PreferenceStore.BOOLRECENTFILES_DEFAULT),
-			    LINENUM (MISC, PreferenceStore.LINENUM_DEFAULT),
-				NBCTOOL (MISC, PreferenceStore.NBCTOOL_DEFAULT),
-				WORKSPACE (MISC, PreferenceStore.WRKSPC_DEFAULT),
-				THEMEXML (MISC, PreferenceStore.THEMEXML_DEFAULT),
-				FILEDEBUG (MISC, PreferenceStore.FILEDEBUG_DEFAULT),
+		    	WRAP (MISC, PreferenceStore.WRAP_DEFAULT, "Word Wrap"),
+			    AUTOSAVEONCOMPILE (MISC, PreferenceStore.AUTOSAVEONCOMPILE_DEFAULT, "Auto Save on Compile"),
+			    BOOLRECENTFILES (MISC, PreferenceStore.BOOLRECENTFILES_DEFAULT, "Recent Files"),
+			    LINENUM (MISC, PreferenceStore.LINENUM_DEFAULT, "Line Number"),
+				NBCTOOL (MISC, PreferenceStore.NBCTOOL_DEFAULT, "NBC Compiler Location"),
+				WORKSPACE (MISC, PreferenceStore.WRKSPC_DEFAULT, "Workspace Location"),
+				THEMEXML (MISC, PreferenceStore.THEMEXML_DEFAULT, "Theme Location"),
+				FILEDEBUG (MISC, PreferenceStore.FILEDEBUG_DEFAULT, "File Debug"),
 		;
 		
 		private Preference parent = null;
-		private ArrayList<Preference> children = new ArrayList<Preference>();
+		public ArrayList<Preference> children = new ArrayList<Preference>();
 		public Integer defaultInt = null;
 		public Boolean defaultBool = null;
 		public String defaultString = "";
+		public String label; // friendly label name
 		
 		Preference(Preference parent) {
 			this.parent = parent;
@@ -127,18 +128,19 @@ public class PreferenceStore {
 			}
 		}
 		
-		Preference(Preference parent, String defaultString) {
+		Preference(Preference parent, String defaultString, String label) {
 			this(parent);
 			this.defaultString = defaultString;
+			this.label = label;
 		}
-		
-		Preference(Preference parent, Integer defaultInt) {
-			this(parent, defaultInt.toString());
+
+		Preference(Preference parent, Integer defaultInt, String label) {
+			this(parent, defaultInt.toString(), label);
 			this.defaultInt = defaultInt;
 		}
-		
-		Preference(Preference parent, Boolean defaultBool) {
-			this(parent, defaultBool.toString());
+
+		Preference(Preference parent, Boolean defaultBool, String label) {
+			this(parent, defaultBool.toString(), label);
 			this.defaultBool = defaultBool;
 		}
 		
@@ -300,6 +302,7 @@ public class PreferenceStore {
 		prefs.put(Preference.ICONSIZE.toString(), tempNode.getTextContent());
 		
 		/*
+		 * For Themes misc settings do not need to be set
 		//set misc settings
 		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
 		prefs.putBoolean(Preference.WRAP.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
@@ -320,7 +323,7 @@ public class PreferenceStore {
 	 */
 	public static void LoadTheme(String fileLoc){
 		currentDoc = XMLParser.xmlParse(fileLoc);
-		if(!currentDoc.equals(null)){
+		if(currentDoc != null){
 			setPrefsFromFile(currentDoc);
 		}
 		else{

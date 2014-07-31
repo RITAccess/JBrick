@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.swing.ui.preferences.JBricxPreferencesWindow;
+import com.jbricx.swing.ui.tabs.JBricxPreferenceDialog;
 
 
 
@@ -25,7 +25,7 @@ public class PreferencesAction extends JBricxAbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JBricxPreferencesWindow preferencwindow = new JBricxPreferencesWindow(
+		JBricxPreferenceDialog preferencwindow = new JBricxPreferenceDialog(
 				getManager());
 		preferencwindow.setVisible(true);
 	}
