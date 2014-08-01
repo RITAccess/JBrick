@@ -30,10 +30,13 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import org.w3c.dom.Document;
+
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.JFontChooser;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
+import com.jbricx.tools.XMLParser;
 
 @SuppressWarnings("serial")
 public class JBricxPreferenceDialog extends JDialog {
@@ -447,13 +450,30 @@ class ButtonPane extends JPanel implements ActionListener {
 			}
 		}
 		if (event.getSource() == okButton) {
-			JBricxPreferenceDialog.saveValues();
-			window.getManager().updatePreferences(); //Should automatically Update
+			saveTheme();
 			window.dispose();
 		}
 		if (event.getSource() == applyButton) {
-			JBricxPreferenceDialog.saveValues();
-			window.getManager().updatePreferences(); //Should automatically Update
+			saveTheme();
+		}
+	}
+	
+	public void saveTheme(){
+		JBricxPreferenceDialog.saveValues();
+		window.getManager().updatePreferences(); //Should automatically Update
+		String filepath = PreferenceStore.getString(Preference.THEMEXML);
+		if (new File(filepath).exists()){
+			Document doc = PreferenceStore.buildPreferencesDocument();
+			XMLParser.writeToFile(doc, filepath);
+		} else {
+			final JFileChooser fc = new JFileChooser(Preference.THEMEXML.defaultString);
+			fc.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
+			int returnVal = fc.showSaveDialog(this);
+			//They picked a file
+			if(returnVal == JFileChooser.APPROVE_OPTION){
+				Document doc = PreferenceStore.buildPreferencesDocument();
+				XMLParser.writeToFile(doc, filepath);
+			}
 		}
 	}
 }

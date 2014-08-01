@@ -32,15 +32,13 @@ public class PreferenceStore {
 	private static String FONTNAME_DEFAULT = "Consolas";
 	private static String FONTSIZE_DEFAULT = "20";
 	private static String FONTSTYLE_DEFAULT = "plain";
-	private static final String WRKSPC_DEFAULT = System.getProperty("user.home")
+	private static String WRKSPC_DEFAULT = System.getProperty("user.home")
 			+ (System.getProperty("os.name").contains("OS X") ? "/Documents/"
 					: "\\Documents\\");
 	private static boolean AUTOSAVEONCOMPILE_DEFAULT = false;
 	private static boolean LINENUM_DEFAULT = true;
 	private static String NBCTOOL_DEFAULT = "";
 	private static final String THEMEXML_DEFAULT = "resources/preferences/Default.xml";
-	
-	private static int ICONSIZE_DEFAULT = 44;
 
 	private static int FOREGROUND_DEFAULT = Color.BLACK.getRGB();
 	private static int BACKGROUND_DEFAULT = Color.WHITE.getRGB();
@@ -101,8 +99,6 @@ public class PreferenceStore {
 				FONTNAME (FONT, PreferenceStore.FONTNAME_DEFAULT, "Font Name"),
 				FONTSIZE (FONT, PreferenceStore.FONTSIZE_DEFAULT, "Font Size"),
 				FONTSTYLE (FONT, PreferenceStore.FONTSTYLE_DEFAULT, "Font Style"),
-			ICON(PROPERTIES),
-		    	ICONSIZE (ICON, PreferenceStore.ICONSIZE_DEFAULT, "Icon Size"),
 		    MISC(PROPERTIES),
 		    	WRAP (MISC, PreferenceStore.WRAP_DEFAULT, "Word Wrap"),
 			    AUTOSAVEONCOMPILE (MISC, PreferenceStore.AUTOSAVEONCOMPILE_DEFAULT, "Auto Save on Compile"),
@@ -110,8 +106,8 @@ public class PreferenceStore {
 			    LINENUM (MISC, PreferenceStore.LINENUM_DEFAULT, "Line Number"),
 				NBCTOOL (MISC, PreferenceStore.NBCTOOL_DEFAULT, "NBC Compiler Location"),
 				WORKSPACE (MISC, PreferenceStore.WRKSPC_DEFAULT, "Workspace Location"),
+			THEME(PROPERTIES),
 				THEMEXML (MISC, PreferenceStore.THEMEXML_DEFAULT, "Theme Location"),
-				FILEDEBUG (MISC, PreferenceStore.FILEDEBUG_DEFAULT, "File Debug"),
 		;
 		
 		private Preference parent = null;
@@ -180,10 +176,10 @@ public class PreferenceStore {
 	 * First time setup for setting default values and preferences. If the program has never been run on this machine before, will load defaults.
 	 */
 	public static void setPreferencesAndDefaults() {
-
+		
 		currentDoc = XMLParser.xmlParse(DEFAULT_FILE);
-
-		if(!currentDoc.equals(null)){
+		
+		if(currentDoc.getDoctype() != null){
 			if(!prefs.getBoolean("ranPreviously", false)){
 				resetToDefaults();
 			}
@@ -193,8 +189,9 @@ public class PreferenceStore {
 	
 	public static void resetToDefaults(){
 		currentDoc = XMLParser.xmlParse(DEFAULT_FILE);
-		if(!currentDoc.equals(null))
+		if(!currentDoc.equals(null)){
 			setPrefsFromFile(currentDoc);
+		}
 	}
 	
 	
@@ -205,51 +202,79 @@ public class PreferenceStore {
 	private static void setDefaultsFromFile(Document doc) {
 		
 		Node tempNode;
-		
+		System.out.println(doc);
+		for (Preference parent : Preference.PROPERTIES.children) {
+			for (Preference p : parent.children) {
+				if (parent != Preference.THEME) {
+					tempNode = XMLParser.retrieve(doc, parent.toString().toLowerCase(), p.toString().toLowerCase());
+					PreferenceStore.set(p, tempNode.getTextContent() == null ? p.defaultString : tempNode.getTextContent());
+					switch (p) {
+					case FOREGROUND : FOREGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case BACKGROUND : BACKGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case COMMENT : COMMENT_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case KEYWORD : KEYWORD_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case OPERATOR : OPERATOR_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case STRING : STRING_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case LINENUMBERFG : LINENUMBERFG_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case LINENUMBERBG : LINENUMBERBG_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case CONSTANT : CONSTANT_DEFAULT = Integer.parseInt(tempNode.getTextContent()); break;
+					case FONTNAME : FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).getTextContent(); break;
+					case FONTSIZE : FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent(); break;
+					case FONTSTYLE : FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).getTextContent(); break;
+					case WRAP : WRAP_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent()); break;
+					case AUTOSAVEONCOMPILE : AUTOSAVEONCOMPILE_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent()); break;
+					case LINENUM : LINENUM_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent()); break;
+					case NBCTOOL : NBCTOOL_DEFAULT = tempNode.getTextContent(); break;
+					case WORKSPACE : WRKSPC_DEFAULT = tempNode.getTextContent(); break;
+					//case THEMEXML : THEMEXML_DEFAULT = tempNode.getTextContent(); break;
+					default:
+						break;
+					}
+				}
+			}
+			// comprised of other settings
+			FONT_DEFAULT = FONTNAME_DEFAULT + "-" + FONTSTYLE_DEFAULT + "-" + FONTSIZE_DEFAULT;
+		}
 		//set color settings
-		tempNode = XMLParser.retrieve(doc, "color", "foreground");
-		FOREGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "background");
-		BACKGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "operator");
-		OPERATOR_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "comment");
-		COMMENT_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "keyword");
-		KEYWORD_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "string");
-		STRING_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "linenumberfg");
-		LINENUMBERFG_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "linenumberbg");
-		LINENUMBERBG_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "constant");
-		CONSTANT_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "preprocessor");
-		PREPROCESSOR_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "color", "containers");
-		CONTAINERS_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		
-		
-		//set font settings
-		FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).getTextContent();
-		FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).getTextContent();
-		FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
-		FONT_DEFAULT = FONTNAME_DEFAULT + "-" + FONTSTYLE_DEFAULT + "-" + FONTSIZE_DEFAULT;
-		
-		//icon size setting
-		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");
-		ICONSIZE_DEFAULT = Integer.parseInt(tempNode.getTextContent());
-		
-		//set misc settings
-		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
-		WRAP_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "misc", "autocompile");
-		AUTOSAVEONCOMPILE_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "misc", "linenum");
-		LINENUM_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
-		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");
-		NBCTOOL_DEFAULT = tempNode.getTextContent();
+//		tempNode = XMLParser.retrieve(doc, "color", "foreground");
+//		FOREGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "background");
+//		BACKGROUND_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "operator");
+//		OPERATOR_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "comment");
+//		COMMENT_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "keyword");
+//		KEYWORD_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "string");
+//		STRING_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "linenumberfg");
+//		LINENUMBERFG_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "linenumberbg");
+//		LINENUMBERBG_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "constant");
+//		CONSTANT_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "preprocessor");
+//		PREPROCESSOR_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "color", "containers");
+//		CONTAINERS_DEFAULT = Integer.parseInt(tempNode.getTextContent());
+//		
+//		
+//		//set font settings
+//		FONTNAME_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontname")).getTextContent();
+//		FONTSTYLE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontstyle")).getTextContent();
+//		FONTSIZE_DEFAULT = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
+//		FONT_DEFAULT = FONTNAME_DEFAULT + "-" + FONTSTYLE_DEFAULT + "-" + FONTSIZE_DEFAULT;
+//		
+//		//set misc settings
+//		tempNode = XMLParser.retrieve(doc, "misc", "wrap");
+//		WRAP_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "misc", "autocompile");
+//		AUTOSAVEONCOMPILE_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "misc", "linenum");
+//		LINENUM_DEFAULT = Boolean.parseBoolean(tempNode.getTextContent());
+//		tempNode = XMLParser.retrieve(doc, "misc", "nbctool");
+//		NBCTOOL_DEFAULT = tempNode.getTextContent();
 
 		//prefs.putBoolean("ranPreviously",true);	
 	}
@@ -296,10 +321,6 @@ public class PreferenceStore {
 		String fontSize = (tempNode = XMLParser.retrieve(doc, "font", "fontsize")).getTextContent();
 		prefs.put(Preference.FONTSIZE.toString(), tempNode.getTextContent());
 		prefs.put(Preference.FONT.toString(), fontName + "-" + fontStyle + "-" + fontSize);
-		
-		//icon size setting
-		tempNode = XMLParser.retrieve(doc, "icon", "iconsize");
-		prefs.put(Preference.ICONSIZE.toString(), tempNode.getTextContent());
 		
 		/*
 		 * For Themes misc settings do not need to be set
