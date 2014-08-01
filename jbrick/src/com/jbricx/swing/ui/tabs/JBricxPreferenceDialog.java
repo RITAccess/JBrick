@@ -500,18 +500,21 @@ class ButtonPane extends JPanel implements ActionListener {
 	
 	public void saveTheme(){
 		FileDialog fDialog = new FileDialog(window, "Save", FileDialog.SAVE);
+		fDialog.setDirectory(((ThemePane) PreferencePanel.panels.get(Preference.THEMEXML)).textArea.getText());
 		fDialog.setFile("*.xml");
 		fDialog.setVisible(true);
 		String filepath = fDialog.getFile();
 		if (filepath != null) {
-			if (filepath.toLowerCase().endsWith("default.xml")) {
+			filepath = fDialog.getDirectory() + filepath;
+			System.out.println(filepath);
+			System.out.println(Preference.THEMEXML.defaultString);
+			if (filepath.endsWith(Preference.THEMEXML.defaultString)) {
 				JOptionPane.showMessageDialog(window,
-					    "Cannot overwrite the Default.xml file.\n"
+					    "Cannot overwrite the Default file.\n"
 					    + "You edits will be applied but will not be saved.",
 					    "Overwrite Defaults Error",
 					    JOptionPane.ERROR_MESSAGE);
-			} else { 
-				filepath = fDialog.getDirectory() + "/" + filepath;
+			} else {
 				if (!filepath.toLowerCase().endsWith(".xml")) {
 				    filepath = filepath + ".xml";
 				}
