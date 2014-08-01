@@ -5,24 +5,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.sound.sampled.SourceDataLine;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -212,6 +204,13 @@ public class PianoWindow extends JBricxDialog implements WindowListener {
 			pianoWindow.setUpPiano();
 		}
 		pianoWindow.requestFocusInWindow();
+		// If it isn't reset to null, it won't open again after being closed
+		pianoWindow.addWindowListener(new WindowAdapter() {
+			@Override 
+			public void windowClosed(WindowEvent evt) {
+				pianoWindow = null;
+			}
+		});
 	}
 
 	@Override

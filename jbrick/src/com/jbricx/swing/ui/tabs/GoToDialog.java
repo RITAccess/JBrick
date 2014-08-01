@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -161,6 +163,12 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 			goToDialog = new GoToDialog(maxLineNumber,action,shell);
 		}
 		goToDialog.requestFocus();
+		goToDialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent evt) {
+				goToDialog = null;
+			}
+		});
 	}
 	
 }

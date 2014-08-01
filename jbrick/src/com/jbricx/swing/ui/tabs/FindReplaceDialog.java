@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 
 
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -265,6 +268,12 @@ public class FindReplaceDialog extends JBricxDialog {
 			findReplace = new FindReplaceDialog(parent,modal,textArea);
 		}
 		findReplace.requestFocus();
+		findReplace.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent evt) {
+				findReplace = null;
+			}
+		});
 	}
 }
 
