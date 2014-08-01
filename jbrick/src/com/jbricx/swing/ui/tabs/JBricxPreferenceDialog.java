@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -122,7 +121,7 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 		return this.manager;
 	}
 	
-	public void openPreference(JBricxManager manager) {
+	public static void openPreference(JBricxManager manager) {
 		if (preferenceDialog == null) {
 			preferenceDialog = new JBricxPreferenceDialog(manager);
 		}

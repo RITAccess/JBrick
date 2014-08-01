@@ -25,9 +25,7 @@ public class PreferencesAction extends JBricxAbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JBricxPreferenceDialog preferencwindow = new JBricxPreferenceDialog(
-				getManager());
-		preferencwindow.setVisible(true);
+		JBricxPreferenceDialog.openPreference(getManager());
 	}
 
 }
