@@ -72,6 +72,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		buttonBox.add(goToCancelButton);
 		panel.add(buttonBox,BorderLayout.SOUTH);
 		this.add(panel);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
 	}
 
