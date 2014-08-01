@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -28,11 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
 
@@ -46,8 +42,11 @@ import com.jbricx.tools.XMLParser;
 public class JBricxPreferenceDialog extends JDialog {
 	private JPanel themePanel, colorPanel, fontPanel, miscPanel, nbcPanel, workspacePanel, buttonPanel;
 	private JBricxManager manager;
+	public static boolean isDirty;
 	
 	public JBricxPreferenceDialog(JBricxManager manager){
+		isDirty = false;
+		
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		((JPanel)this.getContentPane()).setBorder(new EmptyBorder(7,7,7,7));
 		this.setSize(new Dimension(550,660));
@@ -76,11 +75,11 @@ public class JBricxPreferenceDialog extends JDialog {
 		miscPanel.getAccessibleContext().setAccessibleName("Miscellaneous Settings");
 		
 		// Setting up the NBC Panel
-		nbcPanel = new DirectoryPane(Preference.NBCTOOL);
+		nbcPanel = new DirectoryPane(Preference.NBCTOOL, JFileChooser.FILES_ONLY);
 		nbcPanel.getAccessibleContext().setAccessibleName("NBC Compilier Location");
 		
 		// Setting up the Workspace Panel
-		workspacePanel = new DirectoryPane(Preference.WORKSPACE);
+		workspacePanel = new DirectoryPane(Preference.WORKSPACE, JFileChooser.DIRECTORIES_ONLY);
 		workspacePanel.getAccessibleContext().setAccessibleName("WorkSpace Location");
 		
 		// Setting up the button Panel
@@ -105,6 +104,7 @@ public class JBricxPreferenceDialog extends JDialog {
 		for(PreferencePanel pp : PreferencePanel.panels.values()){
 			pp.saveValue();
 		}
+		isDirty = false;
 	}
 	
 	public static void resetValues() {
@@ -151,6 +151,7 @@ class ColorPane extends PreferencePanel{
 					if (ColorPane.this.pref == Preference.FOREGROUND) {
 						((FontPane)PreferencePanel.panels.get(Preference.FONT)).textArea.setForeground(newColor);
 					}
+					JBricxPreferenceDialog.isDirty = true;
 				}
 			}
 		});
@@ -183,8 +184,12 @@ class DirectoryPane extends PreferencePanel{
 	
 	JTextField textArea;
 	Preference pref;
-	
-	DirectoryPane(Preference pref){
+	/**
+	 * DirectoryPane allows user to choose a file or directory setting.
+	 * @param pref The preference assosiated with this object.
+	 * @param acceptedType One of the JFileChooser accepted file types (ex: JFileChooser.FILESONLY).
+	 */
+	DirectoryPane(Preference pref, final int acceptedType){
 		super(pref);
 		this.pref = pref;
 		this.setLayout(new GridLayout(1,4));
@@ -199,12 +204,13 @@ class DirectoryPane extends PreferencePanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser fc = new JFileChooser();
-				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fc.setFileSelectionMode(acceptedType);
 				int returnVal = fc.showOpenDialog(DirectoryPane.this);
 				//They picked a file
 				if(returnVal == JFileChooser.APPROVE_OPTION){
 					File selectedDir = fc.getSelectedFile();
 					textArea.setText(selectedDir.getAbsolutePath());	
+					JBricxPreferenceDialog.isDirty = true;
 				}
 			}
 		});
@@ -251,6 +257,7 @@ class ThemePane extends PreferencePanel {
 					File selectedDir = fc.getSelectedFile();
 					textArea.setText(selectedDir.getAbsolutePath());
 					updateSelector();
+					JBricxPreferenceDialog.isDirty = true;
 				}
 			}
 		});
@@ -263,6 +270,7 @@ class ThemePane extends PreferencePanel {
 							);
 					saveValue();
 					JBricxPreferenceDialog.resetValues();
+					JBricxPreferenceDialog.isDirty = true;
 				}
 			}
 		});
@@ -313,7 +321,7 @@ class ThemePane extends PreferencePanel {
 }
 
 @SuppressWarnings("serial")
-class CheckBoxPane extends PreferencePanel {
+class CheckBoxPane extends PreferencePanel implements ItemListener {
 
 	private JCheckBox wordWrapBox;
 	private JCheckBox autoSaveOnCompileBox;
@@ -325,16 +333,19 @@ class CheckBoxPane extends PreferencePanel {
 		wordWrapBox.setText("Word Wrap");
 		wordWrapBox.setSelected(PreferenceStore.getBool(Preference.WRAP));
 		wordWrapBox.getAccessibleContext().setAccessibleName("Word Wrap Check Box. Press Space to Toggle");
+		wordWrapBox.addItemListener(this);
 		
 		autoSaveOnCompileBox = new JCheckBox();
 		autoSaveOnCompileBox.setText("Auto Save on Compile");
 		autoSaveOnCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOSAVEONCOMPILE));
 		autoSaveOnCompileBox.getAccessibleContext().setAccessibleName("Auto Save on Compile Box. Press Space to Toggle");
+		autoSaveOnCompileBox.addItemListener(this);
 		
 		loadRecentlyBox = new JCheckBox();
 		loadRecentlyBox.setText("Load Recent Files");
 		loadRecentlyBox.setSelected(PreferenceStore.getBool(Preference.BOOLRECENTFILES));
 		loadRecentlyBox.getAccessibleContext().setAccessibleName("Load Recent Files Box. Press Space to Toggle");
+		loadRecentlyBox.addItemListener(this);
 		
 		this.add(wordWrapBox);
 		this.add(autoSaveOnCompileBox);
@@ -354,6 +365,11 @@ class CheckBoxPane extends PreferencePanel {
 		autoSaveOnCompileBox.setSelected(PreferenceStore.getBool(Preference.AUTOSAVEONCOMPILE));
 		loadRecentlyBox.setSelected(PreferenceStore.getBool(Preference.BOOLRECENTFILES));
 	}
+
+	@Override
+	public void itemStateChanged(ItemEvent arg0) {
+		JBricxPreferenceDialog.isDirty = true;
+	}
 }
 
 @SuppressWarnings("serial")
@@ -362,6 +378,8 @@ class FontPane extends PreferencePanel {
 	JTextArea textArea;
 	JButton button;
 	
+	Font currentFont;
+	
 	FontPane(){
 		super(Preference.FONT);
 		this.setLayout(new BorderLayout());
@@ -369,7 +387,7 @@ class FontPane extends PreferencePanel {
 		textArea.setBackground(((ColorPane)PreferencePanel.panels.get(Preference.BACKGROUND)).button.getBackground());
 		textArea.setForeground(((ColorPane)PreferencePanel.panels.get(Preference.FOREGROUND)).button.getBackground());
 		textArea.setEditable(false);
-		Font currentFont = Font.decode(PreferenceStore.getString(Preference.FONT));
+		currentFont = Font.decode(PreferenceStore.getString(Preference.FONT));
 
 		//Shows current font. Stuff in the middle delimits to get the style string which isnt easily attainable(is actually an int)
 		textArea.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
@@ -383,10 +401,11 @@ class FontPane extends PreferencePanel {
 				JFontChooser fontChooser = new JFontChooser();
 				int result = fontChooser.showDialog(FontPane.this);
 				if (result == JFontChooser.OK_OPTION) {  
-					Font currentFont = fontChooser.getSelectedFont();
+					currentFont = fontChooser.getSelectedFont();
 					textArea.setText(currentFont.getName() +"-"+ currentFont.toString().split("=")[3].split(",")[0]+"-"+ currentFont.getSize());
 					textArea.setFont(currentFont);
 					fontChooser.setDefaultSelectedFont(currentFont);
+					JBricxPreferenceDialog.isDirty = true;
 				}
 			}
 		});
@@ -396,6 +415,9 @@ class FontPane extends PreferencePanel {
 	@Override
 	public void saveValue() {
 		PreferenceStore.set(Preference.FONT, textArea.getText());
+		PreferenceStore.set(Preference.FONTNAME, currentFont.getName());
+		PreferenceStore.set(Preference.FONTSIZE, currentFont.getSize() + "");
+		PreferenceStore.set(Preference.FONTSTYLE, currentFont.toString().split("=")[3].split(",")[0]);
 	}
 
 	@Override
@@ -430,7 +452,7 @@ class ButtonPane extends JPanel implements ActionListener {
 		applyButton.addActionListener(this);
 		applyButton.getAccessibleContext().setAccessibleName("Apply button. Press to apply any changes");
 
-		saveButton = new JButton("Save & Apply");
+		saveButton = new JButton("Apply & Save");
 		saveButton.addActionListener(this);
 		saveButton.getAccessibleContext().setAccessibleName("Save button. Press to save any to a theme");
 		
@@ -455,12 +477,16 @@ class ButtonPane extends JPanel implements ActionListener {
 			}
 		}
 		if (event.getSource() == cancelButton) {
-			int n = JOptionPane.showConfirmDialog(
-				    this,
-				    "Are you sure you wish to cancel? Any unsaved changes will be lost.",
-				    "Preferences",
-				    JOptionPane.YES_NO_OPTION);
-			if(n == JOptionPane.YES_OPTION){
+			if (JBricxPreferenceDialog.isDirty) {
+				int n = JOptionPane.showConfirmDialog(
+					    this,
+					    "Are you sure you wish to cancel? Any unsaved changes will be lost.",
+					    "Preferences",
+					    JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					window.dispose();
+				}
+			} else {
 				window.dispose();
 			}
 		}

@@ -164,8 +164,6 @@ public class PreferenceStore {
 		}
 		
 		public String getPref() {
-			System.out.print(this.toString() + "\t:" + this.defaultString + "\t:");
-			System.out.println(this.defaultString != "" ? prefs.get(this.toString(), this.defaultString) : "");
 			return this.defaultString != "" ? prefs.get(this.toString(), this.defaultString) : "";
 		}
 
@@ -258,7 +256,6 @@ public class PreferenceStore {
 				if (parent != Preference.MISC) { // misc settings are not set for themes
 					tempNode = XMLParser.retrieve(doc, parent.toString().toLowerCase(), p.toString().toLowerCase());
 					if (tempNode != null) {
-						System.out.println(tempNode.getTextContent());
 						switch (p.type) {
 						case INTEGER : prefs.putInt(p.toString(), Integer.parseInt(tempNode.getTextContent()));
 						case BOOLEAN : prefs.putBoolean(p.toString(), Boolean.parseBoolean(tempNode.getTextContent()));
@@ -348,8 +345,6 @@ public class PreferenceStore {
 			doc = docBuilder.newDocument();
 			Node nodeTree = PreferenceStore.Preference.PROPERTIES.makeNode(doc);
 			doc.appendChild(nodeTree);
-			XMLParser.writeToFile(doc, "");
-			System.out.println();
 		} catch (ParserConfigurationException e) {
 			System.err.println("ERROR IN CREATING DOCUMENT");
 		}
