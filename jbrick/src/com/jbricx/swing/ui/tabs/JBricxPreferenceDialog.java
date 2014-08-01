@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
 
+import com.jbricx.swing.ui.JBricxDialog;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.JFontChooser;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -43,11 +46,13 @@ import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.tools.XMLParser;
 
 @SuppressWarnings("serial")
-public class JBricxPreferenceDialog extends JDialog {
+public class JBricxPreferenceDialog extends JBricxDialog {
 	private JPanel themePanel, colorPanel, fontPanel, miscPanel, nbcPanel, workspacePanel, buttonPanel;
 	private JBricxManager manager;
+	static JBricxPreferenceDialog preferenceDialog = null;
 	
 	public JBricxPreferenceDialog(JBricxManager manager){
+		super(manager.getShell(),"Preferences",false);
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 		((JPanel)this.getContentPane()).setBorder(new EmptyBorder(7,7,7,7));
 		this.setSize(new Dimension(550,660));
@@ -98,6 +103,7 @@ public class JBricxPreferenceDialog extends JDialog {
 		}
 
 		this.add(buttonPanel);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
 	}
 	
@@ -115,6 +121,18 @@ public class JBricxPreferenceDialog extends JDialog {
 	
 	public JBricxManager getManager(){
 		return this.manager;
+	}
+	
+	public void openPreference(JBricxManager manager) {
+		if (preferenceDialog == null) {
+			preferenceDialog = new JBricxPreferenceDialog(manager);
+		}
+		preferenceDialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent evt) {
+				preferenceDialog = null;
+			}
+		});
 	}
 
 }
