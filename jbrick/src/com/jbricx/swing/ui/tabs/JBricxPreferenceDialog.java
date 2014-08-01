@@ -3,6 +3,7 @@ package com.jbricx.swing.ui.tabs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -26,9 +28,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.w3c.dom.Document;
 
@@ -97,7 +101,7 @@ public class JBricxPreferenceDialog extends JDialog {
 		this.pack();
 	}
 	
-	public static void saveValues(){
+	public static void applyValues(){
 		for(PreferencePanel pp : PreferencePanel.panels.values()){
 			pp.saveValue();
 		}
@@ -298,8 +302,14 @@ class ThemePane extends PreferencePanel {
 		themeSelector.setSelectedIndex(model.getIndexOf(file.getName()));
 	}
 	
-	public void resetValue() {
+	public void setThemeFile(String filepath) {
+		File file = new File(filepath);
+		textArea.setText(file.getParent());
+		updateSelector();
+		themeSelector.setSelectedIndex(model.getIndexOf(file.getName()));
 	}
+	
+	public void resetValue() {}
 }
 
 @SuppressWarnings("serial")
@@ -399,7 +409,7 @@ class FontPane extends PreferencePanel {
 @SuppressWarnings("serial")
 class ButtonPane extends JPanel implements ActionListener {
 	
-	JButton resetToDefaultButton, cancelButton, okButton, applyButton;
+	JButton resetToDefaultButton, cancelButton, okButton, applyButton, saveButton;
 	JBricxPreferenceDialog window;
 	
 	ButtonPane(JBricxPreferenceDialog dialog){
@@ -419,11 +429,16 @@ class ButtonPane extends JPanel implements ActionListener {
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(this);
 		applyButton.getAccessibleContext().setAccessibleName("Apply button. Press to apply any changes");
+
+		saveButton = new JButton("Save & Apply");
+		saveButton.addActionListener(this);
+		saveButton.getAccessibleContext().setAccessibleName("Save button. Press to save any to a theme");
 		
 		this.add(resetToDefaultButton);
 		this.add(cancelButton);
 		this.add(okButton);
 		this.add(applyButton);
+		this.add(saveButton);
 	}
 
 	@Override
@@ -450,30 +465,42 @@ class ButtonPane extends JPanel implements ActionListener {
 			}
 		}
 		if (event.getSource() == okButton) {
-			saveTheme();
+			JBricxPreferenceDialog.applyValues();
+			window.getManager().updatePreferences(); //Should automatically Update
 			window.dispose();
 		}
 		if (event.getSource() == applyButton) {
+			JBricxPreferenceDialog.applyValues();
+			window.getManager().updatePreferences(); //Should automatically Update
+		}
+		if (event.getSource() == saveButton) {
+			JBricxPreferenceDialog.applyValues();
+			window.getManager().updatePreferences(); //Should automatically Update
 			saveTheme();
 		}
 	}
 	
 	public void saveTheme(){
-		JBricxPreferenceDialog.saveValues();
-		window.getManager().updatePreferences(); //Should automatically Update
-		String filepath = PreferenceStore.getString(Preference.THEMEXML);
-		if (new File(filepath).exists()){
-			Document doc = PreferenceStore.buildPreferencesDocument();
-			XMLParser.writeToFile(doc, filepath);
-		} else {
-			final JFileChooser fc = new JFileChooser(Preference.THEMEXML.defaultString);
-			fc.setFileSelectionMode(JFileChooser.SAVE_DIALOG);
-			int returnVal = fc.showSaveDialog(this);
-			//They picked a file
-			if(returnVal == JFileChooser.APPROVE_OPTION){
+		FileDialog fDialog = new FileDialog(window, "Save", FileDialog.SAVE);
+		fDialog.setFile("*.xml");
+		fDialog.setVisible(true);
+		String filepath = fDialog.getFile();
+		if (filepath != null) {
+			if (filepath.toLowerCase().endsWith("default.xml")) {
+				JOptionPane.showMessageDialog(window,
+					    "Cannot overwrite the Default.xml file.\n"
+					    + "You edits will be applied but will not be saved.",
+					    "Overwrite Defaults Error",
+					    JOptionPane.ERROR_MESSAGE);
+			} else { 
+				filepath = fDialog.getDirectory() + "/" + filepath;
+				if (!filepath.toLowerCase().endsWith(".xml")) {
+				    filepath = filepath + ".xml";
+				}
 				Document doc = PreferenceStore.buildPreferencesDocument();
 				XMLParser.writeToFile(doc, filepath);
-			}
+				((ThemePane) PreferencePanel.panels.get(Preference.THEMEXML)).setThemeFile(filepath);
+			}	
 		}
 	}
 }
