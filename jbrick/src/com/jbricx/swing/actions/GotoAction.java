@@ -21,13 +21,12 @@ public class GotoAction extends JBricxAbstractAction {
   }
 
   /**
-   * Runs the action
+   * Get the current tab
+   * Create a go to dialog for the current tab
    */
   public void actionPerformed(ActionEvent arg0) {
 	  JBricxTabItem tab = getTab();
-	  GoToDialog dlg = new GoToDialog(tab.getLineCount(),this,getManager().getShell());
-	  dlg.setVisible(true);
-	  dlg.pack();
+	  GoToDialog.openGoTo(tab.getLineCount(),this,getManager().getShell());
   }
   
   /**
