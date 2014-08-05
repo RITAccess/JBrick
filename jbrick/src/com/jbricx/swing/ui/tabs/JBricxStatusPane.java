@@ -122,14 +122,9 @@ public class JBricxStatusPane extends JTabbedPane {
 	 * @param text Text to be displayed in the window
 	 */
 	public void popupWindow(String title, String text){
-		Object[] options = { "Ok" };
-		JOptionPane.showOptionDialog(
+		JOptionPane.showMessageDialog(
 						this.getParent().getComponents()[0], //Places the window at the center of the editor tab
-						text,
-						title,
-						JOptionPane.OK_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options,
-						options[0]);
+						text);
 	}
 	
 	/**
