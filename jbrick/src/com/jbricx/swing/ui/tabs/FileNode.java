@@ -5,14 +5,16 @@ import java.io.File;
 @SuppressWarnings("serial")
 public class FileNode extends File{
 
+	/**
+	 * Provides information and filepath for the file viewer
+	 * @param pathname
+	 */
 	public FileNode(String pathname) {
 		super(pathname);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public FileNode(File parent, String child) {
 		super(parent, child);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
