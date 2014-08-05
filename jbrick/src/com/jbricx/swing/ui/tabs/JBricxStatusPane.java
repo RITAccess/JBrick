@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -33,8 +34,6 @@ import javax.swing.SwingConstants;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
-
-
 
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane {
@@ -118,6 +117,22 @@ public class JBricxStatusPane extends JTabbedPane {
 	}
 	
 	/**
+	 * Creates a popup window to inform the user of something.
+	 * @param title Title of the window
+	 * @param text Text to be displayed in the window
+	 */
+	public void popupWindow(String title, String text){
+		Object[] options = { "Ok" };
+		JOptionPane.showOptionDialog(
+						this.getParent().getComponents()[0], //Places the window at the center of the editor tab
+						text,
+						title,
+						JOptionPane.OK_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options,
+						options[0]);
+	}
+	
+	/**
 	 * push messages from compile errors to status pane
 	 * @param map
 	 * @param download
@@ -127,8 +142,10 @@ public class JBricxStatusPane extends JTabbedPane {
 		StringBuffer sb = new StringBuffer();
 		if (map.keySet().size() == 0){
 			sb.append((download ? "Download" : "Compile") + " Successful");
+			popupWindow(sb.toString(), sb.toString() + ".");
 		} else {
-			errorMessage(map, sb);	
+			errorMessage(map, sb);
+			popupWindow("Compile Error", "Errors occured during compilation. Check status pane for more information.");
 		}
 		
 		String[] stringBuffList = sb.toString().split("\n");

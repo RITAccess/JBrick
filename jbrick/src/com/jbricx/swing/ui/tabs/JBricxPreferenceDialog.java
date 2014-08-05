@@ -530,8 +530,6 @@ class ButtonPane extends JPanel implements ActionListener {
 		String filepath = fDialog.getFile();
 		if (filepath != null) {
 			filepath = fDialog.getDirectory() + filepath;
-			System.out.println(filepath);
-			System.out.println(Preference.THEMEXML.defaultString);
 			if (filepath.endsWith(Preference.THEMEXML.defaultString)) {
 				JOptionPane.showMessageDialog(window,
 					    "Cannot overwrite the Default file.\n"
