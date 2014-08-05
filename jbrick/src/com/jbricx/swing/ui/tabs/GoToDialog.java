@@ -46,7 +46,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 	 * @param action Goto action (used for callback)
 	 * @param shell main JFrame - used to keep modal
 	 */
-	public GoToDialog(int maxLineNumber,GotoAction action,JFrame shell ){
+	private GoToDialog(int maxLineNumber,GotoAction action,JFrame shell ){
 		super(shell,"Go To",false);
 		this.setSize(new Dimension(212,145));
 		this.action = action;

@@ -45,7 +45,7 @@ public class HelpWindow extends JBricxDialog{
 	// Main panel that contians the content
 	JScrollPane jDisplayPane = null;
 	
-	/* The HelpOptions Enum contains all the information for each of the buttons 
+	/** The HelpOptions Enum contains all the information for each of the buttons 
 	 * to be laid out and have correct association with the pages available.
 	 * 
 	 * When making a new page add the page name to the enum.

@@ -40,6 +40,11 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.tools.XMLParser;
 
+/**
+ * Preference Dialog - dialog to change update preference information
+ * @author Ethan Jurman (ehj2229@g.rit.edu)
+ *
+ */
 @SuppressWarnings("serial")
 public class JBricxPreferenceDialog extends JBricxDialog {
 	private JPanel themePanel, colorPanel, fontPanel, miscPanel, nbcPanel, workspacePanel, buttonPanel;
@@ -47,7 +52,11 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 	public static boolean isDirty;
 	static JBricxPreferenceDialog preferenceDialog = null;
 	
-	public JBricxPreferenceDialog(JBricxManager manager){
+	/**
+	 * constructor
+	 * @param manager
+	 */
+	private JBricxPreferenceDialog(JBricxManager manager){
 		super(manager.getShell(),"Preferences",false);
 		isDirty = false;
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -104,23 +113,33 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 		this.pack();
 	}
 	
-	public static void applyValues(){
+	/**
+	 * apply values of preference window
+	 */
+	protected static void applyValues(){
 		for(PreferencePanel pp : PreferencePanel.panels.values()){
 			pp.saveValue();
 		}
 		isDirty = false;
 	}
 	
-	public static void resetValues() {
+	/**
+	 * reset values of the preference window
+	 */
+	protected static void resetValues() {
 		for(PreferencePanel pp : PreferencePanel.panels.values()){
 			pp.resetValue();
 		}
 	}
 	
-	public JBricxManager getManager(){
+	protected JBricxManager getManager(){
 		return this.manager;
 	}
 	
+	/**
+	 * provides a method to access and open a preference window
+	 * @param manager - requires a JBricxManager
+	 */
 	public static void openPreference(JBricxManager manager) {
 		if (preferenceDialog == null) {
 			preferenceDialog = new JBricxPreferenceDialog(manager);
@@ -135,6 +154,10 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 
 }
 
+/**
+ * ColorPane - generates a simple color settings pane to be placed in the JBricxPreferences
+ *
+ */
 @SuppressWarnings("serial")
 class ColorPane extends PreferencePanel{
 
@@ -177,6 +200,7 @@ class ColorPane extends PreferencePanel{
 		this.setVisible(true);
 	}
 
+	@Override
 	public void saveValue() {
 		PreferenceStore.set(this.pref, this.button.getBackground().getRGB());
 	}
@@ -236,10 +260,11 @@ class DirectoryPane extends PreferencePanel{
 		this.setVisible(true);
 	}
 
+	@Override
 	public void saveValue() {
 		PreferenceStore.set(pref, textArea.getText());
 	}
-
+	
 	@Override
 	public void resetValue() {
 		textArea.setText(PreferenceStore.getString(pref));
@@ -259,8 +284,10 @@ class ThemePane extends PreferencePanel {
 		this.setLayout(new BorderLayout());
 		textArea = new JTextField(12);
 		button = new JButton("Browse...");
+		button.getAccessibleContext().setAccessibleName("Browse theme directory");
 		model = new DefaultComboBoxModel();
 		themeSelector = new JComboBox(model);
+		themeSelector.getAccessibleContext().setAccessibleName("Select Theme");
 		clearValues();
 		button.addActionListener(new ActionListener(){
 			@Override
@@ -308,10 +335,6 @@ class ThemePane extends PreferencePanel {
 		}
 	}
 
-	public void saveValue() {
-		PreferenceStore.set(Preference.THEMEXML, textArea.getText() + "/" + themeSelector.getSelectedItem());
-	}
-
 	public void clearValues() {
 		File file = new File(PreferenceStore.getString(Preference.THEMEXML));
 		textArea.setText(file.getParent());
@@ -333,6 +356,12 @@ class ThemePane extends PreferencePanel {
 		themeSelector.setSelectedIndex(model.getIndexOf(file.getName()));
 	}
 	
+	@Override
+	public void saveValue() {
+		PreferenceStore.set(Preference.THEMEXML, textArea.getText() + "/" + themeSelector.getSelectedItem());
+	}
+	
+	@Override
 	public void resetValue() {}
 }
 
@@ -562,6 +591,14 @@ abstract class PreferencePanel extends JPanel {
 	PreferencePanel(Preference pref){
 		panels.put(pref, this);
 	}
+	
+	/**
+	 * saveValue saves a preference to the Preference Store 
+	 */
 	public abstract void saveValue();
+	
+	/**
+	 * resetValue resets a preference based on the theme provided and Preference Store
+	 */
 	public abstract void resetValue();
 }

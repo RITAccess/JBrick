@@ -69,7 +69,6 @@ public class JBricxTabItem extends TextEditorPane {
 						MainWindow manager = (MainWindow) tab.parent.getManager();
 						if (manager.accessPane != null) {
 							manager.accessPane.setText("Line: " + newLine);
-							manager.accessPane.readLabel("Line: " + newLine,tab);
 						}
 					}
 				}

@@ -23,16 +23,6 @@ public class PrintAction extends JBricxAbstractAction {
 	 * Prints the document
 	 */
 	public void actionPerformed(ActionEvent e) {
-		
 		getManager().getTabFolder().print();
-		/*SourceViewer viewer = getManager().getTabFolder().getSourceViewer();
-
-		StyledTextPrintOptions options = new StyledTextPrintOptions();
-
-		options.jobName = "Example";
-		options.printLineBackground = true;
-
-		viewer.print(options);
-		*/
 	}
 }

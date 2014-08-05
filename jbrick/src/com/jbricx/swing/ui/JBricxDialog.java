@@ -32,7 +32,6 @@ public class JBricxDialog extends JDialog {
 		Action closeAction = new AbstractAction() {
 			public void actionPerformed(ActionEvent evt) {
 				JBricxDialog.this.dispose();
-				
 				if (JBricxDialog.this instanceof PianoWindow){
 					AudioPlayer.closeLine(line);
 				}

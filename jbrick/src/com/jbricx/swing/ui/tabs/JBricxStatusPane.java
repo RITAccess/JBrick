@@ -161,7 +161,15 @@ public class JBricxStatusPane extends JTabbedPane {
 		this.repaint();
 	}
 
-	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
+	/**
+	 * Takes a map of error messages from nxc compiler and generates a list of messages.
+	 * Also places a formated string for the location & line of the error, as well as a
+	 * user friendly message of the error into the string buffer provided.
+	 * @param map - key : the string file (filepath), value : list of error messages associated 
+	 * with the file provided by nxc
+	 * @param sb - an empty string buffer that is filled with the error messages
+	 */
+	public void errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
 		List<String> errorFile = new ArrayList<String>();
 		List<String> messages = new ArrayList<String>();
 		for (String file : map.keySet()){
@@ -186,8 +194,7 @@ public class JBricxStatusPane extends JTabbedPane {
 					messages.add(error);
 				}
 			}
-		} return messages;
-
+		}
 	}
 }
 

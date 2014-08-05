@@ -8,6 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+/**
+ * NotesView - A panel that contains many of the panels required for the piano window
+ * 
+ */
 public class NotesView {
 	
 	private JPanel notesPanel;
@@ -32,24 +36,43 @@ public class NotesView {
 		
 	}
 	
+	/**
+	 * appendText - adds the notes view with the text provided
+	 * @param text - text to add to the notes view
+	 */
 	public void appendText(String text){
 		notesView.append(text);
 		notesView.repaint();
 		notesPanel.repaint();
 	}
 	
+	/**
+	 * getStringNotes - get all the notes from the notes view as a string list
+	 * @return notes view content (list split by newlines)
+	 */
 	public String[] getStringNotes(){
 		return notesView.getText().split("\n");
 	}
 
+	/**
+	 * getText - returns all the notes from the notes view as a single string
+	 * @return notes view content
+	 */
 	public String getText(){
 		return notesView.getText();
 	}
 	
+	/**
+	 * setText - sets the text for the notes view
+	 * @param notes
+	 */
 	public void setText(String notes){
 		notesView.setText(notes);
 	}
 	
+	/**
+	 * clearText - clears text for the notes view
+	 */
 	public void clearText(){
 		notesView.setText("");
 		notesView.repaint();

@@ -18,6 +18,10 @@ public class ShowHideFileViewerAction extends JBricxAbstractAction{
 	}
 	
 
+	/**
+	 * Toggle the file viewer
+	 * @param manager
+	 */
 	public ShowHideFileViewerAction(final JBricxManager manager){
 		super("", new ImageIcon(ShowHideFileViewerAction.class.getResource("/icons/fileViewer.png")), manager);
 	}

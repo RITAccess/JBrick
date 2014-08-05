@@ -10,6 +10,10 @@ import com.jbricx.swing.ui.JBricxManager;
 @SuppressWarnings(value = { "serial" }) 
 public class MaxStatusAction extends JBricxAbstractAction{
 
+	/**
+	 * maximize the status pane
+	 * @param manager
+	 */
 	public MaxStatusAction(final JBricxManager manager) {
 		super("", new ImageIcon(MaxStatusAction.class.getResource("/icons/maxStatus.png")), manager);
 		// TODO Auto-generated constructor stub

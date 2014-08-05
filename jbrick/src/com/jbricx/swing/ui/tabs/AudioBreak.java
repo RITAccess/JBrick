@@ -59,9 +59,14 @@ public class AudioBreak {
 		return keyAsTone;
 	}
 	
+	/**
+	 * Get piano key
+	 * @return key 
+	 */
 	public int getKey(){
 		return key;
 	}
+	
 	/**
 	 * Raises the pitch of the tone
 	 */
@@ -75,6 +80,11 @@ public class AudioBreak {
 		key = clamp(key-INCREMENT, MINKEY, MAXKEY);
 	}
 	
+	/**
+	 * Get the Color for background color
+	 * @param bGColor - background color
+	 * @return audio break color
+	 */
 	public Color calculateColor(Color bGColor)
 	{
 		int hRed = clamp((int) ((PreferenceStore.getColor(PreferenceStore.Preference.LINENUMBERFG).getRed() + bGColor.getRed()*1)/2), 0, 255);
@@ -101,7 +111,6 @@ public class AudioBreak {
 		
 		return highlight;
 	}
-
 	
 	/**
 	 * Clamps a int between a min and max value

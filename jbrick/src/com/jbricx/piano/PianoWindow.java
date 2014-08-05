@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
@@ -21,7 +22,6 @@ import javax.swing.event.ChangeListener;
 
 import com.jbricx.communication.USBConnection;
 import com.jbricx.swing.ui.JBricxDialog;
-import com.jbricx.tools.AccessibleWidget;
 import com.jbricx.tools.AudioPlayer;
 /**
  * 
@@ -41,7 +41,7 @@ public class PianoWindow extends JBricxDialog implements WindowListener {
 	private PianoActionHandler pianoHandler;
 	private PianoKeyboard pianoKeyboard;
 	private SourceDataLine line;
-	public AccessibleWidget accessibleStatus = new AccessibleWidget(" ");
+	public JLabel accessibleStatus = new JLabel(" ");
 	
 	/**
 	 * sets manager for other tools (like piano help)

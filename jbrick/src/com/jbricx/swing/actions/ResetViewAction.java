@@ -10,11 +10,12 @@ import com.jbricx.swing.ui.JBricxManager;
 @SuppressWarnings("serial")
 public class ResetViewAction extends JBricxAbstractAction{
 
+	/**
+	 * resets the view for jbricks
+	 * @param manager
+	 */
 	public ResetViewAction(JBricxManager manager) {
 		super("", new ImageIcon(ResetViewAction.class.getResource("/icons/resetView.png")), manager);
-		
-		
-		
 	}
 
 	@Override
