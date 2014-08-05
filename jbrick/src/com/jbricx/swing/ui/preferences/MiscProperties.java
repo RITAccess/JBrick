@@ -18,6 +18,9 @@ public class MiscProperties {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
+	/**
+	 * Enum information for the location of the of properties
+	 */
 	public static enum misc {
 		X(new Callable<Integer>(){
 			public Integer call() throws Exception { return window.getX(); }
@@ -52,6 +55,11 @@ public class MiscProperties {
 		}
 	}
 	
+	/**
+	 * get integer property
+	 * @param property from misc enum
+	 * @return
+	 */
 	public static int getInt(misc property){
 		return propertiesMisc.getInt(
 				property.toString(),
@@ -59,6 +67,11 @@ public class MiscProperties {
 			);
 	}
 	
+	/**
+	 * set integer property
+	 * @param property from misc enum
+	 * @return
+	 */	
 	public static void setInt(misc property){
 		propertiesMisc.putInt(
 				property.toString(), 

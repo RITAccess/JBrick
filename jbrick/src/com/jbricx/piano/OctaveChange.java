@@ -9,6 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
+/**
+ * Octave transposer for altering what octave
+ * the Piano Keyboard is at. 
+ * 
+ */
 public class OctaveChange{
 	
 	private JPanel transPanel;
@@ -24,7 +29,6 @@ public class OctaveChange{
 	/**
 	 * Constructor for transposer 
 	 */
-	
 	public OctaveChange() {
 		
 		transPanel = new JPanel(new GridBagLayout());

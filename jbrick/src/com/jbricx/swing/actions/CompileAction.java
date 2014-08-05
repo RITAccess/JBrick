@@ -36,6 +36,10 @@ public class CompileAction extends JBricxAbstractAction {
 		jBManager = manager;
 	}
 	
+	/**
+	 * run - runs the compile action and returns the hashmap
+	 * @return
+	 */
 	public HashMap<String, ArrayList<String>> run(){
 
 		

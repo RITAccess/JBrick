@@ -25,9 +25,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
  * @author Daniel Larsen
  * 
  * Used to set the individual tab's "X" button, and their title. 
- * 
- * Uses some swing black magic.
- *
  */
 @SuppressWarnings("serial")
 public class ButtonTabComponent extends JPanel {

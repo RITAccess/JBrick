@@ -193,6 +193,9 @@ public class PreferenceStore {
 		}
 	}
 	
+	/**
+	 * set the properties to default
+	 */
 	public static void resetToDefaults(){
 		currentDoc = XMLParser.xmlParse(DEFAULT_FILE);
 		if(!currentDoc.equals(null)){

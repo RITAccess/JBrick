@@ -10,6 +10,10 @@ import com.jbricx.swing.ui.JBricxManager;
 @SuppressWarnings("serial")
 public class MaxViewerAction extends JBricxAbstractAction{
 
+	/**
+	 * maximize the viewer
+	 * @param manager
+	 */
 	public MaxViewerAction(final JBricxManager manager) {
 		super("", new ImageIcon(MaxViewerAction.class.getResource("/icons/maxFileView.png")), manager);
 		

@@ -26,7 +26,6 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
 import com.jbricx.swing.ui.JBricxDialog;
-import com.jbricx.tools.AccessibleWidget;
 
 
 /**
@@ -49,12 +48,12 @@ public class FindReplaceDialog extends JBricxDialog {
 	private JTextField replaceTextField;
 	private JLabel findLabel;
 	private JLabel replaceLabel;
-	private AccessibleWidget accessibleStatus;
+	private JLabel accessibleStatus;
 
 	/**
 	* Constructor for find and replace dialog box
 	*/
-	public FindReplaceDialog(JFrame parent, boolean modal, JTextArea textArea) {
+	private FindReplaceDialog(JFrame parent, boolean modal, JTextArea textArea) {
 		super(parent, "Find and Replace",modal);
 		this.textArea = textArea;
 		setUpFindReplace();
@@ -72,7 +71,7 @@ public class FindReplaceDialog extends JBricxDialog {
 		replaceTextField = new JTextField();
 		findLabel = new JLabel("Find : ");
 		replaceLabel = new JLabel("Replace : ");
-		accessibleStatus = new AccessibleWidget(" ");
+		accessibleStatus = new JLabel(" ");
 		
 		findTextField.getAccessibleContext().setAccessibleDescription("Find text field");
 		replaceTextField.getAccessibleContext().setAccessibleDescription("Replace text field");
@@ -161,17 +160,17 @@ public class FindReplaceDialog extends JBricxDialog {
 		// Check if the find text field is empty
 		// Replace should be able to remain empty in case you want to delete all occurances of that word
 		if (findTextField.getText().isEmpty()) {
-			accessibleStatus.readLabel("Find Field is Empty", FindReplaceDialog.this.replaceAllButton);
+			accessibleStatus.setText("Find Field is Empty");
 		}
 		
 		// Check for if the word doesn't exists
 		else if (!(oldContent.contains(findTextField.getText()))) {
-			accessibleStatus.readLabel("Cannot Find to Replace",FindReplaceDialog.this.replaceAllButton);
+			accessibleStatus.setText("Cannot Find to Replace");
 		}
 		
 		// If the word exist, it replaces all instances of the word with the user input
 		else {
-			accessibleStatus.readLabel(" ", FindReplaceDialog.this.replaceAllButton);
+			accessibleStatus.setText(" ");
 			textArea.setText(oldContent.replaceAll( findTextField.getText() , replaceTextField.getText()));
 			
 			int count = 0;
@@ -185,7 +184,7 @@ public class FindReplaceDialog extends JBricxDialog {
 			// Send a message letting the user know how many instances there were to replace
 			if (count > 0) {
 				String instanceOf = count + " instances of " + findTextField.getText() + " have been replaced with " +  replaceTextField.getText();
-				accessibleStatus.readLabel(instanceOf, FindReplaceDialog.this.replaceAllButton);
+				accessibleStatus.setText(instanceOf);
 			}
 		}
 	}
@@ -198,7 +197,7 @@ public class FindReplaceDialog extends JBricxDialog {
 		
 		// Check for an empty find field
 		if (findTextField.getText().isEmpty()) {
-			accessibleStatus.readLabel("Find Field is Empty",FindReplaceDialog.this.replaceButton);
+			accessibleStatus.setText("Find Field is Empty");
 		} else {
 			
 			// Check for it the text exists in the main area
@@ -211,7 +210,7 @@ public class FindReplaceDialog extends JBricxDialog {
 					findButtonAction(evt);
 				}
 			} else {
-				accessibleStatus.readLabel("Cannot Find to Replace",FindReplaceDialog.this.replaceButton);
+				accessibleStatus.setText("Cannot Find to Replace");
 			}
 		}
 	}
@@ -226,7 +225,7 @@ public class FindReplaceDialog extends JBricxDialog {
 		
 		// Check if anything to search was entered
 		if (wordToFind.isEmpty()) {
-			accessibleStatus.readLabel("Find Field is Empty", FindReplaceDialog.this.findButton);
+			accessibleStatus.setText("Find Field is Empty");
 		} else {
 			
 			// Check if any instances of the text entered occurs in the main area
@@ -234,7 +233,7 @@ public class FindReplaceDialog extends JBricxDialog {
 				
 					// Find the word entered into the field and highlight it
 				if (currentPos < context.length()) {
-					accessibleStatus.readLabel(" ", FindReplaceDialog.this.findButton);
+					accessibleStatus.setText(" ");
 					textArea.requestFocus();
 					pos = context.indexOf( wordToFind, currentPos);
 					
@@ -252,7 +251,7 @@ public class FindReplaceDialog extends JBricxDialog {
 						}
 					}
 				} else {
-					accessibleStatus.readLabel("Cannot Find",FindReplaceDialog.this.findButton);
+					accessibleStatus.setText("Cannot Find");
 			}
 		}
 	}

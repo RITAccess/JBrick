@@ -58,18 +58,6 @@ public class AudioPlayer {
     	line.close();
     }
     
-    public static void play(int length, String...notes){
-    	int[] lengths = new int[notes.length];
-    	for (int i = 0; i < lengths.length; i++){
-    		lengths[i] = length;
-    	}
-    	play(lengths, notes);
-    }
-    
-    public static void play(String...notes){
-    	play(500, notes);
-    }
-    
     /**
      * Takes in a String, and returns the byte array to create a sound
      * 

@@ -85,6 +85,7 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		
 		setupTabTraversalKeys();
 	}
+	
 	/*
 	 * Adapted from http://www.davidc.net/programming/java/how-make-ctrl-tab-switch-tabs-jtabbedpane
 	 * Sets up the JTabbedPane to allow a shortcut for tabbing between files
@@ -548,6 +549,11 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 		}
 	}
 	
+	/**
+	 * Opens a file update request dialog.
+	 * 
+	 * @param fileName
+	 */
 	private void fileUpdateRequired(String fileName){
 	    Object[] options = { "Yes", "No" };
 		int response = JOptionPane

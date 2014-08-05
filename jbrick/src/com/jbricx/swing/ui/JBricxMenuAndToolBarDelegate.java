@@ -203,6 +203,10 @@ public class JBricxMenuAndToolBarDelegate {
 		JBricxMenuAndToolBarDelegate.manager = manager;
 	}
 
+	/**
+	 * generates the toolbar from values of ActionSet enum
+	 * @return main tool bar
+	 */
 	public JToolBar getToolBar() {
 		JToolBar mainToolBar = new JToolBar();
 		mainToolBar.setFloatable(false);
@@ -225,6 +229,10 @@ public class JBricxMenuAndToolBarDelegate {
 		return mainToolBar;
 	}
 	
+	/**
+	 * set the order for all the toolbars and menubars from a button list
+	 * @param buttons
+	 */
 	private void setOrder(JButton...buttons){
 		if (order == null) {
 			order = new Vector<JButton>();
@@ -237,7 +245,8 @@ public class JBricxMenuAndToolBarDelegate {
 	}
 	
 	/**
-	 * sets the order for all the tool bars and menu bars
+	 * sets the order for all the tool bars and menu bars with predefined
+	 * settings
 	 */
 	private void setOrder(){
 		setOrder(

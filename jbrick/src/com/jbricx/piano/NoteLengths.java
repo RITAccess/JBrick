@@ -21,7 +21,11 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-
+/**
+ * NoteLengths - class for organizing and containing all the 
+ * information about note lengths (quarter, eighth, sixteenth, etc.. notes)
+ *
+ */
 public class NoteLengths {
 
 	private static JFormattedTextField noteField;
@@ -108,6 +112,10 @@ public class NoteLengths {
 		radioBorder = new EtchedBorder();
 	}
 	
+	/**
+	 * checkInput - checks if custom field is a valid note fraction
+	 * if it isn't replaces it with a valid one
+	 */
 	private static void checkInput() {
 		NoteLengths.selectedValue = noteField.getText();
 		String checkInput = noteField.getText();
@@ -123,6 +131,10 @@ public class NoteLengths {
 		
 	}
 	
+	/**
+	 * setValue - sets the value of the custom string (also checks if it's valid)
+	 * @param note length
+	 */
 	public static void setValue(String text){
 		if (text.equals(customString)){
 			noteField.setEditable(true);
@@ -134,10 +146,18 @@ public class NoteLengths {
 		}
 	}
 	
+	/**
+	 * getValue - gets the value of the note length
+	 * @return note length
+	 */
 	public String getValue(){
 		return NoteLengths.selectedValue;
 	}
 	
+	/**
+	 * getCurrent - returns the string of the currently selected radio button
+	 * @return
+	 */
 	public String getCurrent(){
 		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();){
 			AbstractButton button = buttons.nextElement();
@@ -148,6 +168,12 @@ public class NoteLengths {
 		return "";
 	}
 	
+	/**
+	 * insertRadioButton - inserts a radio button with a radio button, an a x and y location
+	 * @param noteButton - radio button
+	 * @param xPlace - place in grid bag (x)
+	 * @param yPlace - place in grid bag (y)
+	 */
 	private void insertRadioButton(JComponent noteButton,int xPlace,int yPlace) {
 		gbCon.insets = new Insets(10,0,10,0);
 		gbCon.anchor = GridBagConstraints.WEST;

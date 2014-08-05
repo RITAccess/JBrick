@@ -29,12 +29,4 @@ public class RedoAction extends JBricxAbstractAction {
 	  JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
 	    tab.redoLastAction();
   }
-
-  /*public void enableRedo() {
-    setEnabled(true);
-  }
-
-  public void disableRedo() {
-    setEnabled(false);
-  }*/
 }

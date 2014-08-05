@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -28,7 +29,6 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
-import com.jbricx.tools.AccessibleWidget;
 import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
@@ -43,7 +43,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener,C
 	JSplitPane leftRightSplit;
 	JSplitPane upDownSplit;
 	
-	public AccessibleWidget accessPane;
+	public JLabel accessPane;
 
 	public static long lostFocusTime;
 	
@@ -93,7 +93,7 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener,C
 			firstTimeWindow.setVisible(true);
 			prefs.putBoolean("ranPreviously",true);
 		}
-		accessPane = new AccessibleWidget("JBricks");
+		accessPane = new JLabel("JBricks");
 		accessPane.setVisible(true);
 		this.add(accessPane, BorderLayout.SOUTH);
 		accessPane.revalidate();

@@ -14,6 +14,7 @@ import com.sun.jna.Platform;
 public class JBricxLauncher {
 
 	/**
+	 * Executes Jbricks Application
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -26,18 +27,10 @@ public class JBricxLauncher {
 						"JBrick");
 			}
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {e.printStackTrace();
+		} catch (InstantiationException e) {e.printStackTrace();
+		} catch (IllegalAccessException e) {e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {e.printStackTrace();
 		}
 		
 		MainWindow mainWindow = new MainWindow();

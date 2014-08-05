@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jbricx.swing.actions;
 
 import javax.swing.AbstractAction;

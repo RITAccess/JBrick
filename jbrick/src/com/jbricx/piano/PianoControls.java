@@ -11,6 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 
+/**
+ * Contains panels and information for the piano window
+ * 
+ */
 public class PianoControls {
 	
 	protected ButtonActions buttonPanel;
@@ -39,6 +43,11 @@ public class PianoControls {
 		rest.addActionListener(setNoteButton(noteRadioPanel));
 	}
 	
+	/**
+	 * ActionListener for each of the note buttons
+	 * @param noteRadioPanel
+	 * @return
+	 */
 	private ActionListener setNoteButton(NoteLengths noteRadioPanel) {
 		ActionListener noteListener = new ActionListener() {
 			private NoteLengths noteLengths;

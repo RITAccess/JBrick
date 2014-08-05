@@ -7,18 +7,11 @@ import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
 
-//import com.jbricx.preferences.JBrickObserver;
-//import com.jbricx.ui.tabs.TabFolder;
-
-
-
 public interface JBricxManager {
 	
 	JFrame getShell();
 	
 	void close();
-	
-//	void registerObserver(JBrickObserver o);
 		
 	boolean isAutoCompile();
 
