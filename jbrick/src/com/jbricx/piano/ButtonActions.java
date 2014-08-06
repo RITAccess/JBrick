@@ -1,5 +1,6 @@
 package com.jbricx.piano;
 
+import java.awt.FileDialog;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -16,7 +17,6 @@ import java.io.PrintWriter;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -129,22 +129,25 @@ public class ButtonActions {
 					window.accessibleStatus.setText("No Notes To Save");
 					return;
 				}
-				String startStr = "task main()\n{\n";
-				String saveStr = Note.getNXC(notes);
-                JFileChooser saveFile = new JFileChooser();
-                if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
-                	PrintWriter out = null;
-                	try {
-						out = new PrintWriter(saveFile.getSelectedFile().getAbsolutePath());
-						out.println(startStr + saveStr + "}");
+				String saveStr = String.format("task main()\n{\n%s}",Note.getNXC(notes));
+				FileDialog fDialog = new FileDialog(window, "Save", FileDialog.SAVE);
+                fDialog.setVisible(true);
+        		String filepath = fDialog.getFile();
+        		if (filepath != null) {
+        			filepath = fDialog.getDirectory() + filepath;
+    				if (!filepath.toLowerCase().endsWith(".nxc")) {
+        				    filepath = filepath + ".nxc";
+        			}
+    				PrintWriter writer = null;
+					try {
+						writer = new PrintWriter(filepath);
+	    				writer.println(saveStr);
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} finally {
-						out.close();
+						writer.close();
 					}
-                	
-                };
+        		}
             }
 			
 		});

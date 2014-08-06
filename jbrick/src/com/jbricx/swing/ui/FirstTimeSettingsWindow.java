@@ -2,10 +2,10 @@ package com.jbricx.swing.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -231,24 +230,23 @@ public class FirstTimeSettingsWindow  extends JDialog implements ActionListener 
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getActionCommand().equals("browseButton")){
-			final JFileChooser fc = new JFileChooser();
-			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			int returnVal = fc.showOpenDialog(this);
-			//They picked a file
-			if(returnVal == JFileChooser.APPROVE_OPTION){
-				File selectedDir = fc.getSelectedFile();
-				directoryTextArea.setText(selectedDir.getAbsolutePath());	
+			System.setProperty("apple.awt.fileDialogForDirectories", "true");
+			FileDialog fDialog = new FileDialog(this, "Open", FileDialog.LOAD);
+			fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
+			fDialog.setVisible(true);
+			String filepath = fDialog.getFile();
+			if (filepath != null) {
+				directoryTextArea.setText(fDialog.getDirectory() + filepath);
 			}
-			
+			System.setProperty("apple.awt.fileDialogForDirectories", "false");
 		// the browse button was chosen for tool location. open file dialog to change directory.	
 		}else if(arg0.getActionCommand().equals("toolLocationbutton")){
-			final JFileChooser fc = new JFileChooser();
-			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			int returnVal = fc.showOpenDialog(this);
-			//They picked a file
-			if(returnVal == JFileChooser.APPROVE_OPTION){
-				File selectedDir = fc.getSelectedFile();
-				toolLocationTextArea.setText(selectedDir.getAbsolutePath());	
+			FileDialog fDialog = new FileDialog(this, "Open", FileDialog.LOAD);
+			fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.NBCTOOL));
+			fDialog.setVisible(true);
+			String filepath = fDialog.getFile();
+			if (filepath != null) {
+				toolLocationTextArea.setText(fDialog.getDirectory() + filepath);
 			}
 		}else if(arg0.getActionCommand().equals("cancel")){
 			int n = JOptionPane.showConfirmDialog(
