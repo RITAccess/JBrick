@@ -17,6 +17,8 @@ import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
+import com.jbricx.swing.ui.tabs.preference.DirectoryPane;
+import com.jbricx.swing.ui.tabs.preference.JBricxCustomPreferenceDialog;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 
@@ -90,8 +92,9 @@ public class CompileAction extends JBricxAbstractAction {
 							JOptionPane.QUESTION_MESSAGE, null, options,
 							options[0]);
 			if(response == JOptionPane.YES_OPTION){
-				CompilerNotFoundWindow window = new CompilerNotFoundWindow(jBManager);
-				window.setVisible(true);
+				JBricxCustomPreferenceDialog.openPreference(getManager().getShell(), "Compiler Not Found",
+						new DirectoryPane(Preference.NBCTOOL, getManager(), false).createPanel()
+						);
 				return compile(actionText, resultText, finalActionText, buttonText, download);
 			}
 		}

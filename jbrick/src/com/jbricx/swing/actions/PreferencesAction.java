@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.swing.ui.tabs.JBricxPreferenceDialog;
+import com.jbricx.swing.ui.tabs.preference.JBricxPreferenceDialog;
 
 
 

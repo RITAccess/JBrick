@@ -30,6 +30,6 @@ public class FindAction extends JBricxAbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-		FindReplaceDialog.openFindReplace(getManager().getShell(),false,tab);
+		FindReplaceDialog.openFindReplace(getManager().getShell(),tab);
 	}
 }
