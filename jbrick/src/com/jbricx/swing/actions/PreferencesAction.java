@@ -27,5 +27,4 @@ public class PreferencesAction extends JBricxAbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		JBricxPreferenceDialog.openPreference(getManager());
 	}
-
 }

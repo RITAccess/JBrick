@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -33,8 +34,6 @@ import javax.swing.SwingConstants;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
 import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
-
-
 
 @SuppressWarnings("serial")
 public class JBricxStatusPane extends JTabbedPane {
@@ -118,6 +117,17 @@ public class JBricxStatusPane extends JTabbedPane {
 	}
 	
 	/**
+	 * Creates a popup window to inform the user of something.
+	 * @param title Title of the window
+	 * @param text Text to be displayed in the window
+	 */
+	public void popupWindow(String title, String text){
+		JOptionPane.showMessageDialog(
+						this.getParent().getComponents()[0], //Places the window at the center of the editor tab
+						text);
+	}
+	
+	/**
 	 * push messages from compile errors to status pane
 	 * @param map
 	 * @param download
@@ -127,8 +137,10 @@ public class JBricxStatusPane extends JTabbedPane {
 		StringBuffer sb = new StringBuffer();
 		if (map.keySet().size() == 0){
 			sb.append((download ? "Download" : "Compile") + " Successful");
+			popupWindow(sb.toString(), sb.toString() + ".");
 		} else {
-			errorMessage(map, sb);	
+			errorMessage(map, sb);
+			popupWindow("Compile Error", "Errors occured during compilation. Check status pane for more information.");
 		}
 		
 		String[] stringBuffList = sb.toString().split("\n");
@@ -161,7 +173,15 @@ public class JBricxStatusPane extends JTabbedPane {
 		this.repaint();
 	}
 
-	public List<String> errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
+	/**
+	 * Takes a map of error messages from nxc compiler and generates a list of messages.
+	 * Also places a formated string for the location & line of the error, as well as a
+	 * user friendly message of the error into the string buffer provided.
+	 * @param map - key : the string file (filepath), value : list of error messages associated 
+	 * with the file provided by nxc
+	 * @param sb - an empty string buffer that is filled with the error messages
+	 */
+	public void errorMessage(HashMap<String, ArrayList<String>> map, StringBuffer sb) {
 		List<String> errorFile = new ArrayList<String>();
 		List<String> messages = new ArrayList<String>();
 		for (String file : map.keySet()){
@@ -186,8 +206,7 @@ public class JBricxStatusPane extends JTabbedPane {
 					messages.add(error);
 				}
 			}
-		} return messages;
-
+		}
 	}
 }
 

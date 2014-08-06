@@ -19,9 +19,6 @@ public class ExitAction extends JBricxAbstractAction {
 		super("", new ImageIcon(ExitAction.class.getResource("/icons/quit.png")), manager);
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO close() is not implemented

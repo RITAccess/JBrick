@@ -117,6 +117,14 @@ class PianoButton extends ActionButton{
 	private Color hoverColor;
 	private Color pressedColor;
 	
+	/**
+	 * Constructor for a piano button
+	 * @param text - text for button to show
+	 * @param key - key required to trigger buttor
+	 * @param whiteKey - if the key is white (else it's black)
+	 * @param index - location via an index
+	 * @param actionHandler - action for piano key
+	 */
 	PianoButton(String text, char key, final boolean whiteKey, final int index, PianoActionHandler actionHandler) {
 		super(text, key, actionHandler);
 		
@@ -199,22 +207,27 @@ class PianoButton extends ActionButton{
 		this("" + text, text, whiteKey, index, actionHandler);
 	}
 	
-	public boolean isWhite(){
+	/**
+	 * get if the button is white (else it's assumed black)
+	 * @return boolean - true if the color is white
+	 */
+	protected boolean isWhite(){
 		return this.getBackground() == Color.WHITE;
 	}
 	
-	public static void setParentPanel(Component panel){
+	/**
+	 * setParentPanel - sets the parent panel for the button
+	 * @param panel
+	 */
+	protected static void setParentPanel(Component panel){
 		PianoButton.panel = panel;
 	}
 	
-	public static void setSize(int width, int height, int xOffset, int yOffset){
-		PianoButton.xOffset = xOffset;
-		PianoButton.yOffset = yOffset;
-		PianoButton.width = width;
-		PianoButton.height = height;
-	}
-	
-	public static void setKeyCount(int count){
+	/**
+	 * setKeyCount - sets the key count to parameter count
+	 * @param count
+	 */
+	protected static void setKeyCount(int count){
 		PianoButton.keyCount = count;
 	}
 }
@@ -230,6 +243,12 @@ class ActionButton extends JButton{
 	
 	final char key;
 	boolean keyHit = false;
+	/**
+	 * Constructor for ActionButton
+	 * @param label - text for the button
+	 * @param key - key that triggers button
+	 * @param actionHandler - action associated with button
+	 */
 	ActionButton(String label, final char key, PianoActionHandler actionHandler){
 		this.add(new JLabel(label));
 		this.key = key;
@@ -255,9 +274,19 @@ class ActionButton extends JButton{
 			this.setAction(buttonPressed);
 		}
 	}
+	/**
+	 * ActionButton - alternate constructor for no text in button
+	 * @param key 
+	 * @param actionHandler
+	 */
 	ActionButton(final char key, PianoActionHandler actionHandler){
 		this("", key, actionHandler);
 	}
+	
+	/**
+	 * setAction - adds an action to this ActionButton
+	 * @param newAction
+	 */
 	public void setAction(AbstractAction newAction){
 		this.addActionListener(newAction);
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -285,7 +314,13 @@ class OctaveChangeAction extends AbstractAction{
 	int direction;
 	ActionButton button;
 	
-	public OctaveChangeAction(JLabel ol, int d,ActionButton button){
+	/**
+	 * Constructor - way to control the octaves of the piano keyboard
+	 * @param ol - Octave Label
+	 * @param d - Direction ("+" goes up, "-" goes down)
+	 * @param button - ActionButton
+	 */
+	protected OctaveChangeAction(JLabel ol, int d,ActionButton button){
 		this.ol = ol;
 		this.direction = d;
 		this.button = button;

@@ -1,11 +1,11 @@
 package com.jbricx.swing.actions;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FilenameFilter;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
@@ -16,7 +16,7 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 @SuppressWarnings("serial") 
 public class OpenAction extends JBricxAbstractAction {
 
-  /**
+/**
    * OpenAction constructor
    */
   public OpenAction(final JBricxManager manager) {
@@ -26,36 +26,19 @@ public class OpenAction extends JBricxAbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		class MyCustomFilter extends FileFilter {
-	        @Override
-	        public boolean accept(File file) {
-	            // Allow only directories, or files with ".nxc" extension
-	        	String extension = getExtension(file);
-	        	boolean validFile = extension.equalsIgnoreCase(PreferenceStore.FILTER_EXTENSION);
-	        	
-	        	return file.isDirectory() || validFile;
-	        }
-	        @Override
-	        public String getDescription() {
-	            return PreferenceStore.FILTER_NAME;
-	        }
-	    }
-		MyCustomFilter filter = new MyCustomFilter();
-		
-		final JFileChooser fileOpener = new JFileChooser();
-		fileOpener.setFileFilter(filter);
-		fileOpener.setCurrentDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
-		
-		//fileOpener.setFileFilter(new FileNameExtensionFilter("Accepted",PreferenceStore.FILTER_EXTENSIONS));
-		int returnVal = fileOpener.showOpenDialog(getManager().getShell());
-		if(returnVal == JFileChooser.APPROVE_OPTION){
-			File selectedFile = fileOpener.getSelectedFile();
-			if(selectedFile.exists()){
-				getManager().getTabFolder().open(selectedFile.getAbsolutePath());
-//			    JBricxTabItem tab =(JBricxTabItem)((RTextScrollPane)getManager().getTabFolder().getSelectedComponent()).getViewport().getView();
-//			    ((RTextAreaUI) tab.getUI()).setAudioBreaks(BreakpointsStore.getBreakLines(tab.getFileName()));
-//			    tab.clearUndo();
+		FileDialog fDialog = new FileDialog(getManager().getShell(), "Open", FileDialog.LOAD);
+		fDialog.setFilenameFilter(new FilenameFilter(){
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.toLowerCase().endsWith(".nxc");
 			}
+		});
+		fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
+		fDialog.setVisible(true);
+		String filepath = fDialog.getFile();
+		if (filepath != null) {
+			filepath = fDialog.getDirectory() + filepath;
+			getManager().getTabFolder().open(filepath);
 		}
 		
 	}
@@ -69,8 +52,7 @@ public class OpenAction extends JBricxAbstractAction {
 		String name = file.getName();
 		if(name.lastIndexOf(".") > 0){
 			return "." + name.substring(name.lastIndexOf(".")+1);
-		}
-		else{
+		} else {
 			return "";
 		}
 	}

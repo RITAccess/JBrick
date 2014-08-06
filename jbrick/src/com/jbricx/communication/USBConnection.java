@@ -17,7 +17,10 @@ import org.usb4java.LibUsbException;
  */
 public class USBConnection
 {
-	// TODO remove MSCommand
+	/**
+	 * MSCommand Enum 
+	 * enum for determining if command requires a response or not
+	 */
 	enum MSCommand {
 		NO_RESPONSE((byte) 0x80),
 		RESPONSE((byte) 0x01),
@@ -34,6 +37,11 @@ public class USBConnection
 	/*
 	 * NXT -- VENDOR : 0x0694, PRODUCT : 0x0002, INTERFACE : 0, ENDPOINT_OUT : 0x01, ENDPOINT_IN : 0x82
 	 * EV3 -- VENDOR : 0x1684, PRODUCT : 0x0005 
+	 */
+	/**
+	 * MindStormDevice Enum
+	 * Used for determining which MindStormDevice is being used
+	 * (EV3 is not currently supported... so NXT is the only viable option)
 	 */
 	public enum MindStormDevice{
 		NXT((short) 0x0694, (short) 0x0002, 0, (byte) 0x01, (byte) 0x82),
@@ -64,6 +72,15 @@ public class USBConnection
 		}
 	}
 
+	/**
+	 * findDevice - finds and returns the device that is lasted connected, and
+	 * matches both the vendor and product id
+	 * (please use enums provided in MindStormDevice for parameters)
+	 * 
+	 * @param vendorId - vendor id for USB device
+	 * @param productId - product id for USB device
+	 * @return
+	 */
 	private static Device findDevice(short vendorId, short productId)
 	{
 	    // Read the USB device list
@@ -94,20 +111,40 @@ public class USBConnection
 	    return null;
 	}
 	
+	/**
+	 * isConnected - returns if NXT device is connected via USB
+	 * @return true if at least one NXT device is connected
+	 */
 	public static boolean isConnected(){
 		return isConnected(MindStormDevice.NXT);
 	}
 	
+	/**
+	 * isConnected - returns if mindstorm device is connected via USB
+	 * @param mindStormDevice
+	 * @return true if at least one mindstorm device (matching parameters) is connected
+	 */
 	public static boolean isConnected(MindStormDevice mindStormDevice){
 		LibUsb.init(null);
         Device device = findDevice(mindStormDevice.vendor, mindStormDevice.product);
         return device != null;
 	}
 	
+	/**
+	 * connect - sends a byte buffer to a NXT device
+	 * @param commandBuffer - the byte buffer
+	 * @return - error / success values (if an error, stream to System.err will be produced)
+	 */
 	public static int connect(ByteBuffer commandBuffer){
 		return connect(MindStormDevice.NXT, commandBuffer);
 	}
 
+	/**
+	 * connect - sends a byte buffer to a mindstorm device
+	 * @param mindStormDevice - the mindstorm device that is connected 
+	 * @param commandBuffer - the byte buffer
+	 * @return - error / success values (if an error, stream to System.err will be produced)
+	 */
 	public static int connect(MindStormDevice mindStormDevice, ByteBuffer commandBuffer) {
     	int result = LibUsb.init(null);
     	if (result != LibUsb.SUCCESS){

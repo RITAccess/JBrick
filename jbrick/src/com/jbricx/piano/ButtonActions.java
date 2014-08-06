@@ -1,5 +1,6 @@
 package com.jbricx.piano;
 
+import java.awt.FileDialog;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -16,7 +17,6 @@ import java.io.PrintWriter;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -72,7 +72,7 @@ public class ButtonActions {
 				
 				final Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Play",ButtonActions.this.play);
+					window.accessibleStatus.setText("No Notes To Play");
 					return;
 				}
 				int[] lengths = new int[notes.length];
@@ -108,7 +108,7 @@ public class ButtonActions {
 			public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Copy",ButtonActions.this.copy);
+					window.accessibleStatus.setText("No Notes To Copy");
 					return;
 				}
 				String copyStr = Note.getNXC(notes);
@@ -126,29 +126,33 @@ public class ButtonActions {
             public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes To Save",ButtonActions.this.save);
+					window.accessibleStatus.setText("No Notes To Save");
 					return;
 				}
-				String startStr = "task main()\n{\n";
-				String saveStr = Note.getNXC(notes);
-                JFileChooser saveFile = new JFileChooser();
-                if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
-                	PrintWriter out = null;
-                	try {
-						out = new PrintWriter(saveFile.getSelectedFile().getAbsolutePath());
-						out.println(startStr + saveStr + "}");
+				String saveStr = String.format("task main()\n{\n%s}",Note.getNXC(notes));
+				FileDialog fDialog = new FileDialog(window, "Save", FileDialog.SAVE);
+                fDialog.setVisible(true);
+        		String filepath = fDialog.getFile();
+        		if (filepath != null) {
+        			filepath = fDialog.getDirectory() + filepath;
+    				if (!filepath.toLowerCase().endsWith(".nxc")) {
+        				    filepath = filepath + ".nxc";
+        			}
+    				PrintWriter writer = null;
+					try {
+						writer = new PrintWriter(filepath);
+	    				writer.println(saveStr);
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} finally {
-						out.close();
+						writer.close();
 					}
-                	
-                };
+        		}
             }
 			
 		});
 		
+		// THE HELP BUTTON
 		this.help = new JButton("Help");
 		this.help.addActionListener(new ActionListener(){
 
@@ -181,7 +185,8 @@ public class ButtonActions {
 			public void actionPerformed(ActionEvent arg0) {
 				Note[] notes = Note.getNotesFromText(textViewPanel.getStringNotes());
 				if (notes == null){
-					window.accessibleStatus.readLabel("No Notes to Delete",ButtonActions.this.back);
+					window.accessibleStatus.setText("No Notes to Delete");
+					Toolkit.getDefaultToolkit().beep();
 					return;
 				}
 				if((textViewPanel.getText().contains("\n"))) {
@@ -217,7 +222,6 @@ public class ButtonActions {
 				ButtonActions.this.nxtOutput = (arg0.getStateChange() == ItemEvent.SELECTED ? true : false);
 				ButtonActions.this.play.setEnabled(nxtOutput | javaOutput);
 			}
-
 			
 		});
 	}
@@ -261,6 +265,10 @@ public class ButtonActions {
 		back.setToolTipText("Deletes last note typed");
 	}
 	
+	/**
+	 * soundCheck - setting up the checkbox panel
+	 * @return the checkbox Panel
+	 */
 	public JPanel soundCheck() {
 		checkPanel = new JPanel(new GridLayout(1,2));
 		checkPanel.add(javaBox);
@@ -290,6 +298,11 @@ public class ButtonActions {
 	
 }
 
+/**
+ * Note class for organizing and communicating note
+ * information within the NotesView text panel
+ *
+ */
 class Note{
 	String note;
 	int length;
@@ -306,10 +319,19 @@ class Note{
 		this.length = (2000 / Integer.parseInt(len[1])) * Integer.parseInt(len[0]);
 	}
 	
+	/**
+	 * getNXC - get the code (as a string) for playing the note in NXC.
+	 * @return string of valid NXC code.
+	 */
 	public String getNXC(){
 		return String.format("PlayTone(%d, %d); Wait(%d);\n", (int)AudioPlayer.getFreq(note), length, length);
 	}
 	
+	/**
+	 * getNXC - get the code (as a string) for playing the notes in NXC.
+	 * @param notes - a list of notes that need to be placed as NXC code
+	 * @return the full string of NXC valid code.
+	 */
 	public static String getNXC(Note[] notes){
 		String str = "";
 		for (Note n: notes){

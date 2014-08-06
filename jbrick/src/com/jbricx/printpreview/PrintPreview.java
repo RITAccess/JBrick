@@ -319,6 +319,13 @@ public class PrintPreview {
         previewHost.add(new JScrollPane(previewPane));
     }
 
+    /**
+     * creates a new menu item
+     * @param a - action for the item
+     * @param mnemonic - key to trigger item
+     * @param accel 
+     * @return
+     */
     private JMenuItem createMenuItem(Action a, int mnemonic, KeyStroke accel) {
         JMenuItem item = new JMenuItem(a);
         item.setMnemonic(mnemonic);
