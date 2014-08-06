@@ -14,6 +14,11 @@ import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 
 @SuppressWarnings("serial")
+/**
+ * This action reads off information about the line the caret is currently on.
+ * @author Roderick Kendrick
+ *
+ */
 public class ReadLineInfoAction extends JBricxAbstractAction{
 
 	private VoiceManager voiceManager;
@@ -26,7 +31,7 @@ public class ReadLineInfoAction extends JBricxAbstractAction{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		String lineInfo = "No line selected";
+		String lineInfo = "";
 	    JBricxTabItem tab = getManager().getTabFolder().getSelection();
 	    
 	    lineInfo = "Line number " + (((RTextAreaUI) tab.getUI()).getCurrentLine()+1);
