@@ -1,0 +1,275 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww14000\viewh19400\viewkind1
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 \
+\
+\
+\
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc
+
+\b\fs52 \cf0 Project Zero\
+
+\i\b0\fs24 An Introduction to Programming on the Lego Mindstorms NXT
+\i0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc
+
+\b\fs52 \cf0 Student Guide
+\b0\fs24 \
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b\fs36 \cf0 \
+1 Overview\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b0\fs24 \cf0 \
+Before you can begin, make sure to review the following informa
+\fs26 tion on how to set up your NXT robot and the JBrick program. There are a few terms that you should familiarize yourself with as well as they will come up quite often in the following exercises. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b\fs36 \cf0 2 Basic Terms
+\b0\fs26 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 JBrick - 
+\b0 The Lego Mindstorm NXT programming environment you will be using for all of the activities. The environment using the NXC programming language. \
+\
+
+\b NXC - 
+\b0 NXC stands for 
+\b N
+\b0 ot E
+\b X
+\b0 actly 
+\b C. 
+\b0 It is the programming language used for the Lego Mindstorm NXT robots. \
+\
+
+\b Brick - 
+\b0 The device that you will be downloading all of your programs to after writing and compiling them in the JBrick environment. It will connect to your computer via the USB cable that will be provided. \
+\
+
+\b Port -
+\b0  The kit comes with various electrical components such as motors. There are wires as well that will connect these components to ports on the Brick. These ports are labeled for your coding purposes. Check which ports you have hooked the components up to when typing your commands. \
+\
+
+\b Compile - 
+\b0 How the computer \'93translates\'94 the code that you will write into a form that the Brick will understand. \
+\
+
+\b Download - 
+\b0 Programs that are downloaded will appear on the Brick under My Files > Software Files. From there, you can select which program you want the Brick to run. \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b\fs36 \cf0 3 Basic Set up \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b0\fs24 \cf0 On your computer, locate the JBrick program and open it. Once opened, you will have to set up your compiler in the Preferences window. You can open up the Preferences window from the toolbar at the top, the Edit drop down menu, or by pressing Control/Command + R. \
+\
+In the Preference menu. there is a box called NBC Compiler Location. If there isn\'92t already a default compiler set, select the Browse button. In the JBrick package, a file called Compilers should be included. \
+	If you are using a Mac, select the compiler called just nbc and then select OK.\
+	If you are using a PC, select the compiler called nbc.exe and then select OK. \
+Once you have selected a compiler, select OK in the Preferences Window.\
+\
+You are now ready to start programming!
+\b\fs36 \
+\
+4 Basics of NXT\
+\
+
+\b0\fs24 Programming can seem complicated at first, but once you have the hang of it, it\'92s amazing what you can create! In order to tell your robot how to do something, you will need to use keywords to define it\'92s actions. Here is what you may need to  help you get started and understand what it is you\'92re typing. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 task
+\b0  main () - Each program starts with the creation of a main method. You assign everything you want your robot to do to the main method. You can also have other methods in your program, but the robot will only perform them if they are called to the main method. \
+\
+Semicolons (;) - A semicolon must be used at the end of each statement in order to end it. \
+\
+4.1 Basic Functions: \
+	To move forward: OnFwd(OUT_* ports of wheels, speed); \
+	To move backwards: OnRev(OUT_ports of wheels, speed);\
+	To determine the function duration: Wait(time);  (In seconds)\
+	To power off wheels: Off(OUT_ports of wheels);\
+	* ports of wheels: The motors that the Brick is hooked up to \
+	Ex. \
+	task main () \{\
+	// You can place two motors in the same function by typing them next to each other\
+	OnFwd(OUT_AB, 75);\
+	Wait(1000);\
+	// Or, to make it turn, activate just one motor at a time. \
+	OnRev(OUT_A,75);\
+	Wait(50);\
+	OnRev(OUT_B,75);\
+	Off(OUT_AB);\
+	\}\
+\
+4.2 To Use Sensors \
+	When using light/sound sensor: Sensor(IN_port of sensor)\
+	Declare light sensor: SetSensorLight(IN_port of sensor); \
+	Declare sound sensor: SetSensorSound(IN_port of sensor);\
+	Declare touch sensor: SetSensor(IN_port of sensor,SENSOR_TOUCH);\
+	When using touch sensor: SENSOR_port of sensor\
+	Declare ultrasonic sensor: SetSensorLowspeed(Port of sensor);\
+	When using ultrasonic sensor: SensorUS(IN_port of sensor);\
+	Ex. \
+	task main() \{\
+	SetSensorLight(IN_A);\
+	SetSensorSound(IN_B);\
+	SetSensor(IN_C, SENSOR_TOUCH);\
+	SetSensorLowspeed(IN_1);\
+	\
+	if (Sensor(IN_A) < THRESHOLD) // or (IN_B) \{\
+	// set statement \
+	\}\
+	if (SENSOR_C == 1) \{\
+	// set statements \
+	\}\
+	// set statement \
+	\}\
+	if (SensorUS(IN_1); \
+	// some statement\
+\
+4.3 Variables, Loops, and Conditions\
+	To declare a variable: data type + name of variable = value;\
+	Ex. int speed = 65;\
+	To declare a constant #define + name of variable (CAPS)+ value;\
+	Ex. #define SLEEP 40;\
+	For an if statement: if(condition) \{statement;\}\
+	Ex. if (int speed == 65) \{\
+	OnFwd(OUT_B,speed);\
+	\}\
+	To use a while loop: while (condition) \{statement;\} \
+	Ex. while (speed != 70) \{\
+	OnFwd(OUT_B,speed);\
+	Wait(50);\
+	speed = speed + 1;\
+	\}\
+	To use a do while loop do \{statement;\} while (condition);\
+	Ex. do \{\
+	OnFwd (OUT_B, speed);\
+	Wait (50); \
+	speed = speed + 1;\
+	while (speed != 70);\
+	\}\
+	To play a tone: PlayTone (40, 220); // play for n milliseconds. \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs36 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 5 The JBrick Environment\
+\
+	
+\b0\fs24 The JBrick programming environment is divided up into four sections in the main area. \
+	\
+	
+\b The Toolbar - 
+\b0 Holds several actions that are available for your use in editing \
+	code.  \
+\
+	
+\b The Editor Pane - 
+\b0 Where you will be able to create, view, and modify your code.\
+\
+	
+\b The Status Pane - 
+\b0 Where all messages in reference to your code will be \
+	displayed. These include error messages and whether compiling and downloading were \
+	successful. \
+	\
+	
+\b The File Viewer - 
+\b0 When you first open JBrick, you will not see the file viewer as it is a \
+	feature that you can toggle open and closed on the left side of the editor and status pane. \
+	You can open it from the View drop down menu. It allows you to view and open other \
+	available files. \
+\
+	There are also multiple dialog windows that can be accessed through the toolbar, drop \
+	down menu, or hotkeys. \
+	\
+	
+\b Find and Replace - 
+\b0 Can be used to locate instances of text. You can either replace \
+	them one at a time, or replace all occurrences at once. \
+	\
+	
+\b Go-To -
+\b0  Can be used to go to any line number in your program\
+\
+	
+\b Preferences - 
+\b0 Besides choosing a compiler, this window can also be used to \
+	 change the environment\'92s color themes, font size, save location, and other options. All \
+	changes can be saved for the next time you open up the program. \
+\
+	
+\b Piano Composer - 
+\b0 Can be used to create simple songs for you to program into \
+	your robot. You can select note lengths and octaves. Selecting the Copy button will create \
+	a copy for you that you can use in your text environment. \
+\
+	
+\b Help Browser - 
+\b0 Contains more information of JBrick with examples for when you may\
+	be unsure what to do next. The Shortcuts button in the toolbar and drop down menu will \
+	bring you to the Shortcuts tab of the help browser. \
+	
+\b\fs36 \
+\
+6 Hotkeys \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\fs24 \cf0 	
+\b0 If you\'92re on a Mac, COMMAND should be used in place of CTRL.\
+	\
+	New File: 			CTRL + N\
+	Open File: 			CTRL + O\
+	Save File:  			CTRL + S\
+	Print File: 			CTRL + P\
+	Undo Action: 			CTRL + Z\
+	Redo Action: 			CTRL + SHIFT + Z\
+	Cut Text: 			CTRL + X\
+	Copy Text: 			CTRL + C\
+	Paste Text: 			CTRL + V\
+	Select All: 			CTRL + A\
+	Find Text: 			CTRL + F\
+	Go-To Line:			CTRL + G\
+	Audio Break: 			CTRL + B\
+	Raise Break Tone: 		CTRL  + SHIFT + =\
+	Lower Break Tone: 		CTRL+ SHIFT + -\
+	Compile: 			F5\
+	Download: 			F6\
+	Download and Debug: 	F7\
+	Run: 				F8\
+	Preferences: 			CTRL + R\
+	Piano Composer: 		CTRL + M\
+	Help Browser: 		F1\
+	Increase Font Size: 		CTRL + = \
+	Decrease Font Size:		CTRL + - \
+	Close File and Dialogs: 	CTRL + W	\
+	Exit Program: 			CTRL + Q
+\fs36 \
+	}
