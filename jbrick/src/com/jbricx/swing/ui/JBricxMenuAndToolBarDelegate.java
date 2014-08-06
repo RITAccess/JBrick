@@ -46,6 +46,7 @@ import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
 import com.jbricx.swing.actions.RaiseToneAction;
+import com.jbricx.swing.actions.ReadLineInfoAction;
 import com.jbricx.swing.actions.RedoAction;
 import com.jbricx.swing.actions.ResetViewAction;
 import com.jbricx.swing.actions.RunAction;
@@ -111,10 +112,11 @@ public class JBricxMenuAndToolBarDelegate {
 		FIND(FindAction.class, "Find and Replace", KeyStroke.getKeyStroke(KeyEvent.VK_F, modifier), 1, MenuEnum.editMenu),
 		PREFERENCES(PreferencesAction.class, KeyStroke.getKeyStroke(KeyEvent.VK_R, modifier), 3, MenuEnum.editMenu),
 		
-		GOTO(GotoAction.class, "Go-to line", KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), 1, MenuEnum.toolsMenu),
+		GOTO(GotoAction.class, "Go-to line", KeyStroke.getKeyStroke(KeyEvent.VK_T, modifier), 1, MenuEnum.toolsMenu),
 		AUDIOBREAK(AudioBreakAction.class, "Audio Break", KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), 2, MenuEnum.toolsMenu),
 		RAISETONE(RaiseToneAction.class, "Raise Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.toolsMenu),
 		LOWERTONE(LowerToneAction.class, "Lower Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.toolsMenu),
+		READLINEINFO(ReadLineInfoAction.class, "Read Line Info", KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), -1, MenuEnum.toolsMenu),
 		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), 3, MenuEnum.toolsMenu),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.compileMenu),
