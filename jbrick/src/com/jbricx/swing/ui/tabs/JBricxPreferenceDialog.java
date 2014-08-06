@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -64,7 +63,7 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 		this.setSize(new Dimension(550,660));
 		this.manager = manager;
 		// Setting up the Theme Panel
-		themePanel = new ThemePane();
+		themePanel = new ThemePane(manager);
 		themePanel.getAccessibleContext().setAccessibleName("Theme Selector");
 		
 		// Setting up the Color Panel
@@ -87,11 +86,11 @@ public class JBricxPreferenceDialog extends JBricxDialog {
 		miscPanel.getAccessibleContext().setAccessibleName("Miscellaneous Settings");
 		
 		// Setting up the NBC Panel
-		nbcPanel = new DirectoryPane(Preference.NBCTOOL, JFileChooser.FILES_ONLY);
+		nbcPanel = new DirectoryPane(Preference.NBCTOOL, manager, false);
 		nbcPanel.getAccessibleContext().setAccessibleName("NBC Compilier Location");
 		
 		// Setting up the Workspace Panel
-		workspacePanel = new DirectoryPane(Preference.WORKSPACE, JFileChooser.DIRECTORIES_ONLY);
+		workspacePanel = new DirectoryPane(Preference.WORKSPACE, manager, true);
 		workspacePanel.getAccessibleContext().setAccessibleName("WorkSpace Location");
 		
 		// Setting up the button Panel
@@ -226,10 +225,10 @@ class DirectoryPane extends PreferencePanel{
 	Preference pref;
 	/**
 	 * DirectoryPane allows user to choose a file or directory setting.
-	 * @param pref The preference assosiated with this object.
-	 * @param acceptedType One of the JFileChooser accepted file types (ex: JFileChooser.FILESONLY).
+	 * @param pref - The preference assosiated with this object.
+	 * @param onlyDir - only directories can be selected (otherwise files) .. must be defined for mac
 	 */
-	DirectoryPane(Preference pref, final int acceptedType){
+	DirectoryPane(Preference pref, final JBricxManager manager, final boolean onlyDir){
 		super(pref);
 		this.pref = pref;
 		this.setLayout(new GridLayout(1,4));
@@ -243,14 +242,19 @@ class DirectoryPane extends PreferencePanel{
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final JFileChooser fc = new JFileChooser();
-				fc.setFileSelectionMode(acceptedType);
-				int returnVal = fc.showOpenDialog(DirectoryPane.this);
-				//They picked a file
-				if(returnVal == JFileChooser.APPROVE_OPTION){
-					File selectedDir = fc.getSelectedFile();
-					textArea.setText(selectedDir.getAbsolutePath());	
+				if (onlyDir) {
+					System.setProperty("apple.awt.fileDialogForDirectories", "true");
+				}
+				FileDialog fDialog = new FileDialog(manager.getShell(), "Open", FileDialog.LOAD);
+				fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
+				fDialog.setVisible(true);
+				String filepath = fDialog.getFile();
+				if (filepath != null) {
+					textArea.setText(fDialog.getDirectory() + filepath);	
 					JBricxPreferenceDialog.isDirty = true;
+				}
+				if (onlyDir) {
+					System.setProperty("apple.awt.fileDialogForDirectories", "false");
 				}
 			}
 		});
@@ -279,7 +283,7 @@ class ThemePane extends PreferencePanel {
 	JTextField textArea;
 	JButton button;
 	
-	ThemePane() {
+	ThemePane(final JBricxManager manager) {
 		super(Preference.THEMEXML);
 		this.setLayout(new BorderLayout());
 		textArea = new JTextField(12);
@@ -292,16 +296,17 @@ class ThemePane extends PreferencePanel {
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final JFileChooser fc = new JFileChooser(PreferenceStore.getString(Preference.THEMEXML));
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int returnVal = fc.showOpenDialog(ThemePane.this);
-				//They picked a file
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File selectedDir = fc.getSelectedFile();
-					textArea.setText(selectedDir.getAbsolutePath());
-					updateSelector();
-					JBricxPreferenceDialog.isDirty = true;
-				}
+				
+				System.setProperty("apple.awt.fileDialogForDirectories", "true");
+				FileDialog fDialog = new FileDialog(manager.getShell(), "Choose Directory", FileDialog.LOAD);
+				fDialog.setDirectory(PreferenceStore.getString(Preference.THEMEXML));
+				fDialog.setVisible(true);
+				String filepath = fDialog.getFile();
+				textArea.setText(filepath);
+				updateSelector();
+				JBricxPreferenceDialog.isDirty = true;
+				
+				System.setProperty("apple.awt.fileDialogForDirectories", "false");
 			}
 		});
 		themeSelector.addItemListener(new ItemListener(){

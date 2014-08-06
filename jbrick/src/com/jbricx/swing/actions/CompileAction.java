@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.communication.NXTAccess;
+import com.jbricx.pjo.ActionControlClass;
 import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
@@ -71,8 +72,8 @@ public class CompileAction extends JBricxAbstractAction {
 	    //If the file hasn't been saved then prompt the user to save.
 	    if(!saved){
 	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOSAVEONCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText)){
-		    	SaveAction action = new SaveAction(jBManager);
-		    	saved = action.saveFile();
+	    		ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
+	    	  			false, getManager());
 	    	}
 	    }
 	    

@@ -101,23 +101,14 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 	/**
 	 * Returns an ArrayList of Strings, each representing the absolute file path
-	 * of any files that were left open for the next time. Also includes any
-	 * .bak.nxc files in the working directory.
+	 * of any files that were left open for the next time.
 	 * 
-	 * @return
+	 * @return ArrayList of absolute file path left open
 	 * 
 	 */
 	private ArrayList<String> getRecentFiles() {
 		ArrayList<String> recentfiles = new ArrayList<String>();
 
-		File dir = new File(PreferenceStore.getString(Preference.WORKSPACE));
-		String[] fileNames = dir.list();
-
-		for (int i = 0; fileNames != null && i < fileNames.length; i++) {
-			if (fileNames[i].endsWith(".bak.nxc")) {
-				recentfiles.add(dir.getAbsolutePath() + "\\" + fileNames[i]);
-			}
-		}
 		for (String s : prefs.get(PreferenceStore.RECENTFILES, "").split(";")) {
 			recentfiles.add(s);
 		}
@@ -206,32 +197,26 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	}
 
 	/**
-	 * Closes file. If the file is dirty, asks if it should be saved first. If
-	 * true, user has chosen to close the file, or the file was not dirty. If
-	 * false, user wants to cancel the close. Have to do some black magic to get
-	 * the Tab item out of the scrollpane.
+	 * Close file logic. provides a dialog for closing files if actions still need
+	 * to take place before finally removing the file.
 	 * 
-	 * @param index
-	 *            of the file to close.
+	 * @param n - index of the file to close.
+	 * @return if the user chooses not to close the file after all
 	 */
 	public boolean closeFile(int n) {
 		// This first if statement is logic
 		// for deciding when to close a file if there is only one left.
 		if ((!getSelection().isNewFile()
-				|| getSelection().getFileFullPath().endsWith(".bak.nxc") || getSelection()
-				.isDirty())
-				|| closingTime || getComponentCount() - 1 > 1) {
+				|| getSelection().isDirty()) || closingTime 
+				|| getComponentCount() - 1 > 1) {
 
 			JBricxTabItem tabItem = (JBricxTabItem) ((JScrollPane) getComponentAt(n))
 					.getViewport().getView();
-			String fileName = tabItem.getFileFullPath();
 			// User needs to be prompted to save file before closing
-			if (tabItem.isDirty()
-					|| (tabItem.isNewFile() && fileName.endsWith(".bak.nxc"))) {
-
+			if (tabItem.isDirty() || (tabItem.isNewFile() && !tabItem.getText().equals(""))) {
 				Object[] options = { "Save", "Don't save", "Cancel" };
-				int overwrite = JOptionPane
-						.showOptionDialog(
+				// switch based on JOptionPane
+				switch (JOptionPane.showOptionDialog(
 								this,
 								"Changes to \""
 										+ tabItem.getFileName()
@@ -239,87 +224,28 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 								"Unsaved Changes",
 								JOptionPane.YES_NO_CANCEL_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null, options,
-								options[0]);
-				// User wishes to save the file before closing.
-				if (overwrite == JOptionPane.YES_OPTION) {
-					boolean saveSuccess;
-
-					if (tabItem.getFileFullPath() != null
-							&& tabItem.getFileFullPath().endsWith(
-									".bak.nxc")) {
-
-						String fpathname = tabItem.getFileFullPath();
-						saveSuccess = ActionControlClass.saveFile(tabItem,
-								true, manager);
-						if (!tabItem.getFileFullPath().endsWith(".bak.nxc")) {
-							// File was successfully saved, cleanup the
-							// temporary file
-							File f = new File(fpathname);
-							f.delete();
-						}
-					} else {
-						saveSuccess = ActionControlClass.saveFile(tabItem,
-								false, manager);
-					}
-
-					if (saveSuccess) {
-						closingCheck(tabItem);
-						if (!closingTime) {
-							keepAFileOpen();
-						}
-						return true;
-					} else {
-						return false;
-					}
-
-					// User said they do not wish to save (close without saving)
-				} else if (overwrite == JOptionPane.NO_OPTION) {
-					// User chose not to save .bak.nxc file. Delete it.
-					if (tabItem.getFileFullPath().endsWith(".bak.nxc")) {
-						String fpathname = tabItem.getFileFullPath();
-						File f = new File(fpathname);
-						f.delete();
-					} else {
-						closingCheck(tabItem);
-					}
-					keepAFileOpen();
-					return true;
-					// user chose to cancel or hit x. Do nothing
-				} else {
+								options[0])
+						) {
+				case JOptionPane.CANCEL_OPTION :
 					return false;
+				case JOptionPane.YES_OPTION :
+					ActionControlClass.saveFile(tabItem, false, manager);
+					break;
+				case JOptionPane.NO_OPTION : break;
+				default : break;
 				}
-				// File was already saved, do not need to prompt
-			} else {
-				closingCheck(tabItem);
-				keepAFileOpen();
-				return true;
 			}
-		} else {
-			return false;
+			if (closingTime){
+				listOfFiles.add(tabItem.getFileFullPath());
+			} else {
+				listOfFiles.remove(tabItem.getFileFullPath());
+			}
 		}
-	}
-	
-	/**
-	 * Preforms a check on a tab to decide what it should do while closing this tab.
-	 * @param tab
-	 */
-	private void closingCheck(JBricxTabItem tab){
-		if (closingTime && !tab.isNewFile() && !listOfFiles.contains(tab.getFileFullPath())) {
-				listOfFiles.add(tab.getFileFullPath());
+		
+		if (!closingTime && (this.getTabCount() == 1)){
+			openNewFile(); // if their are no other files open, have a new file open
 		}
-		else if(!closingTime && listOfFiles.contains(tab.getFileFullPath())){
-			listOfFiles.remove(tab.getFileFullPath());
-		}
-	}
-
-	/**
-	 * Used to keep one file tab open if all else are closed.
-	 */
-	private void keepAFileOpen() {
-		if (getComponentCount() == 2) {
-			openNewFile();
-		}
-
+		return true;
 	}
 
 	/**
