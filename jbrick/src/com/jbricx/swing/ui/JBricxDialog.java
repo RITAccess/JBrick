@@ -27,6 +27,9 @@ public class JBricxDialog extends JDialog {
 	public JBricxDialog(JFrame shell,String title,Boolean modal) {
 		super(shell,title,modal);	
 		final SourceDataLine line = AudioPlayer.openLine();
+		this.setVisible(!modal);
+		this.requestFocus();
+		this.setLocation(shell.getX() + shell.getWidth()/2,shell.getY()+shell.getY()/3);
 		Integer modifier = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		KeyStroke closeKeys = KeyStroke.getKeyStroke(KeyEvent.VK_W,modifier,false);
 		Action closeAction = new AbstractAction() {
@@ -39,9 +42,6 @@ public class JBricxDialog extends JDialog {
 		};
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(closeKeys,"Close");
 		this.getRootPane().getActionMap().put("Close", closeAction);
-		this.setVisible(!modal);
-		this.requestFocus();
-		this.setLocation(shell.getX(),shell.getY());
 	}	
 }
 

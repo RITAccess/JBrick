@@ -169,8 +169,6 @@ public class PianoWindow extends JBricxDialog implements WindowListener {
 		mainPanel.add(accessibleStatus, gbCon);
 		mainScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.add(mainScroll);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
 		this.pack();
 		this.setTitle("Piano Composer");
 		
