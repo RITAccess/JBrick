@@ -45,7 +45,6 @@ public class CompileAction extends JBricxAbstractAction {
 	 */
 	public HashMap<String, ArrayList<String>> run(){
 
-		
 		// runs the nbc compiler
 		HashMap<String, ArrayList<String>> value =
 				NXTAccess.compile(
@@ -74,8 +73,8 @@ public class CompileAction extends JBricxAbstractAction {
 	    //If the file hasn't been saved then prompt the user to save.
 	    if(!saved){
 	    	if(PreferenceStore.getBool(PreferenceStore.Preference.AUTOSAVEONCOMPILE) || saveDialog(tab, actionText, resultText, finalActionText, buttonText)){
-	    		ActionControlClass.saveFile(getManager().getTabFolder().getSelection(),
-	    	  			false, getManager());
+	    		ActionControlClass.saveFile(getManager().getTabFolder().getSelection(), false, getManager());
+	    		saved = true;
 	    	}
 	    }
 	    

@@ -37,8 +37,7 @@ public class OpenAction extends JBricxAbstractAction {
 			@Override
 			public void run() {
 				FileChooser fChooser = new FileChooser();
-				fChooser.getExtensionFilters().add(extFilterNXC);
-				fChooser.getExtensionFilters().add(extFilterAll);
+				fChooser.getExtensionFilters().addAll(extFilterNXC, extFilterAll);
 				if(fChooser.getInitialDirectory() == null){
 					fChooser.setInitialDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
 				}
