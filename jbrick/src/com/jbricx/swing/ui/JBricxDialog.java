@@ -4,16 +4,12 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.sound.sampled.SourceDataLine;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
-
-import com.jbricx.piano.PianoWindow;
-import com.jbricx.tools.AudioPlayer;
 
 @SuppressWarnings("serial")
 public class JBricxDialog extends JDialog {
@@ -25,8 +21,7 @@ public class JBricxDialog extends JDialog {
 	 * @param modal - if the dialog should disable parent (if true, you must set your own visibility)
 	 */
 	public JBricxDialog(JFrame shell,String title,Boolean modal) {
-		super(shell,title,modal);	
-		final SourceDataLine line = AudioPlayer.openLine();
+		super(shell,title,modal);
 		this.setVisible(!modal);
 		this.requestFocus();
 		this.setLocation(shell.getX() + shell.getWidth()/2,shell.getY()+shell.getY()/3);
@@ -35,9 +30,6 @@ public class JBricxDialog extends JDialog {
 		Action closeAction = new AbstractAction() {
 			public void actionPerformed(ActionEvent evt) {
 				JBricxDialog.this.dispose();
-				if (JBricxDialog.this instanceof PianoWindow){
-					AudioPlayer.closeLine(line);
-				}
 			}
 		};
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(closeKeys,"Close");
