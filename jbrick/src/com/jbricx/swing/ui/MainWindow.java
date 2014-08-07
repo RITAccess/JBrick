@@ -26,9 +26,12 @@ import com.jbricx.swing.ui.preferences.BreakpointsStore;
 import com.jbricx.swing.ui.preferences.MiscProperties;
 import com.jbricx.swing.ui.preferences.MiscProperties.misc;
 import com.jbricx.swing.ui.preferences.PreferenceStore;
+import com.jbricx.swing.ui.preferences.PreferenceStore.Preference;
 import com.jbricx.swing.ui.tabs.JBricxEditorTabFolder;
 import com.jbricx.swing.ui.tabs.JBricxFilePane;
 import com.jbricx.swing.ui.tabs.JBricxStatusPane;
+import com.jbricx.swing.ui.tabs.preference.DirectoryPane;
+import com.jbricx.swing.ui.tabs.preference.JBricxCustomPreferenceDialog;
 import com.sun.jna.Platform;
 
 @SuppressWarnings("serial")
@@ -89,8 +92,11 @@ public class MainWindow extends JFrame implements JBricxManager,WindowListener,C
 		}
 		if(!prefs.getBoolean("ranPreviously", false))
 		{
-			FirstTimeSettingsWindow firstTimeWindow = new FirstTimeSettingsWindow(this);
-			firstTimeWindow.setVisible(true);
+			JBricxCustomPreferenceDialog.openPreference(this.getShell(), "First Time Setup Window",
+					new DirectoryPane(Preference.WORKSPACE, this, true).createPanel(),
+					new DirectoryPane(Preference.NBCTOOL, this, false).createPanel()
+					);
+			
 			prefs.putBoolean("ranPreviously",true);
 		}
 		accessPane = new JLabel("JBricks");

@@ -20,9 +20,9 @@ public class JBricxDialog extends JDialog {
 	/**
 	 * Create a base for all dialogs used
 	 * Close all dialogs on cmd/ctrl W
-	 * @param shell
-	 * @param title
-	 * @param modal
+	 * @param shell - frame in reference
+	 * @param title - title for dialog
+	 * @param modal - if the dialog should disable parent (if true, you must set your own visibility)
 	 */
 	public JBricxDialog(JFrame shell,String title,Boolean modal) {
 		super(shell,title,modal);	
@@ -39,8 +39,8 @@ public class JBricxDialog extends JDialog {
 		};
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(closeKeys,"Close");
 		this.getRootPane().getActionMap().put("Close", closeAction);
-		this.setVisible(true);
-		this.setFocusable(true);
+		this.setVisible(!modal);
+		this.requestFocus();
 		this.setLocation(shell.getX(),shell.getY());
 	}	
 }

@@ -53,8 +53,8 @@ public class FindReplaceDialog extends JBricxDialog {
 	/**
 	* Constructor for find and replace dialog box
 	*/
-	private FindReplaceDialog(JFrame parent, boolean modal, JTextArea textArea) {
-		super(parent, "Find and Replace",modal);
+	private FindReplaceDialog(JFrame parent, JTextArea textArea) {
+		super(parent, "Find and Replace", false);
 		this.textArea = textArea;
 		setUpFindReplace();
 	}
@@ -262,9 +262,9 @@ public class FindReplaceDialog extends JBricxDialog {
 	 * @param modal
 	 * @param textArea
 	 */
-	public static void openFindReplace(JFrame parent, boolean modal, JTextArea textArea) {
+	public static void openFindReplace(JFrame parent, JTextArea textArea) {
 		if (findReplace == null) {
-			findReplace = new FindReplaceDialog(parent,modal,textArea);
+			findReplace = new FindReplaceDialog(parent,textArea);
 		}
 		findReplace.requestFocus();
 		findReplace.addWindowListener(new WindowAdapter() {
