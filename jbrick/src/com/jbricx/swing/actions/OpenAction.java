@@ -26,7 +26,7 @@ public class OpenAction extends JBricxAbstractAction {
   public OpenAction(final JBricxManager manager) {
 	    super("", new ImageIcon(OpenAction.class.getResource("/icons/openDocument.png")), manager);
 
-		extFilterNXC = new FileChooser.ExtensionFilter("NXC Files (*.nxc)","*.nxc");
+		extFilterNXC = new FileChooser.ExtensionFilter("NXC Files (*.nxc)","*.nxc","*.NXC");
 		extFilterAll = new FileChooser.ExtensionFilter("All Files","*.*");
 	  }
 

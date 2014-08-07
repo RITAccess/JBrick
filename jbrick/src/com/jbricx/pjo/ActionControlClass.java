@@ -50,6 +50,7 @@ public class ActionControlClass {
 				String filepath = null;
 		        if (isSaveAs || tabItem.isNewFile() || !(new File(tabItem.getFileAbsolutePath()).exists())) {
 					FileChooser fChooser = new FileChooser();
+					fChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NXC files (*.nxc)", "*.nxc", "*.NXC"));
 		        	fChooser.setTitle("Save As");
 		        	if (fChooser.getInitialDirectory() == null) {
 		        		fChooser.setInitialDirectory(new File(PreferenceStore.getString(Preference.WORKSPACE)));

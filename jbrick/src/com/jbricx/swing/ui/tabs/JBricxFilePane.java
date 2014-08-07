@@ -41,7 +41,9 @@ public class JBricxFilePane extends JScrollPane implements MouseListener{
 		// TODO Auto-generated method stub
 		if( arg0.getClickCount() >= 2){
 			File ftoOpen = (File) tree.getLastSelectedPathComponent();
-			manager.openTab(ftoOpen.getAbsolutePath());
+			if (ftoOpen != null) {
+				manager.openTab(ftoOpen.getAbsolutePath());
+			}
 			
 		}
 		
