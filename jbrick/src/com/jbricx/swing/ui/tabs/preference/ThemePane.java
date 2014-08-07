@@ -1,12 +1,14 @@
 package com.jbricx.swing.ui.tabs.preference;
 
 import java.awt.BorderLayout;
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+
+import javafx.application.Platform;
+import javafx.stage.DirectoryChooser;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -40,16 +42,22 @@ public class ThemePane extends PreferencePanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				System.setProperty("apple.awt.fileDialogForDirectories", "true");
-				FileDialog fDialog = new FileDialog(manager.getShell(), "Choose Directory", FileDialog.LOAD);
-				fDialog.setDirectory(PreferenceStore.getString(Preference.THEMEXML));
-				fDialog.setVisible(true);
-				String filepath = fDialog.getFile();
-				textArea.setText(filepath);
-				updateSelector();
-				JBricxPreferenceDialog.isDirty = true;
-				
-				System.setProperty("apple.awt.fileDialogForDirectories", "false");
+				Platform.runLater(new Runnable(){
+					@Override
+					public void run() {
+						DirectoryChooser dChooser = new DirectoryChooser();
+						if(dChooser.getInitialDirectory() != null){
+							dChooser.setInitialDirectory(new File(PreferenceStore.getString(Preference.THEMEXML)));
+						}
+						dChooser.setTitle("Open Directory");
+						File file = dChooser.showDialog(null);
+						if (file != null) {
+							textArea.setText(file.getAbsolutePath());	
+							updateSelector();
+							JBricxPreferenceDialog.isDirty = true;
+						}
+					}
+				});
 			}
 		});
 		themeSelector.addItemListener(new ItemListener(){

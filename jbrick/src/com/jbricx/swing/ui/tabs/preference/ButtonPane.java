@@ -1,8 +1,11 @@
 package com.jbricx.swing.ui.tabs.preference;
 
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
+import javafx.application.Platform;
+import javafx.stage.FileChooser;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -93,27 +96,35 @@ public class ButtonPane extends JPanel implements ActionListener {
 	}
 	
 	public void saveTheme(){
-		FileDialog fDialog = new FileDialog(window, "Save", FileDialog.SAVE);
-		fDialog.setDirectory(((ThemePane) PreferencePanel.panels.get(Preference.THEMEXML)).textArea.getText());
-		fDialog.setFile("*.xml");
-		fDialog.setVisible(true);
-		String filepath = fDialog.getFile();
-		if (filepath != null) {
-			filepath = fDialog.getDirectory() + filepath;
-			if (filepath.endsWith(Preference.THEMEXML.defaultString)) {
-				JOptionPane.showMessageDialog(window,
-					    "Cannot overwrite the Default file.\n"
-					    + "You edits will be applied but will not be saved.",
-					    "Overwrite Defaults Error",
-					    JOptionPane.ERROR_MESSAGE);
-			} else {
-				if (!filepath.toLowerCase().endsWith(".xml")) {
-				    filepath = filepath + ".xml";
-				}
-				Document doc = PreferenceStore.buildPreferencesDocument();
-				XMLParser.writeToFile(doc, filepath);
-				((ThemePane) PreferencePanel.panels.get(Preference.THEMEXML)).setThemeFile(filepath);
-			}	
-		}
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				FileChooser fChooser = new FileChooser();
+		    	fChooser.setTitle("Save Theme");
+		    	ThemePane tPane = (ThemePane) PreferencePanel.panels.get(Preference.THEMEXML);
+		    	fChooser.setInitialFileName(tPane.model.getSelectedItem().toString());
+		    	if (fChooser.getInitialDirectory() == null) {
+		    		fChooser.setInitialDirectory(new File(tPane.textArea.getText()));
+		    	}
+		    	File file = fChooser.showSaveDialog(null);
+		    	if (file != null) {
+		    		String filepath = file.getAbsolutePath();
+					if (!filepath.toLowerCase().endsWith(".xml")) {
+						    filepath = filepath + ".xml";
+					}
+					if (filepath.endsWith(Preference.THEMEXML.defaultString)) {
+						JOptionPane.showMessageDialog(window,
+							    "Cannot overwrite the Default file.\n"
+							    + "You edits will be applied but will not be saved.",
+							    "Overwrite Defaults Error",
+							    JOptionPane.ERROR_MESSAGE);
+					} else {
+						Document doc = PreferenceStore.buildPreferencesDocument();
+						XMLParser.writeToFile(doc, filepath);
+						((ThemePane) PreferencePanel.panels.get(Preference.THEMEXML)).setThemeFile(filepath);
+					}	
+		    	}
+			}
+		});
 	}
 }
