@@ -37,7 +37,7 @@ public class JBricxLauncher {
 		}
 		
 		//Creates a JFXPanel to initialize JFX. Cannot open fileChooser without it.
-		JFXPanel fxPanel = new JFXPanel();
+		new JFXPanel();
 		
 		
 		MainWindow mainWindow = new MainWindow();
