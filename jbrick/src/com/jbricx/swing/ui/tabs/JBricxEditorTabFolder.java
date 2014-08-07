@@ -127,6 +127,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 	 */
 	public void open(final String absoluteFilePath, int lineNumber) {
 		int tabIndex = getTabIndexByFilepath(absoluteFilePath);
+		// check to prevent opening a directory or other types of files (that aren't nxc)
+		if (!absoluteFilePath.toLowerCase().endsWith(".nxc")) {
+			return;
+		}
 		// Make a new file because it was not currently found in the list of
 		// open files
 		if (tabIndex == -1) {
