@@ -4,6 +4,8 @@ package com.jbricx.swing.main;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import javafx.embed.swing.JFXPanel;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -19,6 +21,7 @@ public class JBricxLauncher {
 	 */
 	public static void main(String[] args) {
 		// Look and feel code
+		
 		try {
 			if (Platform.isMac()) {
 				System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -32,6 +35,10 @@ public class JBricxLauncher {
 		} catch (IllegalAccessException e) {e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {e.printStackTrace();
 		}
+		
+		//Creates a JFXPanel to initialize JFX. Cannot open fileChooser without it.
+		JFXPanel fxPanel = new JFXPanel();
+		
 		
 		MainWindow mainWindow = new MainWindow();
 		try {
