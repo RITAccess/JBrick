@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
@@ -50,15 +51,18 @@ public class ActionControlClass {
 				String filepath = null;
 		        if (isSaveAs || tabItem.isNewFile() || !(new File(tabItem.getFileAbsolutePath()).exists())) {
 					FileChooser fChooser = new FileChooser();
-					fChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("NXC files (*.nxc)", "*.nxc", "*.NXC"));
+					ExtensionFilter nxcFileExtend = new ExtensionFilter("NXC files (*.nxc)", "*.nxc", "*.NXC");
+					fChooser.getExtensionFilters().add(nxcFileExtend);
+					fChooser.getExtensionFilters().add(new ExtensionFilter("All files","*.*"));
 		        	fChooser.setTitle("Save As");
+		        	fChooser.setInitialFileName(tabItem.getFileName());
 		        	if (fChooser.getInitialDirectory() == null) {
 		        		fChooser.setInitialDirectory(new File(PreferenceStore.getString(Preference.WORKSPACE)));
 		        	}
 		        	File file = fChooser.showSaveDialog(null);
 		        	if (file != null) {
 		        		filepath = file.getAbsolutePath();
-						if (!filepath.toLowerCase().endsWith(".nxc")) {
+		        		if (!filepath.toLowerCase().endsWith(".nxc") && fChooser.getSelectedExtensionFilter().equals(nxcFileExtend)) {
 		    				    filepath = filepath + ".nxc";
 		    			}
 						try {

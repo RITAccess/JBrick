@@ -137,8 +137,10 @@ public class JBricxEditorTabFolder extends JTabbedPane {
 
 			JBricxTabItem newItem = new JBricxTabItem(this, absoluteFilePath);
 			newItem.clearUndo();
-			newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
-			newItem.setCodeFoldingEnabled(true);
+			if (absoluteFilePath.toLowerCase().endsWith(".nxc")){
+				newItem.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NXC);
+				newItem.setCodeFoldingEnabled(true);
+			}
 			newItem.setAntiAliasingEnabled(true);
 			newItem.setBackground(PreferenceStore.getColor(PreferenceStore.Preference.BACKGROUND));
 			newItem.setForeground(PreferenceStore.getColor(PreferenceStore.Preference.FOREGROUND));
