@@ -1,9 +1,10 @@
 package com.jbricx.swing.actions;
 
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FilenameFilter;
+
+import javafx.application.Platform;
+import javafx.stage.FileChooser;
 
 import javax.swing.ImageIcon;
 
@@ -16,31 +17,39 @@ import com.jbricx.swing.ui.preferences.PreferenceStore;
 @SuppressWarnings("serial") 
 public class OpenAction extends JBricxAbstractAction {
 
+	private FileChooser.ExtensionFilter extFilterNXC;
+	private FileChooser.ExtensionFilter extFilterAll;
+	
 /**
    * OpenAction constructor
    */
   public OpenAction(final JBricxManager manager) {
 	    super("", new ImageIcon(OpenAction.class.getResource("/icons/openDocument.png")), manager);
+
+		extFilterNXC = new FileChooser.ExtensionFilter("NXC Files (*.nxc)","*.nxc");
+		extFilterAll = new FileChooser.ExtensionFilter("All Files","*.*");
 	  }
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		FileDialog fDialog = new FileDialog(getManager().getShell(), "Open", FileDialog.LOAD);
-		fDialog.setFilenameFilter(new FilenameFilter(){
+		Platform.runLater(new Runnable(){
 			@Override
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith(".nxc");
+			public void run() {
+				FileChooser fChooser = new FileChooser();
+				fChooser.getExtensionFilters().add(extFilterNXC);
+				fChooser.getExtensionFilters().add(extFilterAll);
+				if(fChooser.getInitialDirectory() == null){
+					fChooser.setInitialDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
+				}
+				fChooser.setTitle("Open");
+				File file = fChooser.showOpenDialog(null);
+				if (file != null) {
+					getManager().getTabFolder().open(file.getAbsolutePath());
+				}
 			}
+			
 		});
-		fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
-		fDialog.setVisible(true);
-		String filepath = fDialog.getFile();
-		if (filepath != null) {
-			filepath = fDialog.getDirectory() + filepath;
-			getManager().getTabFolder().open(filepath);
-		}
-		
 	}
 	
 	/**

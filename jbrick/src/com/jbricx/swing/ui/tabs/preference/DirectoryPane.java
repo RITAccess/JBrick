@@ -1,10 +1,14 @@
 package com.jbricx.swing.ui.tabs.preference;
 
 import java.awt.BorderLayout;
-import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
+import javafx.application.Platform;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,20 +42,33 @@ public class DirectoryPane extends PreferencePanel{
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (onlyDir) {
-					System.setProperty("apple.awt.fileDialogForDirectories", "true");
-				}
-				FileDialog fDialog = new FileDialog(manager.getShell(), "Open", FileDialog.LOAD);
-				fDialog.setDirectory(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE));
-				fDialog.setVisible(true);
-				String filepath = fDialog.getFile();
-				if (filepath != null) {
-					textArea.setText(fDialog.getDirectory() + filepath);	
-					JBricxPreferenceDialog.isDirty = true;
-				}
-				if (onlyDir) {
-					System.setProperty("apple.awt.fileDialogForDirectories", "false");
-				}
+				
+				Platform.runLater(new Runnable(){
+					@Override
+					public void run() {
+						if(onlyDir){
+							DirectoryChooser dChooser = new DirectoryChooser();
+							if(dChooser.getInitialDirectory() != null){
+								dChooser.setInitialDirectory(new File(PreferenceStore.getString(PreferenceStore.Preference.WORKSPACE)));
+							}
+							dChooser.setTitle("Open Directory");
+							File file = dChooser.showDialog(null);
+							if (file != null) {
+								textArea.setText(file.getAbsolutePath());	
+								JBricxPreferenceDialog.isDirty = true;
+							}
+						}
+						else{
+							FileChooser fChooser = new FileChooser();
+							fChooser.setTitle("Open");
+							File file = fChooser.showOpenDialog(null);
+							if(file != null){
+								textArea.setText(file.getAbsolutePath());
+								JBricxPreferenceDialog.isDirty = true;
+							}
+						}
+					}
+				});
 			}
 		});
 		this.setLayout(new BorderLayout());
