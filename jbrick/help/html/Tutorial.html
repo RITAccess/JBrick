@@ -1,5 +1,5 @@
 <h1> Tutorial </h1>
-<p> Step 1: Write your code in the jBrick editor or for a test program copy and paste the below code.
+<p hspace="10"> Step 1: Write your code in the jBrick editor or for a test program copy, paste the below code.
 </p>
 
 <pre>
@@ -27,12 +27,41 @@ task main()
 	Wait(sleep);
 }
 </pre>
-<p>
-Step 2: Save the project by going to File -> Save. Name the file and click save.
+<p hspace="10">
+Step 2: Save the project by going to File -> Save. Name the file and click save. IF you are including previously written files using #include fileName, make sure that you save all your files in the same folder. Otherwise, your program won't compile.
 </p>
-<p>
-Step 3: Compile the project by going to Compile -> Compile. If the compile fails, fix the reported errors.
+<p hspace="10">
+Step 3: Compile the project by going to Compile -> Compile. If the compile fails, fix the reported errors. The first time you open up JBricks, you're going to need to select a compiler in the Preferences window. Compilers can be found in the JBricks Compilers folder.<br>
+    If you are using a PC, the compiler needed is the nbc.exe file.<br>
+    If you are using a Mac, the compiler needed is just nbc.
 </p>
-<p>
-Step 4: Download the project to the NXT brick by going to Compile -> Download. If the download fails, verify the brick is connected to your computer, turned on, and that the correct drivers are installed. There is a link to the driver download page in the overview section of this help documentation.
+<p hspace="10">
+Step 4: Download the project to the NXT brick by going to Compile -> Download. If the download fails, verify the brick is connected to your computer, turned on, and that the correct drivers are installed. There is a link to the driver download page in the overview section of this help documentation.<br>
+</p>
+<h3 hspace ="5">Basic Functions</h3>
+<p hspace="10" vspace="-5">
+Basic commands for moving the robot around:<br>
+To move forward: OnFwd(OUT_* ports of wheels, speed);<br>
+To move backwards: OnRev(OUT_ports of wheels, speed);<br>
+To determine the function duration: Wait(time);  (In seconds)<br>
+To power off wheels: Off(OUT_ports of wheels);<br>
+* ports of wheels: The motors that the Brick is hooked up to<br>
+<pre>
+task main ()
+{
+	/* You can place two motors in the same function by typing
+    them next to each other */
+	OnFwd(OUT_AB, 75);
+	Wait(1000);
+	// Or, to make it turn, activate just one motor at a time.
+	OnRev(OUT_A,75);
+	Wait(50);
+	OnRev(OUT_B,75);
+	Off(OUT_AB);
+}
+
+<p hspace="10">
+Things to remember:<br>
+You always need to have task main(). Otherwise your program won't compile. <br>
+Don't forget the semicolon(;) needed at the end of each statement written.
 </p>

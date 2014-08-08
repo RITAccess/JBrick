@@ -1,64 +1,60 @@
 <head>
-<style type="text/css">
-	table.tableizer-table {
-	border: 1px solid #CCC; font-family: Arial, Helvetica, sans-serif
-	font-size: 12px;
-} 
-.tableizer-table td {
-	padding: 4px;
-	margin: 3px;
-	border: 1px solid #ccc;
-}
-.tableizer-table th {
-	font-weight: bold;
-}
-</style>
+    <style type="text/css">
+        table.tableizer-table {
+            border: 1px solid "black"; font-family: Arial, Helvetica, sans-serif
+            font-size: 12px;
+        }
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+	
+        }
+        .tableizer-table th {
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <h1> Piano Composer </h1>
-<p>When the piano composer is first opened, the recording is empty. To add notes, either click or press keys corresponding to the virtual piano. The piano notes to keys are as follows:
-</p>
-
-<img alt="piano.png" src="images/piano.png">
-
-</style><table class="tableizer-table">
-<tr class="tableizer-firstrow"><th>Note</th><th>Hotkey</th></tr>
- <tr><td>C</td><td>A</td></tr>
- <tr><td>C#</td><td>W</td></tr>
- <tr><td>D</td><td>S</td></tr>
- <tr><td>D#</td><td>E</td></tr>
- <tr><td>E</td><td>D</td></tr>
- <tr><td>F</td><td>F</td></tr>
- <tr><td>F#</td><td>T</td></tr>
- <tr><td>G</td><td>G</td></tr>
- <tr><td>G#</td><td>Y</td></tr>
- <tr><td>A</td><td>H</td></tr>
- <tr><td>A#</td><td>U</td></tr>
- <tr><td>B</td><td>J</td></tr>
- <tr><td>C</td><td>K</td></tr>
- <tr><td>C#</td><td>O</td></tr>
- <tr><td>D</td><td>L</td></tr>
- <tr><td>D#</td><td>P</td></tr>
- <tr><td>E</td><td>Semi-colon</td></tr>
- <tr><td>REST</td><td>Forward Slash</td></tr>
-</table>
+<body>
+    <p hspace="10" vspace="10">When the piano composer is first opened, the recording is empty. To add notes, either click or press keys corresponding to the virtual piano.
+        The piano notes to keys are as follows:
+    </p>
+    
+    <img alt="Piano Keyboard" src="images/pianoKeyboard.png" hspace="10" vspace="5" >
+        
+    </style><table class="tableizer-table" align="center">
+        <tr class="tableizer-firstrow"><th>Notes</th><th>Hotkey</th><th>Sharps</th><th>Hotkey</th></tr>
+        <tr><td>C</td><td>A</td><td>C#</td><td>W</td></tr>
+        <tr><td>D</td><td>S</td><td>D#</td><td>E</td></tr>
+        <tr><td>E</td><td>D</td></tr>
+        <tr><td>F</td><td>F</td><td>F#</td><td>T</td></tr>
+        <tr><td>G</td><td>G</td><td>G#</td><td>Y</td></tr>
+        <tr><td>A</td><td>H</td><td>A#</td><td>U</td></tr>
+        <tr><td>B</td><td>J</td></tr>
+        <tr><td>C</td><td>K</td><td>C#</td><td>O</td></tr>
+        <tr><td>D</td><td>L</td><td>D#</td><td>P</td></tr>
+        <tr><td>E</td><td>Semi-colon</td><td>REST</td><td>Forward Slash</td></tr>
+    </table>
 
 	
 
-<p> Pressing Equals (=) or Minus (-) will allow you to move the available octaves up and down respectively. You can also use the transposer slider.
-</p>
+    <p hspace="10" vspace="10"> Pressing Equals (=) or Minus (-) will allow you to move the available octaves up and down respectively. You can also use the transposer slider.
+    </p>
 
-<p>Sound Location Output allows you to choose how you want jBricks to play the note(s) back to you. If you select Java Output the output will come from your computer. If you select NXT Output and the NXT brick is hooked up through USB, the NXT brick will produce output.
-</p>
+    <p hspace="10" vspace="10">Sound Location Output allows you to choose how you want jBricks to play the note(s) back to you. If you select Java Output the output will come from your computer. If you select NXT Output
+    and the NXT brick is hooked up through USB, the NXT brick will produce output.
+    </p>
 
-<p>Current notes shows all the notes played in the session and ready for use. The available actions are under edit controls and are listed below:
+    <p hspace="10" vspace="10">Current notes shows all the notes played in the session and ready for use. The available actions are under edit controls and are listed below:<br><br>
+            Play - Plays all the notes in the current notes section <br>
+            Save - Saves all the notes to a nxc file that can be downloaded to the robot <br>
+            Copy - Copies the notes so that you can place it in your own nxc file <br>
+            Help - Brings up this help menu <br>
+            Undo - Removes the last note typed in the Current notes section <br>
+            Clear - Clears all the notes in the Current notes section <br>
+    </p>
 
-Play - Plays all the notes in the current notes section <br>
-Save - Saves all the notes to a nxc file that can be downloaded to the robot <br>
-Copy - Copies the notes so that you can place it in your own nxc file <br>
-Help - Brings up this help menu <br>
-Undo - Removes the last in the Current notes section <br>
-Clear - Clears all the notes in the Current notes section <br>
-</p>
-
-<p>The Length section allows you to change the duration of each note. Default is 1/4 (Quarter note). Custom Note/Rest Time allows you to place your own.
-</p>
+    <p hspace="10" vspace="10">The Length section allows you to change the duration of each note. Default is 1/4 (Quarter note). Custom Note/Rest Time allows you to place your own note length.
+    </p>
+</body>
