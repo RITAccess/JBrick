@@ -1,5 +1,6 @@
 <h1> Tutorial </h1>
-<p hspace="10"> Step 1: Write your code in the jBrick editor or for a test program copy, paste the below code.
+<p hspace="10"> Step 1: <br>
+Write your code in the jBrick editor or for a test program copy, paste the below code.
 </p>
 
 <pre>
@@ -28,38 +29,126 @@ task main()
 }
 </pre>
 <p hspace="10">
-Step 2: Save the project by going to File -> Save. Name the file and click save. IF you are including previously written files using #include fileName, make sure that you save all your files in the same folder. Otherwise, your program won't compile.
+Step 2: <br>
+Save the project by going to File -> Save. Name the file and click save. IF you are including previously written files using #include fileName, make sure that you save all your files in the same folder. Otherwise, your program won't compile.
 </p>
 <p hspace="10">
-Step 3: Compile the project by going to Compile -> Compile. If the compile fails, fix the reported errors. The first time you open up JBricks, you're going to need to select a compiler in the Preferences window. Compilers can be found in the JBricks Compilers folder.<br>
+Step 3: <br>
+Compile the project by going to Compile -> Compile. If the compile fails, fix the reported errors. The first time you open up JBricks, you're going to need to select a compiler in the Preferences window. Compilers can be found in the JBricks Compilers folder.<br>
     If you are using a PC, the compiler needed is the nbc.exe file.<br>
     If you are using a Mac, the compiler needed is just nbc.
 </p>
 <p hspace="10">
-Step 4: Download the project to the NXT brick by going to Compile -> Download. If the download fails, verify the brick is connected to your computer, turned on, and that the correct drivers are installed. There is a link to the driver download page in the overview section of this help documentation.<br>
+Step 4: <br>
+Download the project to the NXT brick by going to Compile -> Download. If the download fails, verify the brick is connected to your computer, turned on, and that the correct drivers are installed. There is a link to the driver download page in the overview section of this help documentation.<br><br>
 </p>
-<h3 hspace ="5">Basic Functions</h3>
+<h2 hspace ="5">Basic Functions</h2>
+<h3 hspace ="10"> Basic motor commands:</h3>
 <p hspace="10" vspace="-5">
-Basic commands for moving the robot around:<br>
 To move forward: OnFwd(OUT_* ports of wheels, speed);<br>
 To move backwards: OnRev(OUT_ports of wheels, speed);<br>
 To determine the function duration: Wait(time);  (In seconds)<br>
 To power off wheels: Off(OUT_ports of wheels);<br>
 * ports of wheels: The motors that the Brick is hooked up to<br>
+Example of motors use:<br>
 <pre>
 task main ()
 {
 	/* You can place two motors in the same function by typing
-    them next to each other */
+        them next to each other */
 	OnFwd(OUT_AB, 75);
 	Wait(1000);
+    
 	// Or, to make it turn, activate just one motor at a time.
 	OnRev(OUT_A,75);
 	Wait(50);
+    
 	OnRev(OUT_B,75);
 	Off(OUT_AB);
 }
+</pre>
 
+<h3 hspace="5"> Basic sensor commands:</h3>
+<p hspace="10" vspace="-5">
+Declaring a light sensor: SetSensorLight(IN_port of sensor);<br>
+Declaring a sound sensor: SetSensorSound( IN_port of sensor);<br>
+Declaring a touch sensor: SetSensor(IN_port of sensor, SENSOR_TOUCH);<br>
+Declaring a ultrasonic sensor: SetSensorLowspeed(Port of Sensor);<br><br>
+Using a light or sound sensor: Sensor(IN_port of sensor);<br>
+Using a touch sensor: SENSOR_port of sensor;<br>
+Using an ultrasonic sensor: SensorUS(IN_port of sensor);<br>
+Example of declaring and using sensors: <br>
+</p>
+<pre>
+    task main() {
+	SetSensorLight(IN_A);
+	SetSensorSound(IN_B);
+	SetSensor(IN_C, SENSOR_TOUCH);
+	SetSensorLowspeed(IN_1);
+	
+	if (Sensor(IN_A) > THRESHOLD) // or (IN_B) {
+        // set statement
+        }
+        if (SENSOR_C == 1) {
+        // set statements
+        }
+        // set statement
+        }
+        if (SensorUS(IN_1); 
+        // some statement
+</pre>
+
+<h3 hspace="5"> Variables, Loops, and Conditions:</h3>
+<p hspace="10">
+Declaring a variable: data type + nameOfVariable = value;<br>
+Example:
+</p>
+<pre>
+    int speedOfCar = 65;
+</pre>
+<p hspace="10">
+Declaring a constant: #define + NAME_OF_VARIABLE + value;<br>
+Example:
+</p>
+<pre>
+    #define WAIT_TIME 45;
+</pre>
+<p hspace="10">
+Comparison with an if statemtent: if(conditon) {statement;}<br>
+Example:
+</p>
+<pre>
+    if(speedOfCar == 65) {
+    OnFwd(OUT_B, speedOfCar)
+    Wait(WAIT_TIME);
+    }
+</pre>
+<p hspace="10">
+Comparison with a while loop: while(condition) {statement;}<br>
+Example:
+</p>
+<pre>
+    while(speedOfCar != 70) {
+    OnFwd(OUT_B, speedOfCar);
+    Wait(WAIT_TIME);
+    speedOfCar = speedOfCar + 1;
+    }
+</pre>
+<p hspace = "10">
+Comparison with a do while loop: do{statement;} while(condition); <br>
+Example:
+<p>
+<pre>
+    do {
+    OnFwd(OUT_B,speedOfCar);
+    Wait(WAIT_TIME);
+    while (speedOfCar != 70);
+    }
+</pre>
+<p hspace="10">
+Difference between a while loop and a do while loop is that a while loop's action doesn't ever have to happen while a do while loop's action will occur at least once, regardless of the while.<br><br>
+To play a tone: PlayTone(40,220); (in milliseconds);
+</p>
 <p hspace="10">
 Things to remember:<br>
 You always need to have task main(). Otherwise your program won't compile. <br>
