@@ -71,6 +71,9 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 				if (arg0.getKeyCode() == 10){
 					goToGoButton.doClick();
 				}
+				if (arg0.getKeyCode() == 27){
+					goToCancelButton.doClick();
+				}
 			}
 
 			@Override
