@@ -144,7 +144,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 	 * When Go is pressed.
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getActionCommand().equals("go")){
+		if(arg0.getActionCommand().equals("go") && !goToLineInputBox.getText().isEmpty()){
 			action.goTo(Integer.parseInt(goToLineInputBox.getText()));
 			this.dispose();
 		}else{
