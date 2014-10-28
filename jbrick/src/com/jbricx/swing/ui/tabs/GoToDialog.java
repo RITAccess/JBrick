@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javafx.scene.input.KeyCode;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -59,6 +63,25 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		panel.add(goToInstruction,BorderLayout.NORTH);
 		
 		goToLineInputBox = new IntTextField(15);
+		
+		// If someone pushes Enter (10) then the go button should be clicked 
+		goToLineInputBox.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == 10){
+					goToGoButton.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			
+		});
+		
 		panel.add(goToLineInputBox,BorderLayout.CENTER);
 		
 		JPanel buttonBox = new JPanel();
