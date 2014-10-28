@@ -13,7 +13,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import com.jbricx.communication.NXTAccess;
 import com.jbricx.pjo.ActionControlClass;
-import com.jbricx.swing.ui.CompilerNotFoundWindow;
 import com.jbricx.swing.ui.JBricxManager;
 import com.jbricx.swing.ui.MainWindow;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;

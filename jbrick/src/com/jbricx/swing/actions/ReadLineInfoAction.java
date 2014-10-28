@@ -2,15 +2,12 @@ package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
 
-import javafx.application.Platform;
-
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
 import org.fife.ui.rtextarea.RTextAreaUI;
 
 import com.jbricx.swing.ui.JBricxManager;
-import com.jbricx.swing.ui.tabs.AudioBreak;
 import com.jbricx.swing.ui.tabs.JBricxTabItem;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;

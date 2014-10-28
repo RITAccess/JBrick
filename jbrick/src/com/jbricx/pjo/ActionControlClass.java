@@ -1,8 +1,6 @@
 package com.jbricx.pjo;
 
-import java.awt.FileDialog;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javafx.application.Platform;
