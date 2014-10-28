@@ -4,15 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -60,11 +63,18 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		
 		goToLineInputBox = new IntTextField(15);
 		panel.add(goToLineInputBox,BorderLayout.CENTER);
+		goToLineInputBox.getAccessibleContext().setAccessibleName("Enter Line Number");
 		
 		JPanel buttonBox = new JPanel();
 		goToGoButton = new JButton("Go");
 		goToGoButton.addActionListener(this);
 		goToGoButton.setActionCommand("go");
+		
+		goToGoButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
+		put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"Enter_pressed");
+	
+		goToGoButton.getActionMap().put("Enter_pressed", action);
+	
 		goToCancelButton = new JButton("Cancel");
 		goToCancelButton.setActionCommand("cancel");
 		goToCancelButton.addActionListener(this);
@@ -74,6 +84,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		this.add(panel);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
+		
 	}
 
 	/**
@@ -150,7 +161,6 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		}else{
 			this.dispose();
 		}
-		
 	}
 	
 	/**
@@ -163,7 +173,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		if (goToDialog == null) {
 			goToDialog = new GoToDialog(maxLineNumber,action,shell);
 		}
-		goToDialog.requestFocus();
+		goToDialog.goToLineInputBox.requestFocusInWindow();
 		goToDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent evt) {

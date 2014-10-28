@@ -73,8 +73,8 @@ public class FindReplaceDialog extends JBricxDialog {
 		replaceLabel = new JLabel("Replace : ");
 		accessibleStatus = new JLabel(" ");
 		
-		findTextField.getAccessibleContext().setAccessibleDescription("Find text field");
-		replaceTextField.getAccessibleContext().setAccessibleDescription("Replace text field");
+		findTextField.getAccessibleContext().setAccessibleName("Find Text Field");
+		replaceTextField.getAccessibleContext().setAccessibleName("Replace Text Field");
 		
 		findButton.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent evt) {
