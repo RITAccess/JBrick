@@ -8,15 +8,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javafx.scene.input.KeyCode;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -83,11 +82,18 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		});
 		
 		panel.add(goToLineInputBox,BorderLayout.CENTER);
+		goToLineInputBox.getAccessibleContext().setAccessibleName("Enter Line Number");
 		
 		JPanel buttonBox = new JPanel();
 		goToGoButton = new JButton("Go");
 		goToGoButton.addActionListener(this);
 		goToGoButton.setActionCommand("go");
+		
+		goToGoButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).
+		put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"Enter_pressed");
+	
+		goToGoButton.getActionMap().put("Enter_pressed", action);
+	
 		goToCancelButton = new JButton("Cancel");
 		goToCancelButton.setActionCommand("cancel");
 		goToCancelButton.addActionListener(this);
@@ -97,6 +103,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		this.add(panel);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
+		
 	}
 
 	/**
@@ -167,13 +174,12 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 	 * When Go is pressed.
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getActionCommand().equals("go")){
+		if(arg0.getActionCommand().equals("go") && !goToLineInputBox.getText().isEmpty()){
 			action.goTo(Integer.parseInt(goToLineInputBox.getText()));
 			this.dispose();
 		}else{
 			this.dispose();
 		}
-		
 	}
 	
 	/**
@@ -186,7 +192,7 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		if (goToDialog == null) {
 			goToDialog = new GoToDialog(maxLineNumber,action,shell);
 		}
-		goToDialog.requestFocus();
+		goToDialog.goToLineInputBox.requestFocusInWindow();
 		goToDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent evt) {
