@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 
 
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -92,6 +94,43 @@ public class FindReplaceDialog extends JBricxDialog {
 			public void actionPerformed(ActionEvent evt) {
 				replaceAllAction(evt);
 			}
+		});
+		
+		// If enter is pressed while focus is on the find text field, the find button will be pushed
+		findTextField.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == 10) {
+					findButton.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			
+		});
+		
+		// If enter is pressed while focus is on the replace text field, the replace button will be pushed
+		replaceTextField.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == 10) {
+					replaceButton.doClick();
+				}
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+			
 		});
 
 		// Basic set up for the dialog box
@@ -266,7 +305,9 @@ public class FindReplaceDialog extends JBricxDialog {
 		if (findReplace == null) {
 			findReplace = new FindReplaceDialog(parent,textArea);
 		}
-		findReplace.requestFocus();
+		// Put the focus in the first text field upon opening
+		findReplace.findTextField.requestFocusInWindow();
+		
 		findReplace.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent evt) {

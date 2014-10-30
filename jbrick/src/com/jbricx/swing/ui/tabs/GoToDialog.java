@@ -71,9 +71,6 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 				if (arg0.getKeyCode() == 10){
 					goToGoButton.doClick();
 				}
-				if (arg0.getKeyCode() == 27){
-					goToCancelButton.doClick();
-				}
 			}
 
 			@Override
@@ -195,7 +192,10 @@ public class GoToDialog extends JBricxDialog implements ActionListener{
 		if (goToDialog == null) {
 			goToDialog = new GoToDialog(maxLineNumber,action,shell);
 		}
+		
+		// Put focus in the go text field upon opening
 		goToDialog.goToLineInputBox.requestFocusInWindow();
+		
 		goToDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent evt) {
