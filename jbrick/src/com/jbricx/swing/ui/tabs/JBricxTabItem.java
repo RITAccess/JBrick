@@ -8,6 +8,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
+import org.fife.ui.rtextarea.RTextAreaUI;
 
 import com.jbricx.swing.ui.MainWindow;
 
@@ -68,7 +69,13 @@ public class JBricxTabItem extends TextEditorPane {
 						tab.line = newLine;
 						MainWindow manager = (MainWindow) tab.parent.getManager();
 						if (manager.accessPane != null) {
-							manager.accessPane.setText("Line: " + newLine);
+							if( ((RTextAreaUI) tab.getUI()).breakExists() != null){
+								manager.accessPane.setText("Line: " + newLine + ". Line has audio break.");
+						    }
+							else
+							{
+								manager.accessPane.setText("Line: " + newLine);
+							}
 						}
 					}
 				}
