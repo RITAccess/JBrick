@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project jbrick with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="/Users/Student/Desktop/JBTest.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="com.jbricx.swing.main.JBricxLauncher"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ AppleJavaExtensions.jar usb4java-1.2.0.jar libusb4java-1.2.0-osx-x86.jar libusb4java-1.2.0-windows-x86.jar libusb4java-1.2.0-windows-x86_64.jar libusb4java-1.2.0-osx-x86_64.jar libusb4java-1.2.0-linux-x86.jar libusb4java-1.2.0-linux-x86_64.jar libusb4java-1.2.0-linux-arm.jar jfxrt.jar freetts.jar jna.jar en_us.jar cmulex.jar mbrola.jar junit.jar org.hamcrest.core_1.3.0.v201303031735.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/bin"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="AppleJavaExtensions.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="usb4java-1.2.0.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-osx-x86.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-windows-x86.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-windows-x86_64.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-osx-x86_64.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-linux-x86.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-linux-x86_64.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="libusb4java-1.2.0-linux-arm.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="jfxrt.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib/FreeTTS" includes="freetts.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib" includes="jna.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib/FreeTTS" includes="en_us.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib/FreeTTS" includes="cmulex.jar"/>
+            <zipfileset dir="/Users/Student/Documents/workspace/JBrick/jbrick/lib/FreeTTS" includes="mbrola.jar"/>
+            <zipfileset dir="/Applications/eclipse/plugins/org.junit_4.11.0.v201303080030" includes="junit.jar"/>
+            <zipfileset dir="/Applications/eclipse/plugins" includes="org.hamcrest.core_1.3.0.v201303031735.jar"/>
+        </jar>
+    </target>
+</project>
