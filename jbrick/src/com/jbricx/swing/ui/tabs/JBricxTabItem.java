@@ -70,7 +70,7 @@ public class JBricxTabItem extends TextEditorPane {
 						MainWindow manager = (MainWindow) tab.parent.getManager();
 						if (manager.accessPane != null) {
 							if( ((RTextAreaUI) tab.getUI()).breakExists() != null){
-								manager.accessPane.setText("Line: " + newLine + ". Line has audio break.");
+								manager.accessPane.setText("Line: " + newLine + ", Audio break.");
 						    }
 							else
 							{

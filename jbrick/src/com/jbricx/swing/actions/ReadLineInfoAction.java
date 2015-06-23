@@ -1,3 +1,8 @@
+/*
+
+This class has been commented out because we have discovred a way to
+read line numbers without the use of an external text-to-speach program
+
 package com.jbricx.swing.actions;
 
 import java.awt.event.ActionEvent;
@@ -18,6 +23,7 @@ import com.sun.speech.freetts.VoiceManager;
  * @author Roderick Kendrick
  *
  */
+/*
 public class ReadLineInfoAction extends JBricxAbstractAction{
 
 	private VoiceManager voiceManager;
@@ -58,3 +64,4 @@ public class ReadLineInfoAction extends JBricxAbstractAction{
 	}
 
 }
+*/

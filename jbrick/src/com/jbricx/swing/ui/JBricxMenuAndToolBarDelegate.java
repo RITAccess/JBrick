@@ -46,7 +46,7 @@ import com.jbricx.swing.actions.PreferencesAction;
 import com.jbricx.swing.actions.PrintAction;
 import com.jbricx.swing.actions.PrintPreviewAction;
 import com.jbricx.swing.actions.RaiseToneAction;
-import com.jbricx.swing.actions.ReadLineInfoAction;
+//import com.jbricx.swing.actions.ReadLineInfoAction;
 import com.jbricx.swing.actions.RedoAction;
 import com.jbricx.swing.actions.ResetViewAction;
 import com.jbricx.swing.actions.RunAction;
@@ -116,7 +116,7 @@ public class JBricxMenuAndToolBarDelegate {
 		AUDIOBREAK(AudioBreakAction.class, "Audio Break", KeyStroke.getKeyStroke(KeyEvent.VK_B, modifier), 2, MenuEnum.TOOLS),
 		RAISETONE(RaiseToneAction.class, "Raise Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.TOOLS),
 		LOWERTONE(LowerToneAction.class, "Lower Break Tone", KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, modifier + KeyEvent.SHIFT_MASK), -1, MenuEnum.TOOLS),
-		READLINEINFO(ReadLineInfoAction.class, "Read Line Info", KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), -1, MenuEnum.TOOLS),
+		//READLINEINFO(ReadLineInfoAction.class, "Read Line Info", KeyStroke.getKeyStroke(KeyEvent.VK_G, modifier), -1, MenuEnum.TOOLS),
 		PIANO(PianoAction.class,"Piano Composer",KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M,modifier), 3, MenuEnum.TOOLS),
 		
 		COMPILE(CompileAction.class, KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0), 2, MenuEnum.COMPILE),
